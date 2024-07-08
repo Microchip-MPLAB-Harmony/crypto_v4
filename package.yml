@@ -1,13 +1,18 @@
 package:
   format-version: "1.0.0"
-  name: "replaceme"
+  name: "crypto"
   type: "api"
-  status: "beta"
+  status: "production"
   required: false
-  version: "1.0.0"
+  version: "v4.0.0-E1"
 
   dependencies:
-    - name: "csp"
+    - name: "core"
       type: "package"
-      version: "3.14.0"
-
+      version: "v3.13.1"
+    - name: "wolfssl"
+      type: "package"
+      version: "v5.6.7-E1"
+    - name: "zlib"
+      type: "package"
+      version: "v1.2.11"

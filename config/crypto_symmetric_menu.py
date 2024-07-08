@@ -31,9 +31,79 @@ import glob
 import ntpath
 
 print("CRYPTO: HASH Menu Package")
-import crypto_globals   #Initial globals
+#import crypto_globals   #Initial globals
 import crypto_defs as g #Modified globals
+import crypto_aead_menu  as am  #Aead Menu
 #import superglobals
+
+
+#Scan for Updated AES HW Supported Symbols
+def ScanAesHwSymbols():
+
+        #List all the HW supported symbols
+        hwSymbols = []
+        if (g.cryptoHwSymAesEcbSupported    == True):
+            hwSymbols.append(g.cryptoSymAesEcbEnabledSymbol)
+        if (g.cryptoHwSymAesCbcSupported    == True):
+            hwSymbols.append(g.cryptoSymAesCbcEnabledSymbol)
+        if (g.cryptoHwSymAesCtrSupported    == True):
+            hwSymbols.append(g.cryptoSymAesCtrEnabledSymbol)
+        if (g.cryptoHwSymAesCfb1Supported   == True):
+            hwSymbols.append(g.cryptoSymAesCfb1EnabledSymbol)
+        if (g.cryptoHwSymAesCfb8Supported   == True):
+            hwSymbols.append(g.cryptoSymAesCfb8EnabledSymbol)
+        if (g.cryptoHwSymAesCfb64Supported  == True):
+            hwSymbols.append(g.cryptoSymAesCfb64EnabledSymbol)
+        if (g.cryptoHwSymAesCfb128Supported == True):
+            hwSymbols.append(g.cryptoSymAesCfb128EnabledSymbol)
+        if (g.cryptoHwSymAesOfbSupported    == True):
+            hwSymbols.append(g.cryptoSymAesOfbEnabledSymbol)
+        if (g.cryptoHwSymAesXtsSupported    == True):
+            hwSymbols.append(g.cryptoSymAesXtsEnabledSymbol)
+
+        #Dependencies to AES HW Driver (AEAD-AES)
+        if (g.cryptoHwAeadAesSupported == True):
+            print("AES AEAD:  HW AEAD AES Supported")
+            if (g.cryptoHwAeadAesGcmSupported    == True):
+                hwSymbols.append(g.cryptoAeadAesGcmEnabledSymbol)
+            if (g.cryptoHwAeadAesCcmSupported    == True):
+                hwSymbols.append(g.cryptoAeadAesCcmEnabledSymbol)
+            if (g.cryptoHwAeadAesEaxSupported    == True):
+                hwSymbols.append(g.cryptoAeadAesEaxEnabledSymbol)
+            if (g.cryptoHwAeadAesSivCmacSupported    == True):
+                hwSymbols.append(g.cryptoAeadAesSivCmacEnabledSymbol)
+            if (g.cryptoHwAeadAesSivGcmSupported    == True):
+                hwSymbols.append(g.cryptoAeadAesSivGcmEnabledSymbol)
+
+
+        #Check to see if any of the HW enables is true
+        #--Check that at least 1 item is selected
+        oneEnabled = False
+        for hSym in hwSymbols:
+            if (hSym.getValue() == True):
+                oneEnabled = True
+                break;
+
+        g.cryptoAesHwEnSymbols = hwSymbols
+
+        #Check if the AES HW is enabled
+        #-->Set the global AES HW enabled symbol
+        if (
+            g.cryptoHwSymAesEnabledSymbol.getValue() == True and
+            oneEnabled == True):
+            g.CONFIG_USE_AES_HW.setValue(True)
+
+            #Dependencies to AES HW Driver (AEAD-AES)
+            if (g.cryptoHwAeadAesSupported == True):
+                g.cryptoHwAeadAesEnabledSymbol.setValue(True)
+        else:
+            g.CONFIG_USE_AES_HW.setValue(False)
+
+            #Dependencies to AES HW Driver (AEAD-AES)
+            if (g.cryptoHwAeadAesSupported == True):
+                g.cryptoHwAeadAesEnabledSymbol.setValue(False)
+
+        return
 
 ################################################################################
 #Scan to see if any of the Hash Selections is True and set the symbol
@@ -41,25 +111,28 @@ import crypto_defs as g #Modified globals
 #--Returns True if CONFIG_USE_SYM changes value
 ################################################################################
 def ScanSym():
-    if   (g.cryptoAesEcbEnabledSymbol.getValue()    == True): newValue = True
-    elif (g.cryptoAesCbcEnabledSymbol.getValue()    == True): newValue = True
-    elif (g.cryptoAesOfbEnabledSymbol.getValue()    == True): newValue = True
-    elif (g.cryptoAesCfb1EnabledSymbol.getValue()   == True): newValue = True
-    elif (g.cryptoAesCfb8EnabledSymbol.getValue()   == True): newValue = True
-    elif (g.cryptoAesCfb64EnabledSymbol.getValue()  == True): newValue = True
-    elif (g.cryptoAesCfb128EnabledSymbol.getValue() == True): newValue = True
-    elif (g.cryptoAesCtrEnabledSymbol.getValue()    == True): newValue = True
-    elif (g.cryptoAesXtsEnabledSymbol.getValue()    == True): newValue = True
-    elif (g.cryptoAesEaxEnabledSymbol.getValue()    == True): newValue = True
+    if   (g.cryptoSymAesEcbEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoSymAesCbcEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoSymAesOfbEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoSymAesCfb1EnabledSymbol.getValue()   == True): newValue = True
+    elif (g.cryptoSymAesCfb8EnabledSymbol.getValue()   == True): newValue = True
+    elif (g.cryptoSymAesCfb64EnabledSymbol.getValue()  == True): newValue = True
+    elif (g.cryptoSymAesCfb128EnabledSymbol.getValue() == True): newValue = True
+    elif (g.cryptoSymAesCtrEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoSymAesXtsEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoAeadAesGcmEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoAeadAesCcmEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoAeadAesEaxEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoAeadAesSivCmacEnabledSymbol.getValue()    == True): newValue = True
+    elif (g.cryptoAeadAesSivGcmEnabledSymbol.getValue()    == True): newValue = True
     else: newValue = False
 
     if (g.CONFIG_USE_SYM.getValue() == newValue):
         return False
     else:
         g.CONFIG_USE_SYM.setValue(newValue)
-        print("CRYPO:  CONFIG_USE_SYM = %s"%(g.CONFIG_USE_SYM.getValue()))
+        print("CRYPTO:  CONFIG_USE_SYM = %s"%(g.CONFIG_USE_SYM.getValue()))
         return True
-
 
 def SetupCryptoSymmetricMenu(cryptoComponent):
     #SYM - Symmetric Crypto Algorithms Main Menu
@@ -79,39 +152,58 @@ def SetupCryptoSymmetricMenu(cryptoComponent):
 
     #SYM AES Main Menu
     g.aesMenu = cryptoComponent.createMenuSymbol(
-            "crypto_sym_aes_en", g.symMenu)
+            "crypto_sym_aes_menu", g.symMenu)
     g.aesMenu.setLabel("AES Algorithms")
     g.aesMenu.setDescription("AES Algorithms:")
     g.aesMenu.setVisible(True)
     g.aesMenu.setHelp('CRYPT_AES_SUM')
 
-    #SYM AES HW Enable (For all AES Algorithms that have HW Support)
-    g.cryptoHwAesEnabledSymbol = cryptoComponent.createBooleanSymbol(
+    #SYM AES Enable (For all AES Algorithms) 
+    g.cryptoSymAesEnabledSymbol = cryptoComponent.createBooleanSymbol(
+            "crypto_sym_aes_en", g.aesMenu)
+    g.cryptoSymAesEnabledSymbol.setLabel("Use AES ?")
+    g.cryptoSymAesEnabledSymbol.setDescription("Enable AES Algorithms")
+    g.cryptoSymAesEnabledSymbol.setVisible(False)
+    g.cryptoSymAesEnabledSymbol.setDefaultValue(True)
+
+    #TODO:  g.CONFIG_USE_AES
+
+    #AES HW Driver Generation Enable
+    g.CONFIG_USE_AES_HW = cryptoComponent.createBooleanSymbol(
+            "config_use_aes_hw", g.hashMenu)
+    g.CONFIG_USE_AES_HW.setVisible(False)
+    g.CONFIG_USE_AES_HW.setLabel("Crypto AES HW")
+    g.CONFIG_USE_AES_HW.setDefaultValue(False) #Always initialize False
+
+    #----------
+    #SYM AES HW Enable (For all AES Algorithms with HW Support)
+    g.cryptoHwSymAesEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_hw_en", g.aesMenu)
-    g.cryptoHwAesEnabledSymbol.setLabel("Use AES Hardware Acceleration?")
-    g.cryptoHwAesEnabledSymbol.setDescription(
+    g.cryptoHwSymAesEnabledSymbol.setLabel("Use AES Hardware Acceleration?")
+    g.cryptoHwSymAesEnabledSymbol.setDescription(
         "Turn on the hardware acceleration" +
         "for the AES Algorithms")
-    if (g.cryptoHwAesSupported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    if (g.cryptoHwSymAesSupported):
+        g.cryptoHwSymAesEnabledSymbol.setDependencies(
                 handleAesHwEnabled,
-                ["crypto_sym_aes_hw_en"])
-        g.cryptoHwAesEnabledSymbol.setVisible(True)
-        g.cryptoHwAesEnabledSymbol.setDefaultValue(False)
+                ["crypto_sym_aes_hw_en", "crypto_aead_aes_hw_en"])
+        g.cryptoHwSymAesEnabledSymbol.setVisible(True)
+        g.cryptoHwSymAesEnabledSymbol.setDefaultValue(False)
     else:
-        g.cryptoHwAesEnabledSymbol.setVisible(False)
-        g.cryptoHwAesEnabledSymbol.setDefaultValue(False)
-    g.cryptoHwAesEnabledSymbol.setHelp('CRYPT_AES_SUM')
+        g.cryptoHwSymAesEnabledSymbol.setVisible(False)
+        g.cryptoHwSymAesEnabledSymbol.setDefaultValue(False)
+    g.cryptoHwSymAesEnabledSymbol.setHelp('CRYPTO_AES_SUM')
 
     #Global to indicate when AES Modes are visible
-    g.cryptoAesModesSupported = True 
+    g.cryptoSymAesModesSupported = True
 
+    #----------
     #AES MODES MENU
     g.aesModesMenu = cryptoComponent.createMenuSymbol("crypto_sym_aes_modes", g.aesMenu)
     g.aesModesMenu.setLabel("AES Algorithm Modes")
     g.aesModesMenu.setDescription("AES Modes:")
     g.aesModesMenu.setHelp('CRYPT_AES_MODES_SUM')
-    #if (g.cryptoAesModesSupported):
+    #if (g.cryptoSymAesModesSupported):
     g.aesModesMenu.setVisible(True)
     #else:
     #    g.aesModesMenu.setVisible(False)
@@ -121,68 +213,57 @@ def SetupCryptoSymmetricMenu(cryptoComponent):
     #                "crypto_sym_aes_192",
     #                "crypto_sym_aes_256"])
 
-
+    #----------
     #AES-ECB Mode
-    g.cryptoAesEcbEnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesEcbEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_ecb_en", g.aesModesMenu)
-    g.cryptoAesEcbEnabledSymbol.setLabel("AES-ECB Mode?")
-    g.cryptoAesEcbEnabledSymbol.setDescription(
+    g.cryptoSymAesEcbEnabledSymbol.setLabel("AES-ECB Mode?")
+    g.cryptoSymAesEcbEnabledSymbol.setDescription(
             "Enable support for the AES-ECB Mode Algorithm.")
-    g.cryptoAesEcbEnabledSymbol.setVisible(True)
-    #if (g.cryptoAesModesSupported):
-    g.cryptoAesEcbEnabledSymbol.setDefaultValue(True)
-    #else:
-    #    g.cryptoAesEcbEnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesEcbEnabledSymbol.setVisible(True)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesEcbEnabledSymbol)
+    g.cryptoSymAesEcbEnabledSymbol.setDefaultValue(False)
 
     #AES-Ecb Mode HW
-    g.cryptoHwAesEcbEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_ecb_hw_en", g.cryptoAesEcbEnabledSymbol)
-    g.cryptoHwAesEcbEnabledSymbol.setVisible(False)
-    g.cryptoHwAesEcbEnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesEcbSupported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    if (g.cryptoHwSymAesEcbSupported):
+        g.cryptoSymAesEcbEnabledSymbol.setDependencies(
                 handleAesEcbEnabled,
-                ["crypto_sym_aes_hw_en"])
-
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_ecb_en"])
 
     #AES-CBC
-    g.cryptoAesCbcEnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesCbcEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_cbc_en", g.aesModesMenu)
-    g.cryptoAesCbcEnabledSymbol.setLabel("AES-CBC Mode?")
-    g.cryptoAesCbcEnabledSymbol.setDescription(
+    g.cryptoSymAesCbcEnabledSymbol.setLabel("AES-CBC Mode?")
+    g.cryptoSymAesCbcEnabledSymbol.setDescription(
             "Enable support for the AES-CBC Mode Algorithm.")
-    g.cryptoAesCbcEnabledSymbol.setVisible(True)
-    g.cryptoAesCbcEnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesCbcEnabledSymbol.setVisible(True)
+    g.cryptoSymAesCbcEnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesCbcEnabledSymbol)
 
-    #AES-CBC HW
-    g.cryptoHwAesCbcEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aes_sym_cbc_hw", g.cryptoAesCbcEnabledSymbol)
-    g.cryptoHwAesCbcEnabledSymbol.setVisible(False)
-    g.cryptoHwAesCbcEnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesCbcSupported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
-                handleAesCbcEnabled,
-                ["crypto_sym_aes_hw_en"])
+    #AES-CBC Mode HW
+    if (g.cryptoHwSymAesEcbSupported):
+        g.cryptoSymAesEcbEnabledSymbol.setDependencies(
+                handleAesEcbEnabled,
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_cbc_en"])
 
+    #----------
     #AES-OFB
-    g.cryptoAesOfbEnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesOfbEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_ofb_en", g.aesModesMenu)
-    g.cryptoAesOfbEnabledSymbol.setLabel("AES-OFB Mode?")
-    g.cryptoAesOfbEnabledSymbol.setDescription(
+    g.cryptoSymAesOfbEnabledSymbol.setLabel("AES-OFB Mode?")
+    g.cryptoSymAesOfbEnabledSymbol.setDescription(
             "Enable support for the AES-OFB Mode Algorithm.")
-    g.cryptoAesOfbEnabledSymbol.setVisible(True)
-    g.cryptoAesOfbEnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesOfbEnabledSymbol.setVisible(True)
+    g.cryptoSymAesOfbEnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesOfbEnabledSymbol)
 
-    #AES-OFB HW
-    g.cryptoHwAesOfbEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_ofb_hw_en", g.cryptoAesOfbEnabledSymbol)
-    g.cryptoHwAesOfbEnabledSymbol.setVisible(False)
-    g.cryptoHwAesOfbEnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesOfbSupported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    #AES-OFB Mode HW
+    if (g.cryptoHwSymAesOfbSupported):
+        g.cryptoSymAesOfbEnabledSymbol.setDependencies(
                 handleAesOfbEnabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_ofb_en"])
 
+    #----------
     #AES-CFB Menu
     g.aesCfbMenu = cryptoComponent.createMenuSymbol(
             "crypto_sym_aes_cfb_en", g.aesModesMenu)
@@ -191,225 +272,297 @@ def SetupCryptoSymmetricMenu(cryptoComponent):
     g.aesCfbMenu.setVisible(True)
     g.aesCfbMenu.setHelp('CRYPT_AES_SUM')
 
+    #----------
     #AES-CFB1 Mode
-    g.cryptoAesCfb1EnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesCfb1EnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_cfb1_en", g.aesCfbMenu)
-    g.cryptoAesCfb1EnabledSymbol.setLabel("AES-CFB(1) Mode?")
-    g.cryptoAesCfb1EnabledSymbol.setDescription(
+    g.cryptoSymAesCfb1EnabledSymbol.setLabel("AES-CFB(1) Mode?")
+    g.cryptoSymAesCfb1EnabledSymbol.setDescription(
             "Enable support for the AES-CFB(1) Mode Algorithm.")
-    g.cryptoAesCfb1EnabledSymbol.setVisible(True)
-    g.cryptoAesCfb1EnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesCfb1EnabledSymbol.setVisible(True)
+    g.cryptoSymAesCfb1EnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesCfb1EnabledSymbol)
 
     #AES-CFB1 HW
-    g.cryptoHwAesCfb1EnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_cfb1_hw_en", g.cryptoAesCfb1EnabledSymbol)
-    g.cryptoHwAesCfb1EnabledSymbol.setVisible(False)
-    g.cryptoHwAesCfb1EnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesCfb1Supported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    if (g.cryptoHwSymAesCfb1Supported):
+        g.cryptoSymAesCfb1EnabledSymbol.setDependencies(
                 handleAesCfb1Enabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_cfb1_en"])
 
+    #----------
     #AES-CFB8 Mode
-    g.cryptoAesCfb8EnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesCfb8EnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_cfb8_en", g.aesCfbMenu)
-    g.cryptoAesCfb8EnabledSymbol.setLabel("AES-CFB(8) Mode?")
-    g.cryptoAesCfb8EnabledSymbol.setDescription(
+    g.cryptoSymAesCfb8EnabledSymbol.setLabel("AES-CFB(8) Mode?")
+    g.cryptoSymAesCfb8EnabledSymbol.setDescription(
             "Enable support for the AES-CFB8 Mode Algorithm.")
-    g.cryptoAesCfb8EnabledSymbol.setVisible(True)
-    g.cryptoAesCfb8EnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesCfb8EnabledSymbol.setVisible(True)
+    g.cryptoSymAesCfb8EnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesCfb8EnabledSymbol)
 
     #AES-CFB8 HW
-    g.cryptoHwAesCfb8EnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_cfb8_hw_en", g.cryptoAesCfb8EnabledSymbol)
-    g.cryptoHwAesCfb8EnabledSymbol.setVisible(False)
-    g.cryptoHwAesCfb8EnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesCfb8Supported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    if (g.cryptoHwSymAesCfb8Supported):
+        g.cryptoSymAesCfb8EnabledSymbol.setDependencies(
                 handleAesCfb8Enabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_cfb8_en"])
 
-    #AES-CFB64 Modes
-    g.cryptoAesCfb64EnabledSymbol = cryptoComponent.createBooleanSymbol(
+    #----------
+    #AES-CFB64 Mode
+    g.cryptoSymAesCfb64EnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_cfb64_en", g.aesCfbMenu)
-    g.cryptoAesCfb64EnabledSymbol.setLabel("AES-CFB(64) Mode?")
-    g.cryptoAesCfb64EnabledSymbol.setDescription(
+    g.cryptoSymAesCfb64EnabledSymbol.setLabel("AES-CFB(64) Mode?")
+    g.cryptoSymAesCfb64EnabledSymbol.setDescription(
             "Enable support for the AES-CFB(64) Mode Algorithm.")
-    g.cryptoAesCfb64EnabledSymbol.setVisible(True)
-    g.cryptoAesCfb64EnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesCfb64EnabledSymbol.setVisible(True)
+    g.cryptoSymAesCfb64EnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesCfb64EnabledSymbol)
 
-    #AES-CFB64 HW
-    g.cryptoHwAesCfb64EnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_cfb64_hw_en", g.cryptoAesCfb64EnabledSymbol)
-    g.cryptoHwAesCfb64EnabledSymbol.setVisible(False)
-    g.cryptoHwAesCfb64EnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesCfb64Supported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    #AES-CFB64 Mode HW
+    if (g.cryptoHwSymAesCfb64Supported):
+        g.cryptoSymAesCfb64EnabledSymbol.setDependencies(
                 handleAesCfb64Enabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_cfb64_en"])
 
-    #AES-CFB128 Modes
-    g.cryptoAesCfb128EnabledSymbol = cryptoComponent.createBooleanSymbol(
+    #----------
+    #AES-CFB128 Mode
+    g.cryptoSymAesCfb128EnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_cfb128_en", g.aesCfbMenu)
-    g.cryptoAesCfb128EnabledSymbol.setLabel("AES-CFB(128) Mode?")
-    g.cryptoAesCfb128EnabledSymbol.setDescription(
+    g.cryptoSymAesCfb128EnabledSymbol.setLabel("AES-CFB(128) Mode?")
+    g.cryptoSymAesCfb128EnabledSymbol.setDescription(
             "Enable support for the AES-CFB(128) Mode Algorithm.")
-    g.cryptoAesCfb128EnabledSymbol.setVisible(True)
-    g.cryptoAesCfb128EnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesCfb128EnabledSymbol.setVisible(True)
+    g.cryptoSymAesCfb128EnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesCfb128EnabledSymbol)
 
-    #AES-CFB128 HW
-    g.cryptoHwAesCfb128EnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_cfb128_hw_en", g.cryptoAesCfb128EnabledSymbol)
-    g.cryptoHwAesCfb128EnabledSymbol.setVisible(False)
-    g.cryptoHwAesCfb128EnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesCfb128Supported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    #AES-CFB128 Mode HW
+    if (g.cryptoHwSymAesCfb128Supported):
+        g.cryptoSymAesCfb128EnabledSymbol.setDependencies(
                 handleAesCfb128Enabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_cfb128_en"])
 
+    #----------
     #AES-CTR
-    g.cryptoAesCtrEnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesCtrEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_ctr_en", g.aesModesMenu)
-    g.cryptoAesCtrEnabledSymbol.setLabel("AES-CTR Mode?")
-    g.cryptoAesCtrEnabledSymbol.setDescription(
+    g.cryptoSymAesCtrEnabledSymbol.setLabel("AES-CTR Mode?")
+    g.cryptoSymAesCtrEnabledSymbol.setDescription(
             "Enable support for the AES-CTR Mode Algorithm.")
-    g.cryptoAesCtrEnabledSymbol.setVisible(True)
-    g.cryptoAesCtrEnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesCtrEnabledSymbol.setVisible(True)
+    g.cryptoSymAesCtrEnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesCtrEnabledSymbol)
 
-    #AES-CTR HW
-    g.cryptoHwAesCtrEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_ctr_hw_en", g.cryptoAesCtrEnabledSymbol)
-    g.cryptoHwAesCtrEnabledSymbol.setVisible(False)
-    g.cryptoHwAesCtrEnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesCtrSupported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    #AES-CTR Mode HW
+    if (g.cryptoHwSymAesCtrSupported):
+        g.cryptoSymAesCtrEnabledSymbol.setDependencies(
                 handleAesCtrEnabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_ctr_en"])
 
+    #----------
     #AES-XTS
-    g.cryptoAesXtsEnabledSymbol = cryptoComponent.createBooleanSymbol(
+    g.cryptoSymAesXtsEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_sym_aes_xts_en", g.aesModesMenu)
-    g.cryptoAesXtsEnabledSymbol.setLabel("AES-XTS Mode?")
-    g.cryptoAesXtsEnabledSymbol.setDescription(
+    g.cryptoSymAesXtsEnabledSymbol.setLabel("AES-XTS Mode?")
+    g.cryptoSymAesXtsEnabledSymbol.setDescription(
             "Enable support for the AES XTS Mode.")
-    g.cryptoAesXtsEnabledSymbol.setVisible(True)
-    g.cryptoAesXtsEnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesXtsEnabledSymbol.setVisible(True)
+    g.cryptoSymAesXtsEnabledSymbol.setDefaultValue(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesXtsEnabledSymbol)
 
-    #AES-XTS HW
-    g.cryptoHwAesXtsEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_sym_aes_xts_hw_en", g.cryptoAesXtsEnabledSymbol)
-    g.cryptoHwAesXtsEnabledSymbol.setVisible(False)
-    g.cryptoHwAesXtsEnabledSymbol.setDefaultValue(False)
-    if (g.cryptoHwAesXtsSupported):
-        g.cryptoHwAesEnabledSymbol.setDependencies(
+    #AES-XTS Mode HW
+    if (g.cryptoHwSymAesXtsSupported):
+        g.cryptoSymAesXtsEnabledSymbol.setDependencies(
                 handleAesXtsEnabled,
-                ["crypto_sym_aes_hw_en"])
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_xts_en"])
 
-    #AES-EAX
-    #g.cryptoAesEaxEnabledSymbol = cryptoComponent.createBooleanSymbol(
-    #        "crypto_sym_aes_eax_en", g.aesModesMenu)
-    #g.cryptoAesEaxEnabledSymbol.setLabel("AES EAX Mode? ")
-    #g.cryptoAesEaxEnabledSymbol.setDescription(
-    #        "Enable support for the AES EAX Mode Algorithm.")
-    #g.cryptoAesEaxEnabledSymbol.setVisible(True)
-    #g.cryptoAesEaxEnabledSymbol.setDefaultValue(False)
-    ##g.cryptoAesEaxEnabledSymbol.setReadOnly(True)
+    #----------
+    #AES-KW (Key Wrap)
+    g.cryptoSymAesKwEnabledSymbol = cryptoComponent.createBooleanSymbol(
+            "crypto_sym_aes_kw_en", g.aesModesMenu)
+    g.cryptoSymAesKwEnabledSymbol.setLabel("AES Key Wrap? ")
+    g.cryptoSymAesKwEnabledSymbol.setDescription(
+            "Enable support for the AES KW Mode Algorithm.")
+    g.cryptoSymAesKwEnabledSymbol.setVisible(True)
+    g.cryptoSymAesKwEnabledSymbol.setDefaultValue(False)
+    g.cryptoSymAesKwEnabledSymbol.setReadOnly(False)
+    g.cryptoAesEnSymbols.append(g.cryptoSymAesKwEnabledSymbol)
 
-    #AES-EAX HW
-    #g.cryptoHwAesEaxEnabledSymbol = cryptoComponent.createBooleanSymbol(
-    #        "crypto_sym_aes_eax_hw_en", g.cryptoAesEaxEnabledSymbol)
-    #g.cryptoHwAesEaxEnabledSymbol.setVisible(False)
-    #g.cryptoHwAesEaxEnabledSymbol.setDefaultValue(False)
-    #if (g.cryptoHwAesEaxSupported):
-    #    g.cryptoHwAesEnabledSymbol.setDependencies(
-    #            handleAesEaxEnabled,
-    #            ["crypto_sym_aes_hw"])
+    #AES-KW (Key Wrap) HW
+    if (g.cryptoHwSymAesKwSupported):
+        g.cryptoSymAesKwEnabledSymbol.setDependencies(
+                handleAesKwEnabled,
+                ["crypto_sym_aes_hw_en", "crypto_sym_aes_kw_en"])
+
+    #===========================================================================
+    # AEAD-AES Menu Setup
+    am.SetupCryptoAeadMenu(cryptoComponent)
+    #===========================================================================
+
+    #Check to see if any of the Sym selections is True
+    #--Used to include the CC Sym API Files
+    ScanSym() #CONFIG_USE_SYM
+    ScanAesHwSymbols() #CONFIG_USE_SYM_HW value 
+                       #and g.cryptoHwSymAesEnabledSymbol
+                       #and change display
+
+    UpdateAesHwDriverFiles() #Based on default menu selections
+
+
+#*******************************************************************************
+#*******************************************************************************
+def UpdateAesMenuLabels(hwEnabled):
+    if (g.cryptoHwSymAesEcbSupported == True):
+        if (hwEnabled == True):
+            g.cryptoSymAesEcbEnabledSymbol.setLabel("AES-ECB (HW)?")
+        else:
+            g.cryptoSymAesEcbEnabledSymbol.setLabel("AES-ECB?")
+    else:
+        g.cryptoSymAesEcbEnabledSymbol.setLabel("AES-ECB?")
+
+    if (g.cryptoHwSymAesCbcSupported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesCbcEnabledSymbol.setLabel("AES-CBC (HW)?")
+        else:
+            g.cryptoSymAesCbcEnabledSymbol.setLabel("AES-CBC?")
+    else:
+        g.cryptoSymAesCbcEnabledSymbol.setLabel("AES-CBC?")
+
+    if (g.cryptoHwSymAesOfbSupported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesOfbEnabledSymbol.setLabel("AES-OFB (HW)?")
+        else:
+            g.cryptoSymAesOfbEnabledSymbol.setLabel("AES-OFB?")
+    else:
+        g.cryptoSymAesOfbEnabledSymbol.setLabel("AES-OFB?")
+
+    if (g.cryptoHwSymAesCfb1Supported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesCfb1EnabledSymbol.setLabel("AES-CFB1 (HW)?")
+        else:
+            g.cryptoSymAesCfb1EnabledSymbol.setLabel("AES-CFB1?")
+    else:
+        g.cryptoSymAesCfb1EnabledSymbol.setLabel("AES-CFB1?")
+
+    if (g.cryptoHwSymAesCfb8Supported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesCfb8EnabledSymbol.setLabel("AES-CFB8 (HW)?")
+        else:
+            g.cryptoSymAesCfb8EnabledSymbol.setLabel("AES-CFB8?")
+    else:
+        g.cryptoSymAesCfb8EnabledSymbol.setLabel("AES-CFB8?")
+
+    if (g.cryptoHwSymAesCfb64Supported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesCfb64EnabledSymbol.setLabel("AES-CFB64 (HW)?")
+        else:
+            g.cryptoSymAesCfb64EnabledSymbol.setLabel("AES-CFB64?")
+    else:
+        g.cryptoSymAesCfb64EnabledSymbol.setLabel("AES-CFB64?")
+
+    if (g.cryptoHwSymAesCfb128Supported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesCfb128EnabledSymbol.setLabel("AES-CFB128 (HW)?")
+        else:
+            g.cryptoSymAesCfb128EnabledSymbol.setLabel("AES-CFB128?")
+    else:
+        g.cryptoSymAesCfb128EnabledSymbol.setLabel("AES-CFB128?")
+
+    if (g.cryptoHwSymAesCtrSupported == True): 
+        if (hwEnabled == True):
+            g.cryptoSymAesCtrEnabledSymbol.setLabel("AES-CTR (HW)?")
+        else:
+            g.cryptoSymAesCtrEnabledSymbol.setLabel("AES-CTR?")
+    else:
+        g.cryptoSymAesCtrEnabledSymbol.setLabel("AES-CTR?")
+
+    if (g.cryptoHwSymAesXtsSupported == True):
+        if (hwEnabled == True):
+            g.cryptoSymAesXtsEnabledSymbol.setLabel("AES-XTS (HW)?")
+        else:
+            g.cryptoSymAesXtsEnabledSymbol.setLabel("AES-XTS?")
+    else:
+        g.cryptoSymAesXtsEnabledSymbol.setLabel("AES-XTS?")
+
+    if (g.cryptoHwSymAesKwSupported == True):
+        if (hwEnabled == True):
+            g.cryptoSymAesKwEnabledSymbol.setLabel("AES Key Wrap (HW)?")
+        else:
+            g.cryptoSymAesKwEnabledSymbol.setLabel("AES-Key Wrap?")
+    else:
+        g.cryptoSymAesKwEnabledSymbol.setLabel("AES-Key Wrap?")
+
+    return
+
+#*******************************************************************************
+# Update the AES HW driver generation based on AES HW Enable and 
+# one of the AES HW functions being selected.
+# Update the labels of the functions that support AES HW
+#*******************************************************************************
+def UpdateAesHwDriverFiles():
+
+    ScanSym()          #Update CONFIG_USE_SYM
+    ScanAesHwSymbols() #Update CONFIG_USE_AES_HW
+                       #and g.cryptoHwAeadAesEnabledSymbol
+
+    hwVal = g.cryptoHwSymAesEnabledSymbol.getValue()
+
+    print("AES:  Update Driver SYM HW(%s-%s)"%(
+        hwVal, g.CONFIG_USE_AES_HW.getValue()))
+
+    hwVal = g.CONFIG_USE_AES_HW.getValue()
+
+    #Enable/Disable HW Driver Files
+    for fSym in g.hwDriverFileDict["AES"]:
+        fSym.setEnabled(hwVal)
+        print("  %s(%s)"%(fSym.getID(), fSym.getEnabled()))
+
+    UpdateAesMenuLabels(hwVal)
 
 
 #-----------------------------------------------------
 #AES
 def handleAesHwEnabled(symbol, event):
-    print("CRYPTO: handle AES HW (does nothing)")
-    return
-
+    print("AES: Symbol - " + event["namespace"] + " EID " + event["id"])
+    print("AES: Handle Event SID %s (HW Support %s)"%(
+        symbol.getID(), g.cryptoHwSymAesEnabledSymbol.getValue()))
+    UpdateAesHwDriverFiles()
 
 def handleAesEcbEnabled(symbol, event):
-    if (g.cryptoHwAesEcbSupported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesEcbEnabledSymbol.setLabel("AES-ECB (HW)?")
-    else:
-        g.cryptoAesEcbEnabledSymbol.setLabel("AES-ECB?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesCbcEnabled(symbol, event):
-    if (g.cryptoHwAesCbcSupported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesCbcEnabledSymbol.setLabel("AES-CBC (HW)?")
-    else:
-        g.cryptoAesCbcEnabledSymbol.setLabel("AES-CBC?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesOfbEnabled(symbol, event):
-    if (g.cryptoHwAesOfbSupported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesOfbEnabledSymbol.setLabel("AES-OFB (HW)?")
-    else:
-        g.cryptoAesOfbEnabledSymbol.setLabel("AES-OFB?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesCfb1Enabled(symbol, event):
-    if (g.cryptoHwAesCfb1Supported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesCfb1EnabledSymbol.setLabel("AES-CFB(1) (HW)?")
-    else:
-        g.cryptoAesCfb1EnabledSymbol.setLabel("AES-CFB(1)?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesCfb8Enabled(symbol, event):
-    if (g.cryptoHwAesCfb8Supported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesCfb8EnabledSymbol.setLabel("AES-CFB(8) (HW)?")
-    else:
-        g.cryptoAesCfb8EnabledSymbol.setLabel("AES-CFB(8)?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesCfb64Enabled(symbol, event):
-    if (g.cryptoHwAesCfb64Supported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesCfb64EnabledSymbol.setLabel("AES-CFB(64) (HW)?")
-    else:
-        g.cryptoAesCfb64EnabledSymbol.setLabel("AES-CFB(64)?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesCfb128Enabled(symbol, event):
-    if (g.cryptoHwAesCfb128Supported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesCfb128EnabledSymbol.setLabel("AES-CFB(128) (HW)?")
-    else:
-        g.cryptoAesCfb128EnabledSymbol.setLabel("AES-CFB(128)?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesCtrEnabled(symbol, event):
-    if (g.cryptoHwAesCtrSupported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesCtrEnabledSymbol.setLabel("AES-CTR (HW)?")
-    else:
-        g.cryptoAesCtrEnabledSymbol.setLabel("AES-CTR?")
+    UpdateAesHwDriverFiles()
     return
 
 def handleAesXtsEnabled(symbol, event):
-    if (g.cryptoHwAesXtsSupported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesXtsEnabledSymbol.setLabel("AES-XTS (HW)?")
-    else:
-        g.cryptoAesXtsEnabledSymbol.setLabel("AES-XTS?")
+    UpdateAesHwDriverFiles()
     return
 
-def handleAesEaxEnabled(symbol, event):
-    if (g.cryptoHwAesEaxSupported and (
-        g.cryptoHwAesEnabledSymbol.getValue() == True)):
-        g.cryptoAesEaxEnabledSymbol.setLabel("AES-XTS (HW)?")
-    else:
-        g.cryptoAesEaxEnabledSymbol.setLabel("AES-XTS?")
+def handleAesKwEnabled(symbol, event):
+    UpdateAesHwDriverFiles()
     return
 

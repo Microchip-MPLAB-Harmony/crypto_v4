@@ -1,10 +1,10 @@
 package:
   format-version: "1.0.0"
-  name: "crypto"
+  name: "crypto_v4"
   type: "api"
   status: "production"
   required: false
-  version: "v4.0.0-E1"
+  version: "v4.0.0-TC1"
 
   dependencies:
     - name: "core"
@@ -12,7 +12,7 @@ package:
       version: "v3.13.1"
     - name: "wolfssl"
       type: "package"
-      version: "v5.6.7-E1"
+      version: "v5.7.0-stable"
     - name: "zlib"
       type: "package"
       version: "v1.2.11"

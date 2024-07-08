@@ -24,9 +24,12 @@
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 # ***************************************************************************'''
 
+################################################################################
 #GLOBAL Declarations
-cryptoHwSupported          =  False
-cryptoHwEnabledSymbol      =  None
+################################################################################
+cryptoHwSupported          = False
+cryptoHwEnabledSymbol      = None
+cryptoHwSupportedSymbol    = None
 
 localCryptoComponent       =  None
 cryptoAdditionalHwDefines =  []
@@ -39,6 +42,56 @@ cryptoHaveSysTime         =  False
 cryptoDependSysTime       =  False
 
 asn1Support               =  False
+
+################################################################################
+## Trustzone - for Unicorn/Omega/Lifeguard processors
+################################################################################
+trustZoneSupported        =  False  #Device supports trustZone
+trustZoneEnabled          =  False  #Symbol
+trustZoneDevices          = []      #TZ Device Name Patterns
+trustZoneFileIds          = []      #List of file ids
+cryptoTzEnabledSymbol     = None
+
+
+################################################################################
+## Crypto HW Drivers
+################################################################################
+ 
+#Function Used 
+CONFIG_USE_TRNG           = None
+CONFIG_USE_SHA            = None
+CONFIG_USE_AES            = None
+CONFIG_USE_TDES           = None
+CONFIG_USE_RSA            = None  #TODO
+CONFIG_USE_ECC            = None  #TODO
+
+#HW Function Driver Used
+CONFIG_USE_TRNG_HW        = None
+CONFIG_USE_SHA_HW         = None
+CONFIG_USE_AES_HW         = None
+CONFIG_USE_TDES_HW        = None
+CONFIG_USE_RSA_HW         = None  #TODO
+CONFIG_USE_ECC_HW         = None  #TODO
+
+trngHw = []
+shaHw  = []
+aesHw  = []
+tdesHw = []
+rsaHw  = []
+eccHw  = []
+
+#HW Driver FTL Symbol Strings
+hwDriverStrings = []
+hwDriverSymbol  = []
+hwDriverFileSymbols = []
+
+#HW Driver File Generation
+hwDriverFileDict = {}
+
+cryptoHwDefines           = None
+cryptoHwAdditionalDefines = set([])
+cryptoHwDevSupport        = set([])    #Holds the device hw supported keys (dKey)
+cryptoHwIdSupport         = set([])    #Holds the device hw supported IDs (id)
 
 #===============================================================================
 #MENU
@@ -66,45 +119,55 @@ CONFIG_USE_HASH                   = None
 cryptoHwHashEnabledSymbol         = None
 
 #-------------------------------------------------------------------------------
-cryptoCurrentHwMd5Support    = []
+cryptoHwMd5Support    = []
 cryptoMd5EnabledSymbol            = None
 cryptoHwMd5Supported              = False
 cryptoHwMd5EnabledSymbol          = None
 
 #RIPEMD160----------------------------------------------------------------------
-cryptoCurrentHwRipeMd160Support = []
+cryptoHwRipeMd160Support = []
 cryptoRipeMd160EnabledSymbol      = None
 cryptoHwRipeMd160Supported        = False
 cryptoHwRipeMd160EnabledSymbol    = None
 
 #-------------------------------------------------------------------------------
 #SHA1
-cryptoCurrentHwSha1Support   = []
+cryptoHwSha1Support   = []
 cryptoSha1EnabledSymbol           = None
 cryptoHwSha1Supported             = False
 cryptoHwSha1EnabledSymbol         = None
 
 #-------------------------------------------------------------------------------
 #SHA2
-cryptoCurrentHwSha224Support = []
+cryptoHwSha224Support = []
 cryptoSha224EnabledSymbol         = None
 cryptoHwSha224Supported           = False
 cryptoHwSha224EnabledSymbol       = None
 
-cryptoCurrentHwSha256Support = []
+cryptoHwSha256Support = []
 cryptoHwSha256EnabledSymbol       = None
 cryptoSha256EnabledSymbol         = None
 cryptoHwSha256Supported           = False
 
-cryptoCurrentHwSha384Support = []
+cryptoHwSha384Support = []
 cryptoHwSha384Supported           = False
 cryptoHwSha384EnabledSymbol       = None
 cryptoSha384EnabledSymbol         = None
 
-cryptoCurrentHwSha512Support = []
+cryptoHwSha512Support = []
 cryptoHwSha512Supported           = False
 cryptoHwSha512EnabledSymbol       = None
 cryptoSha512EnabledSymbol         = None
+
+cryptoHwSha512_224Support = []
+cryptoHwSha512_224Supported           = False
+cryptoHwSha512_224EnabledSymbol       = None
+cryptoSha512_224EnabledSymbol         = None
+
+cryptoHwSha512_256Support = []
+cryptoHwSha512_256Supported           = False
+cryptoHwSha512_256EnabledSymbol       = None
+cryptoSha512_256EnabledSymbol         = None
 
 #-------------------------------------------------------------------------------
 #SHA3
@@ -173,41 +236,48 @@ cryptoBlake2b512EnabledSymbol      = None
 #===============================================================================
 #Aead
 CONFIG_USE_AEAD                   = None
-cryptoCurrentHwAesSupport         = []
+cryptoHwAesSupport         = []
 cryptoHwAeadAesSupported          = False
 cryptoHwAeadAesEnabledSymbol      = None
 cryptoAeadAesEnabledSymbol        = None
 
-cryptoCurrentHwDesSupport         = []
+cryptoHwDesSupport         = []
 
-cryptoCurrentHwAesGcmSupport      = []
+cryptoHwAesGcmSupport      = []
 cryptoHwAeadAesGcmSupported         = False
 cryptoHwAeadAesGcmEnabledSymbol     = None
 cryptoAeadAesGcmEnabledSymbol       = None
 
-cryptoCurrentHwAesCcmSupport        = []
+cryptoHwAesCcmSupport        = []
 cryptoHwAeadAesCcmSupported         = False
 cryptoHwAeadAesCcmEnabledSymbol     = None
 cryptoAeadAesCcmEnabledSymbol       = None
 
-cryptoCurrentHwEaxSupport    = []
+cryptoHwEaxSupport    = []
 cryptoHwAeadAesEaxSupported         = False
 cryptoHwAeadAesEaxEnabledSymbol     = None
 cryptoAeadAesEaxEnabledSymbol       = None
 
-cryptoCurrentHwAesSivCmacSupport    = []
+cryptoHwSymAesKwSupport       = []
+cryptoHwSymAesKwSupported     = False
+cryptoHwSymAesKwEnabledSymbol = None
+cryptoSymAesKwEnabledSymbol   = None
+
+cryptoHwAesSivCmacSupport    = []
 cryptoHwAeadAesSivCmacSupported     = False
 cryptoHwAeadAesSivCmacEnabledSymbol = None
 cryptoAeadAesSivCmacEnabledSymbol   = None
 
-cryptoCurrentHwAesSivGcmSupport     = []
+cryptoHwAesSivGcmSupport     = []
 cryptoHwAeadAesSivGcmSupported      = False
 cryptoHwAeadAesSivGcmEnabledSymbol  = None
 cryptoAeadAesSivGcmEnabledSymbol    = None
 
 #===============================================================================
 #HMAC
-CONFIG_USE_HMAC                    = None
+CONFIG_USE_MAC                     = None
+
+#MAC-AES
 cryptoHwMacAesSupported            = False
 cryptoHwMacAesEnabledSymbol        = None
 cryptoMacAesEnabledSymbol          = None
@@ -297,7 +367,7 @@ cryptoAesCcmEnabledSymbol         = None
 #ASYMMETRIC
 CONFIG_USE_ASYM                   = None
 
-#DES
+#Asym DES
 cryptoHwDesSupported              = False
 cryptoHwDesEnabledSymbol          = None
 cryptoDesEnabledSymbol            = None
@@ -316,35 +386,44 @@ cryptoHwDesOfbSupported           = False
 cryptoHwDesOfbEnabledSymbol       = None
 cryptoDesOfbEnabledSymbol         = None
 
-#RSA
-cryptoHwRsaSupported              = False
-cryptoHwRsaEnabledSymbol          = None
-cryptoRsaEnabledSymbol            = None
+#Asym RSA
+cryptoHwAsymRsaSupported              = False
+cryptoHwAsymRsaEnabledSymbol          = None
+cryptoAsymRsaEnabledSymbol            = None
+
+#Asym ECC
+cryptoHwAsymEccSupported              = False
+cryptoHwAsymEccEnabledSymbol          = None
+cryptoAsymEccEnabledSymbol            = None
+
+cryptoSWCallBackEnableSymbol      = None
+
+#ASYM ECC-ECDSA 
+cryptoHwEcdsaSupport = []
+cryptoHwEcdsaSupported         = False
+cryptoHwEcdsaEnabledSymbol     = None
+cryptoEcdsaEnabledSymbol       = None
+
 
 #===============================================================================
-#ECC
-
-cryptoHwEccSupported              = False
-cryptoHwEccEnabledSymbol          = None
-cryptoSWCallBackEnableSymbol      = None
-cryptoEccEnabledSymbol            = None
-
-#-------------------------------------------------------------------------------
 #DS - Digital Signing
 CONFIG_USE_DS                     = None
 cryptoDsEcdsaEnabledSymbol        = None
 
-#-------------------------------------------------------------------------------
+#===============================================================================
 #KAS - Key Authorization
 CONFIG_USE_KAS                    = None
 cryptoKasEcdhEnableSymbol         = None
+cryptoHwKasEcdhSupport    = []
+cryptoHwKasEcdhSupported       = False
+cryptoHwKasEcdhEnabledSymbol   = None
 
 #===============================================================================
 #TRNG
-CONFIG_USE_RNG                    = None
-cryptoCurrentHwRngSupport    = []
+CONFIG_USE_TRNG                   = None
+cryptoHwRngSupport         = []
 cryptoRngTrngEnabledSymbol        = None
-cryptoRngPrngEnabledSymbol         = None
+cryptoRngPrngEnabledSymbol        = None
 
 
 #===============================================================================
@@ -374,5 +453,5 @@ cryptoWolfCryptDisabledMenuComponentsList = []
 
 cryptoHwSupportFound      = False
 
-cryptoAesModesSupported   = False
+cryptoSymAesModesSupported   = False
 cryptoAesModesMenu        = None

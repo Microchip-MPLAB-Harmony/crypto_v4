@@ -28,7 +28,17 @@ import sys
 import glob
 import ntpath
 
-ignoreFiles = ["gzwrite.c", "gzread.c", "gzlib.c"]
+modulePath =  Module.getPath()
+sys.path.append(modulePath + "config")
+import wolfcrypt_globals
+import wolfcrypt_defs        as w
+import crypto_globals               #Initial globals
+import crypto_defs           as g   #Modified globals
+
+ignoreFiles = ["gzwrite.c", "gzread.c", "gzclose.c", "gzlib.c"]
+#ignoreFiles = []
+
+
 
 def instantiateComponent(zlibComponent):
     setupFiles(zlibComponent)
@@ -37,6 +47,7 @@ def instantiateComponent(zlibComponent):
     zlibSrcPath.setCategory("C32")
     zlibSrcPath.setKey("extra-include-directories")
     zlibSrcPath.setAppend(True, ";")
+
 
 def get_script_dir(follow_symlinks=True):
     if getattr(sys, 'frozen', False): # py2exe, PyInstaller, cx_Freeze
@@ -47,6 +58,7 @@ def get_script_dir(follow_symlinks=True):
         path = os.path.realpath(path)
     return os.path.dirname(path)
 
+
 def trimFileNameList(rawList) :
     global ignoreFiles
     newList = []
@@ -54,11 +66,14 @@ def trimFileNameList(rawList) :
         filename = ntpath.basename(file)
         if (not(filename in ignoreFiles)):
             newList.append(filename)
+        else:
+            print("ZLIB: Removed %s"%(filename)) 
+            print(newList)
     return newList
-    
-    
+
+
 def addFileName(fileName, prefix, component, srcPath, destPath, enabled, projectPath):
-    #print("Adding file: " + prefix + fileName.replace('.', '_'))
+    print("ZLIB: Add " + fileName) 
     filename = component.createFileSymbol(prefix + fileName.replace('.', '_'), None)
     filename.setProjectPath(projectPath)
     filename.setSourcePath(srcPath + fileName)
@@ -75,19 +90,47 @@ def addFileName(fileName, prefix, component, srcPath, destPath, enabled, project
         filename.setType("SOURCE")
 
     filename.setEnabled(enabled)
-    
-    
+
+
+    if (g.trustZoneSupported != None): 
+        if (g.trustZoneSupported == True):
+            #Set TrustZone <filelist>.setSecurity("SECURE")
+            filename.setSecurity("SECURE")
+        else:
+            #UnSet TrustZone <filelist>.setSecurity("NON_SECURE")
+            filename.setSecurity("NON_SECURE")
+
+
 def setupFiles(basecomponent) :
 
     zlibSourceFiles = get_script_dir() + "/../../zlib/*.c"
     zlibHeaderFiles = get_script_dir() + "/../../zlib/*.h"
-    
-    zsfl = trimFileNameList(glob.glob(zlibSourceFiles))
-    zhfl = trimFileNameList(glob.glob(zlibHeaderFiles))
-    
+
+    print("ZLIB:  " + zlibSourceFiles) 
+    print("ZLIB:  " + zlibHeaderFiles) 
+
+    #All src/header files in the common/crypto directory
+    zphfl = glob.glob(zlibSourceFiles)
+    zpsfl = glob.glob(zlibHeaderFiles)
+    print("ZLIB: headers(%d) %s"%(len(zphfl),zlibHeaderFiles))
+    print("ZLIB: src(%d) %s"%(len(zpsfl),zlibSourceFiles))
+
+    zhfl = trimFileNameList(zphfl)
+    zsfl = trimFileNameList(zpsfl)
+    print("ZLIB: TR headers(%d)"%(len(zhfl)))
+    print(zhfl)
+    print("ZLIB: TR src(%d)"%(len(zhfl)))
+    print(zsfl)
+
     for file in zsfl:
         addFileName(file, "zlib", basecomponent, "../zlib/", "../../third_party/zlib/", True, "zlib")
-        
+
     for file in zhfl:
         addFileName(file, "zlib", basecomponent, "../zlib/", "../../third_party/zlib/", True, "zlib")
 
+
+def onAttachmentConnected(source, target):
+    print("ZLIB:  Attached to " + target["component"].getID())
+
+def onAttachmentDisconnected(source, target):
+    print("ZLIB:  Detached to " + target["component"].getID())

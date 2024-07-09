@@ -94,8 +94,8 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_InitEccParams(CPKCL_ECC_DATA *pEccData,
     }
     
     /* Get coordinates of public key */
-    memset(pubKeyX, 0, sizeof(pubKeyX));
-    memset(pubKeyY, 0, sizeof(pubKeyY));
+    (void) memset(pubKeyX, 0, sizeof(pubKeyX));
+    (void) memset(pubKeyY, 0, sizeof(pubKeyY));
     result = DRV_CRYPTO_ECC_SetPubKeyCoordinates(pEccData, pubKey, &pubKeyX[4], 
                                                  &pubKeyY[4], eccCurveType);
     if (result == CRYPTO_CPKCL_RESULT_CURVE_ERROR)
@@ -115,8 +115,8 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_InitEccParams(CPKCL_ECC_DATA *pEccData,
     pEccData->pfu1PublicKeyY = (pfu1) pubKeyY;
     
     /* Store private key locally, leaving first 4 bytes empty  */
-    memset(privateKey, 0, sizeof(privateKey));
-    memcpy(&privateKey[4], privKey, privKeyLen);
+    (void) memset(privateKey, 0, sizeof(privateKey));
+    (void) memcpy(&privateKey[4], privKey, privKeyLen);
     pEccData->pfu1PrivateKey = (pfu1) privateKey;
     
     return CRYPTO_ECDH_RESULT_SUCCESS;
@@ -207,7 +207,7 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
                 + u2ModuloPSize + 4U, u2ModuloPSize + 4u);   
 
     /* Remove empty first four bytes */  
-    memcpy(sharedKey, &sharedKeyX[4], u2OrderSize);
+    (void) memcpy(sharedKey, &sharedKeyX[4], u2OrderSize);
     
     return CRYPTO_ECDH_RESULT_SUCCESS;
 }

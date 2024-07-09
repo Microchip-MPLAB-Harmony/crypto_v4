@@ -28,7 +28,7 @@ def loadModule():
     ########################## CRYPTO Module ###############################
     cryptoComponent = Module.CreateComponent(
             "lib_crypto",
-            "Cryptographic (Crypto) Library",
+            "Crypto_v4",
             "/Libraries/", "config/crypto.py")
     cryptoComponent.addCapability(
             "lib_crypto", "LIB_CRYPTO", None, True)

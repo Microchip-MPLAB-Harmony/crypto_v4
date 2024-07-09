@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIBGF2ECNCONV_INCLUDED
-#define _CRYPTOLIBGF2ECNCONV_INCLUDED
+#ifndef CRYPTOLIBGF2ECNCONV_INCLUDED
+#define CRYPTOLIBGF2ECNCONV_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_GF2NEcConvProjToAffine {
@@ -98,5 +98,5 @@ typedef struct _CPKCL_GF2NEcRandomiseCoordinate {
 
 
 
-#endif // _CRYPTOLIBGF2NECCONV_INCLUDED
+#endif // CRYPTOLIBGF2NECCONV_INCLUDED
 

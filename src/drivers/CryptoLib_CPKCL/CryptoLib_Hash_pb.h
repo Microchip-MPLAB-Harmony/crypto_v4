@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_HASH_INCLUDED
-#define _CRYPTOLIB_HASH_INCLUDED
+#ifndef CRYPTOLIB_HASH_INCLUDED
+#define CRYPTOLIB_HASH_INCLUDED
 
 // Structure definition
 // POUR MD2 :	Le CheckSum se fait dans le Working Space;
@@ -101,4 +101,4 @@ typedef struct _CPKCL_hash {
 #define CPKCL_HASH_LSBFIRST         0x0008
 #define CPKCL_HASH_MSBFIRST         0x0000
 #define CPKCL_HASH_MSBLSBFIRST_MASK 0x0008
-#endif // _CRYPTOLIB_HASH_INCLUDED
+#endif // CRYPTOLIB_HASH_INCLUDED

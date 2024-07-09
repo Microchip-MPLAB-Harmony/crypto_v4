@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_EXPMOD_PB_INCLUDED
-#define _CRYPTOLIB_EXPMOD_PB_INCLUDED
+#ifndef CRYPTOLIB_EXPMOD_PB_INCLUDED
+#define CRYPTOLIB_EXPMOD_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_expmod {
@@ -73,4 +73,4 @@ typedef struct _CPKCL_expmod {
 #define CPKCL_EXPMOD_WINDOWSIZE_BIT(a)   (u2)((a) & CPKCL_EXPMOD_WINDOWSIZE_MASK) >> 3
 
 
-#endif // _CRYPTOLIB_EXPMOD_PB_INCLUDED
+#endif // CRYPTOLIB_EXPMOD_PB_INCLUDED

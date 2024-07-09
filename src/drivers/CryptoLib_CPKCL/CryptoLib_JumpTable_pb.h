@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_JUMPTABLE_PB_INCLUDED_
-#define _CRYPTOLIB_JUMPTABLE_PB_INCLUDED_
+#ifndef CRYPTOLIB_JUMPTABLE_PB_INCLUDED_
+#define CRYPTOLIB_JUMPTABLE_PB_INCLUDED_
 
 extern ServiceFctType __vCPKCLCsClearFlags;
 extern ServiceFctType __vCPKCLCsComp;
@@ -80,4 +80,4 @@ extern ServiceFctType __vCPKCLCsGCD;
 extern ServiceFctType __vCPKCLCsPrimeGen;
 extern ServiceFctType __vCPKCLCsRedMod;
 
-#endif
+#endif  // CRYPTOLIB_JUMPTABLE_PB_INCLUDED_

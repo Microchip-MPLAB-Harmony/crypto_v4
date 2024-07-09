@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_PRIMEGEN_PB_INCLUDED
-#define _CRYPTOLIB_PRIMEGEN_PB_INCLUDED
+#ifndef CRYPTOLIB_PRIMEGEN_PB_INCLUDED
+#define CRYPTOLIB_PRIMEGEN_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_primegen {
@@ -64,4 +64,4 @@ typedef struct _CPKCL_primegen {
 #define CPKCL_PRIMEGEN_MASK          0x03
 
 
-#endif // _CRYPTOLIB_PRIMEGEN_PB_INCLUDED
+#endif // CRYPTOLIB_PRIMEGEN_PB_INCLUDED

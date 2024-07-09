@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_FASTCOPY_PB_INCLUDED
-#define _CRYPTOLIB_FASTCOPY_PB_INCLUDED
+#ifndef CRYPTOLIB_FASTCOPY_PB_INCLUDED
+#define CRYPTOLIB_FASTCOPY_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_fastcopy {
@@ -59,4 +59,4 @@ typedef struct _CPKCL_fastcopy {
                } _CPKCL_FASTCOPY, *_PCPKCL_FASTCOPY;
 
 
-#endif // _CRYPTOLIB_FASTCOPY_PB_INCLUDED
+#endif // CRYPTOLIB_FASTCOPY_PB_INCLUDED

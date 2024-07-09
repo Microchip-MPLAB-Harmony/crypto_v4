@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_CONDCOPY_PB_INCLUDED
-#define _CRYPTOLIB_CONDCOPY_PB_INCLUDED
+#ifndef CRYPTOLIB_CONDCOPY_PB_INCLUDED
+#define CRYPTOLIB_CONDCOPY_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_condcopy {
@@ -64,4 +64,4 @@ typedef struct _CPKCL_condcopy {
 #define CPKCL_CONDCOPY_IF_CARRY      0x02
 #define CPKCL_CONDCOPY_IF_NOT_CARRY  0x03
 
-#endif // _CRYPTOLIB_CONDCOPY_PB_INCLUDED
+#endif // CRYPTOLIB_CONDCOPY_PB_INCLUDED

@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_GCD_PB_INCLUDED
-#define _CRYPTOLIB_GCD_PB_INCLUDED
+#ifndef CRYPTOLIB_GCD_PB_INCLUDED
+#define CRYPTOLIB_GCD_PB_INCLUDED
 
 #include "CryptoLib_typedef_pb.h"
 
@@ -61,4 +61,4 @@ typedef struct _CPKCL_gcd {
 // Options definition
 // None
 
-#endif // _CRYPTOLIB_GCD_PB_INCLUDED
+#endif // CRYPTOLIB_GCD_PB_INCLUDED

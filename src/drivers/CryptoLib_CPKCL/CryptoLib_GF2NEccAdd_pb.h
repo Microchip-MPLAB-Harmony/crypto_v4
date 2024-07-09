@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIBGF2NECCADD_INCLUDED
-#define _CRYPTOLIBGF2NECCADD_INCLUDED
+#ifndef CRYPTOLIBGF2NECCADD_INCLUDED
+#define CRYPTOLIBGF2NECCADD_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_GF2NEccAdd {
@@ -58,4 +58,4 @@ typedef struct _CPKCL_GF2NEccAdd {
 
 
 
-#endif // _CRYPTOLIBGF2NEcCADD_INCLUDED
+#endif // CRYPTOLIBGF2NEcCADD_INCLUDED

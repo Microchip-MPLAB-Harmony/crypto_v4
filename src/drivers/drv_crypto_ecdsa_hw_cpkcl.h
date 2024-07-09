@@ -39,8 +39,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _DRV_CRYPTO_ECDSA_HW_CPKCL_H_
-#define _DRV_CRYPTO_ECDSA_HW_CPKCL_H_
+#ifndef DRV_CRYPTO_ECDSA_HW_CPKCL_H
+#define DRV_CRYPTO_ECDSA_HW_CPKCL_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -104,4 +104,4 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(CPKCL_ECC_DATA *pEccData,
 #endif
 // DOM-IGNORE-END
 
-#endif /* _DRV_CRYPTO_ECDSA_HW_CPKCL_H_ */
+#endif /* DRV_CRYPTO_ECDSA_HW_CPKCL_H */

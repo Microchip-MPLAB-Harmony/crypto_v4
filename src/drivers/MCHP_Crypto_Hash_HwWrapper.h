@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _MCHP_CRYPTO_HASH_HWWRAPPER_H_
-#define _MCHP_CRYPTO_HASH_HWWRAPPER_H_
+#ifndef MCHP_CRYPTO_HASH_HWWRAPPER_H
+#define MCHP_CRYPTO_HASH_HWWRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -84,13 +84,13 @@ typedef struct
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
     
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(CRYPTO_HASH_HW_CONTEXT *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaCtx, 
     crypto_Hash_Algo_E shaAlgorithm_en);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(CRYPTO_HASH_HW_CONTEXT *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaCtx, 
     uint8_t *data, uint32_t dataLen);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(CRYPTO_HASH_HW_CONTEXT *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaCtx, 
     uint8_t *digest);
 
 // DOM-IGNORE-BEGIN
@@ -101,4 +101,4 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(CRYPTO_HASH_HW_CONTEXT *shaCtx,
 #endif
 // DOM-IGNORE-END
 
-#endif /* _MCHP_CRYPTO_HASH_HWWRAPPER_H_ */
+#endif /* MCHP_CRYPTO_HASH_HWWRAPPER_H */

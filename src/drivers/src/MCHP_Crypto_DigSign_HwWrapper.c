@@ -61,6 +61,8 @@ Microchip or any third party.
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
     crypto_EccCurveType_E eccCurveType, CRYPTO_CPKCL_CURVE *hwEccCurve)
 {
+    crypto_DigiSign_Status_E status = CRYPTO_DIGISIGN_SUCCESS;
+    
     switch (eccCurveType)
     {
         case CRYPTO_ECC_CURVE_P256:
@@ -72,39 +74,47 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
             break;
         
         default:
-            return CRYPTO_DIGISIGN_ERROR_CURVE;
-        
+            status = CRYPTO_DIGISIGN_ERROR_CURVE;
+            break;
     }
     
-    return CRYPTO_DIGISIGN_SUCCESS;
+    return status;
 }    
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(
     CRYPTO_ECDSA_RESULT result)
 {
+    crypto_DigiSign_Status_E status;
+    
     switch (result) 
     {
         case CRYPTO_ECDSA_RESULT_SUCCESS:
-            return CRYPTO_DIGISIGN_SUCCESS;
+            status = CRYPTO_DIGISIGN_SUCCESS;
+            break;
             
         case CRYPTO_ECDSA_ERROR_PUBKEYCOMPRESS:
-            return CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
+            status = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
+            break;
             
         case CRYPTO_ECDSA_RESULT_ERROR_CURVE:
-            return CRYPTO_DIGISIGN_ERROR_CURVE;
+            status = CRYPTO_DIGISIGN_ERROR_CURVE;
+            break;
             
         case CRYPTO_ECDSA_RESULT_ERROR_RNG:   
-            return CRYPTO_DIGISIGN_ERROR_RNG;
+            status = CRYPTO_DIGISIGN_ERROR_RNG;
+            break;
         
         case CRYPTO_ECDSA_RESULT_INIT_FAIL:
         case CRYPTO_ECDSA_RESULT_ERROR_FAIL:
-            return CRYPTO_DIGISIGN_ERROR_FAIL;
+            status = CRYPTO_DIGISIGN_ERROR_FAIL;
+            break;
             
         default:
-            ;
+            status = CRYPTO_DIGISIGN_ERROR_FAIL;
+            break;
     }
     
-    return CRYPTO_DIGISIGN_ERROR_FAIL;
+    return status;
 }
 
 // *****************************************************************************

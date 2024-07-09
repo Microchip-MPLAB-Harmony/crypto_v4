@@ -128,6 +128,8 @@ typedef enum {
 } CRYPTO_AES_PLIP;
 </#if>
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 6.1 deviated: 43. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
 typedef union {
     struct {
         uint8_t START : 1;
@@ -221,6 +223,8 @@ typedef union {
     uint32_t v;
 } CRYPTO_AES_IER;
 
+/* MISRAC 2012 deviation block end */
+
 typedef CRYPTO_AES_IER CRYPTO_AES_IDR;
 typedef CRYPTO_AES_IER CRYPTO_AES_IMR;
 
@@ -234,6 +238,8 @@ typedef enum
     CRYPTO_AES_WOR_RD_ACCESS,
 } CRYPTO_AES_URAT;
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 6.1 deviated: 14. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
 typedef union {    
     struct {
         uint8_t DATRDY : 1;
@@ -261,6 +267,8 @@ typedef union {
     }s;
     uint32_t v;
 } CRYPTO_AES_ISR;
+
+/* MISRAC 2012 deviation block end */
 
 /* AES Configuration structure */
 typedef struct {

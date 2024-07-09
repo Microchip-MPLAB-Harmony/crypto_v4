@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_REDMOD_PB_INCLUDED
-#define _CRYPTOLIB_REDMOD_PB_INCLUDED
+#ifndef CRYPTOLIB_REDMOD_PB_INCLUDED
+#define CRYPTOLIB_REDMOD_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_redmod {
@@ -66,4 +66,4 @@ typedef struct _CPKCL_redmod {
 #define CPKCL_REDMOD_MODEMASK        0xF000
 
 
-#endif // _CRYPTOLIB_REDMOD_PB_INCLUDED
+#endif // CRYPTOLIB_REDMOD_PB_INCLUDED

@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIBGF2NECDSA_INCLUDED
-#define _CRYPTOLIBGF2NECDSA_INCLUDED
+#ifndef CRYPTOLIBGF2NECDSA_INCLUDED
+#define CRYPTOLIBGF2NECDSA_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_GF2NEcDsaGenerate {
@@ -78,4 +78,4 @@ typedef struct _CPKCL_GF2NEcDsaVerify {
 
 
 
-#endif // _CRYPTOLIBGF2NEcDSA_INCLUDED
+#endif // CRYPTOLIBGF2NEcDSA_INCLUDED

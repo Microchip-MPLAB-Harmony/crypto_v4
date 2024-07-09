@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
-#define _CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
+#ifndef CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
+#define CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
 
 #include "CryptoLib_typedef_pb.h"
 #include "CryptoLib_mapping_pb.h"
@@ -89,4 +89,4 @@ typedef void (*PPKCL_FUNC) (PCPKCL_PARAM);
 #define __vCPKCLCsRng         					((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x8C ))
 
 
-#endif // _CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
+#endif // CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_

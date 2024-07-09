@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_CLEARFLAGS_PB_INCLUDED
-#define _CRYPTOLIB_CLEARFLAGS_PB_INCLUDED
+#ifndef CRYPTOLIB_CLEARFLAGS_PB_INCLUDED
+#define CRYPTOLIB_CLEARFLAGS_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_clearflags {
@@ -58,4 +58,4 @@ typedef struct _CPKCL_clearflags {
                u2        __Padding9;
                } _CPKCL_CLEARFLAGS,*_PCPKCL_CLEARFLAGS;
 
-#endif // _CRYPTOLIB_CLEARFLAGS_PB_INCLUDED
+#endif // CRYPTOLIB_CLEARFLAGS_PB_INCLUDED

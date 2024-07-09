@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _DRV_CRYPTO_SHA_HW_6156_H_
-#define _DRV_CRYPTO_SHA_HW_6156_H_
+#ifndef DRV_CRYPTO_SHA_HW_6156_H
+#define DRV_CRYPTO_SHA_HW_6156_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -76,25 +76,25 @@ typedef enum
 
 typedef enum 
 {
-  CRYPTO_SHA_ALGORITHM_SHA1 = 0,             /* SHA1 algorithm processed */
-  CRYPTO_SHA_ALGORITHM_SHA256 = 1,           /* SHA256 algorithm processed */
-  CRYPTO_SHA_ALGORITHM_SHA384 = 2,           /* SHA384 algorithm processed */
-  CRYPTO_SHA_ALGORITHM_SHA512 = 3,           /* SHA512 algorithm processed */
-  CRYPTO_SHA_ALGORITHM_SHA224 = 4,           /* SHA224 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA1 = 0,             /* SHA1 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA256 = 1,           /* SHA256 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA384 = 2,           /* SHA384 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA512 = 3,           /* SHA512 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA224 = 4,           /* SHA224 algorithm processed */
 <#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
-  CRYPTO_SHA_ALGORITHM_SHA512_224 = 5,       /* SHA512/224 algorithm processed */
-  CRYPTO_SHA_ALGORITHM_SHA512_256 = 6,       /* SHA512/256 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA512_224 = 5,       /* SHA512/224 algorithm processed */
+  CRYPTO_SHA_ALGO_SHA512_256 = 6,       /* SHA512/256 algorithm processed */
 </#if>
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA1 = 8,        /* HMAC algorithm with SHA1 Hash processed */
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA256 = 9,      /* HMAC algorithm with SHA256 Hash processed */
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA384 = 10,     /* HMAC algorithm with SHA384 Hash processed */
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA512 = 11,     /* HMAC algorithm with SHA512 Hash processed */
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA224 = 12,     /* HMAC algorithm with SHA224 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA1 = 8,        /* HMAC algorithm with SHA1 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA256 = 9,      /* HMAC algorithm with SHA256 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA384 = 10,     /* HMAC algorithm with SHA384 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA512 = 11,     /* HMAC algorithm with SHA512 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA224 = 12,     /* HMAC algorithm with SHA224 Hash processed */
 <#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA512_224 = 13, /* HMAC algorithm with SHA512/224 Hash processed */
-  CRYPTO_SHA_ALGORITHM_HMAC_SHA512_256 = 14, /* HMAC algorithm with SHA512/256 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA512_224 = 13, /* HMAC algorithm with SHA512/224 Hash processed */
+  CRYPTO_SHA_ALGO_HMAC_SHA512_256 = 14, /* HMAC algorithm with SHA512/256 Hash processed */
 </#if>
-} CRYPTO_SHA_ALGORITHM;
+} CRYPTO_SHA_ALGO;
 
 typedef enum {
 	CRYPTO_SHA_NO_HASH_CHECK = 0,      /* No hash check */
@@ -108,6 +108,7 @@ typedef enum {
 } CRYPTO_SHA_BLOCK_SIZE;
 
 typedef enum {
+    CRYPTO_SHA_DIGEST_SIZE_INVALID  = 0,
 	CRYPTO_SHA_DISGEST_SIZE_SHA1    = 5,  /* SHA1 hash size in words */
 	CRYPTO_SHA_DIGEST_SIZE_SHA224   = 7,  /* SHA224 and SHA512/224 hash size in words */
 	CRYPTO_SHA_DIGEST_SIZE_SHA256   = 8,  /* SHA256 and SHA512/256 hash size in words */
@@ -115,6 +116,8 @@ typedef enum {
 	CRYPTO_SHA_DIGEST_SIZE_SHA512   = 16, /* SHA512 hash size in words */
 } CRYPTO_SHA_DIGEST_SIZE;
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 6.1 deviated: 51. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
 typedef union {
   struct {
     uint8_t START : 1;
@@ -155,7 +158,7 @@ typedef union
 <#else>
     uint8_t : 1;
 </#if>
-    CRYPTO_SHA_ALGORITHM ALGO : 4;
+    CRYPTO_SHA_ALGO ALGO : 4;
 <#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
     uint8_t : 3;
     uint8_t TMPLCK : 1;
@@ -228,6 +231,8 @@ typedef union
   } s;
   uint32_t v;
 } CRYPTO_SHA_ISR;
+
+/* MISRAC 2012 deviation block end */
   
 // *****************************************************************************
 // *****************************************************************************
@@ -235,7 +240,7 @@ typedef union
 // *****************************************************************************
 // *****************************************************************************
 
-void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGORITHM shaAlgo);
+void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo);
 
 void DRV_CRYPTO_SHA_Update(uint32_t *data, CRYPTO_SHA_BLOCK_SIZE dataBlockSize);
 
@@ -250,4 +255,4 @@ void DRV_CRYPTO_SHA_GetOutputData(uint32_t *digest,
 #endif
 // DOM-IGNORE-END
 
-#endif /* _DRV_CRYPTO_SHA_6156_HW_H_ */
+#endif /* DRV_CRYPTO_SHA_6156_HW_H */

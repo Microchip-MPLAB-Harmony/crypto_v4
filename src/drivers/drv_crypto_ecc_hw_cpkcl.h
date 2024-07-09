@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _DRV_CRYPTO_ECC_HW_CPKCL_H_
-#define _DRV_CRYPTO_ECC_HW_CPKCL_H_
+#ifndef DRV_CRYPTO_ECC_HW_CPKCL_H
+#define DRV_CRYPTO_ECC_HW_CPKCL_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -214,8 +214,8 @@ typedef enum
     CRYPTO_CPKCL_RESULT_INIT_ERROR,    
     CRYPTO_CPKCL_RESULT_CURVE_SUCCESS,        
     CRYPTO_CPKCL_RESULT_CURVE_ERROR,
-    CRYPTO_CPKCL_RESULT_COORDINATES_SUCCESS,
-    CRYPTO_CPKCL_RESULT_COORDINATES_COMPRESS_ERROR,
+    CRYPTO_CPKCL_RESULT_COORD_SUCCESS,
+    CRYPTO_CPKCL_RESULT_COORD_COMPRESS_ERROR,
 } CRYPTO_CPKCL_RESULT;
 
 /* Curve Types */
@@ -326,4 +326,4 @@ void DRV_CRYPTO_ECC_SecureCopy(pu1 pu1Dest, pu1 pu1Src, u2 u2Length);
 #endif
 // DOM-IGNORE-END
 
-#endif /* _DRV_CRYPTO_ECC_HW_CPKCL_H_ */
+#endif /* DRV_CRYPTO_ECC_HW_CPKCL_H */

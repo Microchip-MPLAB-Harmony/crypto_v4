@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_SMULT_PB_INCLUDED
-#define _CRYPTOLIB_SMULT_PB_INCLUDED
+#ifndef CRYPTOLIB_SMULT_PB_INCLUDED
+#define CRYPTOLIB_SMULT_PB_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_smult {
@@ -62,4 +62,4 @@ typedef struct _CPKCL_smult {
 #define CPKCL_SMULT_ADD              MULT_ADD
 #define CPKCL_SMULT_SUB              MULT_SUB
 
-#endif // _CRYPTOLIB_SMULT_PB_INCLUDED
+#endif // CRYPTOLIB_SMULT_PB_INCLUDED

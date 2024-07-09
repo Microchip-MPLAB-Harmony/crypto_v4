@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_RNG_PB_INCLUDED
-#define _CRYPTOLIB_RNG_PB_INCLUDED
+#ifndef CRYPTOLIB_RNG_PB_INCLUDED
+#define CRYPTOLIB_RNG_PB_INCLUDED
 
 // Structure definition
 typedef struct _PKCL_rng {
@@ -65,5 +65,5 @@ typedef struct _PKCL_rng {
 #define CPKCL_RNG_X931_GET          0x04
 
 
-#endif //_CRYPTOLIB_RNG_PB_INCLUDED
+#endif //CRYPTOLIB_RNG_PB_INCLUDED
 

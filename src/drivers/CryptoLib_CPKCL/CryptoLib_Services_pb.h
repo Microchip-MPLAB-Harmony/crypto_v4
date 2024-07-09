@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_SERVICES_PB_INCLUDED
-#define _CRYPTOLIB_SERVICES_PB_INCLUDED
+#ifndef CRYPTOLIB_SERVICES_PB_INCLUDED
+#define CRYPTOLIB_SERVICES_PB_INCLUDED
 
 // Services definition
 #define CPKCL_SERVICE_SelfTest                    		0xA0
@@ -88,5 +88,5 @@ Microchip or any third party.
 #define CPKCL_SERVICE_GF2NEcConvProjToAffine        	0x9D
 
 
-#endif //_CRYPTOLIB_SERVICES_PB_INCLUDED
+#endif // CRYPTOLIB_SERVICES_PB_INCLUDED
 

@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIBZPECCCONV_INCLUDED
-#define _CRYPTOLIBZPECCCONV_INCLUDED
+#ifndef CRYPTOLIBZPECCCONV_INCLUDED
+#define CRYPTOLIBZPECCCONV_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_ZpEcConvProjToAffine {
@@ -98,5 +98,5 @@ typedef struct _CPKCL_ZpEcRandomiseCoordinate {
 
 
 
-#endif // _CRYPTOLIBZPECCCONV_INCLUDED
+#endif // CRYPTOLIBZPECCCONV_INCLUDED
 

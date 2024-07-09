@@ -57,7 +57,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static void lDRV_CRYPTO_SHA_Configure(CRYPTO_SHA_ALGORITHM shaAlgo)
+static void lDRV_CRYPTO_SHA_Configure(CRYPTO_SHA_ALGO shaAlgo)
 {
     CRYPTO_SHA_MR shaMr = {0};
     CRYPTO_SHA_CR shaCr = {0};
@@ -68,7 +68,10 @@ static void lDRV_CRYPTO_SHA_Configure(CRYPTO_SHA_ALGORITHM shaAlgo)
     shaMr.s.UIEHV = 0; 
     shaMr.s.ALGO = shaAlgo;
     shaMr.s.DUALBUFF = 0;
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
     shaMr.s.CHECK = 0;
+    /* MISRA C-2012 deviation block end */
     shaMr.s.CHKCNT = 0; 
     
 <#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
@@ -95,14 +98,14 @@ static void lDRV_CRYPTO_SHA_WriteInputData(uint32_t *inputDataBuffer,
     uint8_t len1 = 0;
     uint8_t len2 = 0;
     
-    if (blockSize <= CRYPTO_SHA_BLOCK_SIZE_WORDS_16) 
+    if (blockSize <= (uint8_t)CRYPTO_SHA_BLOCK_SIZE_WORDS_16) 
     {
         len1 = blockSize;
     } 
     else 
     {
-        len1 = CRYPTO_SHA_BLOCK_SIZE_WORDS_16;
-        len2 = CRYPTO_SHA_BLOCK_SIZE_WORDS_16;
+        len1 = (uint8_t)CRYPTO_SHA_BLOCK_SIZE_WORDS_16;
+        len2 = (uint8_t)CRYPTO_SHA_BLOCK_SIZE_WORDS_16;
     }
 	
     for (i = 0; i < len1; i++) 
@@ -111,7 +114,7 @@ static void lDRV_CRYPTO_SHA_WriteInputData(uint32_t *inputDataBuffer,
         inputDataBuffer++;
     }
 
-    if (len2) 
+    if (len2 != 0U) 
     {
         for (i = 0; i < len2; i++) 
         {
@@ -139,7 +142,7 @@ static void lDRV_CRYPTO_SHA_ReadOutputData(uint32_t *outputDataBuffer,
 // *****************************************************************************
 // *****************************************************************************
 
-void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGORITHM shaAlgo)
+void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo)
 {
     /* Software reset */
     SHA_REGS->SHA_CR = SHA_CR_SWRST_Msk;
@@ -151,10 +154,10 @@ void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGORITHM shaAlgo)
 void DRV_CRYPTO_SHA_Update(uint32_t *data, CRYPTO_SHA_BLOCK_SIZE dataBlockSize)
 {
     /* Write the data to be hashed to the input data registers */
-    lDRV_CRYPTO_SHA_WriteInputData(data, dataBlockSize);
+    lDRV_CRYPTO_SHA_WriteInputData(data, (uint8_t)dataBlockSize);
     
     /* Block until processing is done */
-    while (!(SHA_REGS->SHA_ISR & SHA_ISR_DATRDY_Msk))
+    while ((SHA_REGS->SHA_ISR & SHA_ISR_DATRDY_Msk) == 0U)
     {
         ;
     }

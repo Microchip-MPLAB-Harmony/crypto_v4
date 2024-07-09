@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIBZPECCADD_INCLUDED
-#define _CRYPTOLIBZPECCADD_INCLUDED
+#ifndef CRYPTOLIBZPECCADD_INCLUDED
+#define CRYPTOLIBZPECCADD_INCLUDED
 
 // Structure definition
 typedef struct _CRYPTOLIB_ZpEccAdd {
@@ -56,4 +56,4 @@ typedef struct _CRYPTOLIB_ZpEccAdd {
                nu1       __Padding1;                
                } _CPKCL_ZPECCADD, *_P_CPKCL_ZPECCADD;
 
-#endif // _CRYPTOLIBZPECCADD_INCLUDED
+#endif // CRYPTOLIBZPECCADD_INCLUDED

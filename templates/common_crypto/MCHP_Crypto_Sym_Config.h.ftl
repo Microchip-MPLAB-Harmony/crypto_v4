@@ -164,12 +164,12 @@ extern "C" {
 //Camellia Algorithm Operational Mode Macros    
 //<#lt>#define CRYPTO_SYM_CAMECB_EN            //ECB mode is selected under Camellia algorithm in MCC-GUI   
 //<#lt>#define CRYPTO_SYM_CAMCBC_EN            //CBC mode is selected under Camellia algorithm in MCC-GUI
-////****************************************************
+//****************************************************
 
 //TDES/3-DES Algorithm Operational Mode Macros    
 //<#lt>#define CRYPTO_SYM_TDESECB_EN           //ECB mode is option selected under 3DES/TDES algorithm in MCC-GUI        
 //<#lt>#define CRYPTO_SYM_TDESCBC_EN           //CBC mode is option selected under 3DES/TDES algorithm in MCC-GUI   
-////*****************************************************
+//*****************************************************
 
 
 //**************************************************

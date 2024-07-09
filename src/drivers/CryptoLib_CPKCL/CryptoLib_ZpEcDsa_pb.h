@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIBZPECDSA_INCLUDED
-#define _CRYPTOLIBZPECDSA_INCLUDED
+#ifndef CRYPTOLIBZPECDSA_INCLUDED
+#define CRYPTOLIBZPECDSA_INCLUDED
 
 // Structure definition
 typedef struct _CPKCL_ZpEcDsaGenerate {
@@ -77,4 +77,4 @@ typedef struct _CPKCL_ZpEcDsaVerify {
                } _CPKCL_ZPECDSAVERIFY, *_P_CPKCL_ZPECDSAVERIFY;
 
 
-#endif // _CRYPTOLIBZPECDSA_INCLUDED
+#endif // CRYPTOLIBZPECDSA_INCLUDED

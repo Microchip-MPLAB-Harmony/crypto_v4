@@ -102,9 +102,13 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_InitEccParams(CPKCL_ECC_DATA *pEccData,
     {
         return CRYPTO_ECDH_RESULT_ERROR_CURVE;
     }
-    else if (result == CRYPTO_CPKCL_RESULT_COORDINATES_COMPRESS_ERROR) 
+    else if (result == CRYPTO_CPKCL_RESULT_COORD_COMPRESS_ERROR) 
     {
         return CRYPTO_ECDH_ERROR_PUBKEYCOMPRESS;
+    }
+    else 
+    {
+        // Successful - continue
     }
     
     pEccData->pfu1PublicKeyX = (pfu1) pubKeyX;
@@ -128,28 +132,28 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
     /* Copy parameters for ECDH in memory areas */
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_MODULO(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1ModuloP, u2ModuloPSize + 4);
+        pEccData->pfu1ModuloP, u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_CNS(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1Cns, u2ModuloPSize + 8);
+        pEccData->pfu1Cns, u2ModuloPSize + 8U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_SCALAR(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1PrivateKey, u2OrderSize + 4);
+        pEccData->pfu1PrivateKey, u2OrderSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_POINT_A_X(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1PublicKeyX, u2ModuloPSize + 4);
+        pEccData->pfu1PublicKeyX, u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_POINT_A_Y(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1PublicKeyY, u2ModuloPSize + 4);
+        pEccData->pfu1PublicKeyY, u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_POINT_A_Z(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1PublicKeyZ, u2ModuloPSize + 4);
+        pEccData->pfu1PublicKeyZ, u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_A(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1ACurve, u2ModuloPSize + 4);
+        pEccData->pfu1ACurve, u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_ORDER(u2ModuloPSize, u2OrderSize))), 
-        pEccData->pfu1APointOrder, u2OrderSize + 4);
+        pEccData->pfu1APointOrder, u2OrderSize + 4U);
 
     /* Ask for a key generation */
     CPKCL_ZpEccMul(nu1ModBase) = (nu1) BASE_SCA_MUL_MODULO(u2ModuloPSize, 
@@ -170,9 +174,9 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
     /* Launch the key generation */
     /* See CPKCL_Rc_pb.h for possible u2Status Values */
     vCPKCL_Process(ZpEccMulFast, pvCPKCLParam);
-    if (CPKCL(u2Status) != CPKCL_OK)
+    if (CPKCL(u2Status) != (unsigned)CPKCL_OK)
     {
-	return CRYPTO_ECDH_RESULT_ERROR_FAIL;
+        return CRYPTO_ECDH_RESULT_ERROR_FAIL;
     }
 	
     /* Ask to convert coordinates */
@@ -189,18 +193,18 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
     /* Launch the coordinates conversion */
     /* See CPKCL_Rc_pb.h for possible u2Status Values */
     vCPKCL_Process(ZpEcConvProjToAffine, pvCPKCLParam);
-    if (CPKCL(u2Status) != CPKCL_OK)
+    if (CPKCL(u2Status) != (unsigned)CPKCL_OK)
     {
-	return CRYPTO_ECDH_RESULT_ERROR_FAIL;
+        return CRYPTO_ECDH_RESULT_ERROR_FAIL;
     }
 	
     /* Copy the result */
     DRV_CRYPTO_ECC_SecureCopy(sharedKeyX,
         (pu1) ((BASE_SCA_MUL_POINT_A(u2ModuloPSize, u2OrderSize))),
-                u2ModuloPSize + 4);
+                u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(sharedKeyY,
         (pu1) ((BASE_SCA_MUL_POINT_A(u2ModuloPSize, u2OrderSize))) 
-                + u2ModuloPSize + 4, u2ModuloPSize + 4);   
+                + u2ModuloPSize + 4U, u2ModuloPSize + 4u);   
 
     /* Remove empty first four bytes */  
     memcpy(sharedKey, &sharedKeyX[4], u2OrderSize);

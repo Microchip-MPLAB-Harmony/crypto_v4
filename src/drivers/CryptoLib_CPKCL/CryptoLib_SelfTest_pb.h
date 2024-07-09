@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_SELFTEST_PB_INCLUDED
-#define _CRYPTOLIB_SELFTEST_PB_INCLUDED
+#ifndef CRYPTOLIB_SELFTEST_PB_INCLUDED
+#define CRYPTOLIB_SELFTEST_PB_INCLUDED
 
 // Structure definition
 typedef struct _PKCL_selftest {
@@ -53,4 +53,4 @@ typedef struct _PKCL_selftest {
                } _CPKCL_SELFTEST, *_CPPKCL_SELFTEST;
 
 
-#endif //_CRYPTOLIB_SELFTEST_PB_INCLUDED
+#endif //CRYPTOLIB_SELFTEST_PB_INCLUDED

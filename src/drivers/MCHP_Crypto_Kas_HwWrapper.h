@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _MCHP_CRYPTO_KAS_HWWRAPPER_H_
-#define _MCHP_CRYPTO_KAS_HWWRAPPER_H_
+#ifndef MCHP_CRYPTO_KAS_HWWRAPPER_H
+#define MCHP_CRYPTO_KAS_HWWRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -70,8 +70,7 @@ Microchip or any third party.
 
 crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 
     uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen, 
-    uint8_t *sharedSecret, uint32_t sharedSecretLen, 
-    crypto_EccCurveType_E eccCurveType_en);
+    uint8_t *secret, uint32_t secretLen, crypto_EccCurveType_E eccCurveType_en);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -81,4 +80,4 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
 #endif
 // DOM-IGNORE-END
 
-#endif /* _MCHP_CRYPTO_KAS_HWWRAPPER_H_ */
+#endif /* MCHP_CRYPTO_KAS_HWWRAPPER_H */

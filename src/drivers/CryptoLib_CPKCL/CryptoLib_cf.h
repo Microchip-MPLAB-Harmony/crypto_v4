@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_CF_INCLUDED
-#define _CRYPTOLIB_CF_INCLUDED
+#ifndef CRYPTOLIB_CF_INCLUDED
+#define CRYPTOLIB_CF_INCLUDED
 
 // The version is computed as follows :
 //   xx  VV  RR  BB
@@ -51,7 +51,7 @@ Microchip or any third party.
 //   |   Product number
 //   IP number
 #define CPKCL_VERSION               0x02090100
-#endif // _CRYPTOLIB_CF_INCLUDED
+#endif // CRYPTOLIB_CF_INCLUDED
 
 
 

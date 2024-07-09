@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H_
-#define _MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H_
+#ifndef MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H
+#define MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -86,4 +86,4 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
 #endif
 // DOM-IGNORE-END
 
-#endif /* _MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H_ */
+#endif /* MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H */

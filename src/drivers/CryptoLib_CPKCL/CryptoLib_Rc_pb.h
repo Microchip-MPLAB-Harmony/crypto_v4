@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_RC_PB_INCLUDED
-#define _CRYPTOLIB_RC_PB_INCLUDED
+#ifndef CRYPTOLIB_RC_PB_INCLUDED
+#define CRYPTOLIB_RC_PB_INCLUDED
 
 
 
@@ -90,4 +90,4 @@ Microchip or any third party.
 #define CPKCL_NUMBER_IS_NOT_PRIME                  CPKCL_INFO  (0x0001)
 #define CPKCL_NUMBER_IS_PRIME                      CPKCL_INFO  (0x0002)
 
-#endif // _CRYPTOLIB_RC_PB_INCLUDED
+#endif // CRYPTOLIB_RC_PB_INCLUDED

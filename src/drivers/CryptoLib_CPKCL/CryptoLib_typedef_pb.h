@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_TYPEDEF_PB_INCLUDED
-#define _CRYPTOLIB_TYPEDEF_PB_INCLUDED
+#ifndef CRYPTOLIB_TYPEDEF_PB_INCLUDED
+#define CRYPTOLIB_TYPEDEF_PB_INCLUDED
 
 
 //============================================================================
@@ -161,7 +161,7 @@ typedef void ServiceFctType(pvoid);
 
 
 
-#endif // _TYPEDEF_INCLUDED
+#endif // CRYPTOLIB_TYPEDEF_PB_INCLUDED
 
 
 

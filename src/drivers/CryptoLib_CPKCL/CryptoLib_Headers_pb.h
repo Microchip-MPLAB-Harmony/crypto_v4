@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CryptoLib_HEADERS_PB_INCLUDED
-#define _CryptoLib_HEADERS_PB_INCLUDED
+#ifndef CRYPTOLIB_HEADERS_PB_INCLUDED
+#define CRYPTOLIB_HEADERS_PB_INCLUDED
 
 // Include the services headers ...
 #include "CryptoLib_Rc_pb.h"
@@ -243,6 +243,6 @@ typedef struct _CPKCL_param {
           __vCPKCLCs##a(b);\
           }
 
-#endif // _CryptoLib_HEADERS_PB_INCLUDED
+#endif // CRYPTOLIB_HEADERS_PB_INCLUDED
 
 

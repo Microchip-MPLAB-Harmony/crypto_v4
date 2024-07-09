@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _CRYPTOLIB_MAPPING_PB_INCLUDED
-#define _CRYPTOLIB_MAPPING_PB_INCLUDED
+#ifndef CRYPTOLIB_MAPPING_PB_INCLUDED
+#define CRYPTOLIB_MAPPING_PB_INCLUDED
 
 // Memory definitions
 // Crypto IP on 4kbytes
@@ -49,7 +49,7 @@ Microchip or any third party.
 #define u2CRYPTORAM_LENGTH           (u2)0x1000
 #define nu1CRYPTORAM_LAST            (nu1)(nu1CRYPTORAM_BASE + (u2CRYPTORAM_LENGTH - 1))
 #define MSB_EXTENT_CRYPTORAM         0x02030000
-#endif // _CRYPTOLIB_MAPPING_PB_INCLUDED
+#endif // CRYPTOLIB_MAPPING_PB_INCLUDED
 
 #define AbsCPKCCSR           		((volatile unsigned int *) (0x46000040))
 #define CPKCCSR          			(* AbsCPKCCSR)

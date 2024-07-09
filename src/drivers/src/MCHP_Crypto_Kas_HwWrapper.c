@@ -61,6 +61,8 @@ Microchip or any third party.
 static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_GetCurve(
     crypto_EccCurveType_E eccCurveType, CRYPTO_CPKCL_CURVE *hwEccCurve)
 {
+    crypto_Kas_Status_E status = CRYPTO_KAS_SUCCESS;
+    
     switch (eccCurveType)
     {
         case CRYPTO_ECC_CURVE_P256:
@@ -72,33 +74,39 @@ static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_GetCurve(
             break;
         
         default:
-            return CRYPTO_KAS_ERROR_CURVE;
-        
+            status = CRYPTO_KAS_ERROR_CURVE;
+            break;
     }
     
-    return CRYPTO_KAS_SUCCESS;
+    return status;
 }    
 
 static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_MapResult(
     CRYPTO_ECDH_RESULT result)
 {
+    crypto_Kas_Status_E status;
+    
     switch (result) 
     {
         case CRYPTO_ECDH_RESULT_SUCCESS:
-            return CRYPTO_KAS_SUCCESS;
+            status = CRYPTO_KAS_SUCCESS;
+            break;
             
         case CRYPTO_ECDH_RESULT_ERROR_CURVE:
-            return CRYPTO_KAS_ERROR_CURVE;
+            status = CRYPTO_KAS_ERROR_CURVE;
+            break;
         
         case CRYPTO_ECDH_RESULT_INIT_FAIL:
         case CRYPTO_ECDH_RESULT_ERROR_FAIL:
-            return CRYPTO_KAS_ERROR_FAIL;
+            status = CRYPTO_KAS_ERROR_FAIL;
+            break;
             
         default:
-            ;
+            status = CRYPTO_KAS_ERROR_FAIL;
+            break;
     }
     
-    return CRYPTO_KAS_ERROR_FAIL;
+    return status;
 }
 
 // *****************************************************************************
@@ -109,8 +117,7 @@ static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_MapResult(
 
 crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 
     uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen, 
-    uint8_t *sharedSecret, uint32_t sharedSecretLen, 
-    crypto_EccCurveType_E eccCurveType_en)
+    uint8_t *secret, uint32_t secretLen, crypto_EccCurveType_E eccCurveType_en)
 {
     crypto_Kas_Status_E result;
     CRYPTO_ECDH_RESULT hwResult;
@@ -133,7 +140,7 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
     }
     
     /* Get shared key */
-    hwResult = DRV_CRYPTO_ECDH_GetSharedKey(&eccData, (pfu1)sharedSecret);
+    hwResult = DRV_CRYPTO_ECDH_GetSharedKey(&eccData, (pfu1)secret);
 
     return lCrypto_Kas_Ecdh_Hw_MapResult(hwResult);     
 }

@@ -60,8 +60,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#define HASH_SHORT_PAD_SIZE_BYTES     56
-#define HASH_LONG_PAD_SIZE_BYTES      112
+#define HASH_SHORT_PAD_SIZE_BYTES     (56U)
+#define HASH_LONG_PAD_SIZE_BYTES      (112U)
 
 // *****************************************************************************
 // *****************************************************************************
@@ -69,7 +69,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
        
-static const uint8_t hashPaddingMsg[CRYPTO_SHA_BLOCK_SIZE_WORDS_32 << 2] = {
+static uint8_t hashPaddingMsg[CRYPTO_SHA_BLOCK_SIZE_WORDS_32 << 2] = {
     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -86,73 +86,90 @@ static const uint8_t hashPaddingMsg[CRYPTO_SHA_BLOCK_SIZE_WORDS_32 << 2] = {
 // *****************************************************************************
 
 static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
-    (crypto_Hash_Algo_E shaAlgorithm, CRYPTO_SHA_ALGORITHM *shaAlgo)
+    (crypto_Hash_Algo_E shaAlgorithm, CRYPTO_SHA_ALGO *shaAlgo)
 {
+    crypto_Hash_Status_E ret_status = CRYPTO_HASH_ERROR_FAIL;
     switch(shaAlgorithm)
     {  
 #ifdef CRYPTO_HASH_SHA1_EN
         case CRYPTO_HASH_SHA1:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA1;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA1;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break;
 #endif
          
 #ifdef CRYPTO_HASH_SHA2_224_EN
         case CRYPTO_HASH_SHA2_224:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA224;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA224;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break; 
 #endif
             
 #ifdef CRYPTO_HASH_SHA2_256_EN
         case CRYPTO_HASH_SHA2_256:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA256;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA256;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break;
 #endif
        
 #ifdef CRYPTO_HASH_SHA2_384_EN 
         case CRYPTO_HASH_SHA2_384:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA384;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA384;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break;
 #endif
            
 #ifdef CRYPTO_HASH_SHA2_512_EN  
         case CRYPTO_HASH_SHA2_512:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA512;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA512;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break;
 #endif
 
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
 #ifdef CRYPTO_HASH_SHA2_512_224_EN 
         case CRYPTO_HASH_SHA2_512_224:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA512_224;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA512_224;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break;        
 #endif
         
 #ifdef CRYPTO_HASH_SHA2_512_256_EN
         case CRYPTO_HASH_SHA2_512_256:
-            *shaAlgo = CRYPTO_SHA_ALGORITHM_SHA512_256;
+            *shaAlgo = CRYPTO_SHA_ALGO_SHA512_256;
+            ret_status = CRYPTO_HASH_SUCCESS;
             break; 
 #endif
-</#if>
 
         default:
-            return CRYPTO_HASH_ERROR_ALGO;
+            ret_status = CRYPTO_HASH_ERROR_ALGO;
+            break;
     }
     
-   return CRYPTO_HASH_SUCCESS;
+   return ret_status;
 }
 
 static uint32_t lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(crypto_Hash_Algo_E shaAlgorithm)
 {
-    uint32_t blockLen = CRYPTO_SHA_BLOCK_SIZE_WORDS_32 << 2; // 128 bytes
+    CRYPTO_SHA_BLOCK_SIZE blockSize = CRYPTO_SHA_BLOCK_SIZE_WORDS_32;
+    uint32_t blockLen = ((uint32_t)blockSize) << 2UL; // 128 bytes
+    crypto_Hash_Status_E retVal = CRYPTO_HASH_ERROR_FAIL;
     
-    CRYPTO_SHA_ALGORITHM shaAlgo = CRYPTO_SHA_ALGORITHM_SHA256;
-    lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &shaAlgo);
+    CRYPTO_SHA_ALGO shaAlgo = CRYPTO_SHA_ALGO_SHA256;
+    retVal = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &shaAlgo);
     
-    if ((shaAlgo == CRYPTO_SHA_ALGORITHM_SHA1) || 
-        (shaAlgo == CRYPTO_SHA_ALGORITHM_SHA224) ||
-        (shaAlgo == CRYPTO_SHA_ALGORITHM_SHA256))
+    if(retVal == CRYPTO_HASH_SUCCESS)
     {
-        blockLen = CRYPTO_SHA_BLOCK_SIZE_WORDS_16 << 2; // 64 bytes   
+        if ((shaAlgo == CRYPTO_SHA_ALGO_SHA1) || 
+            (shaAlgo == CRYPTO_SHA_ALGO_SHA224) ||
+            (shaAlgo == CRYPTO_SHA_ALGO_SHA256))
+        {
+            blockSize =  CRYPTO_SHA_BLOCK_SIZE_WORDS_16;
+            blockLen = ((uint32_t)blockSize) << 2UL; // 64 bytes   
+        }
+    }
+    else
+    {
+        //do nothing
     }
     
     return blockLen;
@@ -161,15 +178,23 @@ static uint32_t lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(crypto_Hash_Algo_E shaAlgo
 static uint8_t lCrypto_Hash_Hw_Sha_GetPaddingSizeBytes(crypto_Hash_Algo_E shaAlgorithm)
 {
     uint8_t paddingLen = HASH_LONG_PAD_SIZE_BYTES;
+    crypto_Hash_Status_E retVal = CRYPTO_HASH_ERROR_FAIL;
     
-    CRYPTO_SHA_ALGORITHM shaAlgo = CRYPTO_SHA_ALGORITHM_SHA256;
-    lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &shaAlgo);
+    CRYPTO_SHA_ALGO shaAlgo = CRYPTO_SHA_ALGO_SHA256;
     
-    if ((shaAlgo == CRYPTO_SHA_ALGORITHM_SHA1) || 
-        (shaAlgo == CRYPTO_SHA_ALGORITHM_SHA224) ||
-        (shaAlgo == CRYPTO_SHA_ALGORITHM_SHA256))
+    retVal = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &shaAlgo);
+    if(retVal == CRYPTO_HASH_SUCCESS)
     {
-        paddingLen = HASH_SHORT_PAD_SIZE_BYTES;    
+        if ((shaAlgo == CRYPTO_SHA_ALGO_SHA1) || 
+            (shaAlgo == CRYPTO_SHA_ALGO_SHA224) ||
+            (shaAlgo == CRYPTO_SHA_ALGO_SHA256))
+        {
+            paddingLen = HASH_SHORT_PAD_SIZE_BYTES;    
+        }
+    }
+    else
+    {
+        //do nothing
     }
     
     return paddingLen;
@@ -178,41 +203,41 @@ static uint8_t lCrypto_Hash_Hw_Sha_GetPaddingSizeBytes(crypto_Hash_Algo_E shaAlg
 static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
     (crypto_Hash_Algo_E shaAlgorithm)
 {
-    CRYPTO_SHA_DIGEST_SIZE digestSize;
+    CRYPTO_SHA_DIGEST_SIZE digestSize = CRYPTO_SHA_DIGEST_SIZE_INVALID;
+    crypto_Hash_Status_E retVal = CRYPTO_HASH_ERROR_FAIL;
+    CRYPTO_SHA_ALGO shaAlgo = CRYPTO_SHA_ALGO_SHA256;
+    retVal = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &shaAlgo);
     
-    CRYPTO_SHA_ALGORITHM shaAlgo = CRYPTO_SHA_ALGORITHM_SHA256;
-    lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &shaAlgo);
-    
-    switch(shaAlgo)
+    if(retVal == CRYPTO_HASH_SUCCESS)
     {
-        case CRYPTO_SHA_ALGORITHM_SHA1:
-            digestSize = CRYPTO_SHA_ALGORITHM_SHA1;
-            break;
-         
-        case CRYPTO_SHA_ALGORITHM_SHA224:
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
-        case CRYPTO_SHA_ALGORITHM_SHA512_224:
-</#if>
-            digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA224;
-            break;        
-            
-        case CRYPTO_SHA_ALGORITHM_SHA256:
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
-        case CRYPTO_SHA_ALGORITHM_SHA512_256:
-</#if>
-            digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA256;
-            break;
-          
-        case CRYPTO_SHA_ALGORITHM_SHA384:
-            digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA384;
-            break;
-           
-        case CRYPTO_SHA_ALGORITHM_SHA512:
-            digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA512;
-            break;
-        
-        default:
-        digestSize = 0;
+        switch(shaAlgo)
+        {
+            case CRYPTO_SHA_ALGO_SHA1:
+                digestSize = CRYPTO_SHA_DISGEST_SIZE_SHA1;
+                break;
+
+            case CRYPTO_SHA_ALGO_SHA224:
+            case CRYPTO_SHA_ALGO_SHA512_224:
+                digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA224;
+                break;        
+
+            case CRYPTO_SHA_ALGO_SHA256:
+            case CRYPTO_SHA_ALGO_SHA512_256:
+                digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA256;
+                break;
+
+            case CRYPTO_SHA_ALGO_SHA384:
+                digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA384;
+                break;
+
+            case CRYPTO_SHA_ALGO_SHA512:
+                digestSize = CRYPTO_SHA_DIGEST_SIZE_SHA512;
+                break;
+
+            default:
+                digestSize = CRYPTO_SHA_DIGEST_SIZE_INVALID;
+                break;
+        }
     }
     
    return digestSize;
@@ -224,15 +249,17 @@ static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
 // *****************************************************************************
 // *****************************************************************************
     
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(CRYPTO_HASH_HW_CONTEXT *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
     crypto_Hash_Algo_E shaAlgorithm_en)
 {
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
-    CRYPTO_SHA_ALGORITHM shaAlgo;
+    CRYPTO_SHA_ALGO shaAlgo;
     crypto_Hash_Status_E result;
-    
+    uint8_t *retAdr = NULL;
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*)shaInitCtx;
+            
     /* Set algorithm for driver */
     result = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &shaAlgo);
     if (result != CRYPTO_HASH_SUCCESS)
@@ -243,8 +270,13 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(CRYPTO_HASH_HW_CONTEXT *shaCtx,
     /* Initialize context */
     shaCtx->algo = shaAlgorithm_en;
     shaCtx->totalLen = 0;
-    memset(shaCtx->buffer, 0, sizeof(shaCtx->buffer));
+    retAdr = memset(shaCtx->buffer, 0, sizeof(shaCtx->buffer));
 
+    if(retAdr == NULL)
+    {
+        return CRYPTO_HASH_ERROR_FAIL;
+    }
+    
     /* Configure the driver */
     DRV_CRYPTO_SHA_Init(shaAlgo);
     
@@ -252,35 +284,47 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(CRYPTO_HASH_HW_CONTEXT *shaCtx,
 </#if>
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(CRYPTO_HASH_HW_CONTEXT *shaCtx,
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
-    uint32_t *localBuffer = 0;
+    uint32_t *localBuffer = NULL;
     uint32_t fill;
     uint32_t left;
     uint32_t blockSizeBytes;
+    uint32_t tempWords;
     CRYPTO_SHA_BLOCK_SIZE blockSizeWords;
+    uint8_t *retAdr = NULL;
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*)shaUpdateCtx;
     
     blockSizeBytes = lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(shaCtx->algo);
-    blockSizeWords = (CRYPTO_SHA_BLOCK_SIZE)(blockSizeBytes >> 2);
+    tempWords = (blockSizeBytes >> 2UL);
+    blockSizeWords = (CRYPTO_SHA_BLOCK_SIZE)tempWords;
     
-    left = shaCtx->totalLen & (blockSizeBytes - 1);
+    left = ((uint32_t)(shaCtx->totalLen)) & ((uint32_t)(blockSizeBytes - 1UL));
     fill = blockSizeBytes - left;
     shaCtx->totalLen += dataLen;
 
-    if (left && dataLen >= fill)
+    if ((left & dataLen) >= fill)
     {
-        memcpy((void *)(shaCtx->buffer + left), data, fill);
+        retAdr = memcpy((shaCtx->buffer + left), data, fill);
         
+        if(retAdr == NULL)
+        {
+            return CRYPTO_HASH_ERROR_FAIL;
+        }
+        
+        /* MISRA C-2012 deviation block start */
+        /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
         /* Load message */
         localBuffer = (uint32_t *)shaCtx->buffer;
+        /* MISRA C-2012 deviation block end */
         for (uint32_t x = 0; x < dataLen; x += blockSizeBytes)
         {
             DRV_CRYPTO_SHA_Update(localBuffer, blockSizeWords);
-            localBuffer += blockSizeWords;
+            localBuffer += (uint32_t)blockSizeWords;
         }
         
         data += fill;
@@ -290,21 +334,28 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(CRYPTO_HASH_HW_CONTEXT *shaCtx,
 
     if (dataLen >= blockSizeBytes)
     {
+        /* MISRA C-2012 deviation block start */
+        /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
         DRV_CRYPTO_SHA_Update((uint32_t *)data, blockSizeWords);
+        /* MISRA C-2012 deviation block end */
         data += blockSizeBytes;
         dataLen -= blockSizeBytes; 
     }
 
-    if (dataLen > 0)
+    if (dataLen > 0U)
     {
-        memcpy((void *)(shaCtx->buffer + left), data, dataLen);
+        retAdr = memcpy((shaCtx->buffer + left), data, dataLen);
+        if(retAdr != data)
+        {
+            return CRYPTO_HASH_ERROR_FAIL;
+        }
     }
 
     return CRYPTO_HASH_SUCCESS;
-</#if> 
+</#if>
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(CRYPTO_HASH_HW_CONTEXT *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
@@ -315,7 +366,13 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(CRYPTO_HASH_HW_CONTEXT *shaCtx,
     uint8_t lenMsg[16] = {0};
     uint8_t paddingSizeBytes;
     uint8_t paddingLen;
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+    uint32_t *ptr_digest = (uint32_t*)digest;
+    /* MISRA C-2012 deviation block end */
     CRYPTO_SHA_DIGEST_SIZE digestLen;
+    crypto_Hash_Status_E retVal = CRYPTO_HASH_ERROR_FAIL;
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*)shaFinalCtx;
    
     blockSizeBytes = lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(shaCtx->algo);
     paddingSizeBytes = lCrypto_Hash_Hw_Sha_GetPaddingSizeBytes(shaCtx->algo);
@@ -323,50 +380,50 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(CRYPTO_HASH_HW_CONTEXT *shaCtx,
     /* Get the number of bits */    
     uint64_t totalBits = shaCtx->totalLen << 3;
     
-    last = shaCtx->totalLen & (blockSizeBytes - 1);
+    last = ((uint32_t)(shaCtx->totalLen)) & ((uint32_t)(blockSizeBytes - 1UL));
     if (last < paddingSizeBytes)
     { 
-        paddingLen = paddingSizeBytes - last;
+        paddingLen = (uint8_t) (paddingSizeBytes - (uint8_t)last);
     }
     else 
     {
-        paddingLen = blockSizeBytes + paddingSizeBytes - last;
+        paddingLen = (uint8_t)blockSizeBytes + (uint8_t)(paddingSizeBytes - last);
     }
 
-    Crypto_Hash_Hw_Sha_Update(shaCtx, (uint8_t *)hashPaddingMsg, paddingLen);
+    retVal = Crypto_Hash_Hw_Sha_Update(shaCtx, (uint8_t*)&hashPaddingMsg[0], paddingLen);
     
     /* Create the message bit length block */
     if (paddingSizeBytes == HASH_SHORT_PAD_SIZE_BYTES)
     {
-        lenMsg[0] = (uint8_t)(totalBits >> 56);
-        lenMsg[1] = (uint8_t)(totalBits >> 48);
-        lenMsg[2] = (uint8_t)(totalBits >> 40);
-        lenMsg[3] = (uint8_t)(totalBits >> 32);
-        lenMsg[4] = (uint8_t)(totalBits >> 24);
-        lenMsg[5] = (uint8_t)(totalBits >> 16);
-        lenMsg[6] = (uint8_t)(totalBits >>  8);
+        lenMsg[0] = (uint8_t)(totalBits >> 56U);
+        lenMsg[1] = (uint8_t)(totalBits >> 48U);
+        lenMsg[2] = (uint8_t)(totalBits >> 40U);
+        lenMsg[3] = (uint8_t)(totalBits >> 32U);
+        lenMsg[4] = (uint8_t)(totalBits >> 24U);
+        lenMsg[5] = (uint8_t)(totalBits >> 16U);
+        lenMsg[6] = (uint8_t)(totalBits >>  8U);
         lenMsg[7] = (uint8_t)(totalBits);   
     
-        Crypto_Hash_Hw_Sha_Update(shaCtx, lenMsg, 8);    
+        retVal = Crypto_Hash_Hw_Sha_Update(shaCtx, lenMsg, 8);    
     }
     else 
     {
-        lenMsg[8] = (uint8_t)(totalBits >> 56);
-        lenMsg[9] = (uint8_t)(totalBits >> 48);
-        lenMsg[10] = (uint8_t)(totalBits >> 40);
-        lenMsg[11] = (uint8_t)(totalBits >> 32);
-        lenMsg[12] = (uint8_t)(totalBits >> 24);
-        lenMsg[13] = (uint8_t)(totalBits >> 16);
-        lenMsg[14] = (uint8_t)(totalBits >>  8);
+        lenMsg[8] = (uint8_t)(totalBits >> 56U);
+        lenMsg[9] = (uint8_t)(totalBits >> 48U);
+        lenMsg[10] = (uint8_t)(totalBits >> 40U);
+        lenMsg[11] = (uint8_t)(totalBits >> 32U);
+        lenMsg[12] = (uint8_t)(totalBits >> 24U);
+        lenMsg[13] = (uint8_t)(totalBits >> 16U);
+        lenMsg[14] = (uint8_t)(totalBits >>  8U);
         lenMsg[15] = (uint8_t)(totalBits);
         
-        Crypto_Hash_Hw_Sha_Update(shaCtx, lenMsg, 16);   
+        retVal = Crypto_Hash_Hw_Sha_Update(shaCtx, lenMsg, 16);   
     }
 
     digestLen = lCrypto_Hash_Hw_Sha_GetDigestLen(shaCtx->algo);
-    DRV_CRYPTO_SHA_GetOutputData((uint32_t *)digest, digestLen);
+    DRV_CRYPTO_SHA_GetOutputData(ptr_digest, digestLen);
 
-    return CRYPTO_HASH_SUCCESS;
+    return retVal;
 </#if>
 }
 

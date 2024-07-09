@@ -361,7 +361,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest(ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
+                ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest((void*)ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
                 break;
 #endif /* CRYPTO_HASH_HW_ALGO_EN */
                 
@@ -425,7 +425,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_CTX;
     }
-    if( (ptr_data == NULL) || (dataLen == 0u) )
+    else if( (ptr_data == NULL) || (dataLen == 0u) )
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }

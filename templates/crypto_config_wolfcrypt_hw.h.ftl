@@ -227,13 +227,9 @@ extern "C" {
 <#lt>#define WOLFSSL_AES_COUNTER
 <#lt>#define WOLFSSL_AES_CFB
 <#lt>#define WOLFSSL_AES_OFB
-<#if crypto_aead_aes_gcm_en == true>
-    <#lt>#define HAVE_AESGCM
-</#if>
+<#lt>#define HAVE_AESGCM
 <#lt>#define WOLFSSL_AES_XTS
-<#if crypto_aead_aes_ccm_en == true>
-    <#lt>#define HAVE_AESCCM
-</#if>
+<#lt>#define HAVE_AESCCM
 <#lt>#define WOLFSSL_CMAC
 <#lt>#define HAVE_CAMELLIA
 <#lt>#define HAVE_IDEA
@@ -277,9 +273,7 @@ extern "C" {
 <#lt>#define HAVE_AES_KEYWRAP
 <#lt>#define HAVE_ECC_DHE   
 <#lt>//#define WOLFCRYPT_HAVE_ECCSI  //JK
-<#if crypto_aead_aes_eax_en == true>
-    <#lt>#define WOLFSSL_AES_EAX
-</#if>
+<#lt>#define WOLFSSL_AES_EAX 
 <#lt>#define WOLFSSL_AESGCM_STREAM
 <#lt>//*********************************************************
 

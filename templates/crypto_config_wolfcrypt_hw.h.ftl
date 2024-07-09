@@ -151,7 +151,7 @@ extern "C" {
         <#lt>#warning "U2803 HW Driver Not Implemented"
     </#if>
 <#else>
-    <#lt>/*** Crypto Hardware Drivers Not Supported) ***/
+    <#lt>/*** Crypto Hardware Drivers Not Supported ***/
 </#if>
 
 
@@ -227,9 +227,13 @@ extern "C" {
 <#lt>#define WOLFSSL_AES_COUNTER
 <#lt>#define WOLFSSL_AES_CFB
 <#lt>#define WOLFSSL_AES_OFB
-<#lt>#define HAVE_AESGCM
+<#if crypto_aead_aes_gcm_en == true>
+    <#lt>#define HAVE_AESGCM
+</#if>
 <#lt>#define WOLFSSL_AES_XTS
-<#lt>#define HAVE_AESCCM
+<#if crypto_aead_aes_ccm_en == true>
+    <#lt>#define HAVE_AESCCM
+</#if>
 <#lt>#define WOLFSSL_CMAC
 <#lt>#define HAVE_CAMELLIA
 <#lt>#define HAVE_IDEA
@@ -273,7 +277,9 @@ extern "C" {
 <#lt>#define HAVE_AES_KEYWRAP
 <#lt>#define HAVE_ECC_DHE   
 <#lt>//#define WOLFCRYPT_HAVE_ECCSI  //JK
-<#lt>#define WOLFSSL_AES_EAX 
+<#if crypto_aead_aes_eax_en == true>
+    <#lt>#define WOLFSSL_AES_EAX
+</#if>
 <#lt>#define WOLFSSL_AESGCM_STREAM
 <#lt>//*********************************************************
 

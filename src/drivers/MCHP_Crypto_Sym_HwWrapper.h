@@ -41,7 +41,7 @@ Microchip or any third party.
 //DOM-IGNORE-END
 
 #ifndef MCHP_CRYPTO_SYM_HWWRAPPER_H
-#define_MCHP_CRYPTO_SYM_HWWRAPPER_H
+#define MCHP_CRYPTO_SYM_HWWRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************

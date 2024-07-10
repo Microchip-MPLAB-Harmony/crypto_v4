@@ -527,6 +527,13 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->u2OrderSize = sizeof(p192_au1OrderPoint) - 4U;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 8. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1ModuloP = (pfu1) p192_au1ModuloP;
             pEcc->pfu1ACurve = (pfu1) p192_au1ACurve;
             pEcc->pfu1APointX = (pfu1) p192_au1PtA_X;
@@ -535,6 +542,12 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->pfu1APointOrder = (pfu1) p192_au1OrderPoint;
             pEcc->pfu1Cns = (pfu1) p192_au1Cns;
             pEcc->pfu1BCurve = (pfu1) p192_au1BCurve;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
         
@@ -543,6 +556,13 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->u2OrderSize = sizeof(p224_au1OrderPoint) - 4U;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 8. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1ModuloP = (pfu1) p224_au1ModuloP;
             pEcc->pfu1ACurve = (pfu1) p224_au1ACurve;
             pEcc->pfu1APointX = (pfu1) p224_au1PtA_X;
@@ -551,6 +571,12 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->pfu1APointOrder = (pfu1) p224_au1OrderPoint;
             pEcc->pfu1Cns = (pfu1) p224_au1Cns;
             pEcc->pfu1BCurve = (pfu1) p224_au1BCurve;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;   
             
@@ -559,6 +585,13 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->u2OrderSize = sizeof(p256_au1OrderPoint) - 4U;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 8. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>            
             pEcc->pfu1ModuloP = (pfu1) p256_au1ModuloP;
             pEcc->pfu1ACurve = (pfu1) p256_au1ACurve;
             pEcc->pfu1APointX = (pfu1) p256_au1PtA_X;
@@ -567,6 +600,12 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->pfu1APointOrder = (pfu1) p256_au1OrderPoint;
             pEcc->pfu1Cns = (pfu1) p256_au1Cns;
             pEcc->pfu1BCurve = (pfu1) p256_au1BCurve;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
         
@@ -575,6 +614,13 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->u2OrderSize = sizeof(p384_au1OrderPoint) - 4U;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 8. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1ModuloP = (pfu1) p384_au1ModuloP;
             pEcc->pfu1ACurve = (pfu1) p384_au1ACurve;
             pEcc->pfu1APointX = (pfu1) p384_au1PtA_X;
@@ -583,6 +629,12 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->pfu1APointOrder = (pfu1) p384_au1OrderPoint;
             pEcc->pfu1Cns = (pfu1) p384_au1Cns;
             pEcc->pfu1BCurve = (pfu1) p384_au1BCurve;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
         
@@ -591,6 +643,13 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->u2OrderSize = sizeof(p521_au1OrderPoint) - 4U;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 8. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1ModuloP = (pfu1) p521_au1ModuloP;
             pEcc->pfu1ACurve = (pfu1) p521_au1ACurve;
             pEcc->pfu1APointX = (pfu1) p521_au1PtA_X;
@@ -599,6 +658,12 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_InitCurveParams(CPKCL_ECC_DATA *pEcc,
             pEcc->pfu1APointOrder = (pfu1) p521_au1OrderPoint;
             pEcc->pfu1Cns = (pfu1) p521_au1Cns;
             pEcc->pfu1BCurve = (pfu1) p521_au1BCurve;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
         
@@ -631,7 +696,20 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
             coordSize = (uint8_t)P192_PUBLIC_KEY_COORDINATE_SIZE;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1PublicKeyZ = (pfu1) p192_au1PtA_Z;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
          
@@ -640,7 +718,20 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
             coordSize = (uint8_t)P224_PUBLIC_KEY_COORDINATE_SIZE;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1PublicKeyZ = (pfu1) p224_au1PtA_Z;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
             
@@ -649,7 +740,20 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
             coordSize = (uint8_t)P256_PUBLIC_KEY_COORDINATE_SIZE;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1PublicKeyZ = (pfu1) p256_au1PtA_Z;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;    
         
@@ -658,7 +762,20 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
             coordSize = (uint8_t)P384_PUBLIC_KEY_COORDINATE_SIZE;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1PublicKeyZ = (pfu1) p384_au1PtA_Z;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
             
@@ -667,7 +784,20 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
             coordSize = (uint8_t)P521_PUBLIC_KEY_COORDINATE_SIZE;
             /* MISRA C-2012 deviation block start */
             /* MISRA C-2012 Rule 11.8 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
             pEcc->pfu1PublicKeyZ = (pfu1) p521_au1PtA_Z;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
             /* MISRA C-2012 deviation block end */
             break;
         

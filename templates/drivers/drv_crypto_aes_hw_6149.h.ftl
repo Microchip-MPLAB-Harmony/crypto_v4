@@ -130,6 +130,14 @@ typedef enum {
 
 /* MISRA C-2012 deviation block start */
 /* MISRA C-2012 Rule 6.1 deviated: 43. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
+</#if>
+
 typedef union {
     struct {
         uint8_t START : 1;
@@ -223,6 +231,12 @@ typedef union {
     uint32_t v;
 } CRYPTO_AES_IER;
 
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
 /* MISRAC 2012 deviation block end */
 
 typedef CRYPTO_AES_IER CRYPTO_AES_IDR;
@@ -240,6 +254,14 @@ typedef enum
 
 /* MISRA C-2012 deviation block start */
 /* MISRA C-2012 Rule 6.1 deviated: 14. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
+</#if>
+
 typedef union {    
     struct {
         uint8_t DATRDY : 1;
@@ -268,6 +290,12 @@ typedef union {
     uint32_t v;
 } CRYPTO_AES_ISR;
 
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
 /* MISRAC 2012 deviation block end */
 
 /* AES Configuration structure */

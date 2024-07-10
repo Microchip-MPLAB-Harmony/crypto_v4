@@ -110,7 +110,7 @@ hwDriverDict = {
                 "CPKCC": { "RSA":["drv_crypto_rsa_hw_cpkcl.h",   #TODO: Not Implemented
                                   "drv_crypto_rsa_hw_cpkcl.c"],
                            "ECC":["drv_crypto_ecc_hw_cpkcl.h",       #Used by ECDSA/ECDH
-                                  "drv_crypto_ecc_hw_cpkcl.c"],
+                                  "drv_crypto_ecc_hw_cpkcl.c.ftl"],
                          "ECDSA":["MCHP_Crypto_DigSign_HwWrapper.h",
                                   "MCHP_Crypto_DigSign_HwWrapper.c",
                                   "drv_crypto_ecdsa_hw_cpkcl.h",

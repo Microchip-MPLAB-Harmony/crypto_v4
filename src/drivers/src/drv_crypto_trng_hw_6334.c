@@ -69,7 +69,7 @@ Microchip or any third party.
 void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen)
 {
     /* rngLen is number of bytes */
-    while (rngLen! = 0U)
+    while (rngLen != 0U)
     {
         uint32_t result = TRNG_ReadData();
 

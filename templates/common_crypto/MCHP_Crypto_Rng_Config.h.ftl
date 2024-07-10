@@ -28,6 +28,7 @@
     </#if>
 
 <#if crypto_rng_trng_en == true>
+    <#lt>#define CRYPTO_RNG_PRNG_EN
     <#lt>#define CRYPTO_RNG_HW_TRNG_EN
     </#if>
 

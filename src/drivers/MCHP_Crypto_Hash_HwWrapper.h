@@ -84,13 +84,13 @@ typedef struct
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
     
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
     crypto_Hash_Algo_E shaAlgorithm_en);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx, 
     uint8_t *data, uint32_t dataLen);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest);
 
 // DOM-IGNORE-BEGIN

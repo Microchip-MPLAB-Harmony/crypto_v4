@@ -547,7 +547,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
 </#if>
 }
 
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCtxCipher,
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
     uint8_t *initVect, uint32_t initVectLen, uint8_t *inputData,
     uint32_t dataLen, uint8_t *outData, uint8_t *aad, uint32_t aadLen,
     uint8_t *authTag, uint32_t authTagLen)
@@ -555,7 +555,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCtxCipher,
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
     return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
 <#else> 
-    CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmCtxCipher;
+    CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmCipherCtx;
     
     if (dataLen != 0U || aadLen != 0U)
     {

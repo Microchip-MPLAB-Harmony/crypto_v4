@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef _DRV_CRYPTO_AES_HW_6149_H_
-#define _DRV_CRYPTO_AES_HW_6149_H_
+#ifndef DRV_CRYPTO_AES_HW_6149_H
+#define DRV_CRYPTO_AES_HW_6149_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -352,4 +352,4 @@ void DRV_CRYPTO_AES_ReadGcmH(uint32_t *hBuffer);
 #endif
 // DOM-IGNORE-END
 
-#endif /* _DRV_CRYPTO_AES_HW_6149_H_ */
+#endif /* DRV_CRYPTO_AES_HW_6149_H */

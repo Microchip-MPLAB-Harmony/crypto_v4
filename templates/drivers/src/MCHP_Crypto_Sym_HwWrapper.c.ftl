@@ -86,7 +86,8 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperationMode
             
 #ifdef CRYPTO_SYM_AESCFB1_EN
         case CRYPTO_SYM_OPMODE_CFB1:
-            return CRYPTO_SYM_ERROR_OPMODE; 
+            retStat = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
+            break;
 #endif
             
 #ifdef CRYPTO_SYM_AESCFB8_EN

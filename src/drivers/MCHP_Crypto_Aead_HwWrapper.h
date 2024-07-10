@@ -83,10 +83,10 @@ typedef struct
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmCtx,
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen);
     
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCtx,  
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,  
     uint8_t *initVect, uint32_t initVectLen, uint8_t *inputData,uint32_t dataLen, 
     uint8_t *outData, uint8_t *aad, uint32_t aadLen, uint8_t *authTag, 
     uint32_t authTagLen);

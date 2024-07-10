@@ -109,6 +109,7 @@ void DRV_CRYPTO_AES_SetConfig(CRYPTO_AES_CONFIG *aesCfg)
     
     if ((aesCfg->opMode == CRYPTO_AES_MODE_GCM) && (aesCfg->gtagEn == true))
     {
+        /* MISRA C-2012 deviation block start */
         /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
         aesMR.s.GTAGEN = true;
         /* MISRA C-2012 deviation block end */
@@ -180,11 +181,11 @@ CRYPTO_AES_KEY_SIZE DRV_CRYPTO_AES_GetKeySize(uint32_t keyLen)
 void DRV_CRYPTO_AES_WriteKey(const uint32_t *key)
 {
     uint8_t i, keyLen;
-    CRYPTO_AES_KEY_SIZE keySize;
+    uint32_t keySize;
             
     keySize = (AES_REGS->AES_MR & AES_MR_KEYSIZE_Msk) >> AES_MR_KEYSIZE_Pos;
     
-    switch (keySize) 
+    switch ((CRYPTO_AES_KEY_SIZE)keySize) 
     {
         case CRYPTO_AES_KEY_SIZE_128: 
             keyLen = 4;

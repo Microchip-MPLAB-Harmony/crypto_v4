@@ -387,7 +387,7 @@ static void lCrypto_Aead_Hw_Gcm_CmpMsgWithTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 </#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_11_3_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
 </#if>
     /* Read the tag */
     DRV_CRYPTO_AES_ReadTag((uint32_t *)tag);

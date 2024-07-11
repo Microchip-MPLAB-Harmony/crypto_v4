@@ -186,7 +186,7 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CPKCL_ECC_DATA *pEccData,
 #pragma coverity compliance block \
 (deviate:19 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
 (deviate:115 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1" )\
-(deviate:9 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_8_DR_1" )\
+(deviate:9 "MISRA C-2012 Rule 10.8" "H3_MISRAC_2012_R_10_8_DR_1" )\
 (deviate:17 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
 </#if>
     DRV_CRYPTO_ECC_SecureCopy(au1ScalarNumber,
@@ -388,7 +388,7 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(CPKCL_ECC_DATA *pEccData,
 </#if>
 #pragma coverity compliance block \
 (deviate:1 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
-(deviate:4 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_4_DR_1" )\
+(deviate:4 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1" )\
 (deviate:1 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
 </#if>
     /* Copy the signature into appropriate memory area */
@@ -415,8 +415,8 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(CPKCL_ECC_DATA *pEccData,
 </#if>
 #pragma coverity compliance block \
 (deviate:19 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
-(deviate:126 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_4_DR_1" )\
-(deviate:9 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_8_DR_1" )\
+(deviate:126 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1" )\
+(deviate:9 "MISRA C-2012 Rule 10.8" "H3_MISRAC_2012_R_10_8_DR_1" )\
 (deviate:16 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
 </#if>
     /* Copy parameters for ECDSA signature verification in memory areas */

@@ -129,6 +129,20 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
     u2 u2ModuloPSize = pEccData->u2ModuloPSize;
     u2 u2OrderSize = pEccData->u2OrderSize;
 
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 10.1, 10.4, 10.8, 20.7 deviated below. Deviation record ID - 
+       H3_MISRAC_2012_R_10_1_DR_1 & H3_MISRAC_2012_R_10_4_DR_1 & H3_MISRAC_2012_R_10_8_DR_1 & H3_MISRAC_2012_R_20_7_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block \
+(deviate:14 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
+(deviate:63 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1" )\
+(deviate:6 "MISRA C-2012 Rule 10.8" "H3_MISRAC_2012_R_10_8_DR_1" )\
+(deviate:12 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
+</#if>
     /* Copy parameters for ECDH in memory areas */
     DRV_CRYPTO_ECC_SecureCopy(
         (pu1) ((BASE_SCA_MUL_MODULO(u2ModuloPSize, u2OrderSize))), 
@@ -168,17 +182,63 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
         u2OrderSize);
     CPKCL_ZpEccMul(nu1KBase) = (nu1) BASE_SCA_MUL_SCALAR(u2ModuloPSize, 
         u2OrderSize);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.4"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.8"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 20.7"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
     CPKCL_ZpEccMul(u2ModLength) = u2ModuloPSize;
     CPKCL_ZpEccMul(u2KLength) = u2ModuloPSize;
 	
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 10.1, 11.1, 20.7 deviated below. Deviation record ID - 
+       H3_MISRAC_2012_R_10_1_DR_1 & H3_MISRAC_2012_R_11_1_DR_1 & H3_MISRAC_2012_R_20_7_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block \
+(deviate:2 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
+(deviate:1 "MISRA C-2012 Rule 11.1" "H3_MISRAC_2012_R_11_1_DR_1" )\
+(deviate:1 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
+</#if>
     /* Launch the key generation */
     /* See CPKCL_Rc_pb.h for possible u2Status Values */
     vCPKCL_Process(ZpEccMulFast, pvCPKCLParam);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 20.7"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
     if (CPKCL(u2Status) != (unsigned)CPKCL_OK)
     {
         return CRYPTO_ECDH_RESULT_ERROR_FAIL;
     }
 	
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 10.1, 10.4, 10.8, 20.7 deviated below. Deviation record ID - 
+       H3_MISRAC_2012_R_10_1_DR_1 & H3_MISRAC_2012_R_10_4_DR_1 & H3_MISRAC_2012_R_10_8_DR_1 & H3_MISRAC_2012_R_20_7_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block \
+(deviate:4 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
+(deviate:15 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1" )\
+(deviate:4 "MISRA C-2012 Rule 10.8" "H3_MISRAC_2012_R_10_8_DR_1" )\
+(deviate:3 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
+</#if>
     /* Ask to convert coordinates */
     CPKCL_ZpEcConvProjToAffine(nu1ModBase) = (nu1) BASE_ECDSAV_MODULO(
         u2ModuloPSize, u2OrderSize);
@@ -189,22 +249,76 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
     CPKCL_ZpEcConvProjToAffine(u2ModLength) = u2ModuloPSize;
     CPKCL_ZpEcConvProjToAffine(nu1Workspace) = (nu1) BASE_SCA_MUL_WORKSPACE(
         u2ModuloPSize, u2OrderSize);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.4"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.8"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 20.7"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
 	
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 10.1, 11.1, 20.7 deviated below. Deviation record ID - 
+       H3_MISRAC_2012_R_10_1_DR_1 & H3_MISRAC_2012_R_11_1_DR_1 & H3_MISRAC_2012_R_20_7_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block \
+(deviate:2 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
+(deviate:1 "MISRA C-2012 Rule 11.1" "H3_MISRAC_2012_R_11_1_DR_1" )\
+(deviate:1 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
+</#if>
     /* Launch the coordinates conversion */
     /* See CPKCL_Rc_pb.h for possible u2Status Values */
     vCPKCL_Process(ZpEcConvProjToAffine, pvCPKCLParam);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 20.7"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
     if (CPKCL(u2Status) != (unsigned)CPKCL_OK)
     {
         return CRYPTO_ECDH_RESULT_ERROR_FAIL;
     }
 	
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 10.1, 10.4, 11.1, 20.7 deviated below. Deviation record ID - 
+       H3_MISRAC_2012_R_10_1_DR_1 & H3_MISRAC_2012_R_10_4_DR_1 & H3_MISRAC_2012_R_20_7_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block \
+(deviate:2 "MISRA C-2012 Rule 10.1" "H3_MISRAC_2012_R_10_1_DR_1" )\
+(deviate:6 "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1" )\
+(deviate:2 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
+</#if>
     /* Copy the result */
     DRV_CRYPTO_ECC_SecureCopy(sharedKeyX,
         (pu1) ((BASE_SCA_MUL_POINT_A(u2ModuloPSize, u2OrderSize))),
                 u2ModuloPSize + 4U);
     DRV_CRYPTO_ECC_SecureCopy(sharedKeyY,
         (pu1) ((BASE_SCA_MUL_POINT_A(u2ModuloPSize, u2OrderSize))) 
-                + u2ModuloPSize + 4U, u2ModuloPSize + 4u);   
+                + u2ModuloPSize + 4U, u2ModuloPSize + 4u);  
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.4"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 20.7"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
 
     /* Remove empty first four bytes */  
     (void) memcpy(sharedKey, &sharedKeyX[4], u2OrderSize);

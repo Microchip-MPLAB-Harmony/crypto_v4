@@ -114,11 +114,11 @@ hwDriverDict = {
                          "ECDSA":["MCHP_Crypto_DigSign_HwWrapper.h",
                                   "MCHP_Crypto_DigSign_HwWrapper.c",
                                   "drv_crypto_ecdsa_hw_cpkcl.h",
-                                  "drv_crypto_ecdsa_hw_cpkcl.c"],
+                                  "drv_crypto_ecdsa_hw_cpkcl.c.ftl"],
                          "ECDH":["MCHP_Crypto_Kas_HwWrapper.h",
                                   "MCHP_Crypto_Kas_HwWrapper.c",
                                   "drv_crypto_ecdh_hw_cpkcl.h",
-                                  "drv_crypto_ecdh_hw_cpkcl.c" ]},
+                                  "drv_crypto_ecdh_hw_cpkcl.c.ftl"]},
                  "6149": {"AES":["MCHP_Crypto_Sym_HwWrapper.h",
                                  "MCHP_Crypto_Sym_HwWrapper.c.ftl",  #Include AEAD Function
                                  "MCHP_Crypto_Aead_HwWrapper.h",     #

@@ -1,7 +1,7 @@
 ![Microchip logo](https://raw.githubusercontent.com/wiki/Microchip-MPLAB-Harmony/Microchip-MPLAB-Harmony.github.io/images/microchip_logo.png)
 ![Harmony logo small](https://raw.githubusercontent.com/wiki/Microchip-MPLAB-Harmony/Microchip-MPLAB-Harmony.github.io/images/microchip_mplab_harmony_logo_small.png)
 
-# MPLAB® Harmony 3 Crypto Module
+# MPLAB® Harmony 3 Crypto v4 Module
 
 MPLAB® Harmony 3 is an extension of the MPLAB® ecosystem for creating
 embedded firmware solutions for Microchip 32-bit SAM and PIC® microcontroller
@@ -13,29 +13,27 @@ and microprocessor devices. Refer to the following links for more information.
 - [Microchip MPLAB Harmony](https://www.microchip.com/mplab/mplab-harmony)
 - [Microchip MPLAB Harmony Pages](https://microchip-mplab-harmony.github.io/)
 
-This repository contains the crypto module for the MPLAB® Harmony 3 Embedded
-Software Development Framework. The crypto module components provide drivers
+This repository contains the crypto v4 module for the MPLAB® Harmony 3 Embedded
+Software Development Framework. The crypto v4 module components provide drivers
 and services with simple to use abstractions of peripherals and shared
 resources on Microchip 32-bit SAM and PIC devices on which MPLAB® Harmony
 applications and middleware are based. Drivers and services may also provide
-advanced capabilities like buffer queuing and peripheral sharing. Refer to
-the following links for release notes, training materials, and interface
+advanced capabilities like hardware acceleration, buffer queuing, and peripheral sharing. 
+Refer to the following links for release notes, training materials, and interface
 reference information.
 
 - [Release Notes](./release_notes.md)
 - [MPLAB® Harmony License](mplab_harmony_license.md)
-- [MPLAB® Harmony 3 Crypto Wiki](https://github.com/Microchip-MPLAB-Harmony/crypto/wiki)
-- [MPLAB® Harmony 3 Crypto API Help](https://microchip-mplab-harmony.github.io/crypto)
+- [MPLAB® Harmony 3 **Crypto v4** Documentation](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_cryptov4.x&redirect=true)
+- [MPLAB® Harmony 3 **Crypto v3.8** Documentation](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_crypto3.8&redirect=true)
 
 # Contents Summary
 
 | Folder    | Description                                                |
-|-----------|----------------------------------------------------------         |
-| config    | Crypto module configuration scripts                        |
-| docs      | Crypto module library help documentation                   |                    |
+|-----------|----------------------------------------------------------  |
+| config    | Crypto v4 module configuration scripts                     |
 | src       | Crypto v4 API Library source                               |
-| templates | Application and system file templates                      |
-
+| templates | Application and system file templates (.ftl)               |
 
 ____
 

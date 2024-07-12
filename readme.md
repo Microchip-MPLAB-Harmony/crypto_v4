@@ -32,7 +32,7 @@ reference information.
 |-----------|----------------------------------------------------------  |
 | config    | Crypto v4 module configuration scripts                     |
 | src       | Crypto v4 API Library source                               |
-| templates | Application and system file templates (.ftl)               |
+| templates | Application and system file templates                      |
 
 ____
 

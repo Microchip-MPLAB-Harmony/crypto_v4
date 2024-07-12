@@ -6,8 +6,8 @@
 ## Crypto Release v4.0.0-E2
 
 ### New Features
-- **Same API with Added Hardware Acceleration** Includes hardware acceleration drivers to speed up cryptographic operations as an alternative to wolfSSL on supported algorithms.
-- **MCC Configuration Options** The crypto v4 library now supports enabling hardware acceleration dynamically based on target board for the following cryptographic operations
+- **Added Beta Hardware Acceleration for PIC32CXMTG** Includes hardware acceleration drivers to speed up cryptographic operations as an alternative to wolfSSL on supported algorithms.
+- **MCC Configuration Options** The crypto v4 library now supports enabling hardware acceleration on PIC32CXMTG for the following cryptographic operations
     1.  Hash Algorithms:
 
             SHA-2: SHA2-224, SHA2-256, SHA2-384, SHA2-512  
@@ -50,7 +50,7 @@
     - MPLAB® Code Configurator v5.5.0
 
 ### Notes
-- N/A
+- This is an engineering release which has not been fully validated
 
 ## Crypto Release v4.0.0-E1
 

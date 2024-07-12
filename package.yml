@@ -4,7 +4,7 @@ package:
   type: "api"
   status: "production"
   required: false
-  version: "v4.0.0-TC1"
+  version: "v4.0.0-E2"
 
   dependencies:
     - name: "core"

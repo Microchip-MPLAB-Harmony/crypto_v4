@@ -24,8 +24,7 @@ reference information.
 
 - [Release Notes](./release_notes.md)
 - [MPLAB® Harmony License](mplab_harmony_license.md)
-- [MPLAB® Harmony 3 **Crypto v4** Documentation](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_cryptov4.x&redirect=true)
-- [MPLAB® Harmony 3 **Crypto v3.8** Documentation](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_crypto3.8&redirect=true)
+- [MPLAB® Harmony 3 Crypto v4 Documentation](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_cryptov4.x&redirect=true)
 
 # Contents Summary
 

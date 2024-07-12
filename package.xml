@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Package name="crypto">
+<Package name="crypto_v4">
     <Dependencies>
         <Dependency name="core" version="v3.13.1"/>
         <Dependency name="wolfssl" version="v5.7.0-stable"/>

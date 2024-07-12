@@ -296,7 +296,6 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint32_t blockSizeBytes;
     uint32_t tempWords;
     CRYPTO_SHA_BLOCK_SIZE blockSizeWords;
-    uint8_t *retAdr = NULL;
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*)shaUpdateCtx;
     
     blockSizeBytes = lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(shaCtx->algo);

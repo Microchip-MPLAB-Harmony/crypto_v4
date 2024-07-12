@@ -309,12 +309,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 
     if ((left & dataLen) >= fill)
     {
-        retAdr = memcpy((shaCtx->buffer + left), data, fill);
-        
-        if(retAdr == NULL)
-        {
-            return CRYPTO_HASH_ERROR_FAIL;
-        }
+        (void) memcpy((shaCtx->buffer + left), data, fill);
         
         /* MISRA C-2012 deviation block start */
         /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
@@ -371,11 +366,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 
     if (dataLen > 0U)
     {
-        retAdr = memcpy((shaCtx->buffer + left), data, dataLen);
-        if(retAdr != data)
-        {
-            return CRYPTO_HASH_ERROR_FAIL;
-        }
+        (void) memcpy((shaCtx->buffer + left), data, dataLen);
     }
 
     return CRYPTO_HASH_SUCCESS;

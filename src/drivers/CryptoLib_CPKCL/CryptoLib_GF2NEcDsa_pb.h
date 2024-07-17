@@ -8,7 +8,7 @@
     CryptoLib_GF2NEcDsa_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIBGF2NECDSA_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_GF2NEcDsaGenerate {
+typedef struct struct_CPKCL_GF2NEcDsaGenerate {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -57,10 +57,10 @@ typedef struct _CPKCL_GF2NEcDsaGenerate {
                nu1       nu1Workspace;
                nu1       nu1HashBase;
                u2        u2ScalarLength;
-               u2        __Padding0;
-               } _CPKCL_GF2NECDSAGENERATE, *_P_CPKCL_GF2NECDSAGENERATE;
+               u2        padding0;
+               } CPKCL_GF2NECDSAGENERATE_STRUCT, *P_CPKCL_GF2NECDSAGENERATE_STRUCT;
 
-typedef struct _CPKCL_GF2NEcDsaVerify {
+typedef struct struct_CPKCL_GF2NEcDsaVerify {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -73,8 +73,8 @@ typedef struct _CPKCL_GF2NEcDsaVerify {
                nu1       nu1Workspace;
                nu1       nu1HashBase;
                u2        u2ScalarLength;
-               u2        __Padding0;
-               } _CPKCL_GF2NECDSAVERIFY, *_P_CPKCL_GF2NECDSAVERIFY;
+               u2        padding0;
+               } CPKCL_GF2NECDSAVERIFY_STRUCT, *P_CPKCL_GF2NECDSAVERIFY_STRUCT;
 
 
 

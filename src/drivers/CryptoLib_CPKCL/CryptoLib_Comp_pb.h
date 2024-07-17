@@ -8,7 +8,7 @@
     CryptoLib_Comp_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,18 +44,18 @@ Microchip or any third party.
 #define CRYPTOLIB_COMP_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_comp {
-               nu1       __Padding0;
-               nu1       __Padding1;
-               u2        __Padding2;
+typedef struct struct_CPKCL_comp {
+               nu1       padding0;
+               nu1       padding1;
+               u2        padding2;
 
                nu1       nu1XBase;
                nu1       nu1YBase;
-               u2        __Padding3;
-               u2        __Padding4;
+               u2        padding3;
+               u2        padding4;
                u2        u2YLength;
                u2        u2XLength;
-               } _CPKCL_COMP, *_PCPKCL_COMP;
+               } CPKCL_COMP_STRUCT, *PCPKCL_COMP_STRUCT;
 
 
 #endif // CRYPTOLIB_COMP_PB_INCLUDED

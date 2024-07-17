@@ -8,7 +8,7 @@
     CryptoLib_mapping_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -49,8 +49,9 @@ Microchip or any third party.
 #define u2CRYPTORAM_LENGTH           (u2)0x1000
 #define nu1CRYPTORAM_LAST            (nu1)(nu1CRYPTORAM_BASE + (u2CRYPTORAM_LENGTH - 1))
 #define MSB_EXTENT_CRYPTORAM         0x02030000
-#endif // CRYPTOLIB_MAPPING_PB_INCLUDED
 
 #define AbsCPKCCSR           		((volatile unsigned int *) (0x46000040))
 #define CPKCCSR          			(* AbsCPKCCSR)
 #define BIT_CPKCCSR_CLRRAM_BUSY		0x00000040
+
+#endif // CRYPTOLIB_MAPPING_PB_INCLUDED

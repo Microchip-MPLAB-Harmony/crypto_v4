@@ -8,7 +8,7 @@
     CryptoLib_Fmult_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIB_FMULT_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_fmult {
+typedef struct struct_CPKCL_fmult {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -55,7 +55,7 @@ typedef struct _CPKCL_fmult {
                nu1       nu1RBase;
                u2        u2XLength;
                u2        u2YLength;
-               } _CPKCL_FMULT, *_PCPKCL_FMULT;
+               } CPKCL_FMULT_STRUCT, *PCPKCL_FMULT_STRUCT;
 
 // Options definition
 #define CPKCL_FMULT_ONLY             MULT_ONLY

@@ -8,7 +8,7 @@
     CryptoLib_PrimeGen_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,20 +44,20 @@ Microchip or any third party.
 #define CRYPTOLIB_PRIMEGEN_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_primegen {
+typedef struct struct_CPKCL_primegen {
                nu1       nu1NBase;           //
                nu1       nu1CnsBase;
                u2        u2NLength;
 
                nu1       nu1RndBase;         // (3*u2NLength + 6) words
                nu1       nu1PrecompBase;     // (u2NLength + 2) words
-               nu1       __Padding0;
+               nu1       padding0;
                nu1       nu1RBase;           // (Significant length of 'N' without the padding word)
                nu1       nu1ExpBase;         // (u2NLength) words
                u1        u1MillerRabinIterations;
-               u1        __Padding1;
+               u1        padding1;
                u2        u2MaxIncrement;
-               } _CPKCL_PRIMEGEN, *_PPKCL_PRIMEGEN;
+               } CPKCL_PRIMEGEN_STRUCT, *PPKCL_PRIMEGEN_STRUCT;
 
 // Options definition
 #define CPKCL_PRIMEGEN_TEST          0x02

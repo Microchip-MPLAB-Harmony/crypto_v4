@@ -8,7 +8,7 @@
     CryptoLib_Smult_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIB_SMULT_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_smult {
+typedef struct struct_CPKCL_smult {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -55,7 +55,7 @@ typedef struct _CPKCL_smult {
                nu1       nu1RBase;
                u2        u2XLength;
                u4        u4MulValue;
-               } _CPKCL_SMULT, *_CPPKCL_SMULT;
+               } CPKCL_SMULT_STRUCT, *CPPKCL_SMULT_STRUCT;
 
 // Options definition
 #define CPKCL_SMULT_ONLY             MULT_ONLY

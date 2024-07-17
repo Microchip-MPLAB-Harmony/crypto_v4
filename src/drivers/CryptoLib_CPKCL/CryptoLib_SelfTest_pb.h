@@ -8,7 +8,7 @@
     CryptoLib_SelfTest_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,13 +44,13 @@ Microchip or any third party.
 #define CRYPTOLIB_SELFTEST_PB_INCLUDED
 
 // Structure definition
-typedef struct _PKCL_selftest {
+typedef struct struct_PKCL_selftest {
                u4        u4Version;
                u4        u4PKCCVersion;
                u4        u4CheckNum1;
                u4        u4CheckNum2;
                u1        u1Step;
-               } _CPKCL_SELFTEST, *_CPPKCL_SELFTEST;
+               } CPKCL_SELFTEST_STRUCT, *CPPKCL_SELFTEST_STRUCT;
 
 
 #endif //CRYPTOLIB_SELFTEST_PB_INCLUDED

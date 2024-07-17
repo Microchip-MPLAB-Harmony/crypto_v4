@@ -8,7 +8,7 @@
     CryptoLib_Square_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,18 +44,18 @@ Microchip or any third party.
 #define CRYPTOLIB_SQUARE_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_square {
+typedef struct struct_CPKCL_square {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
 
                nu1       nu1XBase;
-               u2        __Padding0;
+               u2        padding0;
                nu1       nu1ZBase;
                nu1       nu1RBase;
-               u2        __Padding1;
+               u2        padding1;
                u2        u2XLength;
-               } _CPKCL_SQUARE, *_CPPKCL_SQUARE;
+               } CPKCL_SQUARE_STRUCT, *CPPKCL_SQUARE_STRUCT;
 
 // Options definition
 #define CPKCL_SQUARE_ONLY            MULT_ONLY

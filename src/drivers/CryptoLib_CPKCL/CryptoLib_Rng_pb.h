@@ -8,7 +8,7 @@
     CryptoLib_Rng_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIB_RNG_PB_INCLUDED
 
 // Structure definition
-typedef struct _PKCL_rng {
+typedef struct struct_PKCL_rng {
                nu1       nu1XKeyBase;        // Pointer to the Input and Output XKEY value of length u2XKeyLength bytes
                nu1       nu1WorkSpace;       // Pointer to the workspace of length 64 bytes
                u2        u2XKeyLength;       // Length in bytes multiple of 4 of XKEY, XSEED[0], XSEED[1]
@@ -55,8 +55,8 @@ typedef struct _PKCL_rng {
                nu1       nu1RBase;           // (Significant length of 'N' without the padding word)
                u2        u2RLength;          // length of the resulting RNG
                u2        u2X9_31Rounds;
-               u2        __Padding1;
-               } _CPKCL_RNG, *_PCPKCL_RNG;
+               u2        padding1;
+               } CPKCL_RNG_STRUCT, *PCPKCL_RNG_STRUCT;
 
 // Options definition
 #define CPKCL_RNG_SEED              0x01

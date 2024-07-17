@@ -8,7 +8,7 @@
     CryptoLib_ZpEcDsa_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIBZPECDSA_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_ZpEcDsaGenerate {
+typedef struct srtuct_CPKCL_ZpEcDsaGenerate {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -57,10 +57,10 @@ typedef struct _CPKCL_ZpEcDsaGenerate {
                nu1       nu1Workspace;
                nu1       nu1HashBase;
                u2        u2ScalarLength;
-               u2        __Padding0;
-               } _CPKCL_ZPECDSAGENERATE, *_P_CPKCL_ZPECDSAGENERATE;
+               u2        padding0;
+               } CPKCL_ZPECDSAGENERATE_STRUCT, *P_CPKCL_ZPECDSAGENERATE_STRUCT;
 
-typedef struct _CPKCL_ZpEcDsaVerify {
+typedef struct struct_CPKCL_ZpEcDsaVerify {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -73,8 +73,8 @@ typedef struct _CPKCL_ZpEcDsaVerify {
                nu1       nu1Workspace;
                nu1       nu1HashBase;
                u2        u2ScalarLength;
-               u2        __Padding0;
-               } _CPKCL_ZPECDSAVERIFY, *_P_CPKCL_ZPECDSAVERIFY;
+               u2        padding0;
+               } CPKCL_ZPECDSAVERIFY_STRUCT, *P_CPKCL_ZPECDSAVERIFY_STRUCT;
 
 
 #endif // CRYPTOLIBZPECDSA_INCLUDED

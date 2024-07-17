@@ -8,7 +8,7 @@
     CryptoLib_Headers_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -80,7 +80,7 @@ Microchip or any third party.
 #include "CryptoLib_JumpTable_pb.h"
 #include "CryptoLib_Services_pb.h"
 
-typedef struct _CPKCL_status {
+typedef struct struct_CPKCL_status {
                u4             CarryIn        : 1;
                u4             CarryOut       : 1;
                u4             Zero           : 1;
@@ -89,61 +89,61 @@ typedef struct _CPKCL_status {
                u4            RFU            : (32-5);
                } CPKCL_STATUS,  * PCPKCL_STATUS, * PFCPKCL_STATUS;
 
-typedef struct _CPKCL_header {
+typedef struct struct_CPKCL_header {
                u1             u1Service;
                u1             u1SubService;
                u2             u2Option;
-               CPKCL_STATUS    Specific;
+               CPKCL_STATUS   Specific;
                u2             u2Status;
-               u2             __Padding0;
-               u4             __Padding1;
+               u2             padding0;
+               u4             padding1;
                } CPKCL_HEADER,  * PCPKCL_HEADER,  *  PFCPKCL_HEADER;
 
-typedef struct _CPKCL_param {
+typedef struct struct_CPKCL_param {
                CPKCL_HEADER    CPKCL_Header;
                union
                     {
-                    _CPKCL_CLEARFLAGS            CPKCL_ClearFlags;
-                    _CPKCL_COMP                  CPKCL_Comp;
-                    _CPKCL_CONDCOPY              CPKCL_CondCopy;
-                    _CPKCL_CRT                   CPKCL_CRT;
-                    _CPKCL_DIV                   CPKCL_Div;
-                    _CPKCL_EXPMOD                CPKCL_ExpMod;
-                    _CPKCL_FASTCOPY              CPKCL_FastCopy;
-                    _CPKCL_FILL                  CPKCL_Fill;
-                    _CPKCL_FMULT                 CPKCL_Fmult;
-                    _CPKCL_GCD                   CPKCL_GCD;
-                    _CPKCL_NOP                   CPKCL_Nop;
-                    _CPKCL_PRIMEGEN              CPKCL_PrimeGen;
-                    _CPKCL_REDMOD                CPKCL_RedMod;
-                    _CPKCL_RNG                   CPKCL_Rng;
-                    _CPKCL_SELFTEST              CPKCL_SelfTest;
-                    _CPKCL_HASH                  CPKCL_Hash;
-                    _CPKCL_SMULT                 CPKCL_Smult;
-                    _CPKCL_SQUARE                CPKCL_Square;
-                    _CPKCL_SWAP                  CPKCL_Swap;
+                    CPKCL_CLEARFLAGS_STRUCT      CPKCL_ClearFlags_s;
+                    CPKCL_COMP_STRUCT            CPKCL_Comp_s;
+                    CPKCL_CONDCOPY_STRUCT        CPKCL_CondCopy_s;
+                    CPKCL_CRT_STRUCT             CPKCL_CRT_s;
+                    CPKCL_DIV_STRUCT             CPKCL_Div_s;
+                    CPKCL_EXPMOD_STRUCT          CPKCL_ExpMod_s;
+                    CPKCL_FASTCOPY_STRUCT        CPKCL_FastCopy_s;
+                    CPKCL_FILL_STRUCT            CPKCL_Fill_s;
+                    CPKCL_FMULT_STRUCT           CPKCL_Fmult_s;
+                    CPKCL_GCD_STRUCT             CPKCL_GCD_s;
+                    CPKCL_NOP_STRUCT             CPKCL_Nop_s;
+                    CPKCL_PRIMEGEN_STRUCT        CPKCL_PrimeGen_s;
+                    CPKCL_REDMOD_STRUCT          CPKCL_RedMod_s;
+                    CPKCL_RNG_STRUCT             CPKCL_Rng_s;
+                    CPKCL_SELFTEST_STRUCT        CPKCL_SelfTest_s;
+                    CPKCL_HASH_STRUCT            CPKCL_Hash_s;
+                    CPKCL_SMULT_STRUCT           CPKCL_Smult_s;
+                    CPKCL_SQUARE_STRUCT          CPKCL_Square_s;
+                    CPKCL_SWAP_STRUCT            CPKCL_Swap_s;
 
 // ECC
-                    _CPKCL_ZPECCADD                     CPKCL_ZpEccAdd;
-                    _CPKCL_ZPECCDBL                     CPKCL_ZpEccDbl;
-                    _CPKCL_ZPECCMUL                     CPKCL_ZpEccMul;
-                    _CPKCL_ZPECDSAGENERATE              CPKCL_ZpEcDsaGenerate;
-                    _CPKCL_ZPECDSAVERIFY                CPKCL_ZpEcDsaVerify;
-                    _CPKCL_ZPECCONVPROJTOAFFINE         CPKCL_ZpEcConvProjToAffine;
-                    _CPKCL_ZPECCONVAFFINETOPROJECTIVE   CPKCL_ZpEcConvAffineToProjective;
-                    _CPKCL_ZPECRANDOMIZECOORDINATE      CPKCL_ZpEcRandomiseCoordinate;
-                    _CPKCL_ZPECPOINTISONCURVE           CPKCL_ZpEcPointIsOnCurve;
+                    CPKCL_ZPECCADD_STRUCT               CPKCL_ZpEccAdd_s;
+                    CPKCL_ZPECCDBL_STRUCT               CPKCL_ZpEccDbl_s;
+                    CPKCL_ZPECCMUL_STRUCT               CPKCL_ZpEccMul_s;
+                    CPKCL_ZPECDSAGENERATE_STRUCT        CPKCL_ZpEcDsaGenerate_s;
+                    CPKCL_ZPECDSAVERIFY_STRUCT          CPKCL_ZpEcDsaVerify_s;
+                    CPKCL_ZPECCONVPROJTOAFFINE_STRUCT         CPKCL_ZpEcConvProjToAffine_s;
+                    CPKCL_ZPECCONVAFFINETOPROJECTIVE_STRUCT   CPKCL_ZpEcConvAffineToProjective_s;
+                    CPKCL_ZPECRANDOMIZECOORDINATE_STRUCT      CPKCL_ZpEcRandomiseCoordinate_s;
+                    CPKCL_ZPECPOINTISONCURVE_STRUCT           CPKCL_ZpEcPointIsOnCurve_s;
 
                     // ECC
-					_CPKCL_GF2NECCADD                     CPKCL_GF2NEccAdd;
-					_CPKCL_GF2NECCDBL                     CPKCL_GF2NEccDbl;
-					_CPKCL_GF2NECCMUL                     CPKCL_GF2NEccMul;
-					_CPKCL_GF2NECDSAGENERATE              CPKCL_GF2NEcDsaGenerate;
-					_CPKCL_GF2NECDSAVERIFY                CPKCL_GF2NEcDsaVerify;
-					_CPKCL_GF2NECCONVPROJTOAFFINE         CPKCL_GF2NEcConvProjToAffine;
-					_CPKCL_GF2NECCONVAFFINETOPROJECTIVE   CPKCL_GF2NEcConvAffineToProjective;
-					_CPKCL_GF2NECRANDOMIZECOORDINATE	    CPKCL_GF2NEcRandomiseCoordinate;
-					_CPKCL_GF2NECPOINTISONCURVE           CPKCL_GF2NEcPointIsOnCurve;
+					CPKCL_GF2NECCADD_STRUCT                     CPKCL_GF2NEccAdd_s;
+					CPKCL_GF2NECCDBL_STRUCT                     CPKCL_GF2NEccDbl_s;
+					CPKCL_GF2NECCMUL_STRUCT                     CPKCL_GF2NEccMul_s;
+					CPKCL_GF2NECDSAGENERATE_STRUCT              CPKCL_GF2NEcDsaGenerate_s;
+					CPKCL_GF2NECDSAVERIFY_STRUCT                CPKCL_GF2NEcDsaVerify_s;
+					CPKCL_GF2NECCONVPROJTOAFFINE_STRUCT         CPKCL_GF2NEcConvProjToAffine_s;
+					CPKCL_GF2NECCONVAFFINETOPROJECTIVE_STRUCT   CPKCL_GF2NEcConvAffineToProjective_s;
+					CPKCL_GF2NECRANDOMIZECOORDINATE_STRUCT	    CPKCL_GF2NEcRandomiseCoordinate_s;
+					CPKCL_GF2NECPOINTISONCURVE_STRUCT           CPKCL_GF2NEcPointIsOnCurve_s;
 
                     } P;
                //u4   __Padding0;
@@ -156,46 +156,46 @@ typedef struct _CPKCL_param {
 
 #define CPKCL(a)                           (USE_PARAM)->CPKCL_Header.a
 
-#define CPKCL_ClearFlags(a)                (USE_PARAM)->P.CPKCL_ClearFlags.a
-#define CPKCL_Comp(a)                      (USE_PARAM)->P.CPKCL_Comp.a
-#define CPKCL_CondCopy(a)                  (USE_PARAM)->P.CPKCL_CondCopy.a
-#define CPKCL_CRT(a)                       (USE_PARAM)->P.CPKCL_CRT.a
-#define CPKCL_Div(a)                       (USE_PARAM)->P.CPKCL_Div.a
-#define CPKCL_ExpMod(a)                    (USE_PARAM)->P.CPKCL_ExpMod.a
-#define CPKCL_FastCopy(a)                  (USE_PARAM)->P.CPKCL_FastCopy.a
-#define CPKCL_Fill(a)                      (USE_PARAM)->P.CPKCL_Fill.a
-#define CPKCL_Fmult(a)                     (USE_PARAM)->P.CPKCL_Fmult.a
-#define CPKCL_GCD(a)                       (USE_PARAM)->P.CPKCL_GCD.a
-#define CPKCL_NOP(a)                       (USE_PARAM)->P.CPKCL_NOP.a
-#define CPKCL_PrimeGen(a)                  (USE_PARAM)->P.CPKCL_PrimeGen.a
-#define CPKCL_RedMod(a)                    (USE_PARAM)->P.CPKCL_RedMod.a
-#define CPKCL_Rng(a)                       (USE_PARAM)->P.CPKCL_Rng.a
-#define CPKCL_SelfTest(a)                  (USE_PARAM)->P.CPKCL_SelfTest.a
-#define CPKCL_Hash(a)                      (USE_PARAM)->P.CPKCL_Hash.a
-#define CPKCL_Smult(a)                     (USE_PARAM)->P.CPKCL_Smult.a
-#define CPKCL_Square(a)                    (USE_PARAM)->P.CPKCL_Square.a
-#define CPKCL_Swap(a)                      (USE_PARAM)->P.CPKCL_Swap.a
+#define CPKCL_ClearFlags(a)                (USE_PARAM)->P.CPKCL_ClearFlags_s.a
+#define CPKCL_Comp(a)                      (USE_PARAM)->P.CPKCL_Comp_s.a
+#define CPKCL_CondCopy(a)                  (USE_PARAM)->P.CPKCL_CondCopy_s.a
+#define CPKCL_CRT(a)                       (USE_PARAM)->P.CPKCL_CRT_s.a
+#define CPKCL_Div(a)                       (USE_PARAM)->P.CPKCL_Div_s.a
+#define CPKCL_ExpMod(a)                    (USE_PARAM)->P.CPKCL_ExpMod_s.a
+#define CPKCL_FastCopy(a)                  (USE_PARAM)->P.CPKCL_FastCopy_s.a
+#define CPKCL_Fill(a)                      (USE_PARAM)->P.CPKCL_Fill_s.a
+#define CPKCL_Fmult(a)                     (USE_PARAM)->P.CPKCL_Fmult_s.a
+#define CPKCL_GCD(a)                       (USE_PARAM)->P.CPKCL_GCD_s.a
+#define CPKCL_NOP(a)                       (USE_PARAM)->P.CPKCL_NOP_s.a
+#define CPKCL_PrimeGen(a)                  (USE_PARAM)->P.CPKCL_PrimeGen_s.a
+#define CPKCL_RedMod(a)                    (USE_PARAM)->P.CPKCL_RedMod_s.a
+#define CPKCL_Rng(a)                       (USE_PARAM)->P.CPKCL_Rng_s.a
+#define CPKCL_SelfTest(a)                  (USE_PARAM)->P.CPKCL_SelfTest_s.a
+#define CPKCL_Hash(a)                      (USE_PARAM)->P.CPKCL_Hash_s.a
+#define CPKCL_Smult(a)                     (USE_PARAM)->P.CPKCL_Smult_s.a
+#define CPKCL_Square(a)                    (USE_PARAM)->P.CPKCL_Square_s.a
+#define CPKCL_Swap(a)                      (USE_PARAM)->P.CPKCL_Swap_s.a
 
 
-#define CPKCL_ZpEccAdd(a)                  (USE_PARAM)->P.CPKCL_ZpEccAdd.a
-#define CPKCL_ZpEccDbl(a)                  (USE_PARAM)->P.CPKCL_ZpEccDbl.a
-#define CPKCL_ZpEccMul(a)                  (USE_PARAM)->P.CPKCL_ZpEccMul.a
-#define CPKCL_ZpEcDsaGenerate(a)           (USE_PARAM)->P.CPKCL_ZpEcDsaGenerate.a
-#define CPKCL_ZpEcDsaVerify(a)             (USE_PARAM)->P.CPKCL_ZpEcDsaVerify.a
-#define CPKCL_ZpEcConvProjToAffine(a)      (USE_PARAM)->P.CPKCL_ZpEcConvProjToAffine.a
-#define CPKCL_ZpEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_ZpEcConvAffineToProjective.a
-#define CPKCL_ZpEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_ZpEcRandomiseCoordinate.a
-#define CPKCL_ZpEcPointIsOnCurve(a)        (USE_PARAM)->P.CPKCL_ZpEcPointIsOnCurve.a
+#define CPKCL_ZpEccAdd(a)                  (USE_PARAM)->P.CPKCL_ZpEccAdd_s.a
+#define CPKCL_ZpEccDbl(a)                  (USE_PARAM)->P.CPKCL_ZpEccDbl_s.a
+#define CPKCL_ZpEccMul(a)                  (USE_PARAM)->P.CPKCL_ZpEccMul_s.a
+#define CPKCL_ZpEcDsaGenerate(a)           (USE_PARAM)->P.CPKCL_ZpEcDsaGenerate_s.a
+#define CPKCL_ZpEcDsaVerify(a)             (USE_PARAM)->P.CPKCL_ZpEcDsaVerify_s.a
+#define CPKCL_ZpEcConvProjToAffine(a)      (USE_PARAM)->P.CPKCL_ZpEcConvProjToAffine_s.a
+#define CPKCL_ZpEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_ZpEcConvAffineToProjective_s.a
+#define CPKCL_ZpEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_ZpEcRandomiseCoordinate_s.a
+#define CPKCL_ZpEcPointIsOnCurve(a)        (USE_PARAM)->P.CPKCL_ZpEcPointIsOnCurve_s.a
 
-#define CPKCL_GF2NEccAdd(a)                  (USE_PARAM)->P.CPKCL_GF2NEccAdd.a
-#define CPKCL_GF2NEccDbl(a)                  (USE_PARAM)->P.CPKCL_GF2NEccDbl.a
-#define CPKCL_GF2NEccMul(a)                  (USE_PARAM)->P.CPKCL_GF2NEccMul.a
-#define CPKCL_GF2NEcDsaGenerate(a)           (USE_PARAM)->P.CPKCL_GF2NEcDsaGenerate.a
-#define CPKCL_GF2NEcDsaVerify(a)             (USE_PARAM)->P.CPKCL_GF2NEcDsaVerify.a
-#define CPKCL_GF2NEcConvProjToAffine(a)      (USE_PARAM)->P.CPKCL_GF2NEcConvProjToAffine.a
-#define CPKCL_GF2NEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_GF2NEcConvAffineToProjective.a
-#define CPKCL_GF2NEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_GF2NEcRandomiseCoordinate.a
-#define CPKCL_GF2NEcPointIsOnCurve(a)        (USE_PARAM)->P.CPKCL_GF2NEcPointIsOnCurve.a
+#define CPKCL_GF2NEccAdd(a)                  (USE_PARAM)->P.CPKCL_GF2NEccAdd_s.a
+#define CPKCL_GF2NEccDbl(a)                  (USE_PARAM)->P.CPKCL_GF2NEccDbl_s.a
+#define CPKCL_GF2NEccMul(a)                  (USE_PARAM)->P.CPKCL_GF2NEccMul_s.a
+#define CPKCL_GF2NEcDsaGenerate(a)           (USE_PARAM)->P.CPKCL_GF2NEcDsaGenerate_s.a
+#define CPKCL_GF2NEcDsaVerify(a)             (USE_PARAM)->P.CPKCL_GF2NEcDsaVerify_s.a
+#define CPKCL_GF2NEcConvProjToAffine(a)      (USE_PARAM)->P.CPKCL_GF2NEcConvProjToAffine_s.a
+#define CPKCL_GF2NEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_GF2NEcConvAffineToProjective_s.a
+#define CPKCL_GF2NEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_GF2NEcRandomiseCoordinate_s.a
+#define CPKCL_GF2NEcPointIsOnCurve(a)        (USE_PARAM)->P.CPKCL_GF2NEcPointIsOnCurve_s.a
 
 // Services options helpers
 #define MULTIPLIEROPTION_MASK      0x0003
@@ -240,7 +240,7 @@ typedef struct _CPKCL_param {
           {\
           b->CPKCL_Header.u1Service = CPKCL_SERVICE_##a;\
           b->CPKCL_Header.u2Status  = CPKCL_COMPUTATION_NOT_STARTED;\
-          __vCPKCLCs##a(b);\
+          vCPKCLCs##a(b);\
           }
 
 #endif // CRYPTOLIB_HEADERS_PB_INCLUDED

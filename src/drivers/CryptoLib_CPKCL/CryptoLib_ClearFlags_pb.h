@@ -8,7 +8,7 @@
     CryptoLib_ClearFlags_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,18 +44,18 @@ Microchip or any third party.
 #define CRYPTOLIB_CLEARFLAGS_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_clearflags {
-               nu1       __Padding0;
-               nu1       __Padding1;
-               u2        __Padding2;
+typedef struct struct_CPKCL_clearflags {
+               nu1       padding0;
+               nu1       padding1;
+               u2        padding2;
 
-               u2        __Padding3;
-               u2        __Padding4;
-               u2        __Padding5;
-               u2        __Padding6;
-               u2        __Padding7;
-               u2        __Padding8;
-               u2        __Padding9;
-               } _CPKCL_CLEARFLAGS,*_PCPKCL_CLEARFLAGS;
+               u2        padding3;
+               u2        padding4;
+               u2        padding5;
+               u2        padding6;
+               u2        padding7;
+               u2        padding8;
+               u2        padding9;
+               } CPKCL_CLEARFLAGS_STRUCT,*PCPKCL_CLEARFLAGS_STRUCT;
 
 #endif // CRYPTOLIB_CLEARFLAGS_PB_INCLUDED

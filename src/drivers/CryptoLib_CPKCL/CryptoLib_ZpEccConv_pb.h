@@ -8,7 +8,7 @@
     CryptoLib_ZpEccConv_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,32 +44,32 @@ Microchip or any third party.
 #define CRYPTOLIBZPECCCONV_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_ZpEcConvProjToAffine {
+typedef struct struct_CPKCL_ZpEcConvProjToAffine {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
 
                nu1       nu1PointABase;
-               nu1       __Padding0;
+               nu1       padding0;
                nu1       nu1Workspace;
-               } _CPKCL_ZPECCONVPROJTOAFFINE, *_P_CPKCL_ZPECCONVPROJTOAFFINE;
+               } CPKCL_ZPECCONVPROJTOAFFINE_STRUCT, *P_CPKCL_ZPECCONVPROJTOAFFINE_STRUCT;
 
 
-typedef struct _CPKCL_ZpEcConvAffineToProjective {
+typedef struct struct_CPKCL_ZpEcConvAffineToProjective {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
 
                nu1       nu1PointABase;
-               nu1       __Padding0;
+               nu1       padding0;
                nu1       nu1Workspace;
-               nu1       __Padding1;
-               nu1       __Padding2;
-               nu1       __Padding3;
-               nu1       __Padding4;
-               } _CPKCL_ZPECCONVAFFINETOPROJECTIVE, *_P_CPKCL_ZPECCONVAFFINETOPROJECTIVE;
+               nu1       padding1;
+               nu1       padding2;
+               nu1       padding3;
+               nu1       padding4;
+               } CPKCL_ZPECCONVAFFINETOPROJECTIVE_STRUCT, *P_CPKCL_ZPECCONVAFFINETOPROJECTIVE_STRUCT;
 
-typedef struct _CPKCL_ZpEcPointIsOnCurve {
+typedef struct struct_CPKCL_ZpEcPointIsOnCurve {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -78,11 +78,11 @@ typedef struct _CPKCL_ZpEcPointIsOnCurve {
                nu1       nu1BParam;
                nu1       nu1PointBase;
                nu1       nu1Workspace;
-               u2        __Padding0;
-               u2        __Padding1;               
-               } _CPKCL_ZPECPOINTISONCURVE, *_P_CPKCL_ZPECPOINTISONCURVE;
+               u2        padding0;
+               u2        padding1;               
+               } CPKCL_ZPECPOINTISONCURVE_STRUCT, *P_CPKCL_ZPECPOINTISONCURVE_STRUCT;
 
-typedef struct _CPKCL_ZpEcRandomiseCoordinate {
+typedef struct struct_CPKCL_ZpEcRandomiseCoordinate {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -90,11 +90,11 @@ typedef struct _CPKCL_ZpEcRandomiseCoordinate {
                nu1       nu1PointBase;
                nu1       nu1RandomBase;
                nu1       nu1Workspace;
-               nu1       __Padding0;
-               nu1       __Padding1;
-               nu1       __Padding2;
-               nu1       __Padding3;
-               } _CPKCL_ZPECRANDOMIZECOORDINATE, *_P__CPKCL_ZPECRANDOMIZECOORDINATE;
+               nu1       padding0;
+               nu1       padding1;
+               nu1       padding2;
+               nu1       padding3;
+               } CPKCL_ZPECRANDOMIZECOORDINATE_STRUCT, *P_CPKCL_ZPECRANDOMIZECOORDINATE_STRUCT;
 
 
 

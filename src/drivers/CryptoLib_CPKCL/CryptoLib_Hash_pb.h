@@ -8,7 +8,7 @@
     CryptoLib_Hash_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -46,14 +46,14 @@ Microchip or any third party.
 // Structure definition
 // POUR MD2 :	Le CheckSum se fait dans le Working Space;
 // 				Le Buffer X est assimile a une valeur de hashage donc place dans pu1HBase
-typedef struct _CPKCL_hash {
+typedef struct struct_CPKCL_hash {
                pu1       pu1WorkSpace;
                pu1       pu1MBase;
                pu1       pu1HBase;
                pu1       pu1WorkSpace2;
-               u2        __Padding1;
-               u2        __Padding2;
-               } _CPKCL_HASH, *_PPKCL_HASH;
+               u2        padding1;
+               u2        padding2;
+               } CPKCL_HASH_STRUCT, *PPKCL_HASH_STRUCT;
 
 // bits of the option:
 // (b1,b0) :

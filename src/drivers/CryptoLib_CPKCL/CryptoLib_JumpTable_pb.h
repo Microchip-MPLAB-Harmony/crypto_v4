@@ -8,7 +8,7 @@
     CryptoLib_JumpTable_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -43,41 +43,41 @@ Microchip or any third party.
 #ifndef CRYPTOLIB_JUMPTABLE_PB_INCLUDED_
 #define CRYPTOLIB_JUMPTABLE_PB_INCLUDED_
 
-extern ServiceFctType __vCPKCLCsClearFlags;
-extern ServiceFctType __vCPKCLCsComp;
-extern ServiceFctType __vCPKCLCsCondCopy;
-extern ServiceFctType __vCPKCLCsFastCopy;
-extern ServiceFctType __vCPKCLCsFill;
-extern ServiceFctType __vCPKCLCsFmult;
-extern ServiceFctType __vCPKCLCsNOP;
-extern ServiceFctType __vCPKCLCsRng;
-extern ServiceFctType __vCPKCLCsSelfTest;
-extern ServiceFctType __vCPKCLCsSmult;
-extern ServiceFctType __vCPKCLCsSquare;
-extern ServiceFctType __vCPKCLCsSwap;
-extern ServiceFctType __vCPKCLCsZpEccAddFast;
-extern ServiceFctType __vCPKCLCsZpEcConvProjToAffine;
-extern ServiceFctType __vCPKCLCsZpEcPointIsOnCurve;
-extern ServiceFctType __vCPKCLCsZpEcConvAffineToProjective;
-extern ServiceFctType __vCPKCLCsZpEcRandomiseCoordinate;
-extern ServiceFctType __vCPKCLCsZpEccDblFast;
-extern ServiceFctType __vCPKCLCsZpEccMulFast;
-extern ServiceFctType __vCPKCLCsZpEcDsaGenerateFast;
-extern ServiceFctType __vCPKCLCsZpEcDsaVerifyFast;
-extern ServiceFctType __vCPKCLCsGF2NEccAddFast;
-extern ServiceFctType __vCPKCLCsGF2NEcConvProjToAffine;
-extern ServiceFctType __vCPKCLCsGF2NEcPointIsOnCurve;
-extern ServiceFctType __vCPKCLCsGF2NEcRandomiseCoordinate;
-extern ServiceFctType __vCPKCLCsGF2NEcConvAffineToProjective;
-extern ServiceFctType __vCPKCLCsGF2NEccDblFast;
-extern ServiceFctType __vCPKCLCsGF2NEccMulFast;
-extern ServiceFctType __vCPKCLCsGF2NEcDsaGenerateFast;
-extern ServiceFctType __vCPKCLCsGF2NEcDsaVerifyFast;
-extern ServiceFctType __vCPKCLCsCRT;
-extern ServiceFctType __vCPKCLCsDiv;
-extern ServiceFctType __vCPKCLCsExpMod;
-extern ServiceFctType __vCPKCLCsGCD;
-extern ServiceFctType __vCPKCLCsPrimeGen;
-extern ServiceFctType __vCPKCLCsRedMod;
+extern ServiceFctType vCPKCLCsClearFlags;
+extern ServiceFctType vCPKCLCsComp;
+extern ServiceFctType vCPKCLCsCondCopy;
+extern ServiceFctType vCPKCLCsFastCopy;
+extern ServiceFctType vCPKCLCsFill;
+extern ServiceFctType vCPKCLCsFmult;
+extern ServiceFctType vCPKCLCsNOP;
+extern ServiceFctType vCPKCLCsRng;
+extern ServiceFctType vCPKCLCsSelfTest;
+extern ServiceFctType vCPKCLCsSmult;
+extern ServiceFctType vCPKCLCsSquare;
+extern ServiceFctType vCPKCLCsSwap;
+extern ServiceFctType vCPKCLCsZpEccAddFast;
+extern ServiceFctType vCPKCLCsZpEcConvProjToAffine;
+extern ServiceFctType vCPKCLCsZpEcPointIsOnCurve;
+extern ServiceFctType vCPKCLCsZpEcConvAffineToProjective;
+extern ServiceFctType vCPKCLCsZpEcRandomiseCoordinate;
+extern ServiceFctType vCPKCLCsZpEccDblFast;
+extern ServiceFctType vCPKCLCsZpEccMulFast;
+extern ServiceFctType vCPKCLCsZpEcDsaGenerateFast;
+extern ServiceFctType vCPKCLCsZpEcDsaVerifyFast;
+extern ServiceFctType vCPKCLCsGF2NEccAddFast;
+extern ServiceFctType vCPKCLCsGF2NEcConvProjToAffine;
+extern ServiceFctType vCPKCLCsGF2NEcPointIsOnCurve;
+extern ServiceFctType vCPKCLCsGF2NEcRandomiseCoordinate;
+extern ServiceFctType vCPKCLCsGF2NEcConvAffineToProjective;
+extern ServiceFctType vCPKCLCsGF2NEccDblFast;
+extern ServiceFctType vCPKCLCsGF2NEccMulFast;
+extern ServiceFctType vCPKCLCsGF2NEcDsaGenerateFast;
+extern ServiceFctType vCPKCLCsGF2NEcDsaVerifyFast;
+extern ServiceFctType vCPKCLCsCRT;
+extern ServiceFctType vCPKCLCsDiv;
+extern ServiceFctType vCPKCLCsExpMod;
+extern ServiceFctType vCPKCLCsGCD;
+extern ServiceFctType vCPKCLCsPrimeGen;
+extern ServiceFctType vCPKCLCsRedMod;
 
 #endif  // CRYPTOLIB_JUMPTABLE_PB_INCLUDED_

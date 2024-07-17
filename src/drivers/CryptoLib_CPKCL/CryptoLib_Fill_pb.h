@@ -8,7 +8,7 @@
     CryptoLib_Fill_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,18 +44,18 @@ Microchip or any third party.
 #define CRYPTOLIB_FILL_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_fill {
-               nu1       __Padding0;
-               nu1       __Padding1;
-               u2        __Padding2;
+typedef struct struct_CPKCL_fill {
+               nu1       padding0;
+               nu1       padding1;
+               u2        padding2;
 
-               u2        __Padding3;
-               u2        __Padding4;
-               u2        __Padding5;
+               u2        padding3;
+               u2        padding4;
+               u2        padding5;
                nu1       nu1RBase;
                u2        u2RLength;
                u4        u4FillValue;
-               } _CPKCL_FILL,*_PCPKCL_FILL;
+               } CPKCL_FILL_STRUCT,*PCPKCL_FILL_STRUCT;
 
 
 #endif // CRYPTOLIB_FILL_PB_INCLUDED

@@ -8,7 +8,7 @@
     CryptoLib_GCD_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -46,17 +46,17 @@ Microchip or any third party.
 #include "CryptoLib_typedef_pb.h"
 
 // Structure definition
-typedef struct _CPKCL_gcd {
-               u2        __Padding0;
+typedef struct struct_CPKCL_gcd {
+               u2        padding0;
                nu1       nu1WorkSpace;       // workspace
-               u2        __Padding1;
+               u2        padding1;
 
                nu1       nu1XBase;           // x
                nu1       nu1YBase;           // y
                nu1       nu1ABase;           // a
                nu1       nu1ZBase;           // z
                u2        u2Length;           // x,y,a,z length
-               } _CPKCL_GCD, *_PPKCL_GCD;
+               } CPKCL_GCD_STRUCT, *PPKCL_GCD_STRUCT;
 
 // Options definition
 // None

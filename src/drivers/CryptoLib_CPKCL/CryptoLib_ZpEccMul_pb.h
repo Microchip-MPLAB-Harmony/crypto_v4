@@ -8,7 +8,7 @@
     CryptoLib_ZpEccMul_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIBZPECCMUL_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_ZpEccMul {
+typedef struct struct_CPKCL_ZpEccMul {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -54,7 +54,7 @@ typedef struct _CPKCL_ZpEccMul {
                nu1       nu1Workspace;           
                nu1       nu1ABase;               
                u2        u2KLength;
-               } _CPKCL_ZPECCMUL, *_P_CPKCL_ZPECCMUL;
+               } CPKCL_ZPECCMUL_STRUCT, *P_CPKCL_ZPECCMUL_STRUCT;
 
 
 #endif // CRYPTOLIBZPECCDBL_INCLUDED

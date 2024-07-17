@@ -8,7 +8,7 @@
     CryptoLib_ExpMod_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIB_EXPMOD_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_expmod {
+typedef struct struct_CPKCL_expmod {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -54,12 +54,12 @@ typedef struct _CPKCL_expmod {
                u2        u2ExpLength;
                pfu1      pfu1ExpBase;        // u2ExpLength words
                u1        u1Blinding;         // Exponent blinding using a 32-bits Xor
-               u1        __Padding0;
-               u2        __Padding1;
-               } _CPKCL_EXPMOD, *_PPKCL_EXPMOD;
+               u1        padding0;
+               u2        padding1;
+               } CPKCL_EXPMOD_STRUCT, *PPKCL_EXPMOD_STRUCT;
 
 // Options definition
-#define CPKCL_EXPMOD_REGULARRSA       0x01
+#define CPKCL_EXPMOD_REGULARRSA      0x01
 #define CPKCL_EXPMOD_EXPINPKCCRAM    0x02
 #define CPKCL_EXPMOD_FASTRSA         0x04
 #define CPKCL_EXPMOD_OPERATIONMASK   0x07

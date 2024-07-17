@@ -8,7 +8,7 @@
     CryptoLib_GF2NEccConv_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,32 +44,32 @@ Microchip or any third party.
 #define CRYPTOLIBGF2ECNCONV_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_GF2NEcConvProjToAffine {
+typedef struct struct_CPKCL_GF2NEcConvProjToAffine {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
 
                nu1       nu1PointABase;
-               nu1       __Padding0;
+               nu1       padding0;
                nu1       nu1Workspace;
-               } _CPKCL_GF2NECCONVPROJTOAFFINE, *_P_CPKCL_GF2NECCONVPROJTOAFFINE;
+               } CPKCL_GF2NECCONVPROJTOAFFINE_STRUCT, *P_CPKCL_GF2NECCONVPROJTOAFFINE_STRUCT;
 
 
-typedef struct _CPKCL_GF2NEcConvAffineToProjective {
+typedef struct struct_CPKCL_GF2NEcConvAffineToProjective {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
 
                nu1       nu1PointABase;
-               nu1       __Padding0;
+               nu1       padding0;
                nu1       nu1Workspace;
-               nu1       __Padding1;
-               nu1       __Padding2;
-               nu1       __Padding3;
-               nu1       __Padding4;
-               } _CPKCL_GF2NECCONVAFFINETOPROJECTIVE, *_P_CPKCL_GF2NECCONVAFFINETOPROJECTIVE;
+               nu1       padding1;
+               nu1       padding2;
+               nu1       padding3;
+               nu1       padding4;
+               } CPKCL_GF2NECCONVAFFINETOPROJECTIVE_STRUCT, *P_CPKCL_GF2NECCONVAFFINETOPROJECTIVE_STRUCT;
 
-typedef struct _CPKCL_GF2NEcPointIsOnCurve {
+typedef struct struct_CPKCL_GF2NEcPointIsOnCurve {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -78,11 +78,11 @@ typedef struct _CPKCL_GF2NEcPointIsOnCurve {
                nu1       nu1BParam;
                nu1       nu1PointBase;
                nu1       nu1Workspace;
-               u2        __Padding0;
-               u2        __Padding1;               
-               } _CPKCL_GF2NECPOINTISONCURVE, *_P_CPKCL_GF2NECPOINTISONCURVE;
+               u2        padding0;
+               u2        padding1;               
+               } CPKCL_GF2NECPOINTISONCURVE_STRUCT, *P_CPKCL_GF2NECPOINTISONCURVE_STRUCT;
 
-typedef struct _CPKCL_GF2NEcRandomiseCoordinate {
+typedef struct struct_CPKCL_GF2NEcRandomiseCoordinate {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -90,11 +90,11 @@ typedef struct _CPKCL_GF2NEcRandomiseCoordinate {
                nu1       nu1PointBase;
                nu1       nu1RandomBase;
                nu1       nu1Workspace;
-               nu1       __Padding0;
-               nu1       __Padding1;
-               nu1       __Padding2;
-               nu1       __Padding3;
-               } _CPKCL_GF2NECRANDOMIZECOORDINATE, *_P__CPKCL_GF2NECRANDOMIZECOORDINATE;
+               nu1       padding0;
+               nu1       padding1;
+               nu1       padding2;
+               nu1       padding3;
+               } CPKCL_GF2NECRANDOMIZECOORDINATE_STRUCT, *P_CPKCL_GF2NECRANDOMIZECOORDINATE_STRUCT;
 
 
 

@@ -8,7 +8,7 @@
     CryptoLib_JumpTable_Addr_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -50,43 +50,43 @@ Microchip or any third party.
 typedef void (*PPKCL_FUNC) (PCPKCL_PARAM);
 
 // JumpTable address + 1 as it is thumb code
-#define __vCPKCLCsJumpTableStart                0x02020001
-#define __vCPKCLCsNOP							      ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x00 ))
-#define __vCPKCLCsSelfTest						  ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x04 ))
-#define __vCPKCLCsFill          				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x08 ))
-#define __vCPKCLCsSwap          				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x0c ))
-#define __vCPKCLCsFastCopy      				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x10 ))
-#define __vCPKCLCsCondCopy      				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x14 ))
-#define __vCPKCLCsClearFlags    				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x18 ))
-#define __vCPKCLCsComp          				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x1c ))
-#define __vCPKCLCsFmult         				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x20 ))
-#define __vCPKCLCsSmult         				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x24 ))
-#define __vCPKCLCsSquare        				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x28 ))
-#define __vCPKCLCsDiv           				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x2c ))
-#define __vCPKCLCsRedMod        				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x30 ))
-#define __vCPKCLCsExpMod        				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x34 ))
-#define __vCPKCLCsCRT           				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x38 ))
-#define __vCPKCLCsGCD           				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x3c ))
-#define __vCPKCLCsPrimeGen      				((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x40 ))
-#define __vCPKCLCsZpEcPointIsOnCurve			((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x44 ))
-#define __vCPKCLCsZpEcRandomiseCoordinate       ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x48 ))
-#define __vCPKCLCsZpEcConvAffineToProjective    ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x4c ))
-#define __vCPKCLCsZpEccAddFast                  ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x50 ))
-#define __vCPKCLCsZpEccDblFast                  ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x54 ))
-#define __vCPKCLCsZpEccMulFast                  ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x58 ))
-#define __vCPKCLCsZpEcDsaGenerateFast           ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x5c ))
-#define __vCPKCLCsZpEcDsaVerifyFast             ((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x60 ))
-#define __vCPKCLCsZpEcConvProjToAffine			((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x64 ))
-#define __vCPKCLCsGF2NEcRandomiseCoordinate	  	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x68 ))
-#define __vCPKCLCsGF2NEcConvProjToAffine       	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x6c ))
-#define __vCPKCLCsGF2NEcConvAffineToProjective 	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x70 ))
-#define __vCPKCLCsGF2NEcPointIsOnCurve         	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x74 ))
-#define __vCPKCLCsGF2NEccAddFast               	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x78 ))
-#define __vCPKCLCsGF2NEccDblFast               	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x7C ))
-#define __vCPKCLCsGF2NEccMulFast               	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x80 ))
-#define __vCPKCLCsGF2NEcDsaGenerateFast        	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x84 ))
-#define __vCPKCLCsGF2NEcDsaVerifyFast          	((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x88 ))
-#define __vCPKCLCsRng         					((PPKCL_FUNC)(__vCPKCLCsJumpTableStart + 0x8C ))
+#define vCPKCLCsJumpTableStart                0x02020001
+#define vCPKCLCsNOP							      ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x00 ))
+#define vCPKCLCsSelfTest						  ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x04 ))
+#define vCPKCLCsFill          				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x08 ))
+#define vCPKCLCsSwap          				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x0c ))
+#define vCPKCLCsFastCopy      				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x10 ))
+#define vCPKCLCsCondCopy      				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x14 ))
+#define vCPKCLCsClearFlags    				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x18 ))
+#define vCPKCLCsComp          				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x1c ))
+#define vCPKCLCsFmult         				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x20 ))
+#define vCPKCLCsSmult         				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x24 ))
+#define vCPKCLCsSquare        				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x28 ))
+#define vCPKCLCsDiv           				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x2c ))
+#define vCPKCLCsRedMod        				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x30 ))
+#define vCPKCLCsExpMod        				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x34 ))
+#define vCPKCLCsCRT           				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x38 ))
+#define vCPKCLCsGCD           				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x3c ))
+#define vCPKCLCsPrimeGen      				((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x40 ))
+#define vCPKCLCsZpEcPointIsOnCurve			((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x44 ))
+#define vCPKCLCsZpEcRandomiseCoordinate       ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x48 ))
+#define vCPKCLCsZpEcConvAffineToProjective    ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x4c ))
+#define vCPKCLCsZpEccAddFast                  ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x50 ))
+#define vCPKCLCsZpEccDblFast                  ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x54 ))
+#define vCPKCLCsZpEccMulFast                  ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x58 ))
+#define vCPKCLCsZpEcDsaGenerateFast           ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x5c ))
+#define vCPKCLCsZpEcDsaVerifyFast             ((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x60 ))
+#define vCPKCLCsZpEcConvProjToAffine			((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x64 ))
+#define vCPKCLCsGF2NEcRandomiseCoordinate	  	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x68 ))
+#define vCPKCLCsGF2NEcConvProjToAffine       	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x6c ))
+#define vCPKCLCsGF2NEcConvAffineToProjective 	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x70 ))
+#define vCPKCLCsGF2NEcPointIsOnCurve         	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x74 ))
+#define vCPKCLCsGF2NEccAddFast               	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x78 ))
+#define vCPKCLCsGF2NEccDblFast               	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x7C ))
+#define vCPKCLCsGF2NEccMulFast               	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x80 ))
+#define vCPKCLCsGF2NEcDsaGenerateFast        	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x84 ))
+#define vCPKCLCsGF2NEcDsaVerifyFast          	((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x88 ))
+#define vCPKCLCsRng         					((PPKCL_FUNC)(vCPKCLCsJumpTableStart + 0x8C ))
 
 
 #endif // CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_

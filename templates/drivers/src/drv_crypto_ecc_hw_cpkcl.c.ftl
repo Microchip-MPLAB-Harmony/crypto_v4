@@ -490,19 +490,19 @@ static int8_t lDRV_CRYPTO_ECC_SelfTest(void)
     {
 	selfTestState = -1;
     }
-    else if (pvCPKCLParam->P.CPKCL_SelfTest.u4Version != (unsigned)CPKCL_VERSION)
+    else if (pvCPKCLParam->P.CPKCL_SelfTest_s.u4Version != (unsigned)CPKCL_VERSION)
     {
         selfTestState = -2;
     }
-    else if (pvCPKCLParam->P.CPKCL_SelfTest.u4CheckNum1 != (unsigned)CPKCL_SELFTEST_CHECKSUM1)
+    else if (pvCPKCLParam->P.CPKCL_SelfTest_s.u4CheckNum1 != (unsigned)CPKCL_SELFTEST_CHECKSUM1)
     {
         selfTestState = -3;
     }
-    else if (pvCPKCLParam->P.CPKCL_SelfTest.u4CheckNum2 != (unsigned)CPKCL_SELFTEST_CHECKSUM2)
+    else if (pvCPKCLParam->P.CPKCL_SelfTest_s.u4CheckNum2 != (unsigned)CPKCL_SELFTEST_CHECKSUM2)
     {
         selfTestState = -4;
     }
-    else if (pvCPKCLParam->P.CPKCL_SelfTest.u1Step != 0x03U)
+    else if (pvCPKCLParam->P.CPKCL_SelfTest_s.u1Step != 0x03U)
     {
         selfTestState = -5;
     }

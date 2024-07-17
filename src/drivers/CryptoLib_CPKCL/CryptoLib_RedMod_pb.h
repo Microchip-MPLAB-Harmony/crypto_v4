@@ -8,7 +8,7 @@
     CryptoLib_RedMod_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,16 +44,16 @@ Microchip or any third party.
 #define CRYPTOLIB_REDMOD_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_redmod {
+typedef struct struct_CPKCL_redmod {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
 
                nu1       nu1RBase;
-               u2        __Padding0;
-               u2        __Padding1;
+               u2        padding0;
+               u2        padding1;
                nu1       nu1XBase;
-               } _CPKCL_REDMOD, *_PPKCL_REDMOD;
+               } CPKCL_REDMOD_STRUCT, *PPKCL_REDMOD_STRUCT;
 
 #define CPKCL_REDMOD_SETUP           0x0100
 #define CPKCL_REDMOD_REDUCTION       0x0200

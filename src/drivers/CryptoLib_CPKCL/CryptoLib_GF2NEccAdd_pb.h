@@ -8,7 +8,7 @@
     CryptoLib_GF2NEccAdd_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,7 +44,7 @@ Microchip or any third party.
 #define CRYPTOLIBGF2NECCADD_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_GF2NEccAdd {
+typedef struct struct_CPKCL_GF2NEccAdd {
                nu1       nu1ModBase;
                nu1       nu1CnsBase;
                u2        u2ModLength;
@@ -53,8 +53,8 @@ typedef struct _CPKCL_GF2NEccAdd {
                nu1       nu1PointBBase;
                nu1       nu1Workspace;
                nu1       nu1ABBase; 
-               nu1       __Padding1;                
-               } _CPKCL_GF2NECCADD, *_P_CPKCL_GF2NECCADD;
+               nu1       padding1;                
+               } CPKCL_GF2NECCADD_STRUCT, *P_CPKCL_GF2NECCADD_STRUCT;
 
 
 

@@ -8,7 +8,7 @@
     CryptoLib_Div_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,19 +44,19 @@ Microchip or any third party.
 #define CRYPTOLIB_DIV_PB_INCLUDED
 
 // Structure definition
-typedef struct _CPKCL_div {
+typedef struct struct_CPKCL_div {
                nu1       nu1ModBase;         // Denominator
                nu1       nu1WorkSpace;       // Workspace
                u2        u2ModLength;        // Denominator length
 
                nu1       nu1RBase;           // Result copy
-               u2        __Padding0;
+               u2        padding0;
                nu1       nu1QuoBase;         // Quotient
                nu1       nu1NumBase;         // Numerator, Remainder
-               u2        __Padding1;
-               u2        __Padding2;
+               u2        padding1;
+               u2        padding2;
                u2        u2NumLength;        // Numerator length
-               } _CPKCL_DIV, *_PPKCL_DIV;
+               } CPKCL_DIV_STRUCT, *PPKCL_DIV_STRUCT;
 
 // Options definition
 // None

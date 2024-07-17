@@ -8,7 +8,7 @@
     CryptoLib_CRT_pb.h
 
   Summary:
-    Crypto Framework Libarary interface file for hardware Cryptography.
+    Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
     This file provides an example for interfacing with the CPKCC module
@@ -44,19 +44,19 @@ Microchip or any third party.
 #define CRYPTOLIB_CRT_PB_INCLUDED
 
 // Structure definition
-typedef struct _CRYPTOLIB_crt {
+typedef struct struct_CRYPTOLIB_crt {
                nu1       nu1ModBase;         // Primes P and Q
-               nu1       __Padding0;
+               nu1       padding0;
                u2        u2ModLength;        // N=length of P or Q in bytes
 
                nu1       nu1XBase;           // x
                nu1       nu1PrecompBase;     // R, precomp
                u2        u2ExpLength;        // Exponent length in bytes
-               pfu1      pfu1ExpBase;         // Exponent
+               pfu1      pfu1ExpBase;        // Exponent
                u1        u1Blinding;         // Exponent blinding using a 32-bits Xor
-               u1        __Padding1;
-               u2        __Padding2;
-               } _CPKCL_CRT, *_PPKCL_CRT;
+               u1        padding1;
+               u2        padding2;
+               } CPKCL_CRT_STRUCT, *PPKCL_CRT_STRUCT;
 
 // Options definition
 // None

@@ -47,7 +47,23 @@ Microchip or any third party.
 #include "CryptoLib_mapping_pb.h"
 #include "CryptoLib_Headers_pb.h"
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 8.2 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_8_2_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 8.2" "H3_MISRAC_2012_R_8_2_DR_1"
+</#if>
 typedef void (*PPKCL_FUNC) (PCPKCL_PARAM);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 8.2"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRAC 2012 deviation block end */
 
 // JumpTable address + 1 as it is thumb code
 #define vCPKCLCsJumpTableStart                0x02020001

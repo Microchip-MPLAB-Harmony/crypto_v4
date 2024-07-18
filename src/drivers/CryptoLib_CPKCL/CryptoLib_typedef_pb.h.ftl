@@ -113,10 +113,26 @@ typedef s4                       *psm;       //
 
 typedef void                     *pvoid;
 typedef void                     *pfvoid;
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 8.2 deviated: 3. Deviation record ID - H3_MISRAC_2012_R_8_2_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 8.2" "H3_MISRAC_2012_R_8_2_DR_1"
+</#if>
 typedef void                     (*PFUNC)();
 typedef void                     (*PFUNC_PAR)(u1);
 
 typedef void ServiceFctType(pvoid);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 8.2"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRAC 2012 deviation block end */
 
 //==============================================================================
 //    Globals Define

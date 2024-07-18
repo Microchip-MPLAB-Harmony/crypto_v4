@@ -80,6 +80,15 @@ Microchip or any third party.
 #include "CryptoLib_JumpTable_pb.h"
 #include "CryptoLib_Services_pb.h"
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 6.1 deviated: 6. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
+</#if>
 typedef struct struct_CPKCL_status {
                u4             CarryIn        : 1;
                u4             CarryOut       : 1;
@@ -88,6 +97,13 @@ typedef struct struct_CPKCL_status {
                u4             Violation      : 1;
                u4            RFU            : (32-5);
                } CPKCL_STATUS,  * PCPKCL_STATUS, * PFCPKCL_STATUS;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRAC 2012 deviation block end */
 
 typedef struct struct_CPKCL_header {
                u1             u1Service;
@@ -122,15 +138,15 @@ typedef struct struct_CPKCL_param {
                     CPKCL_SMULT_STRUCT           CPKCL_Smult_s;
                     CPKCL_SQUARE_STRUCT          CPKCL_Square_s;
                     CPKCL_SWAP_STRUCT            CPKCL_Swap_s;
-
-// ECC
+                    
+                    // ECC
                     CPKCL_ZPECCADD_STRUCT               CPKCL_ZpEccAdd_s;
                     CPKCL_ZPECCDBL_STRUCT               CPKCL_ZpEccDbl_s;
                     CPKCL_ZPECCMUL_STRUCT               CPKCL_ZpEccMul_s;
                     CPKCL_ZPECDSAGENERATE_STRUCT        CPKCL_ZpEcDsaGenerate_s;
                     CPKCL_ZPECDSAVERIFY_STRUCT          CPKCL_ZpEcDsaVerify_s;
                     CPKCL_ZPECCONVPROJTOAFFINE_STRUCT         CPKCL_ZpEcConvProjToAffine_s;
-                    CPKCL_ZPECCONVAFFINETOPROJECTIVE_STRUCT   CPKCL_ZpEcConvAffineToProjective_s;
+                    CPKCL_ZPECCONVAFFINETOPROJECTIVE_STRUCT   CPKCL_ZpEcConvAffineToProj_s;
                     CPKCL_ZPECRANDOMIZECOORDINATE_STRUCT      CPKCL_ZpEcRandomiseCoordinate_s;
                     CPKCL_ZPECPOINTISONCURVE_STRUCT           CPKCL_ZpEcPointIsOnCurve_s;
 
@@ -141,8 +157,8 @@ typedef struct struct_CPKCL_param {
 					CPKCL_GF2NECDSAGENERATE_STRUCT              CPKCL_GF2NEcDsaGenerate_s;
 					CPKCL_GF2NECDSAVERIFY_STRUCT                CPKCL_GF2NEcDsaVerify_s;
 					CPKCL_GF2NECCONVPROJTOAFFINE_STRUCT         CPKCL_GF2NEcConvProjToAffine_s;
-					CPKCL_GF2NECCONVAFFINETOPROJECTIVE_STRUCT   CPKCL_GF2NEcConvAffineToProjective_s;
-					CPKCL_GF2NECRANDOMIZECOORDINATE_STRUCT	    CPKCL_GF2NEcRandomiseCoordinate_s;
+					CPKCL_GF2NECCONVAFFINETOPROJECTIVE_STRUCT   CPKCL_GF2NEcConvAffineToProj_s;
+					CPKCL_GF2NECRANDOMIZECOORDINATE_STRUCT	    CPKCL_GF2NEcRandomiseCoord_s;
 					CPKCL_GF2NECPOINTISONCURVE_STRUCT           CPKCL_GF2NEcPointIsOnCurve_s;
 
                     } P;
@@ -176,14 +192,13 @@ typedef struct struct_CPKCL_param {
 #define CPKCL_Square(a)                    (USE_PARAM)->P.CPKCL_Square_s.a
 #define CPKCL_Swap(a)                      (USE_PARAM)->P.CPKCL_Swap_s.a
 
-
 #define CPKCL_ZpEccAdd(a)                  (USE_PARAM)->P.CPKCL_ZpEccAdd_s.a
 #define CPKCL_ZpEccDbl(a)                  (USE_PARAM)->P.CPKCL_ZpEccDbl_s.a
 #define CPKCL_ZpEccMul(a)                  (USE_PARAM)->P.CPKCL_ZpEccMul_s.a
 #define CPKCL_ZpEcDsaGenerate(a)           (USE_PARAM)->P.CPKCL_ZpEcDsaGenerate_s.a
 #define CPKCL_ZpEcDsaVerify(a)             (USE_PARAM)->P.CPKCL_ZpEcDsaVerify_s.a
 #define CPKCL_ZpEcConvProjToAffine(a)      (USE_PARAM)->P.CPKCL_ZpEcConvProjToAffine_s.a
-#define CPKCL_ZpEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_ZpEcConvAffineToProjective_s.a
+#define CPKCL_ZpEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_ZpEcConvAffineToProj_s.a
 #define CPKCL_ZpEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_ZpEcRandomiseCoordinate_s.a
 #define CPKCL_ZpEcPointIsOnCurve(a)        (USE_PARAM)->P.CPKCL_ZpEcPointIsOnCurve_s.a
 
@@ -193,8 +208,8 @@ typedef struct struct_CPKCL_param {
 #define CPKCL_GF2NEcDsaGenerate(a)           (USE_PARAM)->P.CPKCL_GF2NEcDsaGenerate_s.a
 #define CPKCL_GF2NEcDsaVerify(a)             (USE_PARAM)->P.CPKCL_GF2NEcDsaVerify_s.a
 #define CPKCL_GF2NEcConvProjToAffine(a)      (USE_PARAM)->P.CPKCL_GF2NEcConvProjToAffine_s.a
-#define CPKCL_GF2NEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_GF2NEcConvAffineToProjective_s.a
-#define CPKCL_GF2NEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_GF2NEcRandomiseCoordinate_s.a
+#define CPKCL_GF2NEcConvAffineToProjective(a)(USE_PARAM)->P.CPKCL_GF2NEcConvAffineToProj_s.a
+#define CPKCL_GF2NEcRandomiseCoordinate(a)   (USE_PARAM)->P.CPKCL_GF2NEcRandomiseCoord_s.a
 #define CPKCL_GF2NEcPointIsOnCurve(a)        (USE_PARAM)->P.CPKCL_GF2NEcPointIsOnCurve_s.a
 
 // Services options helpers
@@ -235,6 +250,15 @@ typedef struct struct_CPKCL_param {
 #define REDUCTIONOPTION()          ((CPKCL(u2Option) & REDUCTIONOPTION_MASK) >> 8)
 #define SET_REDUCTIONOPTION(a)     (u2)((a) << 8)
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 20.7 deviated below. Deviation record ID - H3_MISRAC_2012_R_20_7_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block (deviate:1 "MISRA C-2012 Rule 20.7" "H3_MISRAC_2012_R_20_7_DR_1" )
+</#if>
 // Calling a cryptographic service
 #define vCPKCL_Process(a,b)     \
           {\
@@ -242,7 +266,13 @@ typedef struct struct_CPKCL_param {
           b->CPKCL_Header.u2Status  = CPKCL_COMPUTATION_NOT_STARTED;\
           vCPKCLCs##a(b);\
           }
-
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 20.7"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
 #endif // CRYPTOLIB_HEADERS_PB_INCLUDED
 
 

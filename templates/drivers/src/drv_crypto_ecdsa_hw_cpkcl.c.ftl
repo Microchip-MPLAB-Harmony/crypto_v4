@@ -144,6 +144,7 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CPKCL_ECC_DATA *pEccData,
 #pragma GCC diagnostic pop
 </#if>
 </#if>
+    /* MISRA C-2012 deviation block end */
     CPKCL_Rng(u2RLength) = u2OrderSize;
     CPKCL(u2Option) = CPKCL_RNG_GET;
     /* MISRA C-2012 deviation block start */

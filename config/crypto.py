@@ -154,6 +154,10 @@ def get_script_dir(follow_symlinks=True):
 
 ################################################################################
 ################################################################################
+
+""" 
+    Take list of file paths and returns list containing only file names  
+"""
 def TrimFileNameList(rawList) :
     newList = []
     for file in rawList:
@@ -222,20 +226,36 @@ def SetupCpkclDriverFiles(basecomponent) :
 
     print("CRYPTO:  setup CPKCC Driver Files %s"%(g.cpkclDriverPath))
     headerFiles = (modulePath + g.cpkclDriverPath + "*.h")
+    headerTemplateFiles = (modulePath + g.cpkclDriverPath + "*.h.ftl")  # TO-DO: move .ftl into templates
+                                                                        #        after reworking generation.
+                                                                        #        this is a quick fix.
     sourceFiles = (modulePath + g.cpkclDriverPath + "*.c")
+    sourceTemplateFiles = (modulePath + g.cpkclDriverPath + "*.c.ftl")
     print("CPKCC: path %s"%(modulePath + g.cpkclDriverPath)) 
 
     #All src/header files in the common/crypto directory
     hfl = glob.glob(headerFiles)
+    htfl = glob.glob(headerTemplateFiles)
     sfl = glob.glob(sourceFiles)
+    stfl = glob.glob(sourceTemplateFiles)
 
-    print("CPKCC: %d Headers"%(len(hfl)))
-    print("CPKCC: %d Source "%(len(sfl)))
+    print("CPKCC: %d Header"%(len(hfl)))
+    print("CPKCC: %d Header Template"%(len(htfl)))
+    print("CPKCC: %d Source"%(len(sfl)))
+    print("CPKCC: %d Source Template"%(len(stfl)))
     phfl = TrimFileNameList(glob.glob(headerFiles))
+    phtfl = TrimFileNameList(glob.glob(headerTemplateFiles))
     psfl = TrimFileNameList(glob.glob(sourceFiles))
+    pstfl = TrimFileNameList(glob.glob(sourceTemplateFiles))
 
+    print("Trimmed Header Files:", phfl)
+    print("Trimmed Header Template Files:", phtfl)
+    print("Trimmed Source Files:", psfl)
+    print("Trimmed Source Template Files:", pstfl)
     phfl_trim = phfl
+    phtfl_trim = phtfl
     psfl_trim = psfl
+    pstfl_trim = pstfl
 
     g.cpkclDriverFileSyms = []
 
@@ -244,28 +264,56 @@ def SetupCpkclDriverFiles(basecomponent) :
     #              srcPath, destPath, enabled, projectPath):
     projectPath = "config/" + configName + "/crypto/drivers/CryptoLib_CPKCL"
     dstPath = "crypto/drivers/CryptoLib_CPKCL/"  #Path Dest
+
+    # Handle .h
     for fileName in phfl_trim:
         #AddFileName(fileName, prefix, component, 
         #            srcPath, destPath, enabled, projectPath):
         print("CPKCL: Add %s"%(dstPath + fileName))
-        fileSym = AddFileName(fileName,                   #Filename 
-                         "cpkcc",                         #MCC Symbol Name Prefix
-                         basecomponent,                   #MCC Component
+        fileSym = AddFileName(fileName,                     #Filename 
+                         "cpkcc",                           #MCC Symbol Name Prefix
+                         basecomponent,                     #MCC Component
                          g.cpkclDriverPath,                 #Src Path
-                         dstPath,                         #Path Dest
-                         False,                            #Enabled
+                         dstPath,                           #Path Dest
+                         False,                             #Enabled
                          projectPath) #Project Path
         g.cpkclDriverFileSyms.append(fileSym)
 
-    projectPath = "config/" + configName + "/crypto/drivers/CryptoLib_CPKCL"
+    # Handle .h.ftl
+    for fileName in phtfl_trim:
+        fileName = fileName[:len(fileName) - 4]             # to avoid .ftl.ftl
+        print("CPKCL: Add %s"%(dstPath + fileName))
+        fileSym = AddMarkupFile(fileName,                   #Filename 
+                         "cpkcc",                           #MCC Symbol Name Prefix
+                         basecomponent,                     #MCC Component
+                         g.cpkclDriverPath,                 #Src Path
+                         dstPath,                           #Path Dest
+                         False,                             #Enabled
+                         projectPath) #Project Path
+        g.cpkclDriverFileSyms.append(fileSym)
+
+    # Handle .c
     for fileName in psfl_trim:
         print("CPKCL: Add %s"%(dstPath + fileName))
-        fileSym = AddFileName(fileName,                   #Filename    
-                         "cpkcc",                         #MCC Symbol Name Prefix
-                         basecomponent,                   #MCC Component
+        fileSym = AddFileName(fileName,                     #Filename    
+                         "cpkcc",                           #MCC Symbol Name Prefix
+                         basecomponent,                     #MCC Component
                          g.cpkclDriverPath,                 #Src Path
-                         dstPath,                         #Path Dest
-                         False,                            #Enabled
+                         dstPath,                           #Path Dest
+                         False,                             #Enabled
+                         projectPath) #Project Path
+        g.cpkclDriverFileSyms.append(fileSym)
+    
+    # Handle .c.ftl
+    for fileName in pstfl_trim:
+        fileName = fileName[:len(fileName) - 4]             # to avoid .ftl.ftl
+        print("CPKCL: Add %s"%(dstPath + fileName))
+        fileSym = AddMarkupFile(fileName,                   #Filename 
+                         "cpkcc",                           #MCC Symbol Name Prefix
+                         basecomponent,                     #MCC Component
+                         g.cpkclDriverPath,                 #Src Path
+                         dstPath,                           #Path Dest
+                         False,                             #Enabled
                          projectPath) #Project Path
         g.cpkclDriverFileSyms.append(fileSym)
 

@@ -74,24 +74,20 @@ def UpdateKasHwDriverFiles():
     #Enable/Disable Shared Driver files with ECDSA
     #TODO:  Add general shared driver test
     #NOTE:  Referencing  g.cryptoHwDsEcdsaEnabledSymbol  will break. Used try catch to avoid.
-    try:
-        if sameDriver:
-            # print(W"KAS ECDSA: %s" % (g.cryptoHwDsEcdsaEnabledSymbol))
-            # ("KAS ECDSA: %s" % (g.cryptoHwDsEcdsaEnabledSymbol.getSymbolByID("cryptoHwDsEcdsaEnabledSymbol")))
-            try:
-                symbol = g.cryptoHwDsEcdsaEnabledSymbol.getSymbolByID("cryptoHwDsEcdsaEnabledSymbol")
-                if symbol is not None:
-                    hwVal = g.cryptoHwDsEcdsaEnabledSymbol.getValue()
-                    hwVal = hwVal or g.cryptoHwKasEcdhEnabledSymbol.getValue()
-                else:
-                    hwVal = g.cryptoHwKasEcdhEnabledSymbol.getValue()
-            except Exception as e:
-                print("g.cryptoHwDsEcdsaEnabledSymbol not found: {}".format(e))
+    if sameDriver:
+        # print(W"KAS ECDSA: %s" % (g.cryptoHwDsEcdsaEnabledSymbol))
+        # ("KAS ECDSA: %s" % (g.cryptoHwDsEcdsaEnabledSymbol.getSymbolByID("cryptoHwDsEcdsaEnabledSymbol")))
+        try:
+            if g.cryptoHwDsEcdsaEnabledSymbol is None:
                 hwVal = g.cryptoHwKasEcdhEnabledSymbol.getValue()
-        else:
-            hwVal = g.cryptoHwKasEcdhEnabledSymbol.getValue()
-    except Exception as e:
-        print("sameDriver logic failed: {}".format(e))
+            else:
+                hwVal = g.cryptoHwDsEcdsaEnabledSymbol.getValue()
+                hwVal = hwVal or g.cryptoHwKasEcdhEnabledSymbol.getValue()
+        except Exception as e:
+            print("g.cryptoHwDsEcdsaEnabledSymbol not found: {}".format(e))
+            hwVal = g.cryptoHwDsEcdsaEnabledSymbol.getValue()
+            hwVal = hwVal or g.cryptoHwKasEcdhEnabledSymbol.getValue()
+    else:
         hwVal = g.cryptoHwKasEcdhEnabledSymbol.getValue()
 
     #CPKCC Shared ECDH HW Driver Files

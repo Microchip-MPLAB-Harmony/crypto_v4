@@ -927,12 +927,11 @@ print("CRYPTO: cryptoHwDsEcdsa Defines as None")
 #===============================================================================
 #KAS - Key Authorization
 kasMenu      = None
-
+cryptoKasEcdhEnabledSymbol     = "Uninitialized"
 cryptoHwKasEcdhSupport    = [
     ["CPKCC", "44163", "B", [],
      set(["HAVE_MCHP_CRYPTO_RSA_HW_CPKCC"])]  #PIC32CX MT
 ]
-cryptoKasEcdhEnabledSymbol     = "Uninitialized"
 cryptoHwKasEcdhSupported       = False
 cryptoHwKasEcdhEnabledSymbol   = None
 

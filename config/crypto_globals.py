@@ -407,16 +407,19 @@ cryptoEcdsaEnabledSymbol       = None
 
 #===============================================================================
 #DS - Digital Signing
-CONFIG_USE_DS                     = None
-cryptoDsEcdsaEnabledSymbol        = None
+CONFIG_USE_DS                   = None
+cryptoDsEcdsaEnabledSymbol      = None
+cryptoHwDsEcdsaSupport          = []
+cryptoHwDsEcdsaSupported        = False
+cryptoHwDsEcdsaEnabledSymbol    = None
 
 #===============================================================================
 #KAS - Key Authorization
-CONFIG_USE_KAS                    = None
-cryptoKasEcdhEnableSymbol         = None
-cryptoHwKasEcdhSupport    = []
-cryptoHwKasEcdhSupported       = False
-cryptoHwKasEcdhEnabledSymbol   = None
+CONFIG_USE_KAS                  = None
+cryptoKasEcdhEnabledSymbol      = None
+cryptoHwKasEcdhSupport          = []
+cryptoHwKasEcdhSupported        = False
+cryptoHwKasEcdhEnabledSymbol    = None
 
 #===============================================================================
 #TRNG

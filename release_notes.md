@@ -41,7 +41,7 @@
 - WOLFSSL_AES_EAX related build errors
 
 ### Known issues
-- Crypto v4 module disappears if removed and readded without restarting MPLAB® X IDE v6.20
+- MD5 does not work with compiler optimization-level >2.
 
 ### Development Tools
 - [MPLAB® X IDE v6.20](https://www.microchip.com/mplab/mplab-x-ide)

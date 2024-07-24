@@ -23,7 +23,7 @@ Refer to the following links for release notes, training materials, and interfac
 reference information.
 
 - [Release Notes](./release_notes.md)
-- [MPLAB® Harmony License](mplab_harmony_license.md)
+- [MPLAB® Harmony License](Microchip_SLA001.md)
 - [MPLAB® Harmony 3 Crypto v4 Documentation](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_cryptov4.x&redirect=true)
 
 # Contents Summary

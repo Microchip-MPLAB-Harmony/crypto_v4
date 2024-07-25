@@ -53,6 +53,9 @@ Microchip or any third party.
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
 #include "crypto/drivers/drv_crypto_sha_hw_6156.h"
 </#if>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>
+#include "crypto/drivers/drv_crypto_sha_hw_05346.h"
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************

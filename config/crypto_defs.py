@@ -68,6 +68,7 @@ hwDriverStrings = [
 "HAVE_MCHP_CRYPTO_SHA_HW_11105", #ATSAMV70Q20B
 "HAVE_MCHP_CRYPTO_SHA_HW_U2010", #ATSAME54P20A
 "HAVE_MCHP_CRYPTO_SHA_HW_6156",  #ATSAMA5D27
+"HAVE_MCHP_CRYPTO_SHA_HW_05346", #dsPIC33AK MP
 "HAVE_MCHP_CRYPTO_SHA_HW_U2803", #ATSAML11
 "HAVE_MCHP_CRYPTO_SHA_HW_03710", #PIC32CM Lx
 "HAVE_MCHP_CRYPTO_BLAKE_HW_HSM", #PIC32CZ CA90 
@@ -268,7 +269,9 @@ cryptoHwSha1Support = [
     [""" "SHA", "6156", "O", [],
        set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"]) """], #ATSAMA5D27
     [""" "SHA", "6156", "S", [],
-       set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"]) """] #PI32CX MT/ATSAM9X60
+       set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"]) """], #PI32CX MT/ATSAM9X60
+    [""" "SHA", "05346", "", [],
+       set(["HAVE_MCHP_CRYPTO_SHA_HW_05346"])"""] #dsPIC33AK MP
 ]
 cryptoHwSha1Supported     = False
 cryptoHwSha1EnabledSymbol = None
@@ -292,6 +295,8 @@ cryptoHwSha224Support = [
     ["SHA", "6156", "S", [],
      set(["HAVE_MCHP_CRYPTO_SHA_HW_6156",
           "HAVE_MCHP_CRYPTO_SHA_HW_6156"])],#PIC32CX MT/ATSAM9X60
+    ["SHA", "05346", "", [],
+     set(["HAVE_MCHP_CRYPTO_SHA_HW_05346"])], #dsPIC33AK MP
     ["IDAU", "U2803", "1.0.0", [],
      set(["HAVE_MCHP_CRYPTO_SHA_HW_U2803"])], #ATSAML11
     ["IDAU", "U2805", "1.0.0", [],
@@ -318,6 +323,8 @@ cryptoHwSha256Support = [
         set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])],  #ATSAMA5D27
     ["SHA", "6156", "S", [],
         set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])],  #PIC32CX MT/ATSAM9X60
+    ["SHA", "05346", "", [],
+        set(["HAVE_MCHP_CRYPTO_SHA_HW_05346"])], #dsPIC33AK MP
     ["IDAU", "U2803", "1.0.0", [],
         set(["HAVE_MCHP_CRYPTO_SHA_HW_U2803"])], #ATSAML11
     ["IDAU", "U2805", "1.0.0", [],
@@ -336,7 +343,9 @@ cryptoHwSha384Support = [
     ["SHA", "6156", "O", [],
         set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])], #ATSAMA5D27
     ["SHA", "6156", "S", [],
-        set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])] #PIC32CX MT/ATSAM9X60
+        set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])], #PIC32CX MT/ATSAM9X60
+    ["SHA", "05346", "", [],
+        set(["HAVE_MCHP_CRYPTO_SHA_HW_05346"])] #dsPIC33AK MP
 ]
 cryptoHwSha384Supported     = False
 cryptoHwSha384EnabledSymbol = None
@@ -349,7 +358,9 @@ cryptoHwSha512Support = [
     ["SHA", "6156", "O", [],
         set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])], #ATSAMA5D27
     ["SHA", "6156", "S", [],
-        set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])] #PIC32CX MT/ATSAM9X60
+        set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])], #PIC32CX MT/ATSAM9X60
+    ["SHA", "05346", "", [],
+        set(["HAVE_MCHP_CRYPTO_SHA_HW_05346"])] #dsPIC33AK MP
 ]
 cryptoHwSha512Supported          = False
 cryptoHwSha512EnabledSymbol      = None

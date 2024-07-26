@@ -255,7 +255,7 @@ static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
     crypto_Hash_Algo_E shaAlgorithm_en)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     CRYPTO_SHA_ALGO shaAlgo;
@@ -290,7 +290,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     uint32_t *localBuffer = NULL;
@@ -378,7 +378,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     uint32_t blockSizeBytes;
@@ -463,7 +463,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     CRYPTO_HASH_HW_CONTEXT shaCtx;

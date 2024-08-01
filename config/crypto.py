@@ -155,9 +155,8 @@ def get_script_dir(follow_symlinks=True):
 ################################################################################
 ################################################################################
 
-""" 
-    Take list of file paths and returns list containing only file names  
-"""
+#*******************************************************************************
+# Take list of file paths and returns list containing only file names with ext (no path)
 def TrimFileNameList(rawList) :
     newList = []
     for file in rawList:
@@ -175,45 +174,45 @@ def SetupCommonCryptoFiles(basecomponent) :
     configName = Variables.get("__CONFIGURATION_NAME")  # e.g. "default"$
 
     print("CRYPTO:  setup CC Files %s"%(modulePath))
-    commonCryptoHeaderFiles= (
-            modulePath +
-            "src/common_crypto/*.h")
-    commonCryptoSourceFiles     = (
-            modulePath +
-            "src/common_crypto/src/*.c")
+    commonCryptoHeaderFiles = (modulePath + "src/common_crypto/*.h")
+    commonCryptoSourceFiles = (modulePath + "src/common_crypto/src/*.c")
 
     #All src/header files in the common/crypto directory
     ccphfl = glob.glob(commonCryptoHeaderFiles)
     ccpsfl = glob.glob(commonCryptoSourceFiles)
 
-    ccphfl = TrimFileNameList(glob.glob(commonCryptoHeaderFiles))
-    ccpsfl = TrimFileNameList(glob.glob(commonCryptoSourceFiles))
+    ccphfl_trim = TrimFileNameList(glob.glob(commonCryptoHeaderFiles))
+    ccpsfl_trim = TrimFileNameList(glob.glob(commonCryptoSourceFiles))
 
-    ccphfl_trim = ccphfl
-    ccpsfl_trim = ccpsfl
+    print("CRYPTO: %d Header"%(len(ccphfl)))
+    print("CRYPTO: %d Source"%(len(ccpsfl)))
 
     #All src files in the wolfssl/wolfcrypt/src directory
     #--AddFileName(fileName, prefix, component, 
     #              srcPath, destPath, enabled, projectPath):
+    projectPath = "config/" + configName + "/crypto/common_crypto/"
+    dstPath = "crypto/common_crypto/"  #Path Dest
+
     for fileName in ccphfl_trim:
         #AddFileName(fileName, prefix, component, 
         #            srcPath, destPath, enabled, projectPath):
-        projectPath = "config/" + configName + "/crypto/common_crypto/"
         fileSym = AddFileName(fileName,                     #Filename 
                          "common_crypto",              #MCC Symbol Name Prefix
                          basecomponent,                #MCC Component
                          "src/common_crypto/",         #Src Path
-                         "crypto/common_crypto/",      #Dest Path
+                         dstPath,      #Dest Path
                          True,                         #Enabled
                          projectPath) #Project Path
 
     projectPath = "config/" + configName + "/crypto/common_crypto/src/"
+    dstPath = "crypto/common_crypto/src"  #Path Dest
+
     for fileName in ccpsfl_trim:
         fileSym = AddFileName(fileName,                     #Filename    
                          "common_crypto",              #MCC Symbol Name Prefix
                          basecomponent,                #MCC Component
                          "src/common_crypto/src/",     #Path Src
-                         "crypto/common_crypto/src/",  #Path Dest
+                         dstPath,  #Path Dest
                          True,                         #Enabled
                          projectPath)
 
@@ -226,9 +225,7 @@ def SetupCpkclDriverFiles(basecomponent) :
 
     print("CRYPTO:  setup CPKCC Driver Files %s"%(g.cpkclDriverPath))
     headerFiles = (modulePath + g.cpkclDriverPath + "*.h")
-    headerTemplateFiles = (modulePath + g.cpkclDriverPath + "*.h.ftl")  # TO-DO: move .ftl into templates
-                                                                        #        after reworking generation.
-                                                                        #        this is a quick fix.
+    headerTemplateFiles = (modulePath + g.cpkclDriverPath + "*.h.ftl")
     sourceFiles = (modulePath + g.cpkclDriverPath + "*.c")
     sourceTemplateFiles = (modulePath + g.cpkclDriverPath + "*.c.ftl")
     print("CPKCC: path %s"%(modulePath + g.cpkclDriverPath)) 
@@ -461,9 +458,9 @@ def instantiateComponent(cryptoComponent):
     #--------------------------------------------------------
     #Crypto Function Group Configuration Files (for API optimization)
 
-    #Locations of Configuration Files/Templates
+    #Locations of Crypto Configuration Files (.ftl and .h/.c)
     projectPath = "config/" + configName + "/crypto/common_crypto/"
-    srcPath     = "templates/common_crypto"
+    srcPath     = "src/common_crypto"
     dstPath     = "crypto/common_crypto"
 
     #TrustZone
@@ -492,14 +489,14 @@ def instantiateComponent(cryptoComponent):
     #--CONFIG_USE_HASH
     hm.SetupCryptoHashMenu(cryptoComponent)
 
-    #<config>/MCHP_Crypto_Hash_Config.h - API File
+    #<config>/MCHP_Crypto_Hash_Config.h - API File              creating hash config (can put in SetupCryptoHashMenu probably)
     #TODO:  Enable file gen Dependency on CONFIG_USE_HASH
     fileName    = "MCHP_Crypto_Hash_Config.h"
     ccHashConfigFile= cryptoComponent.createFileSymbol(
             "CC_API_HASH_CONFIG", None)
     ccHashConfigFile.setMarkup(True)
     ccHashConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccHashConfigFile.setOutputName(fileName)
     ccHashConfigFile.setDestPath("crypto/common_crypto/")
     ccHashConfigFile.setProjectPath(
@@ -529,7 +526,7 @@ def instantiateComponent(cryptoComponent):
             "CC_API_SYM_CONFIG", None)
     ccSymConfigFile.setMarkup(True)
     ccSymConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccSymConfigFile.setOutputName(fileName)
     ccSymConfigFile.setDestPath("crypto/common_crypto/")
     ccSymConfigFile.setProjectPath(
@@ -556,7 +553,7 @@ def instantiateComponent(cryptoComponent):
             "CC_API_AEAD_CONFIG", None)
     ccAeadConfigFile.setMarkup(True)
     ccAeadConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccAeadConfigFile.setOutputName(fileName)
     ccAeadConfigFile.setDestPath("crypto/common_crypto/")
     ccAeadConfigFile.setProjectPath(
@@ -585,7 +582,7 @@ def instantiateComponent(cryptoComponent):
             "CC_API_MAC_CONFIG", None)
     ccMacConfigFile.setMarkup(True)
     ccMacConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccMacConfigFile.setOutputName(fileName)
     ccMacConfigFile.setDestPath("crypto/common_crypto/")
     ccMacConfigFile.setProjectPath(
@@ -614,7 +611,7 @@ def instantiateComponent(cryptoComponent):
             "CC_API_KAS_CONFIG", None)
     ccKasConfigFile.setMarkup(True)
     ccKasConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccKasConfigFile.setOutputName(fileName)
     ccKasConfigFile.setDestPath("crypto/common_crypto/")
     ccKasConfigFile.setProjectPath(
@@ -643,7 +640,7 @@ def instantiateComponent(cryptoComponent):
             "CC_API_DS_CONFIG", None)
     ccDsConfigFile.setMarkup(True)
     ccDsConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccDsConfigFile.setOutputName(fileName)
     ccDsConfigFile.setDestPath("crypto/common_crypto/")
     ccDsConfigFile.setProjectPath(
@@ -672,7 +669,7 @@ def instantiateComponent(cryptoComponent):
             "CC_API_RNG_CONFIG", None)
     ccRngConfigFile.setMarkup(True)
     ccRngConfigFile.setSourcePath(
-            "templates/common_crypto/" + fileName + ".ftl")
+            "src/common_crypto/" + fileName + ".ftl")
     ccRngConfigFile.setOutputName(fileName)
     ccRngConfigFile.setDestPath("crypto/common_crypto/")
     ccRngConfigFile.setProjectPath(
@@ -1266,17 +1263,14 @@ def AddAlwaysOnFiles(cryptoComponent):
 
     #<config>/initialization.c - Add Driver Initialization code
     srcPath = "templates/system/system_initialize.c.ftl"
-    ccSystemInitFile = cryptoComponent.createFileSymbol(
-            "DRV_CC_SYS_INIT", None)
+    ccSystemInitFile = cryptoComponent.createFileSymbol("DRV_CC_SYS_INIT", None)
     ccSystemInitFile.setType("STRING")
     if (g.trustZoneSupported == True):
-        ccSystemInitFile.setOutputName(
-                "core.LIST_SYSTEM_INIT_SECURE_C_SYS_INITIALIZE_DRIVERS")
-        print("CRYPTO:  Adding (TZ) %s"%(srcPath))
+        ccSystemInitFile.setOutputName("core.LIST_SYSTEM_INIT_SECURE_C_SYS_INITIALIZE_DRIVERS")
         g.trustZoneFileIds.append(ccSystemInitFile.getID())
+        print("CRYPTO:  Adding (TZ) %s"%(srcPath))
     else:
-        ccSystemInitFile.setOutputName(
-                "core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_DRIVERS")
+        ccSystemInitFile.setOutputName("core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_DRIVERS")
         print("CRYPTO:  Adding %s"%(srcPath))
     ccSystemInitFile.setSourcePath(srcPath)
     ccSystemInitFile.setMarkup(True)

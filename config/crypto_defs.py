@@ -134,7 +134,7 @@ hwDriverDict = {
                                   "drv_crypto_trng_hw_6334.h",
                                   "drv_crypto_trng_hw_6334.c"]} }
 
-cpkclDriverPath     = "src/drivers/CryptoLib_CPKCL/"
+cpkclDriverPath     = "src/drivers/CPKCL/CryptoLib_CPKCL/"
 cpkclDriverFileSyms = []   #Extra files used by CPKCC driver
 
 #The dict list of file symbols loaded for each function based on the

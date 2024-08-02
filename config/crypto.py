@@ -817,8 +817,7 @@ def SetupHwDriverFiles(basecomponent):
     print("CRYPTO:  Adding HW Driver Files")
     configName  = Variables.get("__CONFIGURATION_NAME")  # e.g. "default"
     configPath  = "config/" + configName
-    srcPathDrv  = "src/drivers/"
-    mupPathDrv  = "templates/drivers/"
+    srcPathDrv  = "src/drivers/CPKCL/HwWrapper/"  # modify this to change where drivers are coming from
     dstPathDrv  = "crypto/drivers/"
     dstPathApi  = "crypto/common_crypto/"
     projPathDrv = "config/" + configName + "/crypto/drivers/"
@@ -860,7 +859,7 @@ def SetupHwDriverFiles(basecomponent):
                                               fileName,  #File Name 
                                               "",        #id prefix
                                               basecomponent, #Component
-                                              mupPathDrv + prePath,
+                                              srcPathDrv + prePath,
                                               dstPathDrv + prePath, False,
                                               projPathDrv + prePath)
                             else:
@@ -884,7 +883,7 @@ def SetupHwDriverFiles(basecomponent):
                                               fileName,  #File Name 
                                               "",        #id prefix
                                               basecomponent, #Component
-                                              mupPathDrv + prePath,
+                                              srcPathDrv + prePath,
                                               dstPathApi + prePath, False,
                                               projPathApi + prePath)
                             else:

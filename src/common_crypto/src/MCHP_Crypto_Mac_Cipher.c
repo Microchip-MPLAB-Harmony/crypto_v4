@@ -32,7 +32,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
 
 #ifdef CRYPTO_MAC_WC_ALGO_EN
-#include "crypto/common_crypto/MCHP_Crypto_Mac_WolfcryptWrapper.h"
+#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Mac_WolfcryptWrapper.h"
 #endif /* CRYPTO_MAC_WC_ALGO_EN */
 // *****************************************************************************
 // *****************************************************************************

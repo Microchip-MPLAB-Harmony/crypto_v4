@@ -30,7 +30,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_WolfcryptWrapper.h"
+#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Aead_WolfcryptWrapper.h"
 
 #include "wolfssl/wolfcrypt/error-crypt.h"
 

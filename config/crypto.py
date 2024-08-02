@@ -218,6 +218,50 @@ def SetupCommonCryptoFiles(basecomponent) :
 
 ################################################################################
 ################################################################################
+def SetupWolfCryptWrapperFiles(basecomponent) :
+    global modulePath
+
+    configName = Variables.get("__CONFIGURATION_NAME")  # e.g. "default"$
+
+    print("WOLFCRYPT:   setup WC Files %s"%(modulePath))
+
+    wolfCryptWrapperHeaderFiles = glob.glob(modulePath + "src/wolfcrypt/WolfCryptWrapper/*.h")
+    wolfCryptWrapperSourceFiles = glob.glob(modulePath + "src/wolfcrypt/WolfCryptWrapper/src/*.c")
+
+    wchf_trim = TrimFileNameList(wolfCryptWrapperHeaderFiles)
+    wcsf_trim = TrimFileNameList(wolfCryptWrapperSourceFiles)
+
+    print("WOLFCRYPT: %d Header"%(len(wolfCryptWrapperHeaderFiles)))
+    print("WOLFCRYPT: %d Source"%(len(wolfCryptWrapperSourceFiles)))
+   
+    # Add WolfCryptWrapper files (.h)
+    projectPath = "config/" + configName + "/crypto/wolfcrypt/"
+    srcPath     = "src/wolfcrypt/WolfCryptWrapper/"           #Src Path
+    dstPath     = "crypto/wolfcrypt/WolfCryptWrapper/"
+    for fileName in wchf_trim:
+        fileSym = AddFileName(fileName,          #Filename    
+                            "common_crypto",     #MCC Symbol Name Prefix
+                            basecomponent,     #MCC Component
+                            srcPath,             #Src Path
+                            dstPath,             #Dest Path
+                            True,                #Enabled
+                            projectPath)         #Project Path
+        
+    # Add WolfCryptWrapper files (.c)
+    projectPath = "config/" + configName + "/crypto/wolfcrypt/src/"
+    srcPath     = "src/wolfcrypt/WolfCryptWrapper/src/"           #Src Path
+    dstPath     = "crypto/wolfcrypt/WolfCryptWrapper/src/"
+    for fileName in wcsf_trim:
+        fileSym = AddFileName(fileName,   #Filename    
+                            "common_crypto",     #MCC Symbol Name Prefix
+                            basecomponent,     #MCC Component
+                            srcPath,             #Path Src
+                            dstPath,             #Path Dest
+                            True,                #Enabled
+                            projectPath)         #Project Path
+
+################################################################################
+################################################################################
 def SetupCpkclDriverFiles(basecomponent) :
     global modulePath
 
@@ -313,7 +357,6 @@ def SetupCpkclDriverFiles(basecomponent) :
                          False,                             #Enabled
                          projectPath) #Project Path
         g.cpkclDriverFileSyms.append(fileSym)
-
 
 #################################################################################
 #### Function to Instantiate the Harmony 3 TM Component - dynamic    
@@ -433,8 +476,9 @@ def instantiateComponent(cryptoComponent):
 
     #Crypto API Files - to configure Wolfcrypt for SW implementations
     #INCLUDE FILE to configure WOLFCRYPT with the HAVE_CONFIG_H 
-    #project define.
+    #project define. 
     projectPath = "config/" + configName + "/crypto/wolfcrypt/"
+
     srcPath     = "src/wolfcrypt/"             #Src Path
     dstPath     = "crypto/wolfcrypt/"
     fileSym = AddFileName("config.h",          #Filename    
@@ -454,6 +498,9 @@ def instantiateComponent(cryptoComponent):
                           dstPath,             #Path Dest
                           True,                #Enabled
                           projectPath)         #Project Path
+    
+    #Add Wolfcrypt Wrappers to the project
+    SetupWolfCryptWrapperFiles(cryptoComponent)
 
     #--------------------------------------------------------
     #Crypto Function Group Configuration Files (for API optimization)

@@ -29,8 +29,8 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_DigSign_WolfcryptWrapper.h"
-#include "crypto/common_crypto/MCHP_Crypto_Common_WolfcryptWrapper.h"
+#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_DigSign_WolfcryptWrapper.h"
+#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Common_WolfcryptWrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
 #ifdef CRYPTO_DIGISIGN_WC_ECDSA_EN

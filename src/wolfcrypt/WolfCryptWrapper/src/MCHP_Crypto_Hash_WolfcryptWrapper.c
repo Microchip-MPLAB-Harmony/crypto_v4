@@ -29,7 +29,7 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash_WolfcryptWrapper.h"
+#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Hash_WolfcryptWrapper.h"
 
 #include "wolfssl/wolfcrypt/error-crypt.h"
 

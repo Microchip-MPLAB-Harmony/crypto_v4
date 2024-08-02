@@ -32,7 +32,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
 
 #ifdef CRYPTO_KAS_WC_ALGO_EN
-#include "crypto/common_crypto/MCHP_Crypto_Kas_WolfcryptWrapper.h"
+#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Kas_WolfcryptWrapper.h"
 #endif /* CRYPTO_KAS_WC_ALGO_EN */
 
 #ifdef CRYPTO_KAS_HW_ALGO_EN

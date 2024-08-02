@@ -31,7 +31,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
 #ifdef CRYPTO_AEAD_WC_ALGO_EN
-#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Aead_WolfcryptWrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Aead_WolfcryptWrapper.h"
 #endif /* CRYPTO_AEAD_WC_ALGO_EN */
 
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN

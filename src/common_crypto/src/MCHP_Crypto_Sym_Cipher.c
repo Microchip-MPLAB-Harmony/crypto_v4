@@ -31,7 +31,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
 
 #ifdef CRYPTO_SYM_WC_ALGO_EN
-#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Sym_WolfcryptWrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Sym_WolfcryptWrapper.h"
 #endif /* CRYPTO_SYM_WC_ALGO_EN */
 
 #ifdef CRYPTO_SYM_HW_ALGO_EN

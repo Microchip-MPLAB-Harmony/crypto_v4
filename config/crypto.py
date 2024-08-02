@@ -235,9 +235,9 @@ def SetupWolfCryptWrapperFiles(basecomponent) :
     print("WOLFCRYPT: %d Source"%(len(wolfCryptWrapperSourceFiles)))
    
     # Add WolfCryptWrapper files (.h)
-    projectPath = "config/" + configName + "/crypto/wolfcrypt/"
-    srcPath     = "src/wolfcrypt/WolfCryptWrapper/"           #Src Path
-    dstPath     = "crypto/wolfcrypt/WolfCryptWrapper/"
+    projectPath = "config/" + configName + "/crypto/common_crypto/" # File location in proj folder
+    srcPath     = "src/wolfcrypt/WolfCryptWrapper/"                 # File location in crypto_v4 repo
+    dstPath     = "crypto/common_crypto/"                           # File location in MPLABX
     for fileName in wchf_trim:
         fileSym = AddFileName(fileName,          #Filename    
                             "common_crypto",     #MCC Symbol Name Prefix
@@ -248,9 +248,9 @@ def SetupWolfCryptWrapperFiles(basecomponent) :
                             projectPath)         #Project Path
         
     # Add WolfCryptWrapper files (.c)
-    projectPath = "config/" + configName + "/crypto/wolfcrypt/src/"
+    projectPath = "config/" + configName + "/crypto/common_crypto/src/"
     srcPath     = "src/wolfcrypt/WolfCryptWrapper/src/"           #Src Path
-    dstPath     = "crypto/wolfcrypt/WolfCryptWrapper/src/"
+    dstPath     = "crypto/common_crypto/src/"
     for fileName in wcsf_trim:
         fileSym = AddFileName(fileName,   #Filename    
                             "common_crypto",     #MCC Symbol Name Prefix

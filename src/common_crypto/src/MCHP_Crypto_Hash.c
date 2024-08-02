@@ -31,7 +31,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Hash_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash.h"
 #ifdef CRYPTO_HASH_WC_ALGO_EN
-#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Hash_WolfcryptWrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Hash_WolfcryptWrapper.h"
 #endif /* CRYPTO_HASH_WC_ALGO_EN */
 
 #ifdef CRYPTO_HASH_HW_ALGO_EN

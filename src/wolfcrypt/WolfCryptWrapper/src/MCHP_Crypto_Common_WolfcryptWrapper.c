@@ -29,7 +29,7 @@
 // *****************************************************************************
 
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Common_WolfcryptWrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Common_WolfcryptWrapper.h"
 #include "configuration.h"
 
 #ifdef CRYPTO_DIGISIGN_ALGO_EN

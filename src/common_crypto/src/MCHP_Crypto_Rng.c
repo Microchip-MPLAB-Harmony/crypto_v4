@@ -33,7 +33,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Rng_Config.h"
 
 #ifdef CRYPTO_RNG_WC_PRNG_EN
-#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Rng_WolfcryptWrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Rng_WolfcryptWrapper.h"
 #endif /* CRYPTO_RNG_WC_PRNG_EN */
 
 #ifdef CRYPTO_RNG_HW_TRNG_EN

@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
-#include "crypto/wolfcrypt/WolfCryptWrapper/MCHP_Crypto_Sym_WolfcryptWrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Sym_WolfcryptWrapper.h"
 
 #ifndef NO_AES
 #include "wolfssl/wolfcrypt/aes.h"

@@ -284,19 +284,10 @@ def SetupCpkclDriverFiles(basecomponent) :
     print("CPKCC: %d Header Template"%(len(htfl)))
     print("CPKCC: %d Source"%(len(sfl)))
     print("CPKCC: %d Source Template"%(len(stfl)))
-    phfl = TrimFileNameList(glob.glob(headerFiles))
-    phtfl = TrimFileNameList(glob.glob(headerTemplateFiles))
-    psfl = TrimFileNameList(glob.glob(sourceFiles))
-    pstfl = TrimFileNameList(glob.glob(sourceTemplateFiles))
-
-    print("Trimmed Header Files:", phfl)
-    print("Trimmed Header Template Files:", phtfl)
-    print("Trimmed Source Files:", psfl)
-    print("Trimmed Source Template Files:", pstfl)
-    phfl_trim = phfl
-    phtfl_trim = phtfl
-    psfl_trim = psfl
-    pstfl_trim = pstfl
+    phfl_trim = TrimFileNameList(hfl)
+    phtfl_trim = TrimFileNameList(htfl)
+    psfl_trim = TrimFileNameList(sfl)
+    pstfl_trim = TrimFileNameList(stfl)
 
     g.cpkclDriverFileSyms = []
 
@@ -836,7 +827,7 @@ def SetupHwDriverFiles(basecomponent):
 
         #Check for Device Hardware Support functions
         if ((dKey in g.cryptoHwDevSupport) or (dKey in g.cryptoHwIdSupport)):
-            print("CRYPTO: Supported Device Crypto HW Key %s:  "%(dKey))
+            print("CRYPTO: Supported Device Crypto HW Key (dKey) %s:  "%(dKey))
 
             if (dKey == "CPKCC"):
                 print("CRYPTO: Use CPKCC Driver Files ")

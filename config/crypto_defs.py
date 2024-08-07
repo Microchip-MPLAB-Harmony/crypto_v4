@@ -88,6 +88,8 @@ hwDriverStrings = [
 "HAVE_MCHP_CRYPTO_HW_U2805",     #PIC32CM
 "HAVE_MCHP_CRYPTO_HW_03710"]
 
+# will need to add more for HSM 
+
 #HW Driver Enable Symbol
 hwDriverSymbol      = []   #Enabled HW Drivers
 hwDriverFileSymbols = []   #Files to Generate
@@ -133,6 +135,12 @@ hwDriverDict = {
                                   "MCHP_Crypto_Rng_HwWrapper.c.ftl",
                                   "drv_crypto_trng_hw_6334.h",
                                   "drv_crypto_trng_hw_6334.c"]} }
+
+                # add HSM as an entry like done for CPKCC
+                # load wrappers here and then common files below similar to CPKCC (unless i wanna rework)
+
+                # update the dict being used in each menu option var ex. cryptoHw*Support and check against the switch
+                # crypto.py wil fill hwDriverFileDict as it goes thru
 
 cpkclDriverPath     = "src/drivers/CPKCL/CryptoLib_CPKCL/"
 cpkclDriverFileSyms = []   #Extra files used by CPKCC driver
@@ -203,8 +211,6 @@ trustZoneFileIds = []      #List of file ids
 #HW TRNG
 # [ <module name>, <module #>, <module version>, [], [<list of project defines>]]
 cryptoHwTrngSupport = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_TRNG_HW_HSM"])], #PIC32CZ CA90 
     ["RNG" ,"00159",      "", [],
        set([])],                                           #PIC32MZ EF
     ["TRNG", "6334",     "G", [],
@@ -266,7 +272,7 @@ cryptoHwSha1Support = [
        set(["HAVE_MCHP_CRYPTO_SHA_HW_11105",
             "HAVE_MCHP_CRYPTO_SHA_HW_U2010"])], #ATSAME54P20A
     [""" "SHA", "6156", "O", [],
-       set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"]) """], #ATSAMA5D27
+       set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"]) """], #ATSAMA5D27              these are commented out because SHA1 doesn't have HW support on mistral
     [""" "SHA", "6156", "S", [],
        set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"]) """] #PI32CX MT/ATSAM9X60
 ]

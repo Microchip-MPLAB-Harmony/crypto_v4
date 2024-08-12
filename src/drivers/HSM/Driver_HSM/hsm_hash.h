@@ -154,8 +154,8 @@ typedef struct
 {
 	st_Hsm_MailBoxHeader        mailBoxHdr_st;
 	st_Hsm_Hash_CmdHeader		cmdHeader_st;
-	st_Hsm_SgDmaDescriptor      inSgDmaDes_st[2]; //not used in the update cmd
-	st_Hsm_SgDmaDescriptor      outSgDmaDes_st[1]; //not used in the update cmd
+	st_Hsm_SgDmaDescriptor      inSgDmaDes_st[2] __attribute__((aligned(4)));//not used in the update cmd
+	st_Hsm_SgDmaDescriptor      outSgDmaDes_st[1] __attribute__((aligned(4)));//not used in the update cmd
 	uint32_t					inputLenParm1;
 	st_Hsm_Hash_UpdateCmdParam2 updateCmdParm2_st;
 }st_Hsm_Hash_UpdateCmd;
@@ -164,10 +164,11 @@ typedef struct
 {
 	st_Hsm_MailBoxHeader        mailBoxHdr_st;
 	st_Hsm_Hash_CmdHeader		cmdHeader_st;
-	st_Hsm_SgDmaDescriptor      inSgDmaDes_st;
+	st_Hsm_SgDmaDescriptor      inSgDmaDes_st[2] __attribute__((aligned(4)));
 	st_Hsm_SgDmaDescriptor      outSgDmaDes_st;
 	uint32_t					inputLenParm1;
 	st_Hsm_Hash_FinalCmdParam2 	finalCmdParam2_st;
+    uint32_t                    totalDataLenPara3;
 }st_Hsm_Hash_FinalCmd;
 
 typedef struct

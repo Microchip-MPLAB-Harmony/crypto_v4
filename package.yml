@@ -12,7 +12,7 @@ package:
       version: "v3.13.1"
     - name: "wolfssl"
       type: "package"
-      version: "v5.7.0-stable"
+      version: "v5.7.0"
     - name: "zlib"
       type: "package"
       version: "v1.2.11"

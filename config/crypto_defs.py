@@ -109,40 +109,72 @@ hwDriverFileSymbols = []   #Files to Generate
 #
 ################################################################################
 hwDriverDict = {
-                "CPKCC": { "RSA":["drv_crypto_rsa_hw_cpkcl.h",   #TODO: Not Implemented
-                                  "drv_crypto_rsa_hw_cpkcl.c"],
-                           "ECC":["drv_crypto_ecc_hw_cpkcl.h",       #Used by ECDSA/ECDH
-                                  "drv_crypto_ecc_hw_cpkcl.c.ftl"],
-                         "ECDSA":["MCHP_Crypto_DigSign_HwWrapper.h",
-                                  "MCHP_Crypto_DigSign_HwWrapper.c",
-                                  "drv_crypto_ecdsa_hw_cpkcl.h",
-                                  "drv_crypto_ecdsa_hw_cpkcl.c.ftl"],
-                         "ECDH":["MCHP_Crypto_Kas_HwWrapper.h",
-                                  "MCHP_Crypto_Kas_HwWrapper.c",
-                                  "drv_crypto_ecdh_hw_cpkcl.h",
-                                  "drv_crypto_ecdh_hw_cpkcl.c.ftl"]},
-                 "6149": {"AES":["MCHP_Crypto_Sym_HwWrapper.h",
-                                 "MCHP_Crypto_Sym_HwWrapper.c.ftl",  #Include AEAD Function
-                                 "MCHP_Crypto_Aead_HwWrapper.h",     #
-                                 "MCHP_Crypto_Aead_HwWrapper.c.ftl", # 
-                                 "drv_crypto_aes_hw_6149.h.ftl",
-                                 "drv_crypto_aes_hw_6149.c.ftl"] },
-                 "6156": {"SHA":["MCHP_Crypto_Hash_HwWrapper.h",
-                                 "MCHP_Crypto_Hash_HwWrapper.c.ftl",
-                                 "drv_crypto_sha_hw_6156.h.ftl",
-                                 "drv_crypto_sha_hw_6156.c.ftl"] },
-                 "6334": {"TRNG":["MCHP_Crypto_Rng_HwWrapper.h",
-                                  "MCHP_Crypto_Rng_HwWrapper.c.ftl",
-                                  "drv_crypto_trng_hw_6334.h",
-                                  "drv_crypto_trng_hw_6334.c"]} }
+        # dKey
+        "CPKCC": { # fDict
+            # fKey
+            "RSA": [
+                "drv_crypto_rsa_hw_cpkcl.h",  # TODO: Not Implemented
+                "drv_crypto_rsa_hw_cpkcl.c"
+            ],
+            "ECC": [
+                "drv_crypto_ecc_hw_cpkcl.h",  # Used by ECDSA/ECDH
+                "drv_crypto_ecc_hw_cpkcl.c.ftl"
+            ],
+            "ECDSA": [
+                "MCHP_Crypto_DigSign_HwWrapper.h",
+                "MCHP_Crypto_DigSign_HwWrapper.c",
+                "drv_crypto_ecdsa_hw_cpkcl.h",
+                "drv_crypto_ecdsa_hw_cpkcl.c.ftl"
+            ],
+            "ECDH": [
+                "MCHP_Crypto_Kas_HwWrapper.h",
+                "MCHP_Crypto_Kas_HwWrapper.c",
+                "drv_crypto_ecdh_hw_cpkcl.h",
+                "drv_crypto_ecdh_hw_cpkcl.c.ftl"
+            ]
+        },
+        "6149": {
+            "AES": [
+                "MCHP_Crypto_Sym_HwWrapper.h",
+                "MCHP_Crypto_Sym_HwWrapper.c.ftl",  # Include AEAD Function
+                "MCHP_Crypto_Aead_HwWrapper.h",
+                "MCHP_Crypto_Aead_HwWrapper.c.ftl",
+                "drv_crypto_aes_hw_6149.h.ftl",
+                "drv_crypto_aes_hw_6149.c.ftl"
+            ]
+        },
+        "6156": {
+            "SHA": [
+                "MCHP_Crypto_Hash_HwWrapper.h",
+                "MCHP_Crypto_Hash_HwWrapper.c.ftl",
+                "drv_crypto_sha_hw_6156.h.ftl",
+                "drv_crypto_sha_hw_6156.c.ftl"
+            ]
+        },
+        "6334": {
+            "TRNG": [
+                "MCHP_Crypto_Rng_HwWrapper.h",
+                "MCHP_Crypto_Rng_HwWrapper.c.ftl",
+                "drv_crypto_trng_hw_6334.h",
+                "drv_crypto_trng_hw_6334.c"
+            ]
+        },
+        "HSM": {
+            "SHA": [
+                "MCHP_Crypto_Hash_HwWrapper.h",
+                "hsm_hash.h",
+                "hsm_hash.c"
+            ]
+        }
+    }
 
-                # add HSM as an entry like done for CPKCC
-                # load wrappers here and then common files below similar to CPKCC (unless i wanna rework)
+# add HSM as an entry like done for CPKCC
+# load wrappers here and then common files below similar to CPKCC (unless i wanna rework)
 
-                # update the dict being used in each menu option var ex. cryptoHw*Support and check against the switch
-                # crypto.py wil fill hwDriverFileDict as it goes thru
+# update the dict being used in each menu option var ex. cryptoHw*Support and check against the switch
+# crypto.py wil fill hwDriverFileDict as it goes thru
 
-cpkclDriverPath     = "src/drivers/CPKCL/CryptoLib_CPKCL/"
+cpkclDriverPath     = "src/drivers/CPKCC/"
 cpkclDriverFileSyms = []   #Extra files used by CPKCC driver
 
 #The dict list of file symbols loaded for each function based on the
@@ -262,8 +294,8 @@ cryptoHwRipeMd160EnabledSymbol          = None
 #----------------------------
 #HW HASH SHA1
 cryptoHwSha1Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
     ["CRYPTO", "00158", "", [],
        set([])], #PIC32MZ EF
     ["ICM", "11105", "H", [],

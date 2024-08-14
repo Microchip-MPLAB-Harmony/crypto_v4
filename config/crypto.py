@@ -151,6 +151,11 @@ def get_script_dir(follow_symlinks=True):
         path = os.path.realpath(path)
     return os.path.dirname(path)
 
+def get_drivers_dir():
+    script_dir = get_script_dir()
+    drivers_dir = os.path.join(script_dir, '../src/drivers')
+    drivers_dir = os.path.normpath(drivers_dir)  # Normalize the path
+    return drivers_dir
 
 ################################################################################
 ################################################################################
@@ -803,12 +808,12 @@ def ScanHardware(list):
 #--HW Driver Symbols (
 #  (TODO:  Drivers only for HW available and the HW function is selected)
 ################################################################################
-def SetupHwDriverFiles(basecomponent):
+def SetupHwDriverFiles(basecomponent):  
 
     print("CRYPTO:  Adding HW Driver Files")
     configName  = Variables.get("__CONFIGURATION_NAME")  # e.g. "default"
     configPath  = "config/" + configName
-    srcPathDrv  = "src/drivers/CPKCL/HwWrapper/"  # modify this to change where drivers are coming from
+    srcPathDrv  = "src/drivers/"  # modify this to change where drivers are coming from
     dstPathDrv  = "crypto/drivers/"
     dstPathApi  = "crypto/common_crypto/"
     projPathDrv = "config/" + configName + "/crypto/drivers/"
@@ -819,100 +824,151 @@ def SetupHwDriverFiles(basecomponent):
     print("CRYPTO HW: %d Driver IDs: "%(len(g.cryptoHwIdSupport)))
     print(g.cryptoHwIdSupport)
 
-    #create all possible driver files for this HW
-    #--Later scan to see what HW functions are enabled
-    #--Create Dict List the driver used for each function
-    print("CRYPTO: Driver File Symbols Created:")
-    for [dKey, fDict] in g.hwDriverDict.items():  #Driver File Dict
+    # Store matches from operation below
+    paired_paths_and_filenames = []
 
-        #Check for Device Hardware Support functions
+    # Scan directory to create a set of files that match the HW
+    # for this specific board.
+    for dKey, fDict in g.hwDriverDict.items():
+        print("CRYPTO HW:  Assembling compatiblity set for driver key %s... "%(dKey))
+
+        # Get drivers directory
+        drivers_dir = get_drivers_dir()  # ~/drivers
+
+        # Check if the device hardware support is present
         if ((dKey in g.cryptoHwDevSupport) or (dKey in g.cryptoHwIdSupport)):
-            print("CRYPTO: Supported Device Crypto HW Key (dKey) %s:  "%(dKey))
 
+            # Define the subpath to check for
+            dKey_path = os.path.join("drivers", dKey)
+
+            # Traverse the directory structure
+            for root, dirs, files in os.walk(drivers_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    if dKey_path in file_path:
+                        # Extract the path starting with "src" and the filename
+                        src_path = os.path.relpath(root, start=drivers_dir)
+                        src_path = os.path.join("src/drivers", src_path)
+
+                        # Ensure the path ends with a slash
+                        if not src_path.endswith(os.sep):
+                            src_path += os.sep
+
+                        filename = os.path.basename(file_path)
+                        
+                        # Pair the path and filename together
+                        paired_paths_and_filenames.append((src_path, filename))
+
+    print("CRYPTO HW:  Assembled compatibility list: ")
+    for path in paired_paths_and_filenames:
+        print(path)
+
+    for dKey, fDict in g.hwDriverDict.items():  # Driver File Dict
+
+        if ((dKey in g.cryptoHwDevSupport) or (dKey in g.cryptoHwIdSupport)):
+        
+            # Special case for CryptoLib_CPKCL folder
             if (dKey == "CPKCC"):
-                print("CRYPTO: Use CPKCC Driver Files ")
+                print("CRYPTO HW: Use CPKCC Driver Files ")
                 SetupCpkclDriverFiles(basecomponent)
+                
+            # Avoid special case for HSM and subsequent drivers
+            # elif (dKey == "HSM"):
+            #     print("CRYPTO:  Use HSM Driver Files ")
+            #     # SetupHsmDriverFiles(basecomponent)
+            #     srcPathDrv = "src/drivers/HSM/HwWrapper/"
 
-            fileNames = set([])
-            for fKey in fDict:       #Driver Function Key to file Dict
-                for fileName in fDict[fKey]:
+            paired_paths_and_filenames_set = set(paired_paths_and_filenames)    # Make into set for O(1)
 
-                    #Check for duplicate
-                    if (fileNames.issuperset([fileName]) == False):
+            fileNames = set([])                             # Track added files for to avoid duplicates
 
-                        #HW Driver Files
-                        if (fileName[:4] == "drv_"):
-                            if fileName.endswith(".ftl"):
-                                fileName = fileName[:len(fileName) - 4]
-                                #NOTE:  standard files in src/drivers
-                                prePath = "src/" if (fileName.endswith(".c")) else ""
-                                fileSym = AddMarkupFile(
-                                              fileName,  #File Name 
-                                              "",        #id prefix
-                                              basecomponent, #Component
-                                              srcPathDrv + prePath,
-                                              dstPathDrv + prePath, False,
-                                              projPathDrv + prePath)
+            # Loop over filenames in fDict to see if they exist in paired_paths_and_filenames_set
+            for fileCategory, fileList in fDict.items():
+                print("CRYPTO HW:  Checking category %s: " % (fileCategory))
+
+                for fileName in fileList:
+                    # Check if the fileName exists in the paired_paths_and_filenames set
+                    matching_path = next((path for path, name in paired_paths_and_filenames_set if name == fileName), None)
+
+                    if matching_path:
+                        print("CRYPTO HW: Found matching file %s in paired_paths_and_filenames_set with path %s" %(fileName, matching_path))
+
+                        # Check for duplicate adds
+                        if fileName not in fileNames:
+
+                            #HW Driver Files
+                            if fileName.startswith(("drv_", "hsm_")):
+                                if fileName.endswith(".ftl"):
+                                    fileName = fileName[:-4] # Strip .ftl from the end
+                                    #NOTE:  standard files in src/drivers
+                                    prePath = "src/" if (fileName.endswith(".c")) else ""
+                                    fileSym = AddMarkupFile(
+                                                fileName,  #File Name 
+                                                "",        #id prefix
+                                                basecomponent, #Component
+                                                matching_path,
+                                                dstPathDrv + prePath, False,
+                                                projPathDrv + prePath)
+                                else:
+                                    #NOTE:  standard files in src/drivers
+                                    prePath = "src/" if fileName.endswith(".c") else ""
+                                    fileSym = AddFileName(
+                                                fileName,  #File Name 
+                                                "",        #id prefix
+                                                basecomponent, #Component
+                                                matching_path,
+                                                dstPathDrv + prePath, False,
+                                                projPathDrv + prePath)
+                            #API Files
+                            elif (fileName.startswith("MCHP")):
+                                if fileName.endswith(".ftl"):
+                                    fileName = fileName[:-4] # Strip .ftl from the end
+                                    prePath = "src/" if fileName.endswith(".c") else ""
+                                    fileSym = AddMarkupFile(
+                                                fileName,  #File Name 
+                                                "",        #id prefix
+                                                basecomponent, #Component
+                                                matching_path,
+                                                dstPathApi + prePath, False,
+                                                projPathApi + prePath)
+                                else:
+                                    prePath = "src/" if fileName.endswith(".c") else ""
+                                    fileSym = AddFileName(
+                                                fileName,  #File Name 
+                                                "",        #id prefix
+                                                basecomponent, #Component
+                                                matching_path,
+                                                dstPathApi + prePath, False,
+                                                projPathApi + prePath)
                             else:
-                                #NOTE:  standard files in src/drivers
-                                prePath = "src/" if fileName.endswith(".c") else ""
-                                fileSym = AddFileName(
-                                              fileName,  #File Name 
-                                              "",        #id prefix
-                                              basecomponent, #Component
-                                              srcPathDrv + prePath,
-                                              dstPathDrv + prePath, False,
-                                              projPathDrv + prePath)
-                        #API Files
-                        elif (fileName[:4] == "MCHP"):
-                            if fileName.endswith(".ftl"):
-                                fileName = fileName[:len(fileName) - 4]
-                                prePath = "src/" if fileName.endswith(".c") else ""
-                                #NOTE:  API markup files in templates/driver
-                                #       --but generated to src/common_crypto
-                                fileSym = AddMarkupFile(
-                                              fileName,  #File Name 
-                                              "",        #id prefix
-                                              basecomponent, #Component
-                                              srcPathDrv + prePath,
-                                              dstPathApi + prePath, False,
-                                              projPathApi + prePath)
-                            else:
-                                prePath = "src/" if fileName.endswith(".c") else ""
-                                fileSym = AddFileName(
-                                              fileName,  #File Name 
-                                              "",        #id prefix
-                                              basecomponent, #Component
-                                              srcPathDrv + prePath,
-                                              dstPathApi + prePath, False,
-                                              projPathApi + prePath)
+                                print("CRYPTO HW: Unknown ""%s"""%(fileName))
+                                continue
+
+                            #New File Added
+                            fileNames.update([fileName]) #Add new file
+                                                #Add the symbol to the hwDriverFile Dict
+
+                            #Add the file Symbol to the dict list of Driver file names for
+                            #that function key (fileCategory)
+                            #--this dict used by function menu selection to enable/disable driver
+                            #  file generation
+                            g.hwDriverFileDict[fileCategory].append(fileSym)
+                            print(" [%s] %s"%(fileCategory,fileSym.getOutputName()))
+                            fileNames.update([fileName]) #Add new file
                         else:
-                            print("CRYPTO HW: Unknown ""%s"""%(fileName))
-                            continue
+                            print("CRYPTO HW:  Duplicate ""%s"""%(fileName))
+    else:
+        print("CRYPTO HW:  This driver key (%s) is not supported by this HW: "%(dKey))
 
-                        #New File Added
-                        fileNames.update([fileName]) #Add new file
-                                            #Add the symbol to the hwDriverFile Dict
 
-                        #Add the file Symbol to the dict list of Driver file names for
-                        #that function key (fKey)
-                        #--this dict used by function menu selection to enable/disable driver
-                        #  file generation
-                        g.hwDriverFileDict[fKey].append(fileSym)
-                        print(" [%s] %s"%(fKey,fileSym.getOutputName()))
-                        fileNames.update([fileName]) #Add new file
-
-                    else:
-                        print("CRYPTO HW: Duplicate ""%s"""%(fileName))
-
-                #Add the extra driver files for the given function(fKey) and HW
-                #list to enable/disable from the menu
-                #TODO:  Disabling from the menu disables the files from being
-                #       included from other menus that use these files.
-                #       this should be fixed by checking the other menu
-                #       selections that could be using these driver files .
-                #if (dKey=="CPKCC"):   #used by ECC/ECDH/ECDSA
-                #    g.hwDriverFileDict[fKey] += g.cpkclDriverFileSyms
+            #Add the extra driver files for the given function(fKey) and HW
+            #list to enable/disable from the menu
+            #TODO:  Disabling from the menu disables the files from being
+            #       included from other menus that use these files.
+            #       this should be fixed by checking the other menu
+            #       selections that could be using these driver files .
+            #if (dKey=="CPKCC"):   #used by ECC/ECDH/ECDSA
+            #    g.hwDriverFileDict[fKey] += g.cpkclDriverFileSyms
 
 
 ################################################################################

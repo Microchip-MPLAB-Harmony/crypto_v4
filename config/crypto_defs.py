@@ -161,6 +161,8 @@ hwDriverDict = {
         },
         "HSM": {
             "SHA": [
+                "MCHP_Crypto_Common_HwWrapper.h",   # TODO: Find a way to bring in common files 
+                "MCHP_Crypto_Common_HwWrapper.c",
                 "MCHP_Crypto_Hash_HwWrapper.h",
                 "MCHP_Crypto_Hash_HwWrapper.c",
                 "hsm_hash.h",
@@ -171,6 +173,8 @@ hwDriverDict = {
                 "hsm_common.c"
             ],
             "AES": [
+                "MCHP_Crypto_Common_HwWrapper.h",
+                "MCHP_Crypto_Common_HwWrapper.c",
                 "MCHP_Crypto_Sym_HwWrapper.h",
                 "MCHP_Crypto_Sym_HwWrapper.c",
                 "hsm_sym.h",

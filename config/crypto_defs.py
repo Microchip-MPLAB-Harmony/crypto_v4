@@ -565,8 +565,8 @@ cryptoSymAesEcbHwEnabledSymbol      = None
 
 #SYM AES128
 cryptoHwSymAes128Support = [
-        #["HSM" ,"03785", "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],       #PIC32CZ CA90 
+    ["HSM" ,"03785", "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],       #PIC32CZ CA90 
     ["CRYPTO", "00158", "", [],
         set([])],                                   #PIC32MZ EF
     ["AES", "6149", "W", [],
@@ -595,8 +595,8 @@ cryptoSymAes128EnabledSymbol = None
 
 #SYM AES192
 cryptoHwSymAes192Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],            # PIC32CZ CA90
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],            # PIC32CZ CA90
     ["CRYPTO", "00158", "", [],
         set([])],                                           # PIC32MZ EF
     ["AES", "6149", "W", [],
@@ -621,8 +621,8 @@ cryptoSymAes192EnabledSymbol = None
 
 #SYM AES256
 cryptoHwSymAes256Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["CRYPTO", "00158", "", [],
         set([])], #PIC32MZ EF
     ["AES", "6149", "W", [],
@@ -654,8 +654,8 @@ cryptoSymAesModesSupported   = False
 
 #SYM AES ECB Mode
 cryptoHwSymAesEcbSupport       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]
@@ -665,8 +665,8 @@ cryptoSymAesEcbEnabledSymbol   = None
 
 #SYM AES CBC Mode
 cryptoHwSymAesCbcSupport = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],    #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],    #PIC32CZ CA90 
     ["AES", "6149", "W", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])],  #ATSAMV70Q20B
     ["AES", "U2238", "2.2.0", [],
@@ -688,8 +688,8 @@ cryptoSymAesCbcEnabledSymbol   = None
 
 #SYM AES OFB Mode
 cryptoHwSymAesOfbSupport       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]
@@ -755,8 +755,8 @@ cryptoSymAesCfb128EnabledSymbol   = None
 
 #SYM AES CTR
 cryptoHwSymAesCtrSupport = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],    #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])],    #PIC32CZ CA90 
     ["AES", "6149", "W", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])],  #ATSAMV70Q20B
     ["AES", "U2238", "2.2.0", [],

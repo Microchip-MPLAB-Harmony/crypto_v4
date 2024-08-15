@@ -162,8 +162,23 @@ hwDriverDict = {
         "HSM": {
             "SHA": [
                 "MCHP_Crypto_Hash_HwWrapper.h",
+                "MCHP_Crypto_Hash_HwWrapper.c",
                 "hsm_hash.h",
-                "hsm_hash.c"
+                "hsm_hash.c",
+                "hsm_cmd.h",
+                "hsm_cmd.c",
+                "hsm_common.h",
+                "hsm_common.c"
+            ],
+            "AES": [
+                "MCHP_Crypto_Sym_HwWrapper.h",
+                "MCHP_Crypto_Sym_HwWrapper.c",
+                "hsm_sym.h",
+                "hsm_sym.c",
+                "hsm_cmd.h",
+                "hsm_cmd.c",
+                "hsm_common.h",
+                "hsm_common.c"
             ]
         }
     }

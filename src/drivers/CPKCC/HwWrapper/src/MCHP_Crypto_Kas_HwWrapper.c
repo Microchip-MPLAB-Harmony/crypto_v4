@@ -127,7 +127,7 @@ static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_MapResult(
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 
+crypto_Kas_Status_E Crypto_Kas_Hw_Ecdh_SharedSecret(uint8_t *privKey, 
     uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen, 
     uint8_t *secret, uint32_t secretLen, crypto_EccCurveType_E eccCurveType_en)
 {

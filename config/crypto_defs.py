@@ -9,9 +9,6 @@
 # 
 
 #GLOBALS 
-#from crypto_globals import *
-
-print("CRYPTO: Loading Global Defs")
 
 # SYMBOLS used by FTL are put in the cryptoHwAdditionalDefines
 cryptoHwDefines           = None
@@ -116,10 +113,6 @@ hwDriverDict = {
                 "drv_crypto_rsa_hw_cpkcl.h",  # TODO: Not Implemented
                 "drv_crypto_rsa_hw_cpkcl.c"
             ],
-            "ECC": [
-                "drv_crypto_ecc_hw_cpkcl.h",  # Used by ECDSA/ECDH
-                "drv_crypto_ecc_hw_cpkcl.c.ftl"
-            ],
             "ECDSA": [
                 "MCHP_Crypto_DigSign_HwWrapper.h",
                 "MCHP_Crypto_DigSign_HwWrapper.c",
@@ -131,6 +124,10 @@ hwDriverDict = {
                 "MCHP_Crypto_Kas_HwWrapper.c",
                 "drv_crypto_ecdh_hw_cpkcl.h",
                 "drv_crypto_ecdh_hw_cpkcl.c.ftl"
+            ],
+            "COMMON": [
+                "drv_crypto_ecc_hw_cpkcl.h",
+                "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ]
         },
         "6149": {
@@ -161,24 +158,20 @@ hwDriverDict = {
         },
         "HSM": {
             "SHA": [
-                "MCHP_Crypto_Common_HwWrapper.h",   # TODO: Find a way to bring in common files 
-                "MCHP_Crypto_Common_HwWrapper.c",
                 "MCHP_Crypto_Hash_HwWrapper.h",
                 "MCHP_Crypto_Hash_HwWrapper.c",
                 "hsm_hash.h",
                 "hsm_hash.c",
-                "hsm_cmd.h",
-                "hsm_cmd.c",
-                "hsm_common.h",
-                "hsm_common.c"
             ],
             "AES": [
-                "MCHP_Crypto_Common_HwWrapper.h",
-                "MCHP_Crypto_Common_HwWrapper.c",
                 "MCHP_Crypto_Sym_HwWrapper.h",
                 "MCHP_Crypto_Sym_HwWrapper.c",
-                "hsm_sym.h",
-                "hsm_sym.c",
+                "hsm_sign.h",
+                "hsm_sign.c"
+            ],
+            "COMMON": [
+                "MCHP_Crypto_Common_HwWrapper.h",
+                "MCHP_Crypto_Common_HwWrapper.c",
                 "hsm_cmd.h",
                 "hsm_cmd.c",
                 "hsm_common.h",
@@ -204,7 +197,6 @@ hwDriverFileDict = {
         "TRNG": [],
          "MD5": [],
       "RIPEMD": [],
-        "SHA1": [],
          "SHA": [],
          "AES": [],
         "AEAD": [],
@@ -214,7 +206,8 @@ hwDriverFileDict = {
          "RSA": [],
          "ECC": [],
        "ECDSA": [],
-        "ECDH": []}
+        "ECDH": [],
+      "COMMON": []}  # TODO: Likely bug wil be from keeping all "COMMON" from different algos together.  
 
 #The dict list of Drivers loaded for each function based on the 
 #hwDriverDict
@@ -225,7 +218,6 @@ hwFunctionDriverDict = {
         "TRNG": [],
          "MD5": [],
       "RIPEMD": [],
-        "SHA1": [],
          "SHA": [],
          "AES": [],
         "AEAD": [],
@@ -337,8 +329,8 @@ cryptoSha1EnabledSymbol   = None
 sha2Menu = None
 
 cryptoHwSha224Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
     ["ICM", "11105", "H", [],
      set(["HAVE_MCHP_CRYPTO_SHA_HW_11105"])], #ATSAMV70Q20
     ["ICM", "U2010", "1.2.0", [],

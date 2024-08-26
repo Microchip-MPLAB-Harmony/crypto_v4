@@ -35,7 +35,6 @@ print("CRYPTO MODULE Path: " + Module.getPath())
 modulePath =  Module.getPath()
 sys.path.append(modulePath + "config")
 
-#import crypto_globals               #Initial globals
 import crypto_defs           as g   #Modified globals
 import crypto_hash_menu      as hm  #HASH GUI
 import crypto_symmetric_menu as sm  #Symmetric Menu
@@ -731,6 +730,26 @@ def instantiateComponent(cryptoComponent):
         print("CRYPTO:  Adding RNG=%s ""%s"%(
                    g.CONFIG_USE_RNG.getValue(), projectPath + fileName + ".ftl" ))
 
+
+# Figure out how to remove Component Symbols so that re-adding the module works
+def destroyComponent(cryptoComponent):
+    print("goodbye")
+    idList = Database.getActiveComponentIDs()
+    symIDList = Database.getComponentSymbolIDs("lib_crypto")
+    print(idList)
+    print(symIDList)
+
+    symIDList_str = [str(item) for item in symIDList]
+
+    res = Database.deactivateComponents(symIDList_str)
+    print("res", res)
+
+    idList = Database.getActiveComponentIDs()
+    symIDList = Database.getComponentSymbolIDs("lib_crypto")
+    print(idList)
+    print(symIDList)
+
+
 ################################################################################
 #  Crypto Gui Interactions
 ################################################################################
@@ -891,13 +910,34 @@ def SetupHwDriverFiles(basecomponent):
                     matching_path = next((path for path, name in paired_paths_and_filenames_set if name == fileName), None)
 
                     if matching_path:
-                        print("CRYPTO HW: Found matching file %s in paired_paths_and_filenames_set with path %s" %(fileName, matching_path))
+                        print("CRYPTO HW: Found matching file %s with path %s" %(fileName, matching_path))
 
                         # Check for duplicate adds
                         if fileName not in fileNames:
 
-                            #HW Driver Files
-                            if fileName.startswith(("drv_", "hsm_")):
+                            #API Files (crypto/common_crypto)
+                            if (fileName.startswith("MCHP")):
+                                if fileName.endswith(".ftl"):
+                                    fileName = fileName[:-4] # Strip .ftl from the end
+                                    prePath = "src/" if fileName.endswith(".c") else ""
+                                    fileSym = AddMarkupFile(
+                                                fileName,  #File Name 
+                                                "",        #id prefix
+                                                basecomponent, #Component
+                                                matching_path,
+                                                dstPathApi + prePath, False,
+                                                projPathApi + prePath)
+                                else:
+                                    prePath = "src/" if fileName.endswith(".c") else ""
+                                    fileSym = AddFileName(
+                                                fileName,  #File Name 
+                                                "",        #id prefix
+                                                basecomponent, #Component
+                                                matching_path,
+                                                dstPathApi + prePath, False,
+                                                projPathApi + prePath)
+                            #HW Driver Files (crypto/drivers)
+                            else:
                                 if fileName.endswith(".ftl"):
                                     fileName = fileName[:-4] # Strip .ftl from the end
                                     #NOTE:  standard files in src/drivers
@@ -919,30 +959,6 @@ def SetupHwDriverFiles(basecomponent):
                                                 matching_path,
                                                 dstPathDrv + prePath, False,
                                                 projPathDrv + prePath)
-                            #API Files
-                            elif (fileName.startswith("MCHP")):
-                                if fileName.endswith(".ftl"):
-                                    fileName = fileName[:-4] # Strip .ftl from the end
-                                    prePath = "src/" if fileName.endswith(".c") else ""
-                                    fileSym = AddMarkupFile(
-                                                fileName,  #File Name 
-                                                "",        #id prefix
-                                                basecomponent, #Component
-                                                matching_path,
-                                                dstPathApi + prePath, False,
-                                                projPathApi + prePath)
-                                else:
-                                    prePath = "src/" if fileName.endswith(".c") else ""
-                                    fileSym = AddFileName(
-                                                fileName,  #File Name 
-                                                "",        #id prefix
-                                                basecomponent, #Component
-                                                matching_path,
-                                                dstPathApi + prePath, False,
-                                                projPathApi + prePath)
-                            else:
-                                print("CRYPTO HW: Unknown ""%s"""%(fileName))
-                                continue
 
                             #New File Added
                             fileNames.update([fileName]) #Add new file
@@ -957,6 +973,10 @@ def SetupHwDriverFiles(basecomponent):
                             fileNames.update([fileName]) #Add new file
                         else:
                             print("CRYPTO HW:  Duplicate ""%s"""%(fileName))
+    
+        print("hwDriverFileDict[]: ")
+        print(g.hwDriverFileDict)
+
     else:
         print("CRYPTO HW:  This driver key (%s) is not supported by this HW: "%(dKey))
 
@@ -994,24 +1014,31 @@ def SetupHardwareSupport(cryptoComponent) :
     #TRNG
     g.cryptoHwTrngSupported = False
     g.hwFunctionDriverDict["TRNG"] = ScanHardware(g.cryptoHwTrngSupport)
+    print("len(g.hwFunctionDriverDict[TRNG]): %s", g.hwFunctionDriverDict["TRNG"])
     if (len(g.hwFunctionDriverDict["TRNG"]) != 0): g.cryptoHwTrngSupported = True
     if (g.cryptoHwTrngSupported): print("CRYPTO HW:  HW TRNG SUPPORTED")
 
     ##########################
     #HASH
 
-    #------
-    g.cryptoHwMd5Supported = False
-    g.hwFunctionDriverDict["MD5"] = ScanHardware(g.cryptoHwMd5Support)
-    if (len(g.hwFunctionDriverDict["MD5"]) == 2): g.cryptoHwMd5Supported = True
-    if (g.cryptoHwMd5Supported): print("CRYPTO HW:  HW MD5 SUPPORTED")
+    #------                                                                         # TODO: Fix the way this stuff is done. 
+    g.cryptoHwMd5Supported = False                                                  # APPROACH 1
+    g.hwFunctionDriverDict["MD5"] = ScanHardware(g.cryptoHwMd5Support)              # ScanHardware() result stored in the FunctionDriver dict
+    print("len(g.hwFunctionDriverDict[MD5]): %s", g.hwFunctionDriverDict["MD5"])
+    if (len(g.hwFunctionDriverDict["MD5"]) == 2): g.cryptoHwMd5Supported = True     # and then checking that same dict to see if func is supported
+    if (g.cryptoHwMd5Supported): print("CRYPTO HW:  HW MD5 SUPPORTED")              # this is done so that this dict can be checked for common drivers
 
 
     #------
-    g.cryptoHwSha1Supported = False
-    g.hwFunctionDriverDict["SHA1"] = ScanHardware(g.cryptoHwSha1Support)
-    if (len(g.hwFunctionDriverDict["SHA1"]) == 2): g.cryptoHwSha1Supported = True
-    if (g.cryptoHwSha1Supported): print("CRYPTO HW:  HW SHA1 SUPPORTED")
+    g.cryptoHwSha1Supported = False                                                 # APPROACH 2
+    driver = ScanHardware(g.cryptoHwSha1Support)                                    # ScanHardware() result stored in local var to see if func is supported
+
+    g.hwFunctionDriverDict["SHA"] = driver
+
+    print("driver: %s", driver)
+    print("len(g.hwFunctionDriverDict[SHA]): %s", g.hwFunctionDriverDict["SHA"])
+    if (len(driver) == 2): g.cryptoHwSha1Supported = True                           # this is done because the assumption is that SHA wont have common drivers
+    if (g.cryptoHwSha1Supported): print("CRYPTO HW:  HW SHA224 SUPPORTED")          # bad assumption, but both approaches are messy.
 
     #------
     #SHA2
@@ -1021,13 +1048,9 @@ def SetupHardwareSupport(cryptoComponent) :
     if (len(driver) == 2): g.cryptoHwSha224Supported = True
     if (g.cryptoHwSha224Supported): print("CRYPTO HW:  HW SHA224 SUPPORTED")
 
-    #NOTE: Always assume HW SHA support has at least SHA256
-    g.cryptoHwShaSupported = False
     g.cryptoHwSha256Supported = False
-    g.hwFunctionDriverDict["SHA"] = ScanHardware(g.cryptoHwSha256Support)
-    if (len(g.hwFunctionDriverDict["SHA"]) == 2):
-        g.cryptoHwSha256Supported = True
-        g.cryptoHwShaSupported = True 
+    driver = ScanHardware(g.cryptoHwSha256Support)
+    if (len(driver) == 2): g.cryptoHwSha256Supported = True
     if (g.cryptoHwSha256Supported): print("CRYPTO HW:  HW SHA256 SUPPORTED")
 
     g.cryptoHwSha384Supported = False

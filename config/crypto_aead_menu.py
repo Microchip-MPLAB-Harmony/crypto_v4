@@ -30,9 +30,7 @@ import sys
 import glob
 import ntpath
 
-#import crypto_globals   #Initial globals
 import crypto_defs as g #Modified globals
-#import superglobals
 
 #NOTE:  The HW enable for AED-AES is in the SYM-AES Menu
 

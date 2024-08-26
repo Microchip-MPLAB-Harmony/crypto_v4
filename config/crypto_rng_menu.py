@@ -30,8 +30,8 @@ import sys
 import glob
 import ntpath
 
-import crypto_globals   #Initial globals
 import crypto_defs as g #Modified globals
+import crypto_handle_common
 #import superglobals
 
 ################################################################################
@@ -60,6 +60,8 @@ def ScanRng():
 def ScanTrngHw():
     fKey = "TRNG"
 
+    crypto_handle_common.CheckCommonHwFiles()
+
     #TRNG Scan
     if (g.cryptoHwTrngSupported == True):
         hwValue = g.cryptoRngTrngEnabledSymbol.getValue()
@@ -75,6 +77,7 @@ def ScanTrngHw():
     else:
         print("TRNG: Not Supported")
         return False
+
 
 
 def SetupCryptoRngMenu(cryptoComponent):

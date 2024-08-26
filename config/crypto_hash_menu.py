@@ -31,8 +31,8 @@ import glob
 import ntpath
 
 print("CRYPTO: HASH Menu Package")
-#import crypto_globals   #Initial globals
 import crypto_defs as g #Modified globals
+import crypto_handle_common
 
 ################################################################################
 #Scan to see if any of the Hash Selections is True and set the symbol
@@ -87,9 +87,9 @@ def ScanHash():
     else:
         newValue = False
 
-    if (g.CONFIG_USE_HASH.getValue() == newValue):
-        print("HASH: Use HASH SCAN = %s"%(newValue))
-        return False
+    if (g.CONFIG_USE_HASH.getValue() == newValue):      # If    current val of global config MATCHES newValue (calculated by checking every hash menu item)
+        print("HASH: Use HASH SCAN = %s"%(newValue))    # then  return False (meaning no change)
+        return False                                    # else  update global config and return True (meaning theres change)
     else:
         print("HASH: Use HASH SCAN = %s"%(newValue))
         g.CONFIG_USE_HASH.setValue(newValue)
@@ -137,13 +137,22 @@ def ScanShaHw():
             print("SHA:  512/256 Enabled")
             newValue = True
 
+    # If any SHA HW toggles enabled, newValue is True
+
     print("SHA: sha_hw - current = %s (newValue = %s)"%(
 
     g.CONFIG_USE_SHA_HW.getValue(), newValue))
     for fSym in g.hwDriverFileDict[fKey]:
         fSym.setEnabled(newValue)
-        print("SHA:  update [SHA]%s(%s)"%(
+        print("SHA: update [SHA]%s(%s)"%(
               fSym.getOutputName(),fSym.getEnabled()))
+
+    if newValue is True:
+        g.CONFIG_USE_SHA_HW.setValue(True)
+    else:
+        g.CONFIG_USE_SHA_HW.setValue(False)
+
+    crypto_handle_common.CheckCommonHwFiles()
 
     return True
 
@@ -151,7 +160,6 @@ def ScanShaHw():
 #TODO: ScanSha3Hw()
 #TODO: ScanShakeHw()
 #TODO: ScanBlakeHw()
-
 
 def SetupCryptoHashMenu(cryptoComponent):
 
@@ -915,7 +923,7 @@ def handleSha1Enabled(symbol, event):
     ScanHash()
 
     #Check for Sha HW Driver Update
-    if (ScanShaHw() == True):
+    if (ScanShaHw() == True):                              # TODO: ScanShaHw() always returns True...
         numHwDrv = len(g.hwDriverFileDict['SHA'])
         print("SHA1: %d Driver File Symbols Updated:"%(numHwDrv))
         if (len(g.hwDriverFileDict['SHA']) > 0):

@@ -31,9 +31,9 @@ import glob
 import ntpath
 
 print("CRYPTO: HASH Menu Package")
-#import crypto_globals   #Initial globals
 import crypto_defs as g #Modified globals
 import crypto_aead_menu  as am  #Aead Menu
+import crypto_handle_common
 #import superglobals
 
 
@@ -82,7 +82,7 @@ def ScanAesHwSymbols():
         for hSym in hwSymbols:
             if (hSym.getValue() == True):
                 oneEnabled = True
-                break;
+                break
 
         g.cryptoAesHwEnSymbols = hwSymbols
 
@@ -102,6 +102,8 @@ def ScanAesHwSymbols():
             #Dependencies to AES HW Driver (AEAD-AES)
             if (g.cryptoHwAeadAesSupported == True):
                 g.cryptoHwAeadAesEnabledSymbol.setValue(False)
+
+        crypto_handle_common.CheckCommonHwFiles()
 
         return
 

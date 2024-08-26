@@ -29,6 +29,23 @@ import sys
 import crypto_defs as g
 
 ################################################################################
+# Determines whether to enable or disable the files in
+# the CryptoLib_CPKCL folder. These files are used by the 
+# CPKCC driver only and require a special case due to how many
+# files there are. 
+#   - Called by CheckCommonHwFiles() if HwEnable is True
+################################################################################
+def CheckCpkclHwFiles(config_symbol, driver):
+    if (config_symbol in [g.CONFIG_USE_ECDSA_HW, g.CONFIG_USE_ECDH_HW]) and (driver == "CPKCC"):
+        print("CPKCL Driver Files Enabled:(%s)"%(True))
+        for fSym in g.cpkclDriverFileSyms:
+            fSym.setEnabled(True)
+    else:
+        print("CPKCL Driver Files Enabled:(%s)"%(False))
+        for fSym in g.cpkclDriverFileSyms:
+            fSym.setEnabled(False)
+
+################################################################################
 # Determines whether files that are shared between functions 
 # in a specific driver need to be enabled.
 #   - Called by each func. menu's HwScan
@@ -72,6 +89,9 @@ def CheckCommonHwFiles():
                             if config_symbol.getValue() is True:
                                 HwEnable = True
                                 print("set HwEnable by function:", function)
+                                
+                                # Special case to enable CryptoLib_CPKCL
+                                CheckCpkclHwFiles(config_symbol, driver)
                         except:
                             javaException = sys.exc_info()[1]
                             print("Module not loaded (javaException): ", javaException)
@@ -91,7 +111,7 @@ def CheckCommonHwFiles():
                                         filename = filename[:-4]
 
                                     if fSym.getOutputName() == filename:
-                                        fSym.setEnabled(True)
+                                        fSym.setEnabled(True)                           # Enable files
                                         print("COMMON:  update [COMMON]%s(%s)"%(
                                             fSym.getOutputName(),fSym.getEnabled()))
                         else:
@@ -109,7 +129,7 @@ def CheckCommonHwFiles():
                                         filename = filename[:-4]
 
                                     if fSym.getOutputName() == filename:
-                                        fSym.setEnabled(False)
+                                        fSym.setEnabled(False)                          # Disable files
                                         print("COMMON:  update [COMMON]%s(%s)"%(
                                             fSym.getOutputName(),fSym.getEnabled()))
                         else:

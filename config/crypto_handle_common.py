@@ -96,44 +96,22 @@ def CheckCommonHwFiles():
                             javaException = sys.exc_info()[1]
                             print("Module not loaded (javaException): ", javaException)
 
-                    # Enable/Disable COMMON
-                    if HwEnable:
-                        print("Enabling COMMON for driver %s and function %s" % (driver, function))
+                    print("Checking COMMON for driver %s and function %s" % (driver, function))
 
-                        if "COMMON" in functionDict:
-                            
-                            for filename in functionDict["COMMON"]:
+                    if "COMMON" in functionDict:
+                        for filename in functionDict["COMMON"]:
+                            for fSym in g.hwDriverFileDict["COMMON"]:
 
-                                for fSym in g.hwDriverFileDict["COMMON"]:
+                                # Remove .ftl from filename
+                                if filename.endswith(".ftl"):
+                                    filename = filename[:-4]
 
-                                    # Remove .ftl from filename
-                                    if filename.endswith(".ftl"):
-                                        filename = filename[:-4]
-
-                                    if fSym.getOutputName() == filename:
-                                        fSym.setEnabled(True)                           # Enable files
-                                        print("COMMON:  update [COMMON]%s(%s)"%(
-                                            fSym.getOutputName(),fSym.getEnabled()))
-                        else:
-                            print("No COMMON files found to enable for driver: ", driver)
+                                if fSym.getOutputName() == filename:
+                                    fSym.setEnabled(HwEnable)                   # Enable/Disable by HwEnable val
+                                    print("COMMON:  update [COMMON]%s(%s)"%(
+                                        fSym.getOutputName(),fSym.getEnabled()))
                     else:
-                        print("Disabling COMMON for driver %s and function %s" % (driver, function))
-
-                        if "COMMON" in functionDict:
-                            for filename in functionDict["COMMON"]:
-
-                                for fSym in g.hwDriverFileDict["COMMON"]:
-
-                                    # Remove .ftl from filename
-                                    if filename.endswith(".ftl"):
-                                        filename = filename[:-4]
-
-                                    if fSym.getOutputName() == filename:
-                                        fSym.setEnabled(False)                          # Disable files
-                                        print("COMMON:  update [COMMON]%s(%s)"%(
-                                            fSym.getOutputName(),fSym.getEnabled()))
-                        else:
-                            print("No COMMON files found to disable for driver: ", driver)
+                        print("No COMMON files found to enable for driver: ", driver)
                         
                 else:
                     print("driver NOT supported: ", driver)

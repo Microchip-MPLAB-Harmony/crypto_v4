@@ -65,39 +65,6 @@ def ScanDigSignHw():
     
     crypto_handle_common.CheckCommonHwFiles()
 
-    #Additional Driver Files used by other functions
-    #TODO:  Add general shared driver test
-    # sameDriver = False
-    # if (g.hwFunctionDriverDict["ECDH"] ==
-    #     g.hwFunctionDriverDict["ECDSA"]):
-    #     print("DS:  KAS-ECDH and DS-ECDSA use %s driver"%
-    #           g.hwFunctionDriverDict["ECDSA"])
-    #     sameDriver = True
-
-    # if (sameDriver == True):
-    #     if (g.cryptoHwKasEcdhEnabledSymbol == None):
-    #         hwVal = g.cryptoHwDsEcdsaEnabledSymbol.getValue()
-    #     else:
-    #         hwVal =  g.cryptoHwKasEcdhEnabledSymbol.getValue()
-    #         hwVal = hwVal or g.cryptoHwDsEcdsaEnabledSymbol.getValue()
-    # else:
-    #     hwVal = g.cryptoHwDsEcdsaEnabledSymbol.getValue()
-
-    # #CPKCC Shared Drivers Enable/Disable
-    # print("DS: ECDSA uses %s Driver(hw = %s)"%(
-    #     g.hwFunctionDriverDict["ECDSA"], hwVal))
-
-    # if (len(g.hwFunctionDriverDict["ECDSA"]) == 2 and
-    #     g.hwFunctionDriverDict["ECDSA"][0] == "CPKCC"):
-    #     print("ECDSA: CPKCC Driver Enabled(%s)"%(hwVal))
-    #     for fSym in g.cpkclDriverFileSyms:
-    #         fSym.setEnabled(hwVal)
-
-    # #Driver Dependency - ECC Curves Enable/Disable
-    # print("ECDSA: ECC Driver Enabled(%s)"%(hwVal))
-    # for fSym in g.hwDriverFileDict["ECC"]:
-    #     fSym.setEnabled(hwVal)
-
     return True 
 
 

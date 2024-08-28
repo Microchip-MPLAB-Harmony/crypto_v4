@@ -96,7 +96,6 @@ def ScanHash():
         return True
 
 #Check if the SHA2 is enabled and the SHA HW Driver Files are needed.
-# TODO:  For now only Mistral 6156. Some mods required for other HW
 #--Returns True if the SHA HW Driver enable/disable has changed
 def ScanShaHw():
     retVal = False
@@ -923,7 +922,7 @@ def handleSha1Enabled(symbol, event):
     ScanHash()
 
     #Check for Sha HW Driver Update
-    if (ScanShaHw() == True):                              # TODO: ScanShaHw() always returns True...
+    if (ScanShaHw() == True):                           # TODO: ScanShaHw() always returns True...
         numHwDrv = len(g.hwDriverFileDict['SHA'])
         print("SHA1: %d Driver File Symbols Updated:"%(numHwDrv))
         if (len(g.hwDriverFileDict['SHA']) > 0):

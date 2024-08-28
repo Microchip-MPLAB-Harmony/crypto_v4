@@ -55,7 +55,6 @@ def ScanRng():
         return True
 
 #Check if the TRNG is enabled and the TRNG HW Driver Files are needed.
-# TODO:  For now only Mistral 6146. Some mods required for other HW
 #--Returns True if the TRNG HW Driver enable/disable has changed
 def ScanTrngHw():
     fKey = "TRNG"

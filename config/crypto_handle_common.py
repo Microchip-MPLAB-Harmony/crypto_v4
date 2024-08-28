@@ -72,9 +72,9 @@ def CheckCommonHwFiles():
                         "TRNG": g.CONFIG_USE_TRNG_HW,
                         "SHA": g.CONFIG_USE_SHA_HW,
                         "AES": g.CONFIG_USE_AES_HW,
+                        #"AEAD": g.CONFIG_USE_AEAD_HW,
                         #"TDES": g.CONFIG_USE_TDES_HW,
                         #"RSA": g.CONFIG_USE_RSA_HW,
-                        #"ECC": g.CONFIG_USE_ECC_HW,
                         "ECDSA": g.CONFIG_USE_ECDSA_HW,
                         "ECDH": g.CONFIG_USE_ECDH_HW,
                     }

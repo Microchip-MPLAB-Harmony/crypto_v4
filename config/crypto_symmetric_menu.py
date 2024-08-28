@@ -108,7 +108,7 @@ def ScanAesHwSymbols():
         return
 
 ################################################################################
-#Scan to see if any of the Hash Selections is True and set the symbol
+#Scan to see if any of the selections is True and set the symbol
 #CONFIG_USE_SYM
 #--Returns True if CONFIG_USE_SYM changes value
 ################################################################################
@@ -402,7 +402,7 @@ def SetupCryptoSymmetricMenu(cryptoComponent):
     #Check to see if any of the Sym selections is True
     #--Used to include the CC Sym API Files
     ScanSym() #CONFIG_USE_SYM
-    ScanAesHwSymbols() #CONFIG_USE_SYM_HW value 
+    ScanAesHwSymbols() #CONFIG_USE_AES_HW value 
                        #and g.cryptoHwSymAesEnabledSymbol
                        #and change display
 

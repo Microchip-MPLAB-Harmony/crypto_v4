@@ -26,63 +26,63 @@ cryptoHwEnabledSymbol     = None   #All HW Enabled
 
 #Crypto Function Groups
 CONFIG_USE_HASH           = None  #Any Hash 
+CONFIG_USE_ASYM           = None  #TODO: RSA/ECC/DES
 CONFIG_USE_SYM            = None  #Any Symmetric Crypto
 CONFIG_USE_AEAD           = None  #Any AEAD Crypto
+CONFIG_USE_MAC            = None  #Any MAC Crypto
 CONFIG_USE_KAS            = None  #Any Key Auth Crypto
 CONFIG_USE_DS             = None  #Any Dig. Signing Crypto
-CONFIG_USE_MAC            = None  #Any MAC Crypto
 CONFIG_USE_RNG            = None  #Any RNG method
-CONFIG_USE_ASYM           = None  #TODO: RSA/ECC/DES
 
 #Function Used in above
-CONFIG_USE_TRNG           = None
 CONFIG_USE_SHA            = None
 CONFIG_USE_AES            = None
 CONFIG_USE_TDES           = None
 CONFIG_USE_RSA            = None
-CONFIG_USE_ECC            = None
 CONFIG_USE_ECDSA          = None
 CONFIG_USE_ECDH           = None
+CONFIG_USE_TRNG           = None
 
 #HW Function Driver Used
-CONFIG_USE_TRNG_HW        = None
 CONFIG_USE_SHA_HW         = None
 CONFIG_USE_AES_HW         = None
 CONFIG_USE_TDES_HW        = None
 CONFIG_USE_RSA_HW         = None
-CONFIG_USE_ECC_HW         = None
 CONFIG_USE_ECDSA_HW       = None
 CONFIG_USE_ECDH_HW        = None
+CONFIG_USE_TRNG_HW        = None
 
 #HW Module Symbol Strings
 #--all known drivers
 hwDriverStrings = [
-"HAVE_MCHP_CRYPTO_TRNG_HW_HSM",  #PIC32CZ CA90 
-"HAVE_MCHP_CRYPTO_TRNG_HW_6334", #ATSAMV70Q20B/PIC32CX MT
-"HAVE_MCHP_CRYPTO_TRNG_HW_U2242",#ATSAML11
-"HAVE_MCHP_CRYPTO_TRNG_HW_03597",#PIC32CM Lx
-"HAVE_MCHP_CRYPTO_SHA_HW_HSM",   #
-"HAVE_MCHP_CRYPTO_SHA_HW_11105", #ATSAMV70Q20B
-"HAVE_MCHP_CRYPTO_SHA_HW_U2010", #ATSAME54P20A
-"HAVE_MCHP_CRYPTO_SHA_HW_6156",  #ATSAMA5D27
-"HAVE_MCHP_CRYPTO_SHA_HW_U2803", #ATSAML11
-"HAVE_MCHP_CRYPTO_SHA_HW_03710", #PIC32CM Lx
-"HAVE_MCHP_CRYPTO_BLAKE_HW_HSM", #PIC32CZ CA90 
-"HAVE_MCHP_CRYPTO_BLAKE2_HW_HSM",#PIC32CZ CA90 
-"HAVE_MCHP_CRYPTO_AES_HW_HSM",   #PIC32CZ CA90 
-"HAVE_MCHP_CRYPTO_AES_HW_6149",  #ATSAMV70Q20B
-"HAVE_MCHP_CRYPTO_AES_HW_U2238", #ATSAME54P20A
-"HAVE_MCHP_CRYPTO_TDES_HW_00158",#PIC32MZ EF
-"HAVE_MCHP_CRYPTO_TDES_HW_6150", #ATSAMA5D27
-"HAVE_MCHP_CRYPTO_RSA_HW_PUKCC", #ATSAME54P20A
-"HAVE_MCHP_CRYPTO_RSA_HW_CPKCC", #PIC32CX MT
-"HAVE_MCHP_CRYPTO_ECC_HW_BA414E",#PCI32MZ-W
-"HAVE_MCHP_CRYPTO_ECC_HW_CPKCC", #PIC32CX MT
-"HAVE_MCHP_CRYPTO_ECDSA_HW_CPKCC", #PIC32CX MT
-"HAVE_MCHP_CRYPTO_ECDH_HW_CPKCC",#PIC32CX MT/ECC Driver Only
-"HAVE_MCHP_CRYPTO_HW_BA414E",    #PCI32MZ-W
-"HAVE_MCHP_CRYPTO_HW_U2803",     #ATSAML11
-"HAVE_MCHP_CRYPTO_HW_U2805",     #PIC32CM
+"HAVE_MCHP_CRYPTO_TRNG_HW_HSM",     #PIC32CZ CA90 
+"HAVE_MCHP_CRYPTO_TRNG_HW_6334",    #ATSAMV70Q20B/PIC32CX MT
+"HAVE_MCHP_CRYPTO_TRNG_HW_U2242",   #ATSAML11
+"HAVE_MCHP_CRYPTO_TRNG_HW_03597",   #PIC32CM Lx
+"HAVE_MCHP_CRYPTO_SHA_HW_HSM",      #PIC32CZ CA90
+"HAVE_MCHP_CRYPTO_SHA_HW_11105",    #ATSAMV70Q20B
+"HAVE_MCHP_CRYPTO_SHA_HW_U2010",    #ATSAME54P20A
+"HAVE_MCHP_CRYPTO_SHA_HW_6156",     #ATSAMA5D27
+"HAVE_MCHP_CRYPTO_SHA_HW_U2803",    #ATSAML11
+"HAVE_MCHP_CRYPTO_SHA_HW_03710",    #PIC32CM Lx
+"HAVE_MCHP_CRYPTO_BLAKE_HW_HSM",    #PIC32CZ CA90 
+"HAVE_MCHP_CRYPTO_BLAKE2_HW_HSM",   #PIC32CZ CA90 
+"HAVE_MCHP_CRYPTO_AES_HW_HSM",      #PIC32CZ CA90 
+"HAVE_MCHP_CRYPTO_AES_HW_6149",     #ATSAMV70Q20B
+"HAVE_MCHP_CRYPTO_AES_HW_U2238",    #ATSAME54P20A
+"HAVE_MCHP_CRYPTO_TDES_HW_00158",   #PIC32MZ EF
+"HAVE_MCHP_CRYPTO_TDES_HW_6150",    #ATSAMA5D27
+"HAVE_MCHP_CRYPTO_RSA_HW_PUKCC",    #ATSAME54P20A
+"HAVE_MCHP_CRYPTO_RSA_HW_CPKCC",    #PIC32CX MT
+"HAVE_MCHP_CRYPTO_ECC_HW_BA414E",   #PCI32MZ-W
+"HAVE_MCHP_CRYPTO_ECC_HW_CPKCC",    #PIC32CX MT
+"HAVE_MCHP_CRYPTO_ECDSA_HW_CPKCC",  #PIC32CX MT
+"HAVE_MCHP_CRYPTO_ECDSA_HW_HSM",    #PIC32CZ CA90
+"HAVE_MCHP_CRYPTO_ECDH_HW_CPKCC",   #PIC32CX MT/ECC Driver Only
+"HAVE_MCHP_CRYPTO_HW_BA414E",       #PCI32MZ-W
+"HAVE_MCHP_CRYPTO_ECDH_HW_HSM",     #PIC32CZ CA90
+"HAVE_MCHP_CRYPTO_HW_U2803",        #ATSAML11
+"HAVE_MCHP_CRYPTO_HW_U2805",        #PIC32CM
 "HAVE_MCHP_CRYPTO_HW_03710"]
 
 # will need to add more for HSM 
@@ -102,90 +102,72 @@ hwDriverFileSymbols = []   #Files to Generate
 #    4) The drv prefix --> <config>/crypto/drivers
 #       The MCHP prefix --> <config>/crypto/common_crypto 
 #
-# (TODO:  Only Mistral Drivers, for now)
-#
 ################################################################################
 hwDriverDict = {
-        # dKey
-        "CPKCC": { # fDict
-            # fKey
-            "RSA": [
-                "drv_crypto_rsa_hw_cpkcl.h",  # TODO: Not Implemented
-                "drv_crypto_rsa_hw_cpkcl.c"
-            ],
-            "ECDSA": [
-                "MCHP_Crypto_DigSign_HwWrapper.h",
-                "MCHP_Crypto_DigSign_HwWrapper.c",
-                "drv_crypto_ecdsa_hw_cpkcl.h",
-                "drv_crypto_ecdsa_hw_cpkcl.c.ftl"
-            ],
-            "ECDH": [
-                "MCHP_Crypto_Kas_HwWrapper.h",
-                "MCHP_Crypto_Kas_HwWrapper.c",
-                "drv_crypto_ecdh_hw_cpkcl.h",
-                "drv_crypto_ecdh_hw_cpkcl.c.ftl"
-            ],
-            "COMMON": [
-                "drv_crypto_ecc_hw_cpkcl.h",
-                "drv_crypto_ecc_hw_cpkcl.c.ftl"
-            ]
-        },
-        "6149": {
-            "AES": [
-                "MCHP_Crypto_Sym_HwWrapper.h",
-                "MCHP_Crypto_Sym_HwWrapper.c.ftl",  # Include AEAD Function
-                "MCHP_Crypto_Aead_HwWrapper.h",
-                "MCHP_Crypto_Aead_HwWrapper.c.ftl",
-                "drv_crypto_aes_hw_6149.h.ftl",
-                "drv_crypto_aes_hw_6149.c.ftl"
-            ]
-        },
-        "6156": {
-            "SHA": [
-                "MCHP_Crypto_Hash_HwWrapper.h",
-                "MCHP_Crypto_Hash_HwWrapper.c.ftl",
-                "drv_crypto_sha_hw_6156.h.ftl",
-                "drv_crypto_sha_hw_6156.c.ftl"
-            ]
-        },
-        "6334": {
-            "TRNG": [
-                "MCHP_Crypto_Rng_HwWrapper.h",
-                "MCHP_Crypto_Rng_HwWrapper.c.ftl",
-                "drv_crypto_trng_hw_6334.h",
-                "drv_crypto_trng_hw_6334.c"
-            ]
-        },
-        "HSM": {
-            "SHA": [
-                "MCHP_Crypto_Hash_HwWrapper.h",
-                "MCHP_Crypto_Hash_HwWrapper.c",
-                "hsm_hash.h",
-                "hsm_hash.c",
-            ],
-            "AES": [
-                "MCHP_Crypto_Sym_HwWrapper.h",
-                "MCHP_Crypto_Sym_HwWrapper.c",
-                "hsm_sign.h",
-                "hsm_sign.c"
-            ],
-            "COMMON": [
-                "MCHP_Crypto_Common_HwWrapper.h",
-                "MCHP_Crypto_Common_HwWrapper.c",
-                "hsm_cmd.h",
-                "hsm_cmd.c",
-                "hsm_common.h",
-                "hsm_common.c"
-            ]
-        }
+    # dKey
+    "CPKCC": {  # fDict
+        # fKey
+        "RSA": [
+            "drv_crypto_rsa_hw_cpkcl.h", "drv_crypto_rsa_hw_cpkcl.c"
+        ],
+        "ECDSA": [
+            "MCHP_Crypto_DigSign_HwWrapper.h", "MCHP_Crypto_DigSign_HwWrapper.c",
+            "drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl"
+        ],
+        "ECDH": [
+            "MCHP_Crypto_Kas_HwWrapper.h", "MCHP_Crypto_Kas_HwWrapper.c",
+            "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl"
+        ],
+        "COMMON": ["drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"]
+    },
+    "6149": {   # TODO: Split into AEAD and AES and make a COMMON
+        "AES": [
+            "MCHP_Crypto_Sym_HwWrapper.h", "MCHP_Crypto_Sym_HwWrapper.c.ftl",
+            "MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c.ftl",
+            "drv_crypto_aes_hw_6149.h.ftl", "drv_crypto_aes_hw_6149.c.ftl"
+        ]
+    },
+    "6156": {
+        "SHA": [
+            "MCHP_Crypto_Hash_HwWrapper.h", "MCHP_Crypto_Hash_HwWrapper.c.ftl",
+            "drv_crypto_sha_hw_6156.h.ftl", "drv_crypto_sha_hw_6156.c.ftl"
+        ]
+    },
+    "6334": {
+        "TRNG": [
+            "MCHP_Crypto_Rng_HwWrapper.h", "MCHP_Crypto_Rng_HwWrapper.c.ftl",
+            "drv_crypto_trng_hw_6334.h", "drv_crypto_trng_hw_6334.c"
+        ]
+    },
+    "HSM": {
+        "SHA":[
+            "MCHP_Crypto_Hash_HwWrapper.h", "MCHP_Crypto_Hash_HwWrapper.c",
+            "hsm_hash.h", "hsm_hash.c"
+        ],
+        "AES": [
+            "MCHP_Crypto_Sym_HwWrapper.h", "MCHP_Crypto_Sym_HwWrapper.c",
+            "hsm_sym.h", "hsm_sym.c"
+        ],
+        "AEAD": [
+            "MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c",
+            "hsm_aead.h", "hsm_aead.c"
+        ],
+        "ECDSA": [
+            "MCHP_Crypto_DigSign_HwWrapper.h", "MCHP_Crypto_DigSign_HwWrapper.c",
+            "hsm_sign.h", "hsm_sign.c"
+        ],
+        "ECDH": [
+            "MCHP_Crypto_Kas_HwWrapper.h", "MCHP_Crypto_Kas_HwWrapper.c",
+            "hsm_kas.h", "hsm_kas.c"
+        ],
+        "COMMON": [
+            "MCHP_Crypto_Common_HwWrapper.h", "MCHP_Crypto_Common_HwWrapper.c",
+            "hsm_cmd.h", "hsm_cmd.c", "hsm_common.h", "hsm_common.c"
+        ]
     }
+}
 
-# add HSM as an entry like done for CPKCC
-# load wrappers here and then common files below similar to CPKCC (unless i wanna rework)
-
-# update the dict being used in each menu option var ex. cryptoHw*Support and check against the switch
-# crypto.py wil fill hwDriverFileDict as it goes thru
-
+# TODO: Figure out a way to not hardcode CryptoLib_CPKCL files
 cpkclDriverPath     = "src/drivers/CPKCC/"
 cpkclDriverFileSyms = []   #Extra files used by CPKCC driver
 
@@ -207,7 +189,7 @@ hwDriverFileDict = {
          "ECC": [],
        "ECDSA": [],
         "ECDH": [],
-      "COMMON": []}  # TODO: Likely bug wil be from keeping all "COMMON" from different algos together.  
+      "COMMON": []}
 
 #The dict list of Drivers loaded for each function based on the 
 #hwDriverDict
@@ -250,36 +232,7 @@ trustZoneFileIds = []      #List of file ids
 ################################################################################
 ## CRYPTO IMPLEMENTATIONS
 ################################################################################
-#===============================================================================
-#HW TRNG
 # [ <module name>, <module #>, <module version>, [], [<list of project defines>]]
-cryptoHwTrngSupport = [
-    ["RNG" ,"00159",      "", [],
-       set([])],                                           #PIC32MZ EF
-    ["TRNG", "6334",     "G", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #ATSAMV70Q20B
-    ["TRNG","U2242", "1.2.0", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#ATSAML11
-    ["TRNG","U2242", "1.1.0", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#ATSAME54P20A
-    ["TRNG","U2242", "1.0.0", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#ATSAML21J18B
-    ["TRNG", "6334",     "K", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #ATSAMA5D27
-    ["TRNG", "6334",     "O", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #ATSAM9X60
-    ["TRNG","U2242",   "1d0", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#PIC32CM'Lx
-    ["TRNG","03597",   "1d0", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_03597"])],#PIC32CM'Lx/PIC32CZ
-    ["TRNG", "6334",     "S", [],
-       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #PIC32CX MT
-]
-cryptoHwTrngSupported       = False
-cryptoHwTrngEnabledSymbol   = None
-cryptoRngTrngEnabledSymbol     = None
-
-cryptoHashDrngEnabledSymbol = None
 
 #===============================================================================
 # HASH IMPLEMENTATION
@@ -354,8 +307,8 @@ cryptoSha224EnabledSymbol   = None
 
 #HW HASH SHA256
 cryptoHwSha256Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
     ["CRYPTO", "00158", "", [],
         set([])],                                           #PIC32MZ EF
     ["ICM", "11105", "H", [],
@@ -380,8 +333,8 @@ cryptoSha256EnabledSymbol   = None
 
 #HW HASH SHA384
 cryptoHwSha384Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
     ["SHA", "6156", "O", [],
         set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])], #ATSAMA5D27
     ["SHA", "6156", "S", [],
@@ -393,8 +346,8 @@ cryptoSha384EnabledSymbol   = None
 
 #HW HASH SHA512
 cryptoHwSha512Support = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_SHA_HW_HSM"])], #PIC32CZ CA90 
     ["SHA", "6156", "O", [],
         set(["HAVE_MCHP_CRYPTO_SHA_HW_6156"])], #ATSAMA5D27
     ["SHA", "6156", "S", [],
@@ -457,13 +410,11 @@ cryptoSha3512EnabledSymbol        = None
 #-------------------------------------------------------------------------------
 #SHA3 - SHAKE
 cryptoHwSha3Shake128Support          = []
-
 cryptoHwSha3Shake128Supported          = False
 cryptoHwSha3Shake128EnabledSymbol      = None
 cryptoSha3128ShakeEnabledSymbol        = None
 
 cryptoHwSha3Shake128Support          = []
-
 cryptoHwSha3Shake256Supported          = False
 cryptoHwSha3Shake256EnabledSymbol      = None
 cryptoSha3Shake256EnabledSymbol        = None
@@ -565,14 +516,10 @@ cryptoBlake2b512EnabledSymbol        = None
 #HW SYM AES
 cryptoSymAesEnabledSymbol           = None
 cryptoHwSymAesEnabledSymbol         = None
-cryptoHwSymAesSupported             = False
+cryptoHwSymAesSupported             = False     # Set True if SYM AES128, 
+                                                # SYM AES192, or SYM AES256 are Enabled 
 cryptoAesHwEnSymbols                = []
 cryptoAesEnSymbols                  = []
-
-cryptoSymAesSmallTableEnabledSymbol = None
-
-cryptoSymAesEcbEnabledSymbol        = None
-cryptoSymAesEcbHwEnabledSymbol      = None
 
 #SYM AES128
 cryptoHwSymAes128Support = [
@@ -660,7 +607,6 @@ symMenu = None
 aesMenu = None
 aesModesMenu = None
 aesCfbMenu = None
-cryptoSymAesModesMenu        = None
 cryptoSymAesModesSupported   = False
 
 #SYM AES ECB Mode
@@ -708,22 +654,10 @@ cryptoHwSymAesOfbSupported     = False
 cryptoHwSymAesOfbEnabledSymbol = None
 cryptoSymAesOfbEnabledSymbol   = None
 
-#TODO:  Is this Needed?
-#SYM AES CFB Mode
-cryptoHwSymAesCfbSupport       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
-    ["AES", "6149", "ZN", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
-]
-cryptoHwSymAesCfbSupported     = False
-cryptoHwSymAesCfbEnabledSymbol = None
-cryptoSymAesCfbEnabledSymbol   = None
-
 #SYM AES CFB1 Mode
 cryptoHwSymAesCfb1Support       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]
@@ -733,8 +667,8 @@ cryptoSymAesCfb1EnabledSymbol   = None
 
 #SYM AES CFB8 Mode
 cryptoHwSymAesCfb8Support       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]
@@ -744,8 +678,8 @@ cryptoSymAesCfb8EnabledSymbol   = None
 
 #SYM AES CFB64 Mode
 cryptoHwSymAesCfb64Support       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]
@@ -755,8 +689,8 @@ cryptoSymAesCfb64EnabledSymbol   = None
 
 #SYM AES CFB128 Mode
 cryptoHwSymAesCfb128Support       = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]
@@ -793,48 +727,14 @@ cryptoHwSymAesXtsSupported     = False
 cryptoHwSymAesXtsEnabledSymbol = None
 cryptoSymAesXtsEnabledSymbol   = None
 
-
-#SYM AES GCM
-cryptoHwSymAesGcmSupport = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
-    ["AES", "6149", "W", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])], #ATSAMV70Q20B
-    ["AES", "U2238", "2.2.0", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_U2238"])], #ATSAME54P20A
-    ["AES", "U2238", "2.0.0", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_U2238"])], #ATSAML21J18B
-    ["AES", "U2238", "2.1.0", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_U2238"])], #ATSAML22J18A
-    ["AES", "6149", "ZB", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])], #ATSAMA5D28
-    ["AES", "6149", "ZH", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])], #ATSAM9x60
-    ["AES", "6149", "ZN", [],
-        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
-]
-cryptoHwSymAesGcmSupported     = False
-cryptoHwSymAesGcmEnabledSymbol = None
-cryptoSymAesGcmEnabledSymbol   = None
-
-#SYM AES EAX
-cryptoHwSymAesEaxSupport       = []
-cryptoHwSymAesEaxSupported     = False
-cryptoHwSymAesEaxEnabledSymbol = None
-cryptoSymAesEaxEnabledSymbol   = None
-
 #SYM AES Key Wrap (KW) 
 cryptoHwSymAesKwSupport       = []
 cryptoHwSymAesKwSupported     = False
 cryptoHwSymAesKwEnabledSymbol = None
 cryptoSymAesKwEnabledSymbol   = None
 
-#TODO: Supported at all?
-#SYM AES CMC
-cryptoHwSymAesCcmSupport       = []
-cryptoHwSymAesCcmSupported     = False
-cryptoHwSymAesCcmEnabledSymbol = None
-cryptoSymAesCcmEnabledSymbol   = None
+
+# TODO: Rest of section is not implemented
 
 #SYM DES 
 cryptoHwDesSupport = [
@@ -875,13 +775,48 @@ cryptoDesOfbEnabledSymbol   = None
 
 #===============================================================================
 #AEAD
-aeadMenu = None
-aeadAesMenu = None
+aeadMenu        = None
+aeadAesMenu     = None
 
-#AEAD Hardware
+#SYM AES AEAD GCM (SOFTWARE)
+cryptoHwSymAesGcmSupport = [
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    ["AES", "6149", "W", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])], #ATSAMV70Q20B
+    ["AES", "U2238", "2.2.0", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_U2238"])], #ATSAME54P20A
+    ["AES", "U2238", "2.0.0", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_U2238"])], #ATSAML21J18B
+    ["AES", "U2238", "2.1.0", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_U2238"])], #ATSAML22J18A
+    ["AES", "6149", "ZB", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])], #ATSAMA5D28
+    ["AES", "6149", "ZH", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])], #ATSAM9x60
+    ["AES", "6149", "ZN", [],
+        set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
+]
+cryptoHwSymAesGcmSupported     = False
+cryptoHwSymAesGcmEnabledSymbol = None
+cryptoSymAesGcmEnabledSymbol   = None
+
+#SYM AES AEAD CCM (SOFTWARE)
+cryptoHwSymAesCcmSupport       = []
+cryptoHwSymAesCcmSupported     = False
+cryptoHwSymAesCcmEnabledSymbol = None
+cryptoSymAesCcmEnabledSymbol   = None
+
+#SYM AES AEAD EAX (SOFTWARE)
+cryptoHwSymAesEaxSupport       = []
+cryptoHwSymAesEaxSupported     = False
+cryptoHwSymAesEaxEnabledSymbol = None
+cryptoSymAesEaxEnabledSymbol   = None
+
+#SYM AES AEAD GENERAL (HARDWARE)
 cryptoHwAeadAesSupport = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AEAD_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AEAD_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "W", [],
         set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAMV70Q20B
     ["AES", "6149", "ZB", [],
@@ -895,9 +830,10 @@ cryptoHwAeadAesSupported          = False
 cryptoHwAeadAesEnabledSymbol      = None
 cryptoAeadAesEnabledSymbol        = None
 
+#SYM AES AEAD GCM (HARDWARE)
 cryptoHwAeadAesGcmSupport = [
-        #["HSM" ,"03785",      "", [],
-        #set(["HAVE_MCHP_CRYPTO_AEAD_HW_HSM"])], #PIC32CZ CA90 
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AEAD_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "W", [],
         set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAMV70Q20B
     ["AES", "6149", "ZB", [],
@@ -911,29 +847,35 @@ cryptoHwAeadAesGcmSupported       = False
 cryptoHwAeadAesGcmEnabledSymbol   = None
 cryptoAeadAesGcmEnabledSymbol     = None
 
+#SYM AES AEAD CCM (HARDWARE)
 cryptoHwAeadAesCcmSupport = []
 cryptoHwAeadAesCcmSupported       = False
 cryptoHwAeadAesCcmEnabledSymbol   = None
 cryptoAeadAesCcmEnabledSymbol     = None
 
+#SYM AES AEAD EAX (HARDWARE)
 cryptoHwAeadAesEaxSupport = []
 cryptoHwAeadAesEaxSupported         = False
 cryptoHwAeadAesEaxEnabledSymbol     = None
 cryptoAeadAesEaxEnabledSymbol       = None
 
+#SYM AES AEAD CMAC (HARDWARE)
 cryptoHwAeadAesSivCmacSupport = []
 cryptoHwAeadAesSivCmacSupported     = False
 cryptoHwAeadAesSivCmacEnabledSymbol = None
 cryptoAeadAesSivCmacEnabledSymbol   = None
 
+#SYM AES AEAD CIV GCM (HARDWARE)
 cryptoHwAeadAesSivGcmSupport = []
 cryptoHwAeadAesSivGcmSupported      = False
 cryptoHwAeadAesSivGcmEnabledSymbol  = None
 cryptoAeadAesSivGcmEnabledSymbol    = None
 
-
 #===============================================================================
 #HMAC Hardware
+# macMenu     = None
+# macAesMenu  = None
+
 cryptoHwMacAesSupport = []
 cryptoHwMacAesSupported            = False
 cryptoHwMacAesEnabledSymbol        = None
@@ -957,8 +899,10 @@ cryptoMacAesGmacEnabledSymbol      = None
 #===============================================================================
 #DS - Digital Signing
 dsMenu                             = None
-cryptoDsEcdsaEnabledSymbol         = "Uninitialized"
+
 cryptoHwDsEcdsaSupport = [
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_ECDSA_HW_HSM"])],   #PIC32CZ CA90 
     ["PUKCC", "U2009", "2.5.0", [],
      set(["HAVE_MCHP_CRYPTO_ECC_HW_PUKCC"])], #ATSAME54P20A
     ["BA414E", "00343", "", [],
@@ -969,6 +913,7 @@ cryptoHwDsEcdsaSupport = [
 ]
 cryptoHwDsEcdsaSupported         = False
 cryptoHwDsEcdsaEnabledSymbol     = None
+cryptoDsEcdsaEnabledSymbol       = None
 print("CRYPTO: cryptoHwDsEcdsa Defines as None")
 
 
@@ -976,19 +921,49 @@ print("CRYPTO: cryptoHwDsEcdsa Defines as None")
 #===============================================================================
 #KAS - Key Authorization
 kasMenu      = None
-cryptoKasEcdhEnabledSymbol     = "Uninitialized"
+
 cryptoHwKasEcdhSupport    = [
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_ECDH_HW_HSM"])],   #PIC32CZ CA90 
     ["CPKCC", "44163", "B", [],
      set(["HAVE_MCHP_CRYPTO_RSA_HW_CPKCC"])]  #PIC32CX MT
 ]
 cryptoHwKasEcdhSupported       = False
 cryptoHwKasEcdhEnabledSymbol   = None
+cryptoKasEcdhEnabledSymbol     = None
 
 #===============================================================================
-#RNG - Random Number Generation
-cryptoHwRngSupport          = []
-cryptoRngTrngEnabledSymbol         = None
-cryptoRngPrngEnabledSymbol         = None
+#RNG - Random Number Generator
+rngMenu     = None
+
+# PRNG
+cryptoRngPrngEnabledSymbol  = None
+
+# TRNG
+cryptoHwTrngSupport = [
+    ["RNG" ,"00159",      "", [],
+       set([])],                                           #PIC32MZ EF
+    ["TRNG", "6334",     "G", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #ATSAMV70Q20B
+    ["TRNG","U2242", "1.2.0", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#ATSAML11
+    ["TRNG","U2242", "1.1.0", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#ATSAME54P20A
+    ["TRNG","U2242", "1.0.0", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#ATSAML21J18B
+    ["TRNG", "6334",     "K", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #ATSAMA5D27
+    ["TRNG", "6334",     "O", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #ATSAM9X60
+    ["TRNG","U2242",   "1d0", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_U2242"])],#PIC32CM'Lx
+    ["TRNG","03597",   "1d0", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_03597"])],#PIC32CM'Lx/PIC32CZ
+    ["TRNG", "6334",     "S", [],
+       set(["HAVE_MCHP_CRYPTO_TRNG_HW_6334"])], #PIC32CX MT
+]
+cryptoHwTrngSupported       = False
+cryptoRngTrngEnabledSymbol  = None
 
 #===============================================================================
 # ASYM Hardware
@@ -1006,7 +981,6 @@ cryptoHwAsymRsaSupported = False
 cryptoHwAsymRsaEnabledSymbol = None
 cryptoAsymRsaEnabledSymbol = None
 
-
 #ASYM ECC 
 cryptoHwAsymEccSupport = [
     ["PUKCC", "U2009", "2.5.0", [],
@@ -1022,7 +996,6 @@ cryptoHwAsymEccEnabledSymbol     = None
 cryptoAsymEccEnabledSymbol       = None
 
 cryptoSWCallBackEnableSymbol = None
-
 
 #===============================================================================
 #HW IDAU(2803)

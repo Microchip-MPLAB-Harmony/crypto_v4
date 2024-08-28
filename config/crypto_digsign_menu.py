@@ -49,7 +49,6 @@ def ScanDigSign():
     return True
 
 #Check if the ECDSA is enabled and the ECDSA HW Driver Files are needed.
-# TODO:  For now only Mistral 6156. Some mods required for other HW
 #--Returns True if the ECDSA HW Driver enable/disable has changed
 def ScanDigSignHw():
 

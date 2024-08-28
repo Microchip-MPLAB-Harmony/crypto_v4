@@ -741,30 +741,6 @@ def destroyComponent(cryptoComponent):
 
 
 ################################################################################
-#  Crypto Gui Interactions
-################################################################################
-def handleParentSymbolChange(symbol, event):
-    symbol.setVisible(event["value"])
-
-#-----------------------------------------------------
-def handleHwTrngEnabled(symbol, event):
-    if ((g.cryptoHwTrngEnabledSymbol.getValue() == True) and
-        (g.cryptoTrngEnabledSymbol.getValue() == True)):
-        g.cryptoHwTrngEnabledSymbol.setVisible(True)
-    else:
-        g.cryptoHwTrngEnabledSymbol.setValue(False)
-        g.cryptoHwTrngEnabledSymbol.setVisible(False)
-
-def handleHashDrngEnabled(symbol, event):
-    if ((g.cryptoSha256EnabledSymbol.getValue() == True) and
-        (g.cryptoTrngEnabledSymbol.getValue() == True)):
-        g.cryptoHashDrngEnabledSymbol.setVisible(True)
-    else:
-        g.cryptoHashDrngEnabledSymbol.setValue(False)
-        g.cryptoHashDrngEnabledSymbol.setVisible(False)
-
-
-################################################################################
 # Scan the ATDF file for hardware crypto driver module names 
 # given in the list items, where each item is a dictionary given by:
 # [ <atdf Module name>, <atdf Module ID number>, <atdf version code>,
@@ -880,12 +856,6 @@ def SetupHwDriverFiles(basecomponent):
             if (dKey == "CPKCC"):
                 print("CRYPTO HW: Use CPKCC Driver Files ")
                 SetupCpkclDriverFiles(basecomponent)
-                
-            # Avoid special case for HSM and subsequent drivers
-            # elif (dKey == "HSM"):
-            #     print("CRYPTO:  Use HSM Driver Files ")
-            #     # SetupHsmDriverFiles(basecomponent)
-            #     srcPathDrv = "src/drivers/HSM/HwWrapper/"
 
             paired_paths_and_filenames_set = set(paired_paths_and_filenames)    # Make into set for O(1)
 
@@ -971,16 +941,6 @@ def SetupHwDriverFiles(basecomponent):
         print("CRYPTO HW:  This driver key (%s) is not supported by this HW: "%(dKey))
 
 
-            #Add the extra driver files for the given function(fKey) and HW
-            #list to enable/disable from the menu
-            #TODO:  Disabling from the menu disables the files from being
-            #       included from other menus that use these files.
-            #       this should be fixed by checking the other menu
-            #       selections that could be using these driver files .
-            #if (dKey=="CPKCC"):   #used by ECC/ECDH/ECDSA
-            #    g.hwDriverFileDict[fKey] += g.cpkclDriverFileSyms
-
-
 ################################################################################
 # Detect MCU Target HW support for each particular crypto function
 # by scanning the ATDF file.
@@ -1012,6 +972,7 @@ def SetupHardwareSupport(cryptoComponent) :
     #HASH
 
     #------                                                                         # TODO: Fix the way this stuff is done. 
+    #MD5
     g.cryptoHwMd5Supported = False                                                  # APPROACH 1
     g.hwFunctionDriverDict["MD5"] = ScanHardware(g.cryptoHwMd5Support)              # ScanHardware() result stored in the FunctionDriver dict
     print("len(g.hwFunctionDriverDict[MD5]): %s", g.hwFunctionDriverDict["MD5"])
@@ -1020,6 +981,7 @@ def SetupHardwareSupport(cryptoComponent) :
 
 
     #------
+    #SHA1    
     g.cryptoHwSha1Supported = False                                                 # APPROACH 2
     driver = ScanHardware(g.cryptoHwSha1Support)                                    # ScanHardware() result stored in local var to see if func is supported
 
@@ -1032,7 +994,6 @@ def SetupHardwareSupport(cryptoComponent) :
 
     #------
     #SHA2
-
     g.cryptoHwSha224Supported = False
     driver = ScanHardware(g.cryptoHwSha224Support)
     if (len(driver) == 2): g.cryptoHwSha224Supported = True
@@ -1068,7 +1029,6 @@ def SetupHardwareSupport(cryptoComponent) :
         print("CRYPTO HW:  HW AES 192 SUPPORTED")
 
     #NOTE: Always assume HW AES support has at least AES256
-    g.cryptoHwAesSupported =False 
     g.cryptoHwSymAes256Supported = False
     g.hwFunctionDriverDict["AES"] = ScanHardware(g.cryptoHwSymAes256Support)
     if (len(g.hwFunctionDriverDict["AES"]) == 2):

@@ -26,7 +26,7 @@ cryptoHwEnabledSymbol     = None   #All HW Enabled
 
 #Crypto Function Groups
 CONFIG_USE_HASH           = None  #Any Hash 
-CONFIG_USE_ASYM           = None  #TODO: RSA/ECC/DES
+#CONFIG_USE_ASYM           = None  #TODO: RSA/ECC/DES
 CONFIG_USE_SYM            = None  #Any Symmetric Crypto
 CONFIG_USE_AEAD           = None  #Any AEAD Crypto
 CONFIG_USE_MAC            = None  #Any MAC Crypto
@@ -46,6 +46,7 @@ CONFIG_USE_TRNG           = None
 #HW Function Driver Used
 CONFIG_USE_SHA_HW         = None
 CONFIG_USE_AES_HW         = None
+CONFIG_USE_AEAD_HW        = None
 CONFIG_USE_TDES_HW        = None
 CONFIG_USE_RSA_HW         = None
 CONFIG_USE_ECDSA_HW       = None
@@ -120,12 +121,16 @@ hwDriverDict = {
         ],
         "COMMON": ["drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"]
     },
-    "6149": {   # TODO: Split into AEAD and AES and make a COMMON
+    "6149": {
         "AES": [
             "MCHP_Crypto_Sym_HwWrapper.h", "MCHP_Crypto_Sym_HwWrapper.c.ftl",
-            "MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c.ftl",
+        ],
+        "AEAD": [
+            "MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c.ftl"
+        ],
+        "COMMON": {
             "drv_crypto_aes_hw_6149.h.ftl", "drv_crypto_aes_hw_6149.c.ftl"
-        ]
+        }
     },
     "6156": {
         "SHA": [
@@ -514,12 +519,16 @@ cryptoBlake2b512EnabledSymbol        = None
 
 #===============================================================================
 #HW SYM AES
-cryptoSymAesEnabledSymbol           = None
-cryptoHwSymAesEnabledSymbol         = None
+symMenu         = None  # Top-level ("Symmetric Algorithms")
+aesMenu         = None  # One down  ("AES Algorithms")
+aesModesMenu    = None  # Two down  ("AES Algorithm Modes")
+aesCfbMenu      = None  # Three down    ("AES CFB Modes")
+
+cryptoHwSymAesEnabledSymbol         = None      # HW enable checkbox for AES
 cryptoHwSymAesSupported             = False     # Set True if SYM AES128, 
                                                 # SYM AES192, or SYM AES256 are Enabled 
-cryptoAesHwEnSymbols                = []
-cryptoAesEnSymbols                  = []
+cryptoAesEnSymbols                  = []        # Track status of checkboxes for the AES symbols 
+
 
 #SYM AES128
 cryptoHwSymAes128Support = [
@@ -602,12 +611,6 @@ cryptoHwSymAes256Support = [
 ]
 cryptoHwSymAes256Supported   = False
 cryptoSymAes256EnabledSymbol = None
-
-symMenu = None
-aesMenu = None
-aesModesMenu = None
-aesCfbMenu = None
-cryptoSymAesModesSupported   = False
 
 #SYM AES ECB Mode
 cryptoHwSymAesEcbSupport       = [
@@ -775,8 +778,28 @@ cryptoDesOfbEnabledSymbol   = None
 
 #===============================================================================
 #AEAD
-aeadMenu        = None
-aeadAesMenu     = None
+aeadMenu            = None      # "AEAD Algorithms"
+aeadAesMenu         = None      # "AEAD-AES(128/192/256 bit)"
+aeadAesModesMenu    = None      # "AEAD-AES Algorithm Mode"
+
+# TODO: Get rid of any mention of "Sym" in the variables that go into the AEAD memu
+
+#SYM AES AEAD GENERAL (HARDWARE)
+cryptoHwAeadAesSupport = [
+    ["HSM" ,"03785",      "", [],
+    set(["HAVE_MCHP_CRYPTO_AEAD_HW_HSM"])], #PIC32CZ CA90 
+    ["AES", "6149", "W", [],
+        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAMV70Q20B
+    ["AES", "6149", "ZB", [],
+        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAMA5D28
+    ["AES", "6149", "ZH", [],
+        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAM9x60
+    ["AES", "6149", "ZN", [],
+        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])]  #PIC32CX MT
+]
+cryptoHwAeadAesSupported          = False
+cryptoHwAeadAesEnabledSymbol      = None    # HW enable checkbox for AES
+cryptoAeadAesEnabledSymbol        = None
 
 #SYM AES AEAD GCM (SOFTWARE)
 cryptoHwSymAesGcmSupport = [
@@ -812,23 +835,6 @@ cryptoHwSymAesEaxSupport       = []
 cryptoHwSymAesEaxSupported     = False
 cryptoHwSymAesEaxEnabledSymbol = None
 cryptoSymAesEaxEnabledSymbol   = None
-
-#SYM AES AEAD GENERAL (HARDWARE)
-cryptoHwAeadAesSupport = [
-    ["HSM" ,"03785",      "", [],
-    set(["HAVE_MCHP_CRYPTO_AEAD_HW_HSM"])], #PIC32CZ CA90 
-    ["AES", "6149", "W", [],
-        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAMV70Q20B
-    ["AES", "6149", "ZB", [],
-        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAMA5D28
-    ["AES", "6149", "ZH", [],
-        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])], #ATSAM9x60
-    ["AES", "6149", "ZN", [],
-        set(["HAVE_MCHP_CRYPTO_AEAD_HW_6149"])]  #PIC32CX MT
-]
-cryptoHwAeadAesSupported          = False
-cryptoHwAeadAesEnabledSymbol      = None
-cryptoAeadAesEnabledSymbol        = None
 
 #SYM AES AEAD GCM (HARDWARE)
 cryptoHwAeadAesGcmSupport = [

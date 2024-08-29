@@ -31,8 +31,7 @@ import glob
 import ntpath
 
 import crypto_defs as g #Modified globals
-
-#NOTE:  The HW enable for AED-AES is in the SYM-AES Menu
+import crypto_handle_common
 
 ################################################################################
 #Scan to see if any of the Aead Selections is True and set the symbol
@@ -53,113 +52,84 @@ def ScanAead():
     if (g.cryptoHwAeadAesGcmSupported == True):
         if (g.cryptoAeadAesGcmEnabledSymbol.getValue() == True):
             g.cryptoHwAeadAesGcmEnabledSymbol.setValue(
-                g.cryptoHwSymAesEnabledSymbol.getValue())
+                g.cryptoHwAeadAesEnabledSymbol.getValue())
         else: g.cryptoHwAeadAesGcmEnabledSymbol.setValue(False)
     else: g.cryptoHwAeadAesGcmEnabledSymbol.setValue(False)
 
     if (g.cryptoHwAeadAesCcmSupported == True):
         if (g.cryptoAeadAesCcmEnabledSymbol.getValue() == True):
             g.cryptoHwAeadAesCcmEnabledSymbol.setValue(
-                g.cryptoHwSymAesEnabledSymbol.getValue())
+                g.cryptoHwAeadAesEnabledSymbol.getValue())
         else: g.cryptoHwAeadAesCcmEnabledSymbol.setValue(False)
     else: g.cryptoHwAeadAesCcmEnabledSymbol.setValue(False)
 
     if (g.cryptoHwAeadAesEaxSupported == True):
         if (g.cryptoAeadAesEaxEnabledSymbol.getValue() == True):
             g.cryptoHwAeadAesEaxEnabledSymbol.setValue(
-                g.cryptoHwSymAesEnabledSymbol.getValue())
+                g.cryptoHwAeadAesEnabledSymbol.getValue())
         else: g.cryptoHwAeadAesEaxEnabledSymbol.setValue(False)
     else: g.cryptoHwAeadAesEaxEnabledSymbol.setValue(False)
 
     if (g.cryptoHwAeadAesSivCmacSupported == True):
         if (g.cryptoAeadAesSivCmacEnabledSymbol.getValue() == True):
             g.cryptoHwAeadAesSivCmacEnabledSymbol.setValue(
-                g.cryptoHwSymAesEnabledSymbol.getValue())
+                g.cryptoHwAeadAesEnabledSymbol.getValue())
         else: g.cryptoHwAeadAesSivCmacEnabledSymbol.setValue(False)
     else: g.cryptoHwAeadAesSivCmacEnabledSymbol.setValue(False)
 
     if (g.cryptoHwAeadAesSivGcmSupported == True):
         if (g.cryptoAeadAesSivGcmEnabledSymbol.getValue() == True):
             g.cryptoHwAeadAesSivGcmEnabledSymbol.setValue(
-                g.cryptoHwSymAesEnabledSymbol.getValue())
+                g.cryptoHwAeadAesEnabledSymbol.getValue())
         else: g.cryptoHwAeadAesSivGcmEnabledSymbol.setValue(False)
     else: g.cryptoHwAeadAesSivGcmEnabledSymbol.setValue(False)
 
-    if (g.CONFIG_USE_AEAD.getValue() == newValue):
-        return False
-    else:
-        g.CONFIG_USE_AEAD.setValue(newValue)
-        print("CRYPTO:  CONFIG_USE_AEAD = %s"%(g.CONFIG_USE_AEAD.getValue()))
-        return True
+    # if (g.CONFIG_USE_AEAD.getValue() == newValue):
+    #     return False
+    # else:
+    #     g.CONFIG_USE_AEAD.setValue(newValue)
+    #     print("CRYPTO:  CONFIG_USE_AEAD = %s"%(g.CONFIG_USE_AEAD.getValue()))
+    #     return True
+    return True
 
 #Scan for Updated AES HW Supported Symbols
 def ScanAeadHwSymbols():
 
-        #List all the HW supported symbols
-        hwSymbols = []
-        if (g.cryptoHwSymAesEcbSupported    == True):
-            hwSymbols.append(g.cryptoSymAesEcbEnabledSymbol)
-        if (g.cryptoHwSymAesCbcSupported    == True):
-            hwSymbols.append(g.cryptoSymAesCbcEnabledSymbol)
-        if (g.cryptoHwSymAesCtrSupported    == True):
-            hwSymbols.append(g.cryptoSymAesCtrEnabledSymbol)
-        if (g.cryptoHwSymAesCfb1Supported   == True):
-            hwSymbols.append(g.cryptoSymAesCfb1EnabledSymbol)
-        if (g.cryptoHwSymAesCfb8Supported   == True):
-            hwSymbols.append(g.cryptoSymAesCfb8EnabledSymbol)
-        if (g.cryptoHwSymAesCfb64Supported  == True):
-            hwSymbols.append(g.cryptoSymAesCfb64EnabledSymbol)
-        if (g.cryptoHwSymAesCfb128Supported == True):
-            hwSymbols.append(g.cryptoSymAesCfb128EnabledSymbol)
-        if (g.cryptoHwSymAesOfbSupported    == True):
-            hwSymbols.append(g.cryptoSymAesOfbEnabledSymbol)
-        if (g.cryptoHwSymAesXtsSupported    == True):
-            hwSymbols.append(g.cryptoSymAesXtsEnabledSymbol)
+    #List all the HW supported symbols
+    hwSymbols = []
 
-        #Dependencies to AES HW Driver (AEAD-AES)
-        if (g.cryptoHwAeadAesSupported == True):
-            print("AES AEAD:  HW AEAD AES Supported")
-            if (g.cryptoHwAeadAesGcmSupported    == True):
-                hwSymbols.append(g.cryptoAeadAesGcmEnabledSymbol)
-            if (g.cryptoHwAeadAesCcmSupported    == True):
-                hwSymbols.append(g.cryptoAeadAesCcmEnabledSymbol)
-            if (g.cryptoHwAeadAesEaxSupported    == True):
-                hwSymbols.append(g.cryptoAeadAesEaxEnabledSymbol)
-            if (g.cryptoHwAeadAesSivCmacSupported    == True):
-                hwSymbols.append(g.cryptoAeadAesSivCmacEnabledSymbol)
-            if (g.cryptoHwAeadAesSivGcmSupported    == True):
-                hwSymbols.append(g.cryptoAeadAesSivGcmEnabledSymbol)
+    if (g.cryptoHwAeadAesSupported == True):
+        print("AES AEAD:  HW AEAD AES Supported")
+        if (g.cryptoHwAeadAesGcmSupported    == True):
+            hwSymbols.append(g.cryptoAeadAesGcmEnabledSymbol)
+        if (g.cryptoHwAeadAesCcmSupported    == True):
+            hwSymbols.append(g.cryptoAeadAesCcmEnabledSymbol)
+        if (g.cryptoHwAeadAesEaxSupported    == True):
+            hwSymbols.append(g.cryptoAeadAesEaxEnabledSymbol)
+        if (g.cryptoHwAeadAesSivCmacSupported    == True):
+            hwSymbols.append(g.cryptoAeadAesSivCmacEnabledSymbol)
+        if (g.cryptoHwAeadAesSivGcmSupported    == True):
+            hwSymbols.append(g.cryptoAeadAesSivGcmEnabledSymbol)
 
+    #Check to see if any of the HW enables is true
+    #--Check that at least 1 item is selected
+    oneEnabled = False
+    for hSym in hwSymbols:
+        if (hSym.getValue() == True):
+            oneEnabled = True
+            print("AEAD AES: One Enabled")
+            break
 
-        #Check to see if any of the HW enables is true
-        #--Check that at least 1 item is selected
-        oneEnabled = False
-        for hSym in hwSymbols:
-            if (hSym.getValue() == True):
-                oneEnabled = True
-                print("AEAD AES: One Enabled");
-                break;
+    #Check if the AES HW is enabled
+    #-->Set the global AES HW enabled symbol
+    # if (
+    #     g.cryptoHwAeadAesEnabledSymbol.getValue() == True and
+    #     oneEnabled == True):
+    #     g.CONFIG_USE_AEAD_HW.setValue(True)
+    # else:
+    #     g.CONFIG_USE_AEAD_HW.setValue(False)
 
-        g.cryptoAesHwEnSymbols = hwSymbols
-
-        #Check if the AES HW is enabled
-        #-->Set the global AES HW enabled symbol
-        if (
-            g.cryptoHwSymAesEnabledSymbol.getValue() == True and
-            oneEnabled == True):
-            g.CONFIG_USE_AES_HW.setValue(True)
-
-            #Dependencies to AES HW Driver (AEAD-AES)
-            if (g.cryptoHwAeadAesSupported == True):
-                g.cryptoHwAeadAesEnabledSymbol.setValue(True)
-        else:
-            g.CONFIG_USE_AES_HW.setValue(False)
-
-            #Dependencies to AES HW Driver (AEAD-AES)
-            if (g.cryptoHwAeadAesSupported == True):
-                g.cryptoHwAeadAesEnabledSymbol.setValue(False)
-
-        return
+    return
 
 
 ################################################################################
@@ -167,18 +137,18 @@ def ScanAeadHwSymbols():
 def UpdateAeadAesHwDriverFiles():
 
     ScanAead()          #Update CONFIG_USE_AEAD
-    ScanAeadHwSymbols() #Update CONFIG_USE_AES_HW
+    ScanAeadHwSymbols() #Update CONFIG_USE_AEAD_HW
                         #and g.cryptoHwAeadAesEnabledSymbol
 
-    hwVal = g.cryptoHwSymAesEnabledSymbol.getValue()
+    hwVal = g.cryptoHwAeadAesEnabledSymbol.getValue()
 
-    print("AEAD:  Update Driver AEAD-AES HW(%s-%s)"%(
-          hwVal, g.CONFIG_USE_AES_HW.getValue()))
+    # print("AEAD:  Update Driver AEAD-AES HW(%s-%s)"%(
+    #       hwVal, g.CONFIG_USE_AEAD_HW.getValue()))
 
-    hwVal = g.CONFIG_USE_AES_HW.getValue()
+    # hwVal = g.CONFIG_USE_AEAD_HW.getValue()
 
     #Enable/Disable HW Driver Files
-    for fSym in g.hwDriverFileDict["AES"]:
+    for fSym in g.hwDriverFileDict["AEAD"]:
         fSym.setEnabled(hwVal)
         print("  %s(%s)"%(fSym.getID(), fSym.getEnabled()))
 
@@ -188,7 +158,6 @@ def UpdateAeadAesHwDriverFiles():
 ################################################################################
 ################################################################################
 def UpdateAeadAesMenuLabels(hwEnabled):
-    print("AEAD:  Update Labels (hw=%s)"%(hwEnabled))
     if (g.cryptoHwAeadAesGcmSupported == True):
         if (hwEnabled == True):
             g.cryptoAeadAesGcmEnabledSymbol.setLabel("AES-GCM (HW)?")
@@ -263,7 +232,7 @@ def SetupCryptoAeadMenu(cryptoComponent):
     #TODO:  Not visible for now. Using the AES menu HW enable
     g.cryptoHwAeadAesEnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_aead_aes_hw_en", g.aeadAesMenu)
-    g.cryptoHwAeadAesEnabledSymbol.setLabel("Use AES Hardware Acceleration?")
+    g.cryptoHwAeadAesEnabledSymbol.setLabel("Use AEAD-AES Hardware Acceleration?")
     g.cryptoHwAeadAesEnabledSymbol.setDescription(
         "Turn on the hardware acceleration" +
         "for the AES Algorithms")
@@ -271,20 +240,12 @@ def SetupCryptoAeadMenu(cryptoComponent):
         g.cryptoHwAeadAesEnabledSymbol.setDependencies(
                 handleAeadAesHwEnabled,
                 ["crypto_aead_aes_hw_en", "crypto_sym_aes_hw_en"])
-        g.cryptoHwAeadAesEnabledSymbol.setVisible(False)
+        g.cryptoHwAeadAesEnabledSymbol.setVisible(True)
         g.cryptoHwAeadAesEnabledSymbol.setDefaultValue(False)
     else:
         g.cryptoHwAeadAesEnabledSymbol.setVisible(False)
         g.cryptoHwAeadAesEnabledSymbol.setDefaultValue(False)
     g.cryptoHwAeadAesEnabledSymbol.setHelp('CRYPTO_AEAD_SUM')
-
-    #AEAD-AES Main Menu
-    g.aeadAesCom = cryptoComponent.createCommentSymbol(
-            "crypto_aead_aes_com", g.aeadAesMenu)
-    g.aeadAesCom.setLabel(
-            "NOTE:  Enable hardware acceleration under the Symmetric/AES menu")
-    g.aeadAesMenu.setVisible(True)
-
 
     #AEAD-AES MODES MENU
     g.aeadAesModesMenu = cryptoComponent.createMenuSymbol(
@@ -293,9 +254,6 @@ def SetupCryptoAeadMenu(cryptoComponent):
     g.aeadAesModesMenu.setDescription("AEAD-AES Modes:")
     g.aeadAesModesMenu.setHelp('CRYPT_AEAD_AES_MODES_SUM')
     g.aeadAesModesMenu.setVisible(True)
-    #                "crypto_aead_aes_128",
-    #                "crypto_aead_aes_192",
-    #                "crypto_aead_aes_256"])
 
     #AEAD-AES GCM Mode
     g.cryptoAeadAesGcmEnabledSymbol = cryptoComponent.createBooleanSymbol(
@@ -409,20 +367,18 @@ def SetupCryptoAeadMenu(cryptoComponent):
 
 #-----------------------------------------------------
 #AEAD-AES Handlers
-#--NOT USED
 def handleAeadAesHwEnabled(symbol, event):
     print("CRYPTO AEAD: Update HW settings") 
     if (g.cryptoHwAeadAesSupported == True):
-        #Dependent on SYM-AES setting
         g.cryptoHwAeadAesEnabledSymbol.setValue(
-                g.cryptoHwSymAesEnabledSymbol.getValue())
+                g.cryptoHwAeadAesEnabledSymbol.getValue())
     UpdateAeadAesHwDriverFiles()
     return
 
 def handleAeadAesGcmEnabled(symbol, event):
     print("AEAD: Symbol - " + event["namespace"] + " EID " + event["id"])
     print("AEAD: Handle Event SID %s (HW Support %s)"%(
-        symbol.getID(), g.cryptoHwSymAesEnabledSymbol.getValue()))
+        symbol.getID(), g.cryptoHwAeadAesEnabledSymbol.getValue()))
     UpdateAeadAesHwDriverFiles()
     return
 

@@ -38,6 +38,7 @@ sys.path.append(modulePath + "config")
 import crypto_defs           as g   #Modified globals
 import crypto_hash_menu      as hm  #HASH GUI
 import crypto_symmetric_menu as sm  #Symmetric Menu
+import crypto_aead_menu      as am  #Aead Menu
 import crypto_mac_menu       as mm  #Hmac Menu
 import crypto_digsign_menu   as ds  #Digital Signing Menu
 import crypto_kas_menu       as kas #Key Auth Menu
@@ -588,7 +589,9 @@ def instantiateComponent(cryptoComponent):
                    g.CONFIG_USE_SYM.getValue(), projectPath + fileName + ".ftl" ))
 
     #AEAD Function Group
-    #NOTE:  AEAD Menu is setup with the SYM-AES Menu function
+    #--CONFIG_USE_AEAD
+    am.SetupCryptoAeadMenu(cryptoComponent)
+
     #<config>/MCHP_Crypto_Aead_Config.h - API File
     fileName    = "MCHP_Crypto_Aead_Config.h"
     ccAeadConfigFile= cryptoComponent.createFileSymbol(
@@ -933,9 +936,15 @@ def SetupHwDriverFiles(basecomponent):
                             fileNames.update([fileName]) #Add new file
                         else:
                             print("CRYPTO HW:  Duplicate ""%s"""%(fileName))
-    
+                            
         print("hwDriverFileDict[]: ")
-        print(g.hwDriverFileDict)
+        for key, fileList in g.hwDriverFileDict.items():
+            print("%s:" % key)
+            for fSym in fileList:
+                print("  %s" % fSym.getOutputName())
+
+        print("hwFunctionDriverDict[]: ")
+        print(g.hwFunctionDriverDict)
 
     else:
         print("CRYPTO HW:  This driver key (%s) is not supported by this HW: "%(dKey))

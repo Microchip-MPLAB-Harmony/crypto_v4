@@ -98,7 +98,7 @@ def SetupCryptoKasMenu(cryptoComponent):
     #KAS - Crypto KAS Algorithms Main Menu
     g.kasMenu = cryptoComponent.createMenuSymbol(
             "crypto_kas_menu", None)
-    g.kasMenu.setLabel("Key Agreement System (KAS) Menu")
+    g.kasMenu.setLabel("Key Agreement Scheme")
     g.kasMenu.setDescription("Key Agreement Algorithms")
     g.kasMenu.setVisible(True)
     g.kasMenu.setHelp('MC_CRYPTO_KAS_API_H')

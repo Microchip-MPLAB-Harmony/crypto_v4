@@ -52,36 +52,22 @@ def CheckCpkclHwFiles(config_symbol, driver):
 ################################################################################
 def CheckCommonHwFiles():
 
-    # fLoop over driver
-    #   If driver is supported  <-- this is currently not being done
-    #       HwEnable = False    
-    #       fLoop over functions in this driver (while checking if function is being used)
-    #           If any function for this driver is enabled -> HwEnable = True
-    #               Enable/Disable COMMON files
-    #               {       for filename in functionDict["COMMON"]:
-    #                           for fSym in g.hwDriverFileDict["COMMON"]:
-    #                               ... this whole thing 
-    #               }
-
-
     # Loop over driver keys (ex. CPKCC, HSM, ...) and get the values which are dicts
     for driver, functionDict in g.hwDriverDict.items():
-        print("Checking driver: ", driver)
+        # print("Checking driver: ", driver)
 
         # Reset HW accl. logic
         HwEnable = False
         
         # Loop over functions in dict (ex. SHA, AES, ...)
         for function in functionDict.keys():
-            print("Checking function: ", function)
-
+            # print("Checking function: ", function)
 
             if function in g.hwFunctionDriverDict and g.hwFunctionDriverDict[function]:
-                print("This function is being used...")
-
+                # print("This function is being used...")
 
                 if driver in g.hwFunctionDriverDict.get(function, []):
-                    print("This driver: ", driver, " is supported for this function: ", function)
+                    print("Driver: ", driver, " supported for function: ", function)
 
                     # HW config symbols for MCC
                     config_symbols = {
@@ -112,8 +98,8 @@ def CheckCommonHwFiles():
                             javaException = sys.exc_info()[1]
                             print("Module not loaded (javaException): ", javaException)
 
-                        # Enable/Disable COMMON
-                        print("Checking COMMON for driver %s and function %s" % (driver, function))
+                    # Enable/Disable COMMON
+                    print("Checking COMMON for driver %s and function %s" % (driver, function))
 
                     if "COMMON" in functionDict:
                         for filename in functionDict["COMMON"]:
@@ -129,9 +115,6 @@ def CheckCommonHwFiles():
                                         fSym.getOutputName(),fSym.getEnabled()))
                     else:
                         print("No COMMON files found to enable for driver: ", driver)
-
                 else:
-                    print("This driver is NOT supported: ", driver)
-            else:
-                print("This function is not being used...")
+                    print("Driver: ", driver, "is not supported.")
     return

@@ -1086,21 +1086,21 @@ def SetupHardwareSupport(cryptoComponent) :
     devices  = ScanHardware(g.cryptoHwSymAesOfbSupport)
     if (len(devices) == 2): g.cryptoHwSymAesOfbSupported = True
 
-    g.cryptoHwSymAesCcmSupported     = False
-    devices  = ScanHardware(g.cryptoHwSymAesCcmSupport)
-    if (len(devices) == 2): g.cryptoHwSymAesCcmSupported = True
+    g.cryptoHwAeadAesCcmSupported     = False
+    devices  = ScanHardware(g.cryptoHwAeadAesCcmSupport)
+    if (len(devices) == 2): g.cryptoHwAeadAesCcmSupported = True
 
     g.cryptoHwSymAesXtsSupported     = False
     devices  = ScanHardware(g.cryptoHwSymAesXtsSupport)
     if (len(devices) == 2): g.cryptoHwSymAesXtsSupported = True
 
-    g.cryptoHwSymAesGcmSupported     = False
-    devices  = ScanHardware(g.cryptoHwSymAesGcmSupport)
-    if (len(devices) == 2): g.cryptoHwSymAesGcmSupported = True
+    g.cryptoHwAeadAesGcmSupported     = False
+    devices  = ScanHardware(g.cryptoHwAeadAesGcmSupport)
+    if (len(devices) == 2): g.cryptoHwAeadAesGcmSupported = True
 
-    g.cryptoHwSymAesEaxSupported     = False
-    devices  = ScanHardware(g.cryptoHwSymAesEaxSupport)
-    if (len(devices) == 2): g.cryptoHwSymAesEaxSupported = True
+    g.cryptoHwAeadAesEaxSupported     = False
+    devices  = ScanHardware(g.cryptoHwAeadAesEaxSupport)
+    if (len(devices) == 2): g.cryptoHwAeadAesEaxSupported = True
 
     #======
     #AES Key Wrap

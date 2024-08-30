@@ -121,8 +121,6 @@ def UpdateAesHwDriverFiles():
     print("AES:  Update Driver SYM HW(%s-%s)"%(
         hwVal, g.CONFIG_USE_AES_HW.getValue()))
 
-    # hwVal = g.CONFIG_USE_AES_HW.getValue()
-
     #Enable/Disable HW Driver Files
     for fSym in g.hwDriverFileDict["AES"]:
         fSym.setEnabled(hwVal)
@@ -263,7 +261,7 @@ def SetupCryptoSymmetricMenu(cryptoComponent):
     if (g.cryptoHwSymAesSupported):
         g.cryptoHwSymAesEnabledSymbol.setDependencies(
                 handleAesHwEnabled,
-                ["crypto_sym_aes_hw_en", "crypto_aead_aes_hw_en"])
+                ["crypto_sym_aes_en", "crypto_sym_aes_hw_en"])
         g.cryptoHwSymAesEnabledSymbol.setVisible(True)
         g.cryptoHwSymAesEnabledSymbol.setDefaultValue(False)
     else:

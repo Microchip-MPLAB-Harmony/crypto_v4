@@ -173,7 +173,7 @@ hwDriverDict = {
 }
 
 # TODO: Figure out a way to not hardcode CryptoLib_CPKCL files
-cpkclDriverPath     = "src/drivers/CPKCC/"
+cpkclDriverPath     = "src/drivers/CPKCC/CPKCL_Lib/"
 cpkclDriverFileSyms = []   #Extra files used by CPKCC driver
 
 #The dict list of file symbols loaded for each function based on the
@@ -781,8 +781,6 @@ cryptoDesOfbEnabledSymbol   = None
 aeadMenu            = None      # "AEAD Algorithms"
 aeadAesMenu         = None      # "AEAD-AES(128/192/256 bit)"
 aeadAesModesMenu    = None      # "AEAD-AES Algorithm Mode"
-
-# TODO: Get rid of any mention of "Sym" in the variables that go into the AEAD memu
 
 #SYM AES AEAD GENERAL (HARDWARE)
 cryptoHwAeadAesSupport = [

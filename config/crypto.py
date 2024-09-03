@@ -299,7 +299,7 @@ def SetupCpkclDriverFiles(basecomponent) :
     #All src files in the wolfssl/wolfcrypt/src directory
     #--AddFileName(fileName, prefix, component, 
     #              srcPath, destPath, enabled, projectPath):
-    projectPath = "config/" + configName + "/crypto/drivers/CryptoLib_CPKCL"
+    projectPath = "config/" + configName + "/crypto/drivers/CryptoLib_CPKCL"  # Doesn't end with / for some reason
     dstPath = "crypto/drivers/CryptoLib_CPKCL/"  #Path Dest
 
     # Handle .h

@@ -35,15 +35,21 @@ import crypto_defs as g
 # files there are. 
 #   - Called by CheckCommonHwFiles() if HwEnable is True
 ################################################################################
-def CheckCpkclHwFiles(config_symbol, driver):
-    if (config_symbol in [g.CONFIG_USE_ECDSA_HW, g.CONFIG_USE_ECDH_HW]) and (driver == "CPKCC"):
-        print("CPKCL Driver Files Enabled:(%s)"%(True))
-        for fSym in g.cpkclDriverFileSyms:
-            fSym.setEnabled(True)
-    else:
-        print("CPKCL Driver Files Enabled:(%s)"%(False))
-        for fSym in g.cpkclDriverFileSyms:
-            fSym.setEnabled(False)
+def CheckCpkclHwFiles(driver):
+
+    if driver == "CPKCC":
+        try:            
+            enableCpkcl = g.CONFIG_USE_ECDSA_HW.getValue() or g.CONFIG_USE_ECDH_HW.getValue()
+
+            print("CPKCL Driver Files Enabled: (%s)" % enableCpkcl)
+
+            # Enable or disable CPKCL driver files based on the configuration
+            for fSym in g.cpkclDriverFileSyms:
+                fSym.setEnabled(enableCpkcl)
+        except:
+            javaException = sys.exc_info()[1]
+            print("Module not loaded (javaException): ", javaException)
+
 
 ################################################################################
 # Determines whether files that are shared between functions 
@@ -92,11 +98,12 @@ def CheckCommonHwFiles():
                                 HwEnable = True
                                 print("set HwEnable by function:", function)
                                 
-                                # Special case to enable CryptoLib_CPKCL
-                                CheckCpkclHwFiles(config_symbol, driver)
                         except:
                             javaException = sys.exc_info()[1]
                             print("Module not loaded (javaException): ", javaException)
+                        
+                    # Special case to enable CryptoLib_CPKCL
+                    CheckCpkclHwFiles(driver)
 
                     # Enable/Disable COMMON
                     print("Checking COMMON for driver %s and function %s" % (driver, function))

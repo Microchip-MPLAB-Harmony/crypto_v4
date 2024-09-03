@@ -92,10 +92,10 @@
 <#lt>#define WOLFSSL_AES_XTS
 <#lt>#define HAVE_AESCCM
 <#lt>#define WOLFSSL_CMAC
-<#lt>#define HAVE_CAMELLIA
-<#lt>#define HAVE_IDEA
-<#lt>#define HAVE_HC128
-<#lt>#define HAVE_RABBIT
+<#lt>//#define HAVE_CAMELLIA    //Not supported in GUI
+<#lt>//#define HAVE_IDEA
+<#lt>//#define HAVE_HC128
+<#lt>//#define HAVE_RABBIT
 
 <#lt>#define HAVE_ECC
 <#lt>#define HAVE_ECC_KEY_EXPORT    //Required for WOLFCRYPT_HAVE_ECCSI

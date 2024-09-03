@@ -122,41 +122,41 @@ def UpdateAeadAesMenuLabels(hwEnabled):
         if (hwEnabled == True):
             g.cryptoAeadAesGcmEnabledSymbol.setLabel("AES-GCM (HW)?")
         else:
-            g.cryptoAeadAesGcmEnabledSymbol.setLabel("AES-GCM?")
+            g.cryptoAeadAesGcmEnabledSymbol.setLabel("AES-GCM?        ")
     else:
-        g.cryptoAeadAesGcmEnabledSymbol.setLabel("AES-GCM?")
+        g.cryptoAeadAesGcmEnabledSymbol.setLabel("AES-GCM?        ")
 
     if (g.cryptoHwAeadAesCcmSupported == True):
         if (hwEnabled == True):
             g.cryptoAeadAesCcmEnabledSymbol.setLabel("AES-CCM (HW)?")
         else:
-            g.cryptoAeadAesCcmEnabledSymbol.setLabel("AES-CCM?")
+            g.cryptoAeadAesCcmEnabledSymbol.setLabel("AES-CCM?        ")
     else:
-        g.cryptoAeadAesCcmEnabledSymbol.setLabel("AES-CCM?")
+        g.cryptoAeadAesCcmEnabledSymbol.setLabel("AES-CCM?        ")
 
     if (g.cryptoHwAeadAesEaxSupported == True):
         if (hwEnabled == True):
             g.cryptoAeadAesEaxEnabledSymbol.setLabel("AES-EAX (HW)?")
         else:
-            g.cryptoAeadAesEaxEnabledSymbol.setLabel("AES-EAX?")
+            g.cryptoAeadAesEaxEnabledSymbol.setLabel("AES-EAX?        ")
     else:
-        g.cryptoAeadAesEaxEnabledSymbol.setLabel("AES-EAX?")
+        g.cryptoAeadAesEaxEnabledSymbol.setLabel("AES-EAX?        ")
 
     if (g.cryptoHwAeadAesSivCmacSupported == True):
         if (hwEnabled == True):
             g.cryptoAeadAesSivCmacEnabledSymbol.setLabel("AES-SIV CMAC (HW)?")
         else:
-            g.cryptoAeadAesSivCmacEnabledSymbol.setLabel("AES-SIV CMAC?")
+            g.cryptoAeadAesSivCmacEnabledSymbol.setLabel("AES-SIV CMAC?        ")
     else:
-        g.cryptoAeadAesSivCmacEnabledSymbol.setLabel("AES-SIV CMAC?")
+        g.cryptoAeadAesSivCmacEnabledSymbol.setLabel("AES-SIV CMAC?        ")
 
     if (g.cryptoHwAeadAesSivGcmSupported == True):
         if (hwEnabled == True):
             g.cryptoAeadAesSivGcmEnabledSymbol.setLabel("AES-SIV GCM (HW)?")
         else:
-            g.cryptoAeadAesSivGcmEnabledSymbol.setLabel("AES-SIV GCM?")
+            g.cryptoAeadAesSivGcmEnabledSymbol.setLabel("AES-SIV GCM?        ")
     else:
-        g.cryptoAeadAesSivGcmEnabledSymbol.setLabel("AES-SIV GCM?")
+        g.cryptoAeadAesSivGcmEnabledSymbol.setLabel("AES-SIV GCM?        ")
 
     return
 
@@ -186,25 +186,15 @@ def SetupCryptoAeadMenu(cryptoComponent):
 
     #AES HW Driver Generation Enable
     g.CONFIG_USE_AEAD_HW = cryptoComponent.createBooleanSymbol(
-            "config_use_aead_hw", g.aesMenu)
+            "config_use_aead_hw", g.aeadMenu)
     g.CONFIG_USE_AEAD_HW.setVisible(False)
     g.CONFIG_USE_AEAD_HW.setLabel("Crypto AES HW")
     g.CONFIG_USE_AEAD_HW.setDefaultValue(False) #Always initialize False
 
     ##########################################################
-    #AEAD-AES Main Menu
-    # One-down menu
-    g.aeadAesMenu = cryptoComponent.createMenuSymbol(
-            "crypto_aead_aes", g.aeadMenu)
-    g.aeadAesMenu.setLabel("AEAD-AES(128/192/256 bit)")
-    g.aeadAesMenu.setDescription("AEAD-AES  Algorithms:")
-    g.aeadAesMenu.setVisible(True)
-    g.aeadAesMenu.setHelp('CRYPTO_AEAD_AES_SUM')
-
-    ##########################################################
     #AEAD-AES HW Enable (For all AEAD-AES Algorithms with HW Support)
     g.cryptoHwAeadAesEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aead_aes_hw_en", g.aeadAesMenu)
+            "crypto_aead_aes_hw_en", g.aeadMenu)
     g.cryptoHwAeadAesEnabledSymbol.setLabel("Use AEAD-AES Hardware Acceleration?")
     g.cryptoHwAeadAesEnabledSymbol.setDescription(
         "Turn on the hardware acceleration" +
@@ -221,21 +211,31 @@ def SetupCryptoAeadMenu(cryptoComponent):
     g.cryptoHwAeadAesEnabledSymbol.setHelp('CRYPTO_AEAD_SUM')
 
     ##########################################################
+    #AEAD-AES Main Menu
+    # One-down menu
+    g.aeadAesMenu = cryptoComponent.createMenuSymbol(
+            "crypto_aead_aes", g.aeadMenu)
+    g.aeadAesMenu.setLabel("AEAD-AES")
+    g.aeadAesMenu.setDescription("AEAD-AES Algorithms:")
+    g.aeadAesMenu.setVisible(True)
+    g.aeadAesMenu.setHelp('CRYPTO_AEAD_AES_SUM')
+
+    ##########################################################
     #AEAD-AES MODES MENU
     # Two-down menu
-    g.aeadAesModesMenu = cryptoComponent.createMenuSymbol(
-            "crypto_aead_aes_modes", g.aeadAesMenu)
-    g.aeadAesModesMenu.setLabel("AEAD-AES Algorithm Modes")
-    g.aeadAesModesMenu.setDescription("AEAD-AES Modes:")
-    g.aeadAesModesMenu.setHelp('CRYPT_AEAD_AES_MODES_SUM')
-    g.aeadAesModesMenu.setVisible(True)
+    # g.aeadAesModesMenu = cryptoComponent.createMenuSymbol(
+    #         "crypto_aead_aes_modes", g.aeadAesMenu)
+    # g.aeadAesModesMenu.setLabel("AEAD-AES Algorithm Modes")
+    # g.aeadAesModesMenu.setDescription("AEAD-AES Modes:")
+    # g.aeadAesModesMenu.setHelp('CRYPT_AEAD_AES_MODES_SUM')
+    # g.aeadAesModesMenu.setVisible(False)
 
     ##########################################################
     # Menu items (GCM, CCM, EAX, SIV-CMAC, SIV-GCM)
     
     #AEAD-AES GCM Mode
     g.cryptoAeadAesGcmEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aead_aes_gcm_en", g.aeadAesModesMenu)
+            "crypto_aead_aes_gcm_en", g.aeadAesMenu)
     g.cryptoAeadAesGcmEnabledSymbol.setLabel("AEAD-AES GCM Mode?")
     g.cryptoAeadAesGcmEnabledSymbol.setDescription(
             "Enable support for the AEAD-AES GCM Mode Algorithm.")
@@ -257,7 +257,7 @@ def SetupCryptoAeadMenu(cryptoComponent):
 
     #AEAD-AES CCM Mode
     g.cryptoAeadAesCcmEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aead_aes_ccm_en", g.aeadAesModesMenu)
+            "crypto_aead_aes_ccm_en", g.aeadAesMenu)
     g.cryptoAeadAesCcmEnabledSymbol.setLabel("AEAD-AES CCM Mode?")
     g.cryptoAeadAesCcmEnabledSymbol.setDescription(
             "Enable support for the AEAD-AES CCM Mode Algorithm.")
@@ -278,7 +278,7 @@ def SetupCryptoAeadMenu(cryptoComponent):
 
     #AEAD-AES EAX
     g.cryptoAeadAesEaxEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aead_aes_eax_en", g.aeadAesModesMenu)
+            "crypto_aead_aes_eax_en", g.aeadAesMenu)
     g.cryptoAeadAesEaxEnabledSymbol.setLabel("AEAD-AES EAX Mode? ")
     g.cryptoAeadAesEaxEnabledSymbol.setDescription(
             "Enable support for the AEAD-AES EAX Mode Algorithm.")
@@ -299,11 +299,11 @@ def SetupCryptoAeadMenu(cryptoComponent):
 
     #AEAD-AES SIV-CMAC Mode
     g.cryptoAeadAesSivCmacEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aead_aes_siv_cmac_en", g.aeadAesModesMenu)
+            "crypto_aead_aes_siv_cmac_en", g.aeadAesMenu)
     g.cryptoAeadAesSivCmacEnabledSymbol.setLabel("AEAD-AES SIV-CMAC Mode?")
     g.cryptoAeadAesSivCmacEnabledSymbol.setDescription(
             "Enable support for the AEAD-AES SIV-CMAC Mode Algorithm.")
-    g.cryptoAeadAesSivCmacEnabledSymbol.setVisible(True)
+    g.cryptoAeadAesSivCmacEnabledSymbol.setVisible(False)   # Not currently supported
     g.cryptoAeadAesSivCmacEnabledSymbol.setReadOnly(False)
     g.cryptoAeadAesSivCmacEnabledSymbol.setDefaultValue(False)
     if (g.cryptoHwAeadAesSivCmacSupported == True):
@@ -320,11 +320,11 @@ def SetupCryptoAeadMenu(cryptoComponent):
 
     #AEAD-AES SIV-GCM Mode
     g.cryptoAeadAesSivGcmEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_aead_aes_siv_gcm_en", g.aeadAesModesMenu)
+            "crypto_aead_aes_siv_gcm_en", g.aeadAesMenu)
     g.cryptoAeadAesSivGcmEnabledSymbol.setLabel("AEAD-AES SIV-GCM Mode?")
     g.cryptoAeadAesSivGcmEnabledSymbol.setDescription(
             "Enable support for the AEAD-AES SIV-GCM Mode Algorithm.")
-    g.cryptoAeadAesSivGcmEnabledSymbol.setVisible(True)
+    g.cryptoAeadAesSivGcmEnabledSymbol.setVisible(False)   # Not currently supported
     g.cryptoAeadAesSivGcmEnabledSymbol.setReadOnly(False)
     g.cryptoAeadAesSivGcmEnabledSymbol.setDefaultValue(False)
     if (g.cryptoHwAeadAesSivGcmSupported == True):

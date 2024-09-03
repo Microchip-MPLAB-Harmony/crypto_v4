@@ -648,8 +648,8 @@ cryptoSymAesCbcEnabledSymbol   = None
 
 #SYM AES OFB Mode
 cryptoHwSymAesOfbSupport       = [
-    ["HSM" ,"03785",      "", [],
-    set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
+    # ["HSM" ,"03785",      "", [],
+    # set(["HAVE_MCHP_CRYPTO_AES_HW_HSM"])], #PIC32CZ CA90 
     ["AES", "6149", "ZN", [],
         set(["HAVE_MCHP_CRYPTO_AES_HW_6149"])]  #PIC32CX MT
 ]

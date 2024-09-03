@@ -69,18 +69,9 @@ def SetupCryptoMacMenu(cryptoComponent):
     g.CONFIG_USE_MAC.setLabel("Crypto")
     g.CONFIG_USE_MAC.setDefaultValue(False)
 
-
-    #MAC-AES Main Menu
-    g.macAesMenu = cryptoComponent.createMenuSymbol(
-            "crypto_mac_aes", g.macMenu)
-    g.macAesMenu.setLabel("AES(MAC)")
-    g.macAesMenu.setDescription("MAC-AES Algorithms:")
-    g.macAesMenu.setVisible(True)
-    g.macAesMenu.setHelp('CRYPT_MAC_AES_SUM')
-
     #MAC-AES HW Enable (For all MAC AES Algorithms that have HW Support)
     g.cryptoHwMacAesEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_mac_aes_hw_en", g.macAesMenu)
+            "crypto_mac_aes_hw_en", g.macMenu)
     g.cryptoHwMacAesEnabledSymbol.setLabel("Enable MAC-AES Hardware Acceleration?")
     g.cryptoHwMacAesEnabledSymbol.setDescription(
         "Turn on the hardware acceleration" +
@@ -98,20 +89,25 @@ def SetupCryptoMacMenu(cryptoComponent):
     #TODO:  Add the Hardware *****
     g.cryptoHwMacAesEnabledSymbol.setReadOnly(True)
 
-    #Global to indicate when AES Modes are visible
-    g.cryptoMacAesModesSupported = False
+    #MAC-AES Main Menu
+    g.macAesMenu = cryptoComponent.createMenuSymbol(
+            "crypto_mac_aes", g.macMenu)
+    g.macAesMenu.setLabel("MAC-AES")
+    g.macAesMenu.setDescription("MAC-AES Algorithms:")
+    g.macAesMenu.setVisible(True)
+    g.macAesMenu.setHelp('CRYPT_MAC_AES_SUM')
 
     #MAC-AES MODES MENU
-    g.macAesModesMenu = cryptoComponent.createMenuSymbol(
-            "crypto_mac_aes_modes", g.macAesMenu)
-    g.macAesModesMenu.setLabel("MAC-AES Algorithm Modes")
-    g.macAesModesMenu.setDescription("MAC-AES Modes:")
-    g.macAesModesMenu.setHelp('CRYPT_MAC_AES_MODES_SUM')
-    g.macAesModesMenu.setVisible(True)
+    # g.macAesModesMenu = cryptoComponent.createMenuSymbol(
+    #         "crypto_mac_aes_modes", g.macAesMenu)
+    # g.macAesModesMenu.setLabel("MAC-AES Algorithm Modes")
+    # g.macAesModesMenu.setDescription("MAC-AES Modes:")
+    # g.macAesModesMenu.setHelp('CRYPT_MAC_AES_MODES_SUM')
+    # g.macAesModesMenu.setVisible(False)
 
     #MAC-AES CMAC Mode
     g.cryptoMacAesCmacEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_mac_aes_cmac_en", g.macAesModesMenu)
+            "crypto_mac_aes_cmac_en", g.macAesMenu)
     g.cryptoMacAesCmacEnabledSymbol.setLabel("MAC-AES CMAC Mode?")
     g.cryptoMacAesCmacEnabledSymbol.setDescription(
             "Enable support for the MAC-AES CMAC Mode Algorithm.")
@@ -131,11 +127,11 @@ def SetupCryptoMacMenu(cryptoComponent):
 
     #MAC-AES CBC-MAC Mode
     g.cryptoMacAesCbcMacEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_mac_aes_cbc_mac_en", g.macAesModesMenu)
+            "crypto_mac_aes_cbc_mac_en", g.macAesMenu)
     g.cryptoMacAesCbcMacEnabledSymbol.setLabel("MAC-AES CBC-MAC Mode?")
     g.cryptoMacAesCbcMacEnabledSymbol.setDescription(
             "Enable support for the MAC-AES CBC-MAC Mode Algorithm.")
-    g.cryptoMacAesCbcMacEnabledSymbol.setVisible(True)
+    g.cryptoMacAesCbcMacEnabledSymbol.setVisible(False)   # Not currently supported
     g.cryptoMacAesCbcMacEnabledSymbol.setReadOnly(False)
     g.cryptoMacAesCbcMacEnabledSymbol.setDefaultValue(False)
 
@@ -151,11 +147,11 @@ def SetupCryptoMacMenu(cryptoComponent):
 
     #MAC-AES GMAC 
     g.cryptoMacAesGmacEnabledSymbol = cryptoComponent.createBooleanSymbol(
-            "crypto_mac_aes_gmac_en", g.macAesModesMenu)
+            "crypto_mac_aes_gmac_en", g.macAesMenu)
     g.cryptoMacAesGmacEnabledSymbol.setLabel("MAC-AES GMAC Mode? ")
     g.cryptoMacAesGmacEnabledSymbol.setDescription(
             "Enable support for the MAC-AES GMAC Mode Algorithm.")
-    g.cryptoMacAesGmacEnabledSymbol.setVisible(True)
+    g.cryptoMacAesGmacEnabledSymbol.setVisible(False)   # Not currently supported
     g.cryptoMacAesGmacEnabledSymbol.setReadOnly(False)
     g.cryptoMacAesGmacEnabledSymbol.setDefaultValue(False)
 

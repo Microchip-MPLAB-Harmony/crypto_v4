@@ -32,15 +32,14 @@
 #include "hsm_sym.h"
 #include "hsm_cmd.h"
 
-//RSP_DATA rspDigest1;
-//RSP_DATA *rspDigest2 = &rspDigest1;
-
-
-void Hsm_Sym_Tdes_CipherDirect(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTypes_E tdesModeType_en, hsm_Tdes_CmdTypes_E tdesOperType_en, 
+hsm_Cmd_Status_E Hsm_Sym_Tdes_CipherDirect(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTypes_E tdesModeType_en, hsm_Tdes_CmdTypes_E tdesOperType_en, 
                             uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut, uint8_t *tdesKey, uint8_t *ptr_initVect, uint8_t varslotNum)
 {
+    hsm_Cmd_Status_E ret_status_en = HSM_CMD_ERROR_FAILED;
     Hsm_Sym_Tdes_Init(ptr_tdesCmd_st, tdesModeType_en, tdesOperType_en, tdesKey, ptr_initVect, varslotNum);
-    Hsm_Sym_Tdes_Cipher(ptr_tdesCmd_st, ptr_dataIn, inputDataLen, ptr_dataOut);
+    ret_status_en = Hsm_Sym_Tdes_Cipher(ptr_tdesCmd_st, ptr_dataIn, inputDataLen, ptr_dataOut);
+    
+    return ret_status_en;
 }
 
 //Init will initialize the Key, IV, AES Mode and Operation type (encryption or decryption) 
@@ -104,7 +103,7 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     ptr_tdesCmd_st->tdesInputDataLenParm1 = inputDataLen;
     
     //Output SG-DMA Descriptor 1
-    ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)ptr_dataOut;
+    ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.dataLen = inputDataLen; //length of the Output data which will be same as input Len
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x00;
@@ -119,7 +118,7 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].nextDes_st.stop = 0x00; //Do not stop after this descriptor 1 
         
         //Output SG-DMA Descriptor 2
-        ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_tdesCmd_st->arr_tdesIvCtx;
+        ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_tdesCmd_st->arr_tdesIvCtx);
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = (uint32_t)0x00;
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].nextDes_st.stop = 0x01; //stop after this descriptor 2           
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.dataLen = 16; //length of the data in bytes and it is always 16 bytes
@@ -138,11 +137,11 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     }
     else
     {
-        
+        //do nothing
     }
     
     //Input SG-DMA Descriptor for Plain Text/ Encrypted Text for Any Mode
-    ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].ptr_dataAddr = (uint32_t*)ptr_dataIn; 
+    ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].ptr_dataAddr = (uint32_t*)(ptr_dataIn); 
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].flagAndLength_st.dataLen = inputDataLen;  //length of input data in bytes
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].nextDes_st.stop = 0x01; //Stop after this
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].flagAndLength_st.cstAddr = 0x00;
@@ -151,12 +150,12 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].flagAndLength_st.intEn = 0x00;
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].nextDes_st.reserved1 = 0x00; 
 
-    sendCmd_st.mailBoxHdr = (uint32_t*)&(ptr_tdesCmd_st->tdesMailBoxHdr_st);
-    sendCmd_st.algocmdHdr = (uint32_t*)&(ptr_tdesCmd_st->tdesCmdHeader_st);
-    sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ptr_tdesCmd_st->arr_tdesInSgDmaDes_st;
-    sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st;
+    sendCmd_st.mailBoxHdr = (uint32_t*)(&ptr_tdesCmd_st->tdesMailBoxHdr_st);
+    sendCmd_st.algocmdHdr = (uint32_t*)(&ptr_tdesCmd_st->tdesCmdHeader_st);
+    sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)(ptr_tdesCmd_st->arr_tdesInSgDmaDes_st);
+    sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)(ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st);
     sendCmd_st.ptr_params = (uint32_t*)&(ptr_tdesCmd_st->tdesInputDataLenParm1);
-    sendCmd_st.paramsCount = (uint8_t)((ptr_tdesCmd_st->tdesMailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t)((ptr_tdesCmd_st->tdesMailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -165,7 +164,7 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
 
     //Check the command response with expected values for Tdes Cmd
-    ret_tdesStatus_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8), *sendCmd_st.algocmdHdr);
+    ret_tdesStatus_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8UL), *sendCmd_st.algocmdHdr);
      
     return ret_tdesStatus_en;
 }
@@ -203,10 +202,10 @@ void Hsm_Sym_Aes_Init(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E
     ptr_aesCmd_st->aesCmdHeader_st.reserved2 = 0x00;
     
     //Input SG-DMA Descriptor 1 for AES Key
-    ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)ptr_aeskey;
+    ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_aeskey);
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_aesCmd_st->arr_aesInSgDmaDes_st[1])>>2);
-    ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.dataLen = (uint32_t)((uint16_t)keyLen_en*(uint16_t)8+16);  //here key length is entered
+    ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.dataLen = (uint32_t)(((uint32_t)keyLen_en*8UL)+16UL);  //here key length is entered
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
@@ -225,7 +224,7 @@ void Hsm_Sym_Aes_Init(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E
     
         if( (aesModeType_en == HSM_SYM_AES_OPMODE_CBC) || (aesModeType_en == HSM_SYM_AES_OPMODE_CTR) )
         {
-            ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_aesCmd_st->arr_aesIvCtx;
+            ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_aesCmd_st->arr_aesIvCtx);
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = ((uint32_t)(&ptr_aesCmd_st->arr_aesInSgDmaDes_st[2])>>2);
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = 16;  //128 bit of IV for AES
@@ -261,7 +260,7 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
     ptr_aesCmd_st->aesInputDataLenParm1 = inputDataLen;
     
     //Output SG-DMA Descriptor 1
-    ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)ptr_dataOut;
+    ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.dataLen = inputDataLen; //length of the Output data which will be same as input Len
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x00;
@@ -278,7 +277,7 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.stop = 0x00; //Do not stop after this descriptor 1 
         
         //Output SG-DMA Descriptor 2
-        ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_aesCmd_st->arr_aesIvCtx;
+        ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_aesCmd_st->arr_aesIvCtx);
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = (uint32_t)0x00;
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.stop = 0x01; //stop after this descriptor 2           
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.dataLen = 16; //length of the data in bytes and it is always 16 bytes
@@ -301,7 +300,7 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
     }
     else
     {
-        
+        //do nothing
     }
     
     //Input SG-DMA Descriptor for Plain Text/ Encrypted Text for Any Mode
@@ -317,10 +316,10 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
 
     sendCmd_st.mailBoxHdr = (uint32_t*)&(ptr_aesCmd_st->aesMailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)&(ptr_aesCmd_st->aesCmdHeader_st);
-    sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ptr_aesCmd_st->arr_aesInSgDmaDes_st;
-    sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)ptr_aesCmd_st->arr_aesOutSgDmaDes_st;
+    sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)(ptr_aesCmd_st->arr_aesInSgDmaDes_st);
+    sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)(ptr_aesCmd_st->arr_aesOutSgDmaDes_st);
     sendCmd_st.ptr_params = (uint32_t*)&(ptr_aesCmd_st->aesInputDataLenParm1);
-    sendCmd_st.paramsCount = (uint8_t)((ptr_aesCmd_st->aesMailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t)((ptr_aesCmd_st->aesMailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -329,7 +328,7 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
 
     //Check the command response with expected values for AES Encrypt Cmd
-    ret_aesStatus_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-12), *sendCmd_st.algocmdHdr);
+    ret_aesStatus_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-12UL), *sendCmd_st.algocmdHdr);
     
     return ret_aesStatus_en;
 }
@@ -506,7 +505,7 @@ void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_C
     ptr_chachaCmd_st->chachaCmdHeader_st.reserved2 = 0x00;
     
     //Input SG-DMA Descriptor 1 for ChaCha Key
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)ptr_tdesKey;
+    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_tdesKey);
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1])>>2);
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.dataLen = 32;  //here key length is entered in bytes
@@ -517,7 +516,7 @@ void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_C
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
 
     //Input SG-DMA Descriptor 2 for IV
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_initVect;
+    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_initVect);
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2])>>2);
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.dataLen = 4;  //here key length is entered in bytes
@@ -549,7 +548,7 @@ void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_C
 void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut)
 {
     //Input SG-DMA Descriptor 4 for ChaCha Cipher
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_dataIn;
+    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)(ptr_dataIn);
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.stop = 0x01; //do not stop
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00; //((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1])>>2);
     ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.dataLen = inputDataLen;  //here key length is entered in bytes
@@ -563,9 +562,9 @@ void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t 
     ptr_chachaCmd_st->chachaInputDataLenParm1 = inputDataLen;
     
     //Output SG-DMA Descriptor 1 for ChaCha Cipher
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)ptr_dataOut;
+    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
     ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.stop = inputDataLen;
+    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.stop = 0x01;
     ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
     ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.dataLen = 0x00;

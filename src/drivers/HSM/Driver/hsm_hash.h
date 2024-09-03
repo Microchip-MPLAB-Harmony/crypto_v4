@@ -52,12 +52,12 @@ typedef enum
 
 typedef enum
 {
-    HSM_HASH_DIGESTSIZE_MD5     = 0x10, //16 bytes
-    HSM_HASH_DIGESTSIZE_SHA1    = 0x14, //20 bytes   
-    HSM_HASH_DIGESTSIZE_SHA224  = 0x1C, //28 bytes
-    HSM_HASH_DIGESTSIZE_SHA256  = 0x20, //32 bytes
-    HSM_HASH_DIGESTSIZE_SHA384  = 0x30, //48 bytes
-    HSM_HASH_DIGESTSIZE_SHA512  = 0x40, //64 bytes                  
+    HSM_HASH_DIGESTSIZE_MD5     = 0x10U, //16 bytes
+    HSM_HASH_DIGESTSIZE_SHA1    = 0x14U, //20 bytes   
+    HSM_HASH_DIGESTSIZE_SHA224  = 0x1CU, //28 bytes
+    HSM_HASH_DIGESTSIZE_SHA256  = 0x20U, //32 bytes
+    HSM_HASH_DIGESTSIZE_SHA384  = 0x30U, //48 bytes
+    HSM_HASH_DIGESTSIZE_SHA512  = 0x40U, //64 bytes                  
 }hsm_Hash_DigestSizes_E;
 
 typedef struct
@@ -165,7 +165,7 @@ typedef struct
 	st_Hsm_MailBoxHeader        mailBoxHdr_st;
 	st_Hsm_Hash_CmdHeader		cmdHeader_st;
 	st_Hsm_SgDmaDescriptor      inSgDmaDes_st[2] __attribute__((aligned(4)));
-	st_Hsm_SgDmaDescriptor      outSgDmaDes_st;
+	st_Hsm_SgDmaDescriptor      outSgDmaDes_st[1] __attribute__((aligned(4)));
 	uint32_t					inputLenParm1;
 	st_Hsm_Hash_FinalCmdParam2 	finalCmdParam2_st;
     uint32_t                    totalDataLenPara3;
@@ -221,8 +221,6 @@ typedef enum
 }hsm_Cmd_AesKeySizes_E;
 
 hsm_Cmd_Status_E HSM_Hash_DigestDirect(hsm_Hash_Types_E hashType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
-uint8_t Hsm_Hash_HashLen(hsm_Hash_Types_E hashType_en);
-uint8_t Hsm_Hash_HashCtxLen(hsm_Hash_Types_E hashType_en);
 hsm_Cmd_Status_E HSM_Hash_InitCmd(uint8_t *ptr_hashCtx, hsm_Hash_Types_E hashType_en);
 hsm_Cmd_Status_E HSM_Hash_UpdateCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_inputData, uint32_t dataLen, hsm_Hash_Types_E hashType_en);
 hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverInData, uint32_t dataLen, uint8_t *ptr_OutputData, hsm_Hash_Types_E hashType_en);

@@ -78,17 +78,17 @@ int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en)
 //3. If either the r or the S-value has the highest bit set then it needs extra padding of 1 byte.
 //4. If the highest bits of both r and s values are set, then both need padding of one byte
 //So Signature length is "6-bytes Der format Overhead + r-value + 1-byte r-value's padding(if required) + s-value + 1-byte s-value's padding (if required) + 1-byte signature hash)"
-int Crypto_Common_Wc_Ecc_EncodeToDerSign(uint8_t *inputSign, uint16_t inputSignLen, uint8_t *outDerSign, uint16_t outSignLen)
+int Crypto_Common_Wc_Ecc_EncodeToDerSign(uint8_t *inputSign, uint16_t inputSignLen, uint8_t *outDerSign, uint32_t outSignLen)
 {
     int retWcDerSign = -1;
-    retWcDerSign = wc_ecc_rs_to_sig((const char*)inputSign, (const char*)(inputSign+(inputSignLen/2u)), (byte*)outDerSign, (word32*)&outSignLen);
+    retWcDerSign = wc_ecc_rs_to_sig((const char*)inputSign, (const char*)(inputSign+(inputSignLen/2U)), (byte*)outDerSign, (word32*)&outSignLen);
     return retWcDerSign;
 }
 
-int Crypto_Common_Wc_Ecc_DecodeDerSign(uint8_t *inputDerSign, uint16_t inputSignDerLen, uint8_t *outSign, uint16_t outSignLen)
+int Crypto_Common_Wc_Ecc_DecodeDerSign(uint8_t *inputDerSign, uint16_t inputSignDerLen, uint8_t *outSign, uint32_t outSignLen)
 {
     int retWcDerSign = -1;
-    word32 rLen = (word32)outSignLen/2;
+    word32 rLen = (word32)outSignLen/2U;
     retWcDerSign = wc_ecc_sig_to_rs((const byte*)inputDerSign, (word32)inputSignDerLen, (byte*)outSign, (word32*)&rLen, (byte*)(outSign+rLen), (word32*)&rLen);
     return retWcDerSign;
 }

@@ -517,7 +517,7 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_Final(crypto_CipherOper_E cipherOper_
 #endif /*WOLFSSL_AESGCM_STREAM */
 
 crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keySize, 
-                                                uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen)
+                                                uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     int wcAesGcmStatus = BAD_FUNC_ARG;
@@ -530,12 +530,12 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
         if( cipherOper_en == CRYPTO_CIOP_ENCRYPT)
         {
             wcAesGcmStatus = wc_AesGcmEncrypt(arr_aesGcmCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen, ptr_initVect, initVectLen, 
-                            ptr_authTag, authTagLen, ptr_aad, aadLen);
+                            ptr_authTag, (word32)authTagLen, ptr_aad, aadLen);
         }
         else if(cipherOper_en == CRYPTO_CIOP_DECRYPT)
         {
             wcAesGcmStatus = wc_AesGcmDecrypt(arr_aesGcmCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen, ptr_initVect, initVectLen, 
-                            ptr_authTag, authTagLen, ptr_aad, aadLen);
+                            ptr_authTag, (word32)authTagLen, ptr_aad, aadLen);
         }
         else
         {

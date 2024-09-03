@@ -33,28 +33,28 @@
 #include "hsm_hash.h"
 #include "hsm_cmd.h"
 
-uint8_t Hsm_Hash_HashLen(hsm_Hash_Types_E hashType_en)
+static uint8_t Hsm_Hash_HashLen(hsm_Hash_Types_E hashType_en)
 {
     uint8_t hashLen = 0u;
     switch(hashType_en)
     {
         case HSM_CMD_HASH_MD5:
-        	hashLen	= HSM_HASH_DIGESTSIZE_MD5;
+        	hashLen	= (uint8_t)HSM_HASH_DIGESTSIZE_MD5;
             break;
         case HSM_CMD_HASH_SHA1:
-            hashLen	= HSM_HASH_DIGESTSIZE_SHA1;
+            hashLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA1;
             break;
         case HSM_CMD_HASH_SHA224:
-            hashLen	= HSM_HASH_DIGESTSIZE_SHA224;
+            hashLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA224;
             break;    
         case HSM_CMD_HASH_SHA256:
-            hashLen	= HSM_HASH_DIGESTSIZE_SHA256;
+            hashLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA256;
             break;  
         case HSM_CMD_HASH_SHA384:
-            hashLen	= HSM_HASH_DIGESTSIZE_SHA384;
+            hashLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA384;
             break;   
         case HSM_CMD_HASH_SHA512:
-            hashLen	= HSM_HASH_DIGESTSIZE_SHA512;
+            hashLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA512;
             break;              
         default:
             hashLen = 0u;
@@ -63,37 +63,36 @@ uint8_t Hsm_Hash_HashLen(hsm_Hash_Types_E hashType_en)
     return hashLen; 
 }
 
-uint8_t Hsm_Hash_HashCtxLen(hsm_Hash_Types_E hashType_en)
+static uint8_t Hsm_Hash_HashCtxLen(hsm_Hash_Types_E hashType_en)
 {
     uint8_t hashCtxLen = 0u;
     switch(hashType_en)
     {
         case HSM_CMD_HASH_MD5:
-        	hashCtxLen	= HSM_HASH_DIGESTSIZE_MD5;
+        	hashCtxLen	= (uint8_t)HSM_HASH_DIGESTSIZE_MD5;
             break;
         case HSM_CMD_HASH_SHA1:
-            hashCtxLen	= HSM_HASH_DIGESTSIZE_SHA1;
+            hashCtxLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA1;
             break;
         case HSM_CMD_HASH_SHA224:
         case HSM_CMD_HASH_SHA256:
-            hashCtxLen	= HSM_HASH_DIGESTSIZE_SHA256;
+            hashCtxLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA256;
             break;  
         case HSM_CMD_HASH_SHA384:
         case HSM_CMD_HASH_SHA512:
-            hashCtxLen	= HSM_HASH_DIGESTSIZE_SHA512;
+            hashCtxLen	= (uint8_t)HSM_HASH_DIGESTSIZE_SHA512;
             break;              
         default:
-            hashCtxLen = 0u;
+            hashCtxLen = 0U;
             break;
     }
     return hashCtxLen; 
 }
 
-void HSM_Hash_BlockCmd(st_Hsm_Hash_BlockCmd *ptr_hashBlockCtx_st, hsm_Hash_Types_E hashType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
+static void HSM_Hash_BlockCmd(st_Hsm_Hash_BlockCmd *ptr_hashBlockCtx_st, hsm_Hash_Types_E hashType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
 {
-    uint8_t hashLen = 0u;
-	
-    SYS_PRINT("-------------Block CMD FILLING STARTED----------\r\n");
+    uint8_t hashLen = 0U;
+
     //Mailbox Header
     ptr_hashBlockCtx_st->mailBoxHdr_st.msgSize =  0x18;
     ptr_hashBlockCtx_st->mailBoxHdr_st.unProtection = 0x1;
@@ -146,7 +145,6 @@ void HSM_Hash_BlockCmd(st_Hsm_Hash_BlockCmd *ptr_hashBlockCtx_st, hsm_Hash_Types
     ptr_hashBlockCtx_st->blockCmdParm2_st.reserved1 = 0x00;
     ptr_hashBlockCtx_st->blockCmdParm2_st.reserved2 = 0x00;
     ptr_hashBlockCtx_st->blockCmdParm2_st.varSlotData_st.reserved1 = 0x00;
-    SYS_PRINT("-------------Block CMD FILLING FINISHED----------\r\n");
 }
 
 hsm_Cmd_Status_E HSM_Hash_DigestDirect(hsm_Hash_Types_E hashType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
@@ -164,7 +162,7 @@ hsm_Cmd_Status_E HSM_Hash_DigestDirect(hsm_Hash_Types_E hashType_en, uint8_t *pt
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)&(hashBlockCtx_st.inSgDmaDes_st);
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)&(hashBlockCtx_st.outSgDmaDes_st);
     sendCmd_st.ptr_params = (uint32_t*)&(hashBlockCtx_st.inputLenParm1);
-    sendCmd_st.paramsCount = (uint8_t) ((hashBlockCtx_st.mailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t) ((hashBlockCtx_st.mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -173,14 +171,13 @@ hsm_Cmd_Status_E HSM_Hash_DigestDirect(hsm_Hash_Types_E hashType_en, uint8_t *pt
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
 
     //Check the command response with expected values for Hash Block Cmd
-    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8), *sendCmd_st.algocmdHdr);
+    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8U), *sendCmd_st.algocmdHdr);
 
     return ret_hashCmdStat_en;
 }
 
 hsm_Cmd_Status_E HSM_Hash_InitCmd(uint8_t *ptr_hashCtx, hsm_Hash_Types_E hashType_en)
 {
-    SYS_PRINT("-------------Hash Init CMD STARTED----------\r\n");
     st_Hsm_Hash_InitCmd hashInitCmd_st;
     st_Hsm_ResponseCmd cmdResponse_st;
     st_Hsm_SendCmdLayout sendCmd_st;
@@ -241,7 +238,7 @@ hsm_Cmd_Status_E HSM_Hash_InitCmd(uint8_t *ptr_hashCtx, hsm_Hash_Types_E hashTyp
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)0x00000000; //&(hashInitCmd_st.inSgDmaDes_st);
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)&(hashInitCmd_st.outSgDmaDes_st);
     sendCmd_st.ptr_params = (uint32_t*)&(hashInitCmd_st.initCmdParm1_st);
-    sendCmd_st.paramsCount = (uint8_t) ((hashInitCmd_st.mailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t) ((hashInitCmd_st.mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -250,16 +247,12 @@ hsm_Cmd_Status_E HSM_Hash_InitCmd(uint8_t *ptr_hashCtx, hsm_Hash_Types_E hashTyp
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
     
     //Check the command response with expected values for Hash Init Cmd
-    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8), *sendCmd_st.algocmdHdr);
-    
-    SYS_PRINT("-------------Hash Init CMD END----------\r\n");
-    
+    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8U), *sendCmd_st.algocmdHdr);   
     return ret_hashCmdStat_en;
 }
 
 hsm_Cmd_Status_E HSM_Hash_UpdateCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_inputData, uint32_t dataLen, hsm_Hash_Types_E hashType_en)
 {
-    SYS_PRINT("-------------Hash Update CMD STARTED----------\r\n");
     st_Hsm_Hash_UpdateCmd hashUpdateCmd_st;
     st_Hsm_ResponseCmd cmdResponse_st;
     st_Hsm_SendCmdLayout sendCmd_st;
@@ -329,7 +322,7 @@ hsm_Cmd_Status_E HSM_Hash_UpdateCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_inputData
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)&(hashUpdateCmd_st.inSgDmaDes_st);
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)&(hashUpdateCmd_st.outSgDmaDes_st);
     sendCmd_st.ptr_params = (uint32_t*)&(hashUpdateCmd_st.inputLenParm1);
-    sendCmd_st.paramsCount = (uint8_t) ((hashUpdateCmd_st.mailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t) ((hashUpdateCmd_st.mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -338,16 +331,13 @@ hsm_Cmd_Status_E HSM_Hash_UpdateCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_inputData
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
     
     //Check the command response with expected values for Hash Update Cmd
-    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8), *sendCmd_st.algocmdHdr);
-    
-    SYS_PRINT("-------------Hash Update CMD END----------\r\n");
+    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8U), *sendCmd_st.algocmdHdr);
     
     return ret_hashCmdStat_en;
 }
 
 hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverInData, uint32_t dataLen, uint8_t *ptr_OutputData, hsm_Hash_Types_E hashType_en)
 {
-    SYS_PRINT("-------------Hash Final CMD Started----------\r\n");
     st_Hsm_Hash_FinalCmd hashFinalCmd_st;
     st_Hsm_ResponseCmd cmdResponse_st;
     st_Hsm_SendCmdLayout sendCmd_st;
@@ -398,14 +388,14 @@ hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverIn
     hashLen = Hsm_Hash_HashLen(hashType_en);
     
     //Output SG-DMA Descriptor
-    hashFinalCmd_st.outSgDmaDes_st.ptr_dataAddr = (uint32_t *)ptr_OutputData;
-    hashFinalCmd_st.outSgDmaDes_st.nextDes_st.stop = 0x01;
-    hashFinalCmd_st.outSgDmaDes_st.nextDes_st.nextDescriptorAddr = 0x00;
-    hashFinalCmd_st.outSgDmaDes_st.flagAndLength_st.dataLen = hashLen; //Hash Length decided based on hash algorithm 
-    hashFinalCmd_st.outSgDmaDes_st.flagAndLength_st.cstAddr = 0x00;
-    hashFinalCmd_st.outSgDmaDes_st.flagAndLength_st.discard = 0x00;
-    hashFinalCmd_st.outSgDmaDes_st.flagAndLength_st.intEn = 0x00;
-    hashFinalCmd_st.outSgDmaDes_st.nextDes_st.reserved1 = 0x00;
+    hashFinalCmd_st.outSgDmaDes_st[0].ptr_dataAddr = (uint32_t *)ptr_OutputData;
+    hashFinalCmd_st.outSgDmaDes_st[0].nextDes_st.stop = 0x01;
+    hashFinalCmd_st.outSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = 0x00;
+    hashFinalCmd_st.outSgDmaDes_st[0].flagAndLength_st.dataLen = hashLen; //Hash Length decided based on hash algorithm 
+    hashFinalCmd_st.outSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
+    hashFinalCmd_st.outSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
+    hashFinalCmd_st.outSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
+    hashFinalCmd_st.outSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
     
     hashFinalCmd_st.inputLenParm1 = 0;
            
@@ -419,14 +409,14 @@ hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverIn
     hashFinalCmd_st.finalCmdParam2_st.reserved2 = 0x00; 
     
     
-     hashFinalCmd_st.totalDataLenPara3 = 11;
+    hashFinalCmd_st.totalDataLenPara3 = 16; //???????????? //need to correct
              
     sendCmd_st.mailBoxHdr = (uint32_t*)&(hashFinalCmd_st.mailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)&(hashFinalCmd_st.cmdHeader_st);
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)&(hashFinalCmd_st.inSgDmaDes_st);
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)&(hashFinalCmd_st.outSgDmaDes_st);
     sendCmd_st.ptr_params = (uint32_t*)&(hashFinalCmd_st.inputLenParm1);
-    sendCmd_st.paramsCount = (uint8_t) ((hashFinalCmd_st.mailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t) ((hashFinalCmd_st.mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -435,8 +425,7 @@ hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverIn
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
     
     //Check the command response with expected values for Hash Update Cmd
-    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8), *sendCmd_st.algocmdHdr);
-    SYS_PRINT("-------------Hash Final CMD END----------\r\n");
+    ret_hashCmdStat_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-8U), *sendCmd_st.algocmdHdr);
     
     return ret_hashCmdStat_en;
 }

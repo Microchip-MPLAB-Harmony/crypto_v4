@@ -12,6 +12,9 @@
   @Description
  */
 /* ************************************************************************** */
+
+#ifndef HSM_MAC_H
+#define HSM_MAC_H
 #include "hsm_common.h"
 
 typedef struct
@@ -48,3 +51,4 @@ typedef struct
 	uint32_t                        inputDataLenParm1;
 	st_Hsm_Aead_AesCcm_Param2       aesCcmCmdParm2_st;
 }st_Hsm_Aead_AesCcm_Cmd;
+#endif /* HSM_MAC_H */

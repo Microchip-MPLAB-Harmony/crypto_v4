@@ -22,6 +22,7 @@
 #define MCHP_CRYPTO_COMMON_WOLFCRYPTWRAPPER_H
 
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "configuration.h"
 
 #define CRYPTO_WC_ECC_TOTAL_CURVES (5)
 
@@ -30,8 +31,8 @@ int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en);
 #endif /* CRYPTO_DIGISIGN_WC_ECDSA_EN || CRYPTO_KAS_WC_ECDH_EN */
 
 #ifdef CRYPTO_DIGISIGN_WC_ECDSA_EN
-int Crypto_Common_Wc_Ecc_EncodeToDerSign(uint8_t *inputSign, uint16_t inputSignLen, uint8_t *outDerSign, uint16_t outSignLen);
-int Crypto_Common_Wc_Ecc_DecodeDerSign(uint8_t *inputDerSign, uint16_t inputSignDerLen, uint8_t *outSign, uint16_t outSignLen);
+int Crypto_Common_Wc_Ecc_EncodeToDerSign(uint8_t *inputSign, uint16_t inputSignLen, uint8_t *outDerSign, uint32_t outSignLen);
+int Crypto_Common_Wc_Ecc_DecodeDerSign(uint8_t *inputDerSign, uint16_t inputSignDerLen, uint8_t *outSign, uint32_t outSignLen);
 #endif /* CRYPTO_DIGISIGN_WC_ECDSA_EN */
 
 #endif /* MCHP_CRYPTO_COMMON_WOLFCRYPTWRAPPER_H */

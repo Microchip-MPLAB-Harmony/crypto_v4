@@ -123,7 +123,7 @@ typedef struct
 	st_Hsm_SgDmaDescriptor      arr_aesOutSgDmaDes_st[2] __attribute__((aligned(4)));
 	uint32_t					aesInputDataLenParm1;
 	st_Hsm_Sym_Aes_CmdParam2 	aesCmdParm2_st;
-    uint8_t              arr_aesIvCtx[16] __attribute__((aligned(0x4)));
+    uint8_t                     arr_aesIvCtx[16] __attribute__((aligned(0x4)));
 }st_Hsm_Sym_Aes_Cmd __attribute__((aligned(4)));
 
 typedef struct
@@ -162,7 +162,7 @@ typedef struct
 	st_Hsm_MailBoxHeader            tdesMailBoxHdr_st;
 	st_Hsm_Sym_Tdes_CmdHeader       tdesCmdHeader_st;
 	st_Hsm_SgDmaDescriptor          arr_tdesInSgDmaDes_st[3] __attribute__((aligned(4)));
-	st_Hsm_SgDmaDescriptor          arr_tdesOutSgDmaDes_st[1] __attribute__((aligned(4)));
+	st_Hsm_SgDmaDescriptor          arr_tdesOutSgDmaDes_st[2] __attribute__((aligned(4)));
 	uint32_t                        tdesInputDataLenParm1;
 	st_Hsm_Sym_Tdes_CmdParam2       tdesCmdParm2_st;
     uint8_t                         arr_tdesIvCtx[16] __attribute__((aligned(4)));
@@ -198,13 +198,13 @@ typedef struct
 	st_Hsm_Mac_DesCmac_CmdParam2    desCmacCmdParm2_st;
 }st_Hsm_Mac_DesCmac_Cmd;
 
-void Hsm_Sym_Aes_Init(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E modeType_en, hsm_Aes_CmdTypes_E operType_en, 
-                        uint8_t *key, hsm_Aes_KeySize_E keyLen_en, uint8_t *ptr_initVect, uint8_t varslotNum);
+void Hsm_Sym_Aes_Init(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E aesModeType_en, hsm_Aes_CmdTypes_E aesOperType_en, 
+                        uint8_t *ptr_aeskey, hsm_Aes_KeySize_E keyLen_en, uint8_t *ptr_initVect, uint8_t varslotNum);
 
-hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *ptr_dataIn, uint32_t dataLen, uint8_t *ptr_dataOut);
+hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut);
 
 hsm_Cmd_Status_E Hsm_Sym_Aes_CipherDirect(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E modeType_en, hsm_Aes_CmdTypes_E operType_en, 
-                            uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut, uint8_t *key, hsm_Aes_KeySize_E keyLen_en, 
+                            uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut, uint8_t *ptr_aeskey, hsm_Aes_KeySize_E keyLen_en, 
                             uint8_t *ptr_initVect, uint8_t varslotNum);
 
 void Hsm_Sym_Tdes_Init(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTypes_E tdesModeType_en, hsm_Tdes_CmdTypes_E tdesOperType_en, 
@@ -212,4 +212,11 @@ void Hsm_Sym_Tdes_Init(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTyp
 
 hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut);
 
+hsm_Cmd_Status_E Hsm_Sym_Tdes_CipherDirect(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTypes_E tdesModeType_en, hsm_Tdes_CmdTypes_E tdesOperType_en, 
+                            uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut, uint8_t *tdesKey, uint8_t *ptr_initVect, uint8_t varslotNum);
+
+void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_CmdTypes_E chaChaOperType_en, uint8_t *ptr_tdesKey, 
+                            uint8_t *ptr_initVect, uint32_t counter, uint8_t varslotNum);
+
+void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut);
 #endif /* HSM_SYM_H*/

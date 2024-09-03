@@ -66,7 +66,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_Sign(uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_Sig, uint32_t sigLen,  
-                                                       uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_randomNumber, crypto_EccCurveType_E eccCurveType_en);
+                                                       uint8_t *ptr_privKey, uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_en);
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_Verify(uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_Sig, uint32_t sigLen, uint8_t *ptr_pubKey, 
                                                        uint32_t pubKeyLen, int8_t *ptr_verifyStatus, crypto_EccCurveType_E eccCurveType_en);        

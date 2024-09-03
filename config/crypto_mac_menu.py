@@ -59,7 +59,7 @@ def SetupCryptoMacMenu(cryptoComponent):
             "crypto_mac", None)
     g.macMenu.setLabel("MAC Algorithms")
     g.macMenu.setDescription("MAC Algorithms")
-    g.macMenu.setVisible(True)
+    g.macMenu.setVisible(True)                 # TODO: Menu not implemented, so it's hidden
     g.macMenu.setHelp('MC_CRYPTO_MAC_API_H')
 
     #MAC File Generation Enable

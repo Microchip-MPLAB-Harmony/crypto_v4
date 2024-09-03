@@ -29,13 +29,13 @@
 #include "core_cm7.h"
 #include "user.h"
 #include "hsm_common.h"
-//#include "hsm_command.h"
 #include "hsm_cmd.h"
 
 void HSM_Cmd_Send(st_Hsm_SendCmdLayout sendCmd_st) 
 {
-    
-    SYS_PRINT("-------------Cmd Send Started----------\r\n");
+#ifdef HSM_PRINT    
+    printf("-------------Cmd Send Started----------\r\n");
+#endif    
     // Make sure the HSM is not busy
     while (HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk);
     
@@ -54,34 +54,36 @@ void HSM_Cmd_Send(st_Hsm_SendCmdLayout sendCmd_st)
     HSM_REGS->HSM_MBFIFO[0] = (uint32_t)sendCmd_st.ptr_sgDescriptorOut;
 
     //Send Parameters
-    for(int count = 0; count < sendCmd_st.paramsCount; count++)
+    for(uint8_t count = 0U; count < sendCmd_st.paramsCount; count++)
     {
         HSM_REGS->HSM_MBFIFO[0] = sendCmd_st.ptr_params[count];
     }
-    
+
+#ifdef HSM_PRINT    
     //Print all the parameters
     //--------------------------------------------------------------------------
-    SYS_PRINT("ptr_mailBoxHeader = 0x%08lx\r\n",*sendCmd_st.mailBoxHdr);
-    SYS_PRINT("ptr_cmdHeader = 0x%08lx\r\n",*sendCmd_st.algocmdHdr);
-    SYS_PRINT("ptr_sgDesInput = 0x%08lx\r\n", *sendCmd_st.ptr_sgDescriptorIn);
-    SYS_PRINT("ptr_sgDesIOutput = 0x%08lx\r\n", *sendCmd_st.ptr_sgDescriptorOut);
-    for(int count = 0; count < sendCmd_st.paramsCount; count++)
+    printf("ptr_mailBoxHeader = 0x%08lx\r\n",*sendCmd_st.mailBoxHdr);
+    printf("ptr_cmdHeader = 0x%08lx\r\n",*sendCmd_st.algocmdHdr);
+    printf("ptr_sgDesInput = 0x%08lx\r\n", *sendCmd_st.ptr_sgDescriptorIn);
+    printf("ptr_sgDesIOutput = 0x%08lx\r\n", *sendCmd_st.ptr_sgDescriptorOut);
+    for(uint8_t count = 0U; count < sendCmd_st.paramsCount; count++)
     {
-        SYS_PRINT("Params[%d] = 0x%08lx\r\n",count, sendCmd_st.ptr_params[count]);
+        printf("Params[%d] = 0x%08lx\r\n",count, sendCmd_st.ptr_params[count]);
     }
     //--------------------------------------------------------------------------
     
-    SYS_PRINT("-------------Cmd Send Finished----------\r\n");
+    printf("-------------Cmd Send Finished----------\r\n");
+#endif   
 }
-
 
 void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st) 
 {
     uint32_t mbrxstatus;
     uint8_t cmdLen = 0;
     uint8_t count = 0;
-    
-    SYS_PRINT("-------------Cmd Response Reading Started----------\r\n");
+#ifdef HSM_PRINT    
+    printf("-------------Cmd Response Reading Started----------\r\n");
+#endif
     // Check for response received by reading RXINT
     mbrxstatus = HSM_REGS->HSM_MBRXSTATUS;
 
@@ -98,115 +100,150 @@ void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st)
     
     // Check Result Code
     response_st->resultCode_en  = HSM_REGS->HSM_MBFIFO[0];    
-
     
     //Command Length in 32-bit WORD
-    cmdLen = (uint8_t) ((response_st->respMailBoxHdr & 0x0000FFFF) / 4);
+    cmdLen = (uint8_t) ((response_st->respMailBoxHdr & 0x0000FFFFUL)/4UL);
     for(count = 0; count < cmdLen; count++)
     {
         response_st->arr_params[count] = HSM_REGS->HSM_MBFIFO[count]; 
     }
-    
-     SYS_PRINT("-------------Cmd Response Reading Finished----------\r\n");
+#ifdef HSM_PRINT    
+     printf("-------------Cmd Response Reading Finished----------\r\n");
+#endif
 }
 
 hsm_Cmd_Status_E Hsm_Cmd_CheckCmdRespParms(st_Hsm_ResponseCmd respParms_st, uint32_t expMailbox, uint32_t expCmdHeader) 
 {
     uint32_t intFlag = 0;
     hsm_Cmd_Status_E ret_status_en = HSM_CMD_SUCCESS;
-
-    SYS_PRINT("-------------Cmd Response Checking Started----------\r\n");
+#ifdef HSM_PRINT
+    printf("-------------Cmd Response Checking Started----------\r\n");
     //|1|Compare the Mailbox Header
-    SYS_PRINT("Cmd Mail Box Header = 0x%08lx\r\n", respParms_st.respMailBoxHdr);
+    printf("Cmd Mail Box Header = 0x%08lx\r\n", respParms_st.respMailBoxHdr);
+#endif    
     if(respParms_st.respMailBoxHdr !=  expMailbox)
     {
         //issue with responses
         ret_status_en = HSM_CMD_ERROR_MAILBOX;
-        SYS_PRINT("Cmd MailBox Header Matched Failed\r\n");
+#ifdef HSM_PRINT        
+        printf("Cmd MailBox Header Matched Failed\r\n");
+#endif
     }
     else
     {
-        SYS_PRINT("Cmd MailBox Header Matched Passed\r\n");
+#ifdef HSM_PRINT
+        printf("Cmd MailBox Header Matched Passed\r\n");
+#endif        
     }
      
     //|2|Compare the Command Header 
-    SYS_PRINT("Cmd Header = 0x%08lx\r\n", respParms_st.respCmdHeader);
+#ifdef HSM_PRINT
+    printf("Cmd Header = 0x%08lx\r\n", respParms_st.respCmdHeader);
+#endif    
     if(respParms_st.respCmdHeader != expCmdHeader)
     {
         //Issue with response
         ret_status_en = HSM_CMD_ERROR_CMDHEADER;
-        SYS_PRINT("Cmd Header Matched Failed\r\n");
+#ifdef HSM_PRINT        
+        printf("Cmd Header Matched Failed\r\n");
+#endif        
     }
     else
     {
-        SYS_PRINT("Cmd Header Matched Passed\r\n");
+#ifdef HSM_PRINT
+        printf("Cmd Header Matched Passed\r\n");
+#endif        
     }
     
     //|3|Check the Result Code
-    SYS_PRINT("Result code = 0x%08x\r\n", respParms_st.resultCode_en);
-    if(respParms_st.resultCode_en != HSM_CMD_ERROR_SUCCESS)
+#ifdef HSM_PRINT    
+    printf("Result code = 0x%08x\r\n", respParms_st.resultCode_en);
+#endif    
+    if(respParms_st.resultCode_en != HSM_CMD_RC_SUCCESS)
     {
         //issue with response
         ret_status_en = HSM_CMD_ERROR_RESULTCODE;
-        SYS_PRINT("result Code Failed\r\n");
+#ifdef HSM_PRINT        
+        printf("result Code Failed\r\n");
+#endif        
     }
     else
     {
-        SYS_PRINT("result Code OK Success\r\n");
+#ifdef HSM_PRINT        
+        printf("result Code OK Success\r\n");
+#endif        
     }
-     
-    //|4| Fetch the HSM Status Register (STATUS)
-    respParms_st.status_st.busy = HSM_CMD_STATUS_BUSY;    //HSM CPU Busy Status  
-    respParms_st.status_st.ps = HSM_CMD_STATUS_PS;        //Processing State Status
-    respParms_st.status_st.lcs = HSM_CMD_STATUS_LCS;      //Lifecycle State Status
-    respParms_st.status_st.sbs = HSM_CMD_STATUS_SBS;      //Secure Boot Status
-    respParms_st.status_st.ecode = HSM_CMD_STATUS_ECODE;  //Error Code
-    
-    SYS_PRINT("Busy Status = 0x%08x\r\n", respParms_st.status_st.busy);
-    SYS_PRINT("PS Status = 0x%08x\r\n", respParms_st.status_st.ps);
-    SYS_PRINT("LCS Status = 0x%08x\r\n", respParms_st.status_st.lcs);
-    SYS_PRINT("SBS Status = 0x%08x\r\n", respParms_st.status_st.sbs);
-    SYS_PRINT("ECODE Status = 0x%08x\r\n", respParms_st.status_st.ecode);
-    
-    //Chekc status of HSM Status Registers
-    if( (respParms_st.status_st.busy != 0x00)
-            || (respParms_st.status_st.ps != HSM_CMD_PS_OPERATIONAL)
-            || (respParms_st.status_st.lcs != HSM_CMD_LCS_OPEN)
-            || ( (respParms_st.status_st.sbs != HSM_CMD_SBS_DISABLED) && (respParms_st.status_st.sbs != HSM_CMD_SBS_RESET) )
-            || (respParms_st.status_st.ecode != 0x00) )
+    //delay before HSM status register read //?? how much delay exactly, that needs to confirm???????????????
+    for(int i = 0 ; i < 10000; i++)
+    {
+	    //|4| Fetch the HSM Status Register (STATUS)
+	    respParms_st.status_st.busy = (uint8_t)HSM_CMD_STATUS_BUSY;    //HSM CPU Busy Status  
+	    respParms_st.status_st.ps = (hsm_Cmd_StatusPs_E)HSM_CMD_STATUS_PS;        //Processing State Status
+	    respParms_st.status_st.lcs = (hsm_Cmd_StatusLcs_E)HSM_CMD_STATUS_LCS;      //Lifecycle State Status
+	    respParms_st.status_st.sbs = (hsm_Cmd_StatusSbs_E)HSM_CMD_STATUS_SBS;      //Secure Boot Status
+	    respParms_st.status_st.ecode = (uint8_t)HSM_CMD_STATUS_ECODE;  //Error Code
+#ifdef HSM_PRINT    
+	    printf("Busy Status = 0x%08x\r\n", respParms_st.status_st.busy);
+	    printf("PS Status = 0x%08x\r\n", respParms_st.status_st.ps);
+	    printf("LCS Status = 0x%08x\r\n", respParms_st.status_st.lcs);
+	    printf("SBS Status = 0x%08x\r\n", respParms_st.status_st.sbs);
+	    printf("ECODE Status = 0x%08x\r\n", respParms_st.status_st.ecode);
+#endif    
+        //Check status of HSM Status Registers
+        if( (respParms_st.status_st.busy != 0x00)
+                || (respParms_st.status_st.ps != HSM_CMD_PS_OPERATIONAL)
+                || (respParms_st.status_st.lcs != HSM_CMD_LCS_OPEN)
+                || ( (respParms_st.status_st.sbs != HSM_CMD_SBS_DISABLED) && (respParms_st.status_st.sbs != HSM_CMD_SBS_RESET) )
+                || (respParms_st.status_st.ecode != 0x00) )
 
-    {
-        //Issue: HSM Status Failed 
-        ret_status_en = HSM_CMD_ERROR_STATUSREG;
-        SYS_PRINT("Status Register Failed\r\n");
+        {
+            if( i == 10000)
+            {
+                 //Issue: HSM Status Failed 
+                ret_status_en = HSM_CMD_ERROR_STATUSREG;
+#ifdef HSM_PRINT 
+        		printf("Status Register Failed\r\n");
+#else
+                //do nothing
+#endif 
+            }
+        }
+        else
+        {
+            //HSM Status Passed
+#ifdef HSM_PRINT        
+        	printf("Status Register Passed\r\n");
+#endif        
+            break;
+        } 
     }
-    else
-    {
-        //HSM Status Passed
-        SYS_PRINT("Status Register Passed\r\n");
-    } 
     
     //|5|Check the HSM Interrupt Flash Register (INTFLAG)
     intFlag = HSM_REGS->HSM_INTFLAG;
 
-    if(intFlag == 0x00000000)
+    if(intFlag == 0x00000000UL)
     {
         //Interrupt Flag Register status Pass;
-        SYS_PRINT("Interrupt Flag Register Status Passed\r\n");
+#ifdef HSM_PRINT        
+        printf("Interrupt Flag Register Status Passed\r\n");
+#endif        
     }
     else
     {
         //Interrupt Flag Status Failed;
         ret_status_en = HSM_CMD_ERROR_INTFLAG;
-        SYS_PRINT("Interrupt Flag Register Status Failed\r\n");
+#ifdef HSM_PRINT        
+        printf("Interrupt Flag Register Status Failed\r\n");
+#endif        
         // Clear the INTFLAG.ERROR If error Interrupt is SET
         //As per the data Sheet write 1 to clear, writing 0 has no effect
-        if((intFlag & 0x00000001) == 0x00000001) 
+        if((intFlag & 0x00000001UL) == 0x00000001UL) 
         {
-            HSM_REGS->HSM_INTFLAG |= 0x00000001;
+            HSM_REGS->HSM_INTFLAG |= 0x00000001UL;
         }
     }
-    SYS_PRINT("-------------Cmd Response Checking Finished ----------\r\n");
-    
+#ifdef HSM_PRINT    
+    printf("-------------Cmd Response Checking Finished ----------\r\n");
+#endif    
     return ret_status_en;
 }

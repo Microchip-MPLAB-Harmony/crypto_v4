@@ -86,46 +86,6 @@ typedef struct
     st_Hsm_Kas_Dh_Param4        dhKeyAuthDataLenParam4_st __attribute__((aligned(4)));
 }st_Hsm_Kas_Dh_Cmd __attribute__((aligned(4)));
 
-typedef enum
-{
-    HSM_VSM_ASYMKEY_ECC = 0x00,
-    HSM_VSM_ASYMKEY_RSA = 0x01,
-    HSM_VSM_ASYMKEY_DH  = 0x02,
-    HSM_VSM_ASYMKEY_DSA = 0x03,            
-}hsm_Vsm_Asym_KeyTypes_E;
-
-typedef enum
-{
-    HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE = 0x00,
-    HSM_VSM_ASYMKEY_ECC_SIGNATURE   = 0x01,       
-}hsm_Vsm_Asym_Ecc_SignUsed_E;
-
-typedef enum
-{
-    HSM_VSM_ASYMKEY_ECC_ECDSA   = 0x00,
-    HSM_VSM_ASYMKEY_ECC_ECKCDSA = 0x01,       
-}hsm_Vsm_Asym_Ecc_AlgoUsed_E;
-
-typedef struct
-{
-    hsm_Vsm_Asym_KeyTypes_E asymKeyType_en      :3; 
-    uint8_t reserved1                           :1;
-    hsm_Vsm_Asym_Ecc_KeyType_E eccKeyType_en    :3;
-    uint8_t reserved2                           :1;
-    uint8_t eccKeySize                          :8;
-    uint8_t paramA                              :2;
-    uint8_t reserved3                           :2;
-    hsm_Vsm_Asym_Ecc_SignUsed_E signUsed_en     :1;
-    uint8_t reserved4                           :3;
-    hsm_Vsm_Asym_Ecc_AlgoUsed_E algoUsed_en     :1;
-    uint8_t reserved5                           :3;
-    uint8_t domainIncBit                        :1;
-    uint8_t publicKeyIncBit                     :1;
-    uint8_t privateKeyIncBit                    :1;
-    uint8_t reserved6                           :1;                   
-}st_Hsm_Vss_Ecc_AsymKeyDataType;
-
-int Hsm_Vsm_Ecc_FillKeyProperties(st_Hsm_Vss_Ecc_AsymKeyDataType *ptr_eccPrivKey_st, st_Hsm_Vss_Ecc_AsymKeyDataType *ptr_eccPubKey_st, hsm_Ecc_CurveType_E curveType_en);
 hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_Pubkey, uint32_t pubKeyLen,
                                         uint8_t *ptr_sharedSecret, uint16_t sharedSecretLen, hsm_Ecc_CurveType_E keyCurveType_en);
 #endif /* HSM_KAS_H */

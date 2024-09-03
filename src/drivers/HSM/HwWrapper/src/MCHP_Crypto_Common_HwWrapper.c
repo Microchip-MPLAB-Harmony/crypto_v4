@@ -79,7 +79,7 @@ hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen)
 
 hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurveType_en)
 {
-    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAX_CURVE;
+    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
     
     switch(eccCurveType_en)
     {
@@ -100,7 +100,7 @@ hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurve
         break;
         
         default:
-            hsmCurveType_en = HSM_ECC_MAX_CURVE;
+            hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
         break;       
     };
     return hsmCurveType_en;

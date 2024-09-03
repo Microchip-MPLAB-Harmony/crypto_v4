@@ -132,8 +132,8 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
 
 #ifdef  CRYPTO_SYM_HW_ALGO_EN               
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_aesStatus_en = Crypto_Sym_Hw_Aes_Init((void*)ptr_aesCtx_st->arr_symDataCtx, ptr_aesCtx_st->symCipherOper_en, ptr_aesCtx_st->symAlgoMode_en, 
-                                                                    ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
+                ret_aesStatus_en =  Crypto_Sym_Hw_Aes_Init(ptr_aesCtx_st->symCipherOper_en,  ptr_aesCtx_st->symAlgoMode_en, 
+                                                            ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
                 break;
 #endif /* CRYPTO_SYM_HW_ALGO_EN */                
             default:
@@ -184,7 +184,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st,
                 
 #ifdef  CRYPTO_SYM_HW_ALGO_EN               
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_aesStatus_en = Crypto_Sym_Hw_Aes_Cipher((void*)ptr_aesCtx_st->arr_symDataCtx, ptr_inputData, dataLen, ptr_outData);
+                ret_aesStatus_en =  Crypto_Sym_Hw_Aes_Cipher(ptr_inputData, dataLen, ptr_outData);
                 break;
 #endif /* CRYPTO_SYM_HW_ALGO_EN */ 
                 
@@ -313,8 +313,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
 
 #ifdef  CRYPTO_SYM_HW_ALGO_EN               
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_aesStatus_en = Crypto_Sym_Hw_Aes_CipherDirect(CRYPTO_CIOP_ENCRYPT, opMode_en, ptr_inputData, dataLen, 
-                                                                                ptr_outData, ptr_key, keyLen, ptr_initVect);
+                ret_aesStatus_en = Crypto_Sym_Hw_Aes_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
 #endif /* CRYPTO_SYM_HW_ALGO_EN */ 
             default:
@@ -385,8 +384,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
                 
 #ifdef  CRYPTO_SYM_HW_ALGO_EN               
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_aesStatus_en = Crypto_Sym_Hw_Aes_CipherDirect(CRYPTO_CIOP_DECRYPT, opMode_en, ptr_inputData, dataLen, 
-                                                                                ptr_outData, ptr_key, keyLen, ptr_initVect);
+                ret_aesStatus_en = Crypto_Sym_Hw_Aes_DecryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
 #endif /* CRYPTO_SYM_HW_ALGO_EN */ 
                 

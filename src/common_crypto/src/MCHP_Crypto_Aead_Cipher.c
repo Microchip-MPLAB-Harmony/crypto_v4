@@ -472,7 +472,8 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
         ptr_aesGcmCtx_st->ptr_key = ptr_key;
         ptr_aesGcmCtx_st->aeadKeySize = keyLen;
         ptr_aesGcmCtx_st->aeadCipherOper_en = cipherOper_en;
-
+        ptr_aesGcmCtx_st->ptr_initVect = ptr_initVect;
+        ptr_aesGcmCtx_st->initVectLen = initVectLen;
                 
         switch(ptr_aesGcmCtx_st->aeadHandlerType_en)
         {
@@ -575,7 +576,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
     return ret_aesGcmStat_en;
 }
 
-crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, uint8_t *ptr_authTag, uint32_t authTagLen)
+crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, uint8_t *ptr_authTag, uint8_t authTagLen)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     if(ptr_aesGcmCtx_st == NULL)
@@ -613,7 +614,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
 
 crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, 
-                                                            uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen, uint32_t sessionID)
+                                                            uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     if( ((ptr_inputData == NULL) && (dataLen > 0u))
@@ -646,10 +647,10 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-    else if((ptr_aad == NULL) && (ptr_inputData == NULL))
-    {
-        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_ARG;
-    }
+//    else if((ptr_aad == NULL) && (ptr_inputData == NULL))
+//    {
+//        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_ARG;
+//    }
     else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_SID; 
@@ -682,7 +683,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
 
 crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, 
-                                                            uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen, uint32_t sessionID)
+                                                            uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     if( ((ptr_inputData == NULL) && (dataLen > 0u))

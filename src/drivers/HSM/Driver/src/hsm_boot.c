@@ -27,6 +27,19 @@
 #include "string.h"
 #include "hsm_cmd.h"
 
+void Hsm_Initialsation(void)
+{
+        /* TODO: Initialize your application's state machine and other
+     * parameters.
+     */
+    //Enable HSM Clock
+    HSM_REGS->HSM_CTRLA = HSM_CTRLA_ENABLE_Msk;
+    
+    NVIC_ClearPendingIRQ(HSM_RXINT_IRQn);
+    NVIC_SetPriority(HSM_RXINT_IRQn, 0x1);
+    NVIC_EnableIRQ(HSM_RXINT_IRQn);   
+}
+
 static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
 {
     st_Hsm_ResponseCmd bootCmdResponse_st;
@@ -81,7 +94,7 @@ static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
     bootSendCmd_st.ptr_sgDescriptorIn = (uint32_t*)0x00000000;//ptr_loadFimrwareCmd_st->arr_bootInSgDmaDes_st;
     bootSendCmd_st.ptr_sgDescriptorOut = (uint32_t*)0x00000000;//ptr_loadFimrwareCmd_st->arr_bootOutSgDmaDes_st;
     bootSendCmd_st.ptr_params = (uint32_t*)&(ptr_loadFimrwareCmd_st->metaData0Parm1);
-    bootSendCmd_st.paramsCount = (uint8_t) ((ptr_loadFimrwareCmd_st->mailBoxHdr_st.msgSize/4) - 4);
+    bootSendCmd_st.paramsCount = (uint8_t) ((ptr_loadFimrwareCmd_st->mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(bootSendCmd_st);
@@ -90,13 +103,14 @@ static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
     Hsm_Cmd_ReadCmdResponse(&bootCmdResponse_st);
 
     //Check the command response with expected values for Boot Load Firmware Cmd
-    ret_cmdStat_en = Hsm_Cmd_CheckCmdRespParms(bootCmdResponse_st,(*bootSendCmd_st.mailBoxHdr-16), *bootSendCmd_st.algocmdHdr);
+    ret_cmdStat_en = Hsm_Cmd_CheckCmdRespParms(bootCmdResponse_st,(*bootSendCmd_st.mailBoxHdr-8), *bootSendCmd_st.algocmdHdr);
     
     return ret_cmdStat_en;
 }
 
-void Hsm_Boot_Intialisation(void)
+int Hsm_Boot_Intialisation(void)
 {
+    int ret_status = 0x00;
     hsm_Cmd_Status_E initStat_en = HSM_CMD_ERROR_FAILED;
     uint8_t hsmFirmware[1024];
     //HSM Firmware image is loaded via .hex project to flash
@@ -110,12 +124,31 @@ void Hsm_Boot_Intialisation(void)
     
     if( (initStat_en == HSM_CMD_SUCCESS) && (HSM_CMD_STATUS_PS == HSM_CMD_PS_OPERATIONAL))
     {
+        ret_status = 0x01;
+        #ifdef HSM_PRINT 
         printf("\r\nHSM is Operation\n");
+        #endif 
     }
+    else
+    {
+        ret_status = 0x00;
+        #ifdef HSM_PRINT
+        printf("\r\nHSM waiting for Operational State");
+        #endif
+    }
+    return ret_status;
 }
-
-
-
+   
+int Hsm_Boot_GetStatus(void)
+{
+    int retStatus = 0x00;
+    if( ((bool) ((HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) >> HSM_STATUS_BUSY_Pos) == 0x00) && (HSM_CMD_STATUS_PS == HSM_CMD_PS_OPERATIONAL))
+    {
+        printf("\r\nHSM is operation\r\n");
+        retStatus = 0x01;
+    }
+    return retStatus;
+}
 //hsm_Cmd_Status_E Hsm_Boot_SelfTest(void)
 //{
 //    st_Hsm_ResponseCmd bootCmdResponse_st;

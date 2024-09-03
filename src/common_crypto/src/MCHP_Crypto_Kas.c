@@ -74,7 +74,7 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
 
 #ifdef CRYPTO_KAS_HW_ALGO_EN            
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_ecdhStat_en =  Crypto_Kas_Hw_Ecdh_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
+            ret_ecdhStat_en = Crypto_Kas_Ecdh_Hw_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
                                                                     sharedSecretLen, eccCurveType_en);
             break;
 #endif /* CRYPTO_KAS_HW_ALGO_EN */

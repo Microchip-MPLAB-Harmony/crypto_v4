@@ -23,74 +23,14 @@
 
 #include "hsm_cmd.h"
 #include "hsm_kas.h"
+#include "hsm_common.h"
 
-extern st_Hsm_Vsm_Ecc_CurveData CurveData[HSM_ECC_MAX_CURVE];
-
-
-int Hsm_Vsm_Ecc_FillKeyProperties(st_Hsm_Vss_Ecc_AsymKeyDataType *ptr_eccPrivKey_st, st_Hsm_Vss_Ecc_AsymKeyDataType *ptr_eccPubKey_st, hsm_Ecc_CurveType_E curveType_en)
-{
-    int curveIndexStatus = -1;
-    uint8_t curveIndex = 0;
-    int ret_status = -1;
-    
-   //Public and Private ECC Key properties for data type
-    ptr_eccPrivKey_st->asymKeyType_en = HSM_VSM_ASYMKEY_ECC;
-    ptr_eccPubKey_st->asymKeyType_en = HSM_VSM_ASYMKEY_ECC;
-    
-    curveIndexStatus = Hsm_Vsm_Ecc_FindCurveIndex(curveType_en, &curveIndex);
-    
-    if(curveIndexStatus == 0)
-    {
-        ptr_eccPrivKey_st->eccKeyType_en = CurveData[curveIndex].curveKeyType_en;
-        ptr_eccPrivKey_st->eccKeySize = CurveData[curveIndex].privKeySize;
-                
-        ptr_eccPubKey_st->eccKeyType_en = CurveData[curveIndex].curveKeyType_en;
-        ptr_eccPubKey_st->eccKeySize = CurveData[curveIndex].pubKeySize;
-    
-        ptr_eccPrivKey_st->paramA = 0x00; //This also can be enum but need to analysis and correct ??????????????????????????????????
-        ptr_eccPrivKey_st->signUsed_en = HSM_VSM_ASYMKEY_ECC_SIGNATURE;//HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE;  //This value need to confirm ??????? ??????? 
-        ptr_eccPrivKey_st->algoUsed_en = HSM_VSM_ASYMKEY_ECC_ECDSA; //This value need to confirm ??????????????
-        ptr_eccPrivKey_st->domainIncBit = 0x00;
-        ptr_eccPrivKey_st->publicKeyIncBit = 0x00;
-        ptr_eccPrivKey_st->privateKeyIncBit = 0x01;
-
-        ptr_eccPubKey_st->paramA = 0x00; //This also can be enum but need to analysis and correct ??????????????????????????????????
-        ptr_eccPubKey_st->signUsed_en = HSM_VSM_ASYMKEY_ECC_SIGNATURE;//HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE;  //This value need to confirm ??????????????
-        ptr_eccPubKey_st->algoUsed_en = HSM_VSM_ASYMKEY_ECC_ECDSA;  //This value need to confirm //????????????
-        ptr_eccPubKey_st->domainIncBit = 0x00;
-        ptr_eccPubKey_st->publicKeyIncBit = 0x01;
-        ptr_eccPubKey_st->privateKeyIncBit = 0x00;
-
-        ptr_eccPrivKey_st->reserved1 = 0x00;
-        ptr_eccPrivKey_st->reserved2 = 0x00;
-        ptr_eccPrivKey_st->reserved3 = 0x00;
-        ptr_eccPrivKey_st->reserved4 = 0x00;
-        ptr_eccPrivKey_st->reserved5 = 0x00;
-        ptr_eccPrivKey_st->reserved6 = 0x00;
-
-        ptr_eccPubKey_st->reserved1 = 0x00;
-        ptr_eccPubKey_st->reserved2 = 0x00;
-        ptr_eccPubKey_st->reserved3 = 0x00;
-        ptr_eccPubKey_st->reserved4 = 0x00;
-        ptr_eccPubKey_st->reserved5 = 0x00;
-        ptr_eccPubKey_st->reserved6 = 0x00;
-        
-        ret_status = 0;
-    }
-    else
-    {
-        ret_status = -1;
-    }
-    
-    return ret_status;
-}
 hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_Pubkey, uint32_t pubKeyLen,
                                         uint8_t *ptr_sharedSecret, uint16_t sharedSecretLen, hsm_Ecc_CurveType_E keyCurveType_en)
-{
-    
+{ 
     st_Hsm_Vss_Ecc_AsymKeyDataType privKeyType_st;
     st_Hsm_Vss_Ecc_AsymKeyDataType publicKeyType_st; 
-    hsm_Cmd_Status_E ret_ecdhStatus_en;
+    hsm_Cmd_Status_E ret_ecdhStatus_en = HSM_CMD_ERROR_FAILED;
     int status = -1;
     
     //Mailbox Header
@@ -109,8 +49,9 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
     ptr_ecdhCmd_st->dhCmdHeader_st.reserved2 = 0x00;
     ptr_ecdhCmd_st->dhCmdHeader_st.reserved3 = 0x00;
        
-    status = Hsm_Vsm_Ecc_FillKeyProperties(&privKeyType_st, &publicKeyType_st, keyCurveType_en);
+    status = Hsm_Vsm_Ecc_FillEccKeyProperties(&privKeyType_st, keyCurveType_en, HSM_VSM_ASYMKEY_PRIVATEKEY,HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE,HSM_VSM_ASYMKEY_ECC_ECDSA);
     
+    status = Hsm_Vsm_Ecc_FillEccKeyProperties(&publicKeyType_st, keyCurveType_en, HSM_VSM_ASYMKEY_PUBLICKEY,HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE,HSM_VSM_ASYMKEY_ECC_ECDSA);
     
     if(status == 0)
     {
@@ -188,8 +129,8 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
         ptr_ecdhCmd_st->dhInputKeysParam2_st.reserved1 = 0x00;
 
         //Parameter 3 for ECDH
-        ptr_ecdhCmd_st->dhKeysLenParam3_st.privKeyLen = privKeyLen;
-        ptr_ecdhCmd_st->dhKeysLenParam3_st.pubKeyLen = pubKeyLen;
+        ptr_ecdhCmd_st->dhKeysLenParam3_st.privKeyLen = (uint16_t)privKeyLen;
+        ptr_ecdhCmd_st->dhKeysLenParam3_st.pubKeyLen = (uint16_t)pubKeyLen;
         
         //Parameter 4 for ECDH
         ptr_ecdhCmd_st->dhKeyAuthDataLenParam4_st.keyAuthDataLen = 0x00;
@@ -204,7 +145,7 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ptr_ecdhCmd_st->arr_dhInSgDmaDes_st;
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)ptr_ecdhCmd_st->arr_dhOutSgDmaDes_st;
     sendCmd_st.ptr_params = (uint32_t*)&(ptr_ecdhCmd_st->dhSharSecretParm1_st);
-    sendCmd_st.paramsCount = (uint8_t)((ptr_ecdhCmd_st->dhMailBoxHdr_st.msgSize/4) - 4);
+    sendCmd_st.paramsCount = (uint8_t)((ptr_ecdhCmd_st->dhMailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
     HSM_Cmd_Send(sendCmd_st);
@@ -213,7 +154,7 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
     Hsm_Cmd_ReadCmdResponse(&cmdResponse_st);
     
     //Check the command response with expected values for ECDH Cmd
-    ret_ecdhStatus_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-16), *sendCmd_st.algocmdHdr);
+    ret_ecdhStatus_en = Hsm_Cmd_CheckCmdRespParms(cmdResponse_st,(*sendCmd_st.mailBoxHdr-20U), *sendCmd_st.algocmdHdr);
     
     return ret_ecdhStatus_en;
 }

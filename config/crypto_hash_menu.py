@@ -222,14 +222,14 @@ def SetupCryptoHashMenu(cryptoComponent):
     #RIPEMD_160 Hash Symbol 
     g.cryptoRipeMd160EnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_ripe_md_160", g.hashMenu)
-    g.cryptoRipeMd160EnabledSymbol.setLabel("Ripe Md - 160?")
+    g.cryptoRipeMd160EnabledSymbol.setLabel("RIPEMD-160?")
     g.cryptoRipeMd160EnabledSymbol.setDescription(
             "Enable support for the MD Hash Algoithm.")
     g.cryptoRipeMd160EnabledSymbol.setVisible(True)
     g.cryptoRipeMd160EnabledSymbol.setDefaultValue(False)
     g.cryptoRipeMd160EnabledSymbol.setHelp('CRYPT_RIPE_MD_SUM')
 
-    #RIPE MD_160 HW  Symbol
+    #RIPEMD_160 HW Symbol
     g.cryptoHwRipeMd160EnabledSymbol = cryptoComponent.createBooleanSymbol(
             "crypto_ripe_md_160_hw", g.cryptoRipeMd160EnabledSymbol)
     g.cryptoHwRipeMd160EnabledSymbol.setLabel(
@@ -893,7 +893,7 @@ def handleMd5Enabled(symbol, event):
         data = symbol.getComponent()
 
 #-----------------------------------------------------
-#RIPE MD5 - 160
+#RIPEMD-160
 def handleRipeMd160Enabled(symbol, event):
     if (g.cryptoRipeMd5160EnabledSymbol.getValue() == True):
         if (g.cryptoHwRipeMd5160Supported):

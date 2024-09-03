@@ -21,6 +21,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+//#define HSM_PRINT (1U)
+#define HSM_ECC_MAX_CURVE (4U)
 
 typedef enum
 {
@@ -43,56 +45,58 @@ typedef enum
 
 typedef enum
 {
-    HSM_CMD_PS_RESET = 0x00,
-    HSM_CMD_PS_BOOT = 0x01,
-    HSM_CMD_PS_OPERATIONAL = 0x02,        
-    HSM_CMD_PS_SAFEMODE = 0x3,         
+    HSM_CMD_PS_RESET = 0x00U,
+    HSM_CMD_PS_BOOT = 0x01U,
+    HSM_CMD_PS_OPERATIONAL = 0x02U,        
+    HSM_CMD_PS_SAFEMODE = 0x3U,         
 }hsm_Cmd_StatusPs_E;
 
 
 typedef enum
 {
-    HSM_CMD_ERROR_UNKNOWN = 0x00000000,
-    HSM_CMD_ERROR_SUCCESS = 0x00000001,
-    HSM_CMD_ERROR_GENERAL = 0x80000000,
-    HSM_CMD_ERROR_CANCEL  = 0x80000001,
-    HSM_CMD_ERROR_NOTSUPPORTED = 0x80000002,
-    HSM_CMD_ERROR_INVALIDPARAM = 0x80000003,
-    HSM_CMD_ERROR_INVALIDINPUT = 0x80000004,
-    HSM_CMD_ERROR_INPUTDMA = 0x80000005,
-    HSM_CMD_ERROR_OUTPUTDMA = 0x80000006,
-    HSM_CMD_ERROR_SYSTEMMEM = 0x80000007,
-    HSM_CMD_ERROR_INPUTAUTH = 0x80000008,    
+    HSM_CMD_RC_UNKNOWN = 0x00000000U,
+    HSM_CMD_RC_SUCCESS = 0x00000001U,
+    HSM_CMD_RC_GENERAL = 0x80000000U,
+    HSM_CMD_RC_CANCEL  = 0x80000001U,
+    HSM_CMD_RC_NOTSUPPORTED = 0x80000002U,
+    HSM_CMD_RC_INVALIDPARAM = 0x80000003U,
+    HSM_CMD_RC_INVALIDINPUT = 0x80000004U,
+    HSM_CMD_RC_INPUTDMA = 0x80000005U,
+    HSM_CMD_RC_OUTPUTDMA = 0x80000006U,
+    HSM_CMD_RC_SYSTEMMEM = 0x80000007U,
+    HSM_CMD_RC_INPUTAUTH = 0x80000008U,
+    HSM_CMD_RC_AUTHFAILED = 0x8000002EU,
+    HSM_CMD_RC_SIGNVERIFYFAILED = 0x8000002FU,        
 }hsm_CmdResultCodes_E;
 
 typedef enum
 {
-    HSM_CMD_INVALID = 0xFF,
-    HSM_CMD_BOOT   	= 0,  // Boot Command
-    HSM_CMD_SDBG   	= 1,  //Secure Debug Command
-    HSM_CMD_TMPR   	= 2,	 //Tamper Response Command	
-    HSM_CMD_VSM    	= 3,  //Variable Slot Management Command
-    HSM_CMD_KEYMGM 	= 4,  //Key Management Commands
-    HSM_CMD_HASH   	= 5,  //Hash Commands
-    HSM_CMD_AES    	= 6,  //AES Commands
-    HSM_CMD_CHACHA 	= 7,  //ChaCha Commands
-    HSM_CMD_TDES   	= 8,  //Triple-DES/3DES Commands
-    HSM_CMD_DES    	= 9,  //DES Commands
-    HSM_CMD_RSA    	= 10, //RSA Commands 
-    HSM_CMD_SIGN   	= 11, //Signature Commands 
-    HSM_CMD_X509   	= 12, //X.509 Certificate Commands 
-    HSM_CMD_DH     	= 13, // Diffie-Hellmen Commands
-    HSM_CMD_DICE   	= 14,  //?? jk
-    HSM_CMD_MISC   	= 0xF0, //?? jk
+    HSM_CMD_INVALID = 0xFFU,
+    HSM_CMD_BOOT   	= 0U,  // Boot Command
+    HSM_CMD_SDBG   	= 1U,  //Secure Debug Command
+    HSM_CMD_TMPR   	= 2U,	 //Tamper Response Command	
+    HSM_CMD_VSM    	= 3U,  //Variable Slot Management Command
+    HSM_CMD_KEYMGM 	= 4U,  //Key Management Commands
+    HSM_CMD_HASH   	= 5U,  //Hash Commands
+    HSM_CMD_AES    	= 6U,  //AES Commands
+    HSM_CMD_CHACHA 	= 7U,  //ChaCha Commands
+    HSM_CMD_TDES   	= 8U,  //Triple-DES/3DES Commands
+    HSM_CMD_DES    	= 9U,  //DES Commands
+    HSM_CMD_RSA    	= 10U, //RSA Commands 
+    HSM_CMD_SIGN   	= 11U, //Signature Commands 
+    HSM_CMD_X509   	= 12U, //X.509 Certificate Commands 
+    HSM_CMD_DH     	= 13U, // Diffie-Hellmen Commands
+    HSM_CMD_DICE   	= 14U,  //?? jk
+    HSM_CMD_MISC   	= 0xF0U, //?? jk
 }hsm_CommandGroups_E;
 
 typedef enum
 {
-    HSM_ECC_CURVETYPE_P192 = 0x00,
-    HSM_ECC_CURVETYPE_P256 = 0x01,        
-    HSM_ECC_CURVETYPE_P384 = 0x02,
-    HSM_ECC_CURVETYPE_P521 = 0x03,
-    HSM_ECC_MAX_CURVE,        
+    HSM_ECC_CURVETYPE_P192 = 0x00U,
+    HSM_ECC_CURVETYPE_P256 = 0x01U,        
+    HSM_ECC_CURVETYPE_P384 = 0x02U,
+    HSM_ECC_CURVETYPE_P521 = 0x03U,
+    HSM_ECC_MAXIMUM_CURVES_LIMIT,
 }hsm_Ecc_CurveType_E;
 
 
@@ -110,9 +114,9 @@ typedef enum
 
 typedef enum
 {
-    HSM_SYM_AES_KEY_128 = 0,
-    HSM_SYM_AES_KEY_192 = 1,
-    HSM_SYM_AES_KEY_256 = 2,
+    HSM_SYM_AES_KEY_128 = 0UL,
+    HSM_SYM_AES_KEY_192 = 1UL,
+    HSM_SYM_AES_KEY_256 = 2UL,
 }hsm_Aes_KeySize_E;
 
 //AES algorithms Enums
@@ -131,11 +135,11 @@ typedef enum
 //This enum needs to be in Common.h //?????????????
 typedef enum
 {
-    HSM_CMD_AEAD_CHACHA20_ENCRYPT = 0x00,            
-    HSM_CMD_AEAD_CHACHA20_DECRYPT = 0x01,
-    HSM_CMD_SYM_CHACHA20_ENCRYPT = 0x02,
-    HSM_CMD_SYM_CHACHA20_DECRYPT = 0x03,
-    HSM_CMD_MAC_CHACHA20_POLY1305 = 0x04,
+    HSM_CMD_AEAD_CHACHA20_ENCRYPT = 0x00U,            
+    HSM_CMD_AEAD_CHACHA20_DECRYPT = 0x01U,
+    HSM_CMD_SYM_CHACHA20_ENCRYPT = 0x02U,
+    HSM_CMD_SYM_CHACHA20_DECRYPT = 0x03U,
+    HSM_CMD_MAC_CHACHA20_POLY1305 = 0x04U,
 }hsm_ChaCha_CmdTypes_E;
 
 typedef enum
@@ -146,9 +150,36 @@ typedef enum
     HSM_CMD_ERROR_STATUSREG = -124,
     HSM_CMD_ERROR_INTFLAG = -123,
     HSM_CMD_ERROR_FAILED = -122,
-    HSM_CMD_SUCCESS = 0,
+    HSM_CMD_ERROR_AEADAUTH_FAILED = -121,
+    HSM_CMD_ERROR_SIGVERIFYFAIL = -120,        
+    HSM_CMD_SUCCESS = 0,    
 }hsm_Cmd_Status_E;
 
+typedef enum
+{
+    HSM_VSM_ASYMKEY_ECC = 0x00,
+    HSM_VSM_ASYMKEY_RSA = 0x01,
+    HSM_VSM_ASYMKEY_DH  = 0x02,
+    HSM_VSM_ASYMKEY_DSA = 0x03,            
+}hsm_Vsm_Asym_KeyTypes_E;
+
+typedef enum
+{
+    HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE = 0x00,
+    HSM_VSM_ASYMKEY_ECC_SIGNATURE   = 0x01,       
+}hsm_Vsm_Asym_Ecc_SignUsed_E;
+
+typedef enum
+{
+    HSM_VSM_ASYMKEY_ECC_ECDSA   = 0x00,
+    HSM_VSM_ASYMKEY_ECC_ECKCDSA = 0x01,       
+}hsm_Vsm_Asym_Ecc_AlgoUsed_E;
+
+typedef enum
+{
+    HSM_VSM_ASYMKEY_PRIVATEKEY = 0x01,
+    HSM_VSM_ASYMKEY_PUBLICKEY = 0x02        
+}hsm_Vsm_Asym_Ecc_PrivPubKeyType_E;
 //Each communication on the mailbox must be started with a mailbox header. When writing to the mailbox, the header
 //is written to a special register as defined by the mailbox IP, and then the rest of the message is written to the
 //mailbox FIFO,
@@ -163,7 +194,7 @@ typedef struct
 typedef struct 
 {
    	uint8_t stop                    :1;   //This bit is used to tell the DMA Hardware to stop after this descriptor is processed  
-	uint8_t  reserved1                       :1;   //reserved
+	uint8_t  reserved1              :1;   //reserved
 	uint32_t nextDescriptorAddr     :30;  //This is pointer or not , need to check //jk ?? 
 }st_Hsm_SgDesNextAddr;
 
@@ -246,7 +277,27 @@ typedef struct
   uint8_t pubKeySize; 
 }st_Hsm_Vsm_Ecc_CurveData;
 
+typedef struct
+{
+    hsm_Vsm_Asym_KeyTypes_E asymKeyType_en      :3; 
+    uint8_t reserved1                           :1;
+    hsm_Vsm_Asym_Ecc_KeyType_E eccKeyType_en    :3;
+    uint8_t reserved2                           :1;
+    uint8_t eccKeySize                          :8;
+    uint8_t paramA                              :2;
+    uint8_t reserved3                           :2;
+    hsm_Vsm_Asym_Ecc_SignUsed_E signUsed_en     :1;
+    uint8_t reserved4                           :3;
+    hsm_Vsm_Asym_Ecc_AlgoUsed_E algoUsed_en     :1;
+    uint8_t reserved5                           :3;
+    uint8_t domainIncBit                        :1;
+    uint8_t publicKeyIncBit                     :1;
+    uint8_t privateKeyIncBit                    :1;
+    uint8_t reserved6                           :1;                   
+}st_Hsm_Vss_Ecc_AsymKeyDataType;
 
-int Hsm_Vsm_Ecc_FindCurveIndex(hsm_Ecc_CurveType_E curveType_en, uint8_t *ptr_index);
+
+int Hsm_Vsm_Ecc_FillEccKeyProperties(st_Hsm_Vss_Ecc_AsymKeyDataType *ptr_eccKey_st, hsm_Ecc_CurveType_E curveType_en, hsm_Vsm_Asym_Ecc_PrivPubKeyType_E PrivPubkeyType,
+                                                hsm_Vsm_Asym_Ecc_SignUsed_E eccSignUsed_en, hsm_Vsm_Asym_Ecc_AlgoUsed_E eccAlgoUsed_en);
 
 #endif /* HSM_COMMON_H */

@@ -66,14 +66,14 @@ crypto_Kas_Status_E Crypto_Kas_Hw_Ecdh_SharedSecret(uint8_t *ptr_privKey, uint32
                                                     uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en)
 {
     crypto_Kas_Status_E ret_ecdhStatus_en = CRYPTO_KAS_ERROR_FAIL;
-    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAX_CURVE;
+    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
     hsm_Cmd_Status_E hsmEcdhStatus_en = HSM_CMD_ERROR_FAILED;
     st_Hsm_Kas_Dh_Cmd arr_ecdhCmdCtx_st[1] = {0};
     
     hsmCurveType_en = Crypto_Hw_ECC_GetEccCurveType(eccCurveType_en);
-    if(hsmCurveType_en != HSM_ECC_MAX_CURVE)
+    if(hsmCurveType_en != HSM_ECC_MAXIMUM_CURVES_LIMIT)
     {
-        hsmEcdhStatus_en = Hsm_Kas_Dh_Ecdh_SharedSecret(arr_ecdhCmdCtx_st, ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen,
+        hsmEcdhStatus_en = Hsm_Kas_Dh_Ecdh_SharedSecret(arr_ecdhCmdCtx_st, ptr_privKey, privKeyLen, &ptr_pubKey[1], (pubKeyLen-1U),
                                             ptr_sharedSecret, (uint16_t)sharedSecretLen, hsmCurveType_en);
         
         if(hsmEcdhStatus_en == HSM_CMD_SUCCESS)

@@ -64,18 +64,23 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_Sign(uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_Sig, uint32_t sigLen, uint8_t *ptr_privKey, 
-                                                       uint32_t privKeyLen, uint8_t *ptr_randomNumber, crypto_EccCurveType_E eccCurveType_en)
+                                                       uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_en)
 {
     crypto_DigiSign_Status_E digiSignStatus_en = CRYPTO_DIGISIGN_ERROR_FAIL;
-    hsm_Ecc_CurveType_E curveType_en = HSM_ECC_MAX_CURVE;
+    hsm_Ecc_CurveType_E curveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
     hsm_Cmd_Status_E hsmStatus_en = HSM_CMD_ERROR_FAILED;
-    st_Hsm_DigiSign_Cmd ecdsaCmd_st[1];
+    uint8_t *randomNumber = NULL;
+    //random number //?????this need to remove later
+//    uint8_t randomNumber[32]= 
+//    {
+//        0x94,0xa1,0xbb,0xb1,0x4b,0x90,0x6a,0x61,0xa2,0x80,0xf2,0x45,0xf9,0xe9,0x3c,0x7f,
+//        0x3b,0x4a,0x62,0x47,0x82,0x4f,0x5d,0x33,0xb9,0x67,0x07,0x87,0x64,0x2a,0x68,0xde
+//    };
     
     curveType_en = Crypto_Hw_ECC_GetEccCurveType(eccCurveType_en);
-    if(curveType_en != HSM_ECC_MAX_CURVE)
+    if(curveType_en != HSM_ECC_MAXIMUM_CURVES_LIMIT)
     {
-        hsmStatus_en = Hsm_DigiSign_Ecdsa_Sign(ecdsaCmd_st, ptr_inputHash, hashLen, ptr_Sig, sigLen,
-                                                ptr_privKey, privKeyLen, ptr_randomNumber, curveType_en); //?????????????? random number ???
+        hsmStatus_en = Hsm_DigiSign_Ecdsa_Sign(ptr_inputHash, hashLen, ptr_Sig, ptr_privKey, privKeyLen, randomNumber, curveType_en); //?????????????? random number ???
         if(hsmStatus_en == HSM_CMD_SUCCESS)
         {
             digiSignStatus_en = CRYPTO_DIGISIGN_SUCCESS;
@@ -97,15 +102,14 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_Verify(uint8_t *ptr_inputHash,
                                                        uint32_t pubKeyLen, int8_t *ptr_verifyStatus, crypto_EccCurveType_E eccCurveType_en)
 {
     crypto_DigiSign_Status_E digiSignStatus_en = CRYPTO_DIGISIGN_ERROR_FAIL;
-    hsm_Ecc_CurveType_E curveType_en = HSM_ECC_MAX_CURVE;
+    hsm_Ecc_CurveType_E curveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
     hsm_Cmd_Status_E hsmStatus_en = HSM_CMD_ERROR_FAILED;
-    st_Hsm_DigiSign_Cmd ecdsaCmd_st[1];
     
     curveType_en = Crypto_Hw_ECC_GetEccCurveType(eccCurveType_en);
-    if(curveType_en != HSM_ECC_MAX_CURVE)
+    if(curveType_en != HSM_ECC_MAXIMUM_CURVES_LIMIT)
     {
-        hsmStatus_en =  Hsm_DigiSign_Ecdsa_Verify(ecdsaCmd_st, ptr_inputHash, hashLen, ptr_Sig, sigLen,
-                                                ptr_pubKey, pubKeyLen, ptr_verifyStatus, curveType_en);
+        hsmStatus_en =  Hsm_DigiSign_Ecdsa_Verify(ptr_inputHash, hashLen, ptr_Sig,
+                                                &ptr_pubKey[1], (pubKeyLen - 1U), ptr_verifyStatus, curveType_en);
         if(hsmStatus_en == HSM_CMD_SUCCESS)
         {
             digiSignStatus_en = CRYPTO_DIGISIGN_SUCCESS;

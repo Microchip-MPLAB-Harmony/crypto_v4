@@ -139,14 +139,14 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesCcmStat_en = Crypto_Aead_Wc_AesCcm_Cipher(cipherOper_en, ptr_aesCcmCtx_st->arr_aeadDataCtx, ptr_inputData, dataLen, 
                                                         ptr_outData, ptr_nonce, nonceLen, ptr_authTag, authTagLen, ptr_aad, aadLen);
-            break; 
+                break; 
 #endif /* CRYPTO_AEAD_WC_AESCCM_EN */            
             case CRYPTO_HANDLER_HW_INTERNAL:
 
-            break;
+                break;
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesCcmStat_en;
@@ -245,14 +245,14 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Cipher(st_Crypto_Aead_AesEax_ctx *ptr_ae
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesEaxStat_en = Crypto_Aead_Wc_AesEax_Cipher(ptr_aesEaxCtx_st->aeadCipherOper_en, ptr_aesEaxCtx_st->arr_aeadDataCtx, 
                                                                     ptr_inputData, dataLen, ptr_outData, ptr_aad, aadLen);
-            break;  
+                break;  
 #endif /* CRYPTO_AEAD_WC_AESEAX_EN */            
             case CRYPTO_HANDLER_HW_INTERNAL:
 
-            break;
+                break;
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesEaxStat_en;
@@ -276,14 +276,14 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aes
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesEaxStat_en = Crypto_Aead_Wc_AesEax_Final(ptr_aesEaxCtx_st->aeadCipherOper_en, ptr_aesEaxCtx_st->arr_aeadDataCtx, 
                                                                     ptr_authTag, authTagLen);
-            break; 
+                break; 
 #endif /* CRYPTO_AEAD_WC_AESEAX_EN */            
             case CRYPTO_HANDLER_HW_INTERNAL:
 
-            break;
+                break;
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesEaxStat_en;
@@ -306,14 +306,14 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_AddAadData(st_Crypto_Aead_AesEax_ctx *pt
 #ifdef CRYPTO_AEAD_WC_AESEAX_EN             
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesEaxStat_en = Crypto_Aead_Wc_AesEax_AddAadData(ptr_aesEaxCtx_st->arr_aeadDataCtx, ptr_aad, aadLen); 
-            break;  
+                break;  
 #endif /* CRYPTO_AEAD_WC_AESEAX_EN */         
             case CRYPTO_HANDLER_HW_INTERNAL:
 
-            break;
+                break;
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesEaxStat_en;
@@ -364,14 +364,14 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_EncryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesEaxStat_en = Crypto_Aead_Wc_AesEax_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inputData, dataLen, ptr_outData, 
                                                                            ptr_key, keyLen, ptr_nonce, nonceLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-            break;
+                break;
 #endif /* CRYPTO_AEAD_WC_AESEAX_EN */            
             case CRYPTO_HANDLER_HW_INTERNAL:
 
-            break;
+                break;
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesEaxStat_en;
@@ -422,14 +422,14 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesEaxStat_en = Crypto_Aead_Wc_AesEax_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inputData, dataLen, ptr_outData, 
                                                                            ptr_key, keyLen, ptr_nonce, nonceLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-            break;  
+                break;  
 #endif /* CRYPTO_AEAD_WC_AESEAX_EN */            
             case CRYPTO_HANDLER_HW_INTERNAL:
 
-            break;
+                break;
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesEaxStat_en;
@@ -486,9 +486,12 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
                 
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ptr_aesGcmCtx_st->ptr_initVect = ptr_initVect;
-                ptr_aesGcmCtx_st->initVectLen = initVectLen;
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,cipherOper_en, ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize);    
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, cipherOper_en, ptr_aesGcmCtx_st->ptr_key, 
+                                                                                               ptr_aesGcmCtx_st->aeadKeySize, ptr_initVect, initVectLen);
+</#if>
                 break;
 #endif /* CRYPTO_AEAD_HW_AESGCM_EN */                
             default:
@@ -518,18 +521,22 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
 #ifdef CRYPTO_AEAD_WC_AESGCM_EN             
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_AddAadData(ptr_aesGcmCtx_st->aeadCipherOper_en, ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aad, aadLen);
-            break;  
+                break;  
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */ 
             
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0);    
-            break;
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_AddAad(ptr_aesGcmCtx_st, ptr_aad, aadLen); 
+</#if>
+                break;
 #endif /* CRYPTO_AEAD_HW_AESGCM_EN */
                 
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesGcmStat_en;
@@ -559,18 +566,22 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Cipher(ptr_aesGcmCtx_st->aeadCipherOper_en, ptr_aesGcmCtx_st->arr_aeadDataCtx, 
                                                                     ptr_inputData, dataLen, ptr_outData);
-            break;  
+                break;  
 #endif /* CRYPTO_AEAD_WC_AESCGM_EN */  
             
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen,
                                                                                                              ptr_inputData, dataLen, ptr_outData, NULL, 0, NULL, 0);     
-            break;
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher(ptr_aesGcmCtx_st, ptr_inputData, dataLen, ptr_outData);
+</#if>
+                break;
 #endif /* CRYPTO_AEAD_HW_AESGCM_EN */
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesGcmStat_en;
@@ -595,18 +606,22 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Final(ptr_aesGcmCtx_st->aeadCipherOper_en, ptr_aesGcmCtx_st->arr_aeadDataCtx, 
                                                                     ptr_authTag, authTagLen);
-            break; 
+                break; 
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */  
             
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0,NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);     
-            break;
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Final((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_authTag, authTagLen);
+</#if>
+                break;
 #endif /* CRYPTO_AEAD_HW_AESGCM_EN */
             
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesGcmStat_en;
@@ -663,19 +678,24 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesGcmStat_en =  Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
                                                 ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-            break;
+                break;
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */  
             
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-            ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
-                                                        ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-            break;
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
+                                                            ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
+                                                                        ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
+</#if>
+                break;
 #endif /* CRYPTO_AEAD_HW_AESGCM_EN */ 
             
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesGcmStat_en;
@@ -732,18 +752,23 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesGcmStat_en =  Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
                                                 ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-            break;
+                break;
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */  
             
 #ifdef CRYPTO_AEAD_HW_AESGCM_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-            ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
-                                                        ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-            break;
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
+                                                            ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
+                                                            ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
+</#if>
+                break;
 #endif /* CRYPTO_AEAD_HW_AESGCM_EN */            
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
-            break;
+                break;
         }
     }
     return ret_aesGcmStat_en;

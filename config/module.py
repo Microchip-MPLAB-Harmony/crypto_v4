@@ -30,8 +30,8 @@ def loadModule():
             "lib_crypto",
             "Crypto_v4",
             "/Libraries/", "config/crypto.py")
-    cryptoComponent.addCapability(
-            "lib_crypto", "LIB_CRYPTO", None, True)
+#     cryptoComponent.addCapability(
+#             "lib_crypto", "LIB_CRYPTO", None, True)
     cryptoComponent.addDependency(
             "LIB_CRYPTO_WOLFCRYPT_Dependency", "LIB_WOLFCRYPT", False, True)
 

@@ -62,7 +62,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *ptr_aesGcmCtx, crypto_CipherOper_E cipherOper_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect,uint32_t ivLen)
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *ptr_aesGcmCtx, crypto_CipherOper_E cipherOper_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t ivLen)
 {
     crypto_Aead_Status_E ret_aesGcmStatus_en = CRYPTO_AEAD_ERROR_CIPFAIL; 
     hsm_Cmd_Status_E hsmCmdStatus_en = HSM_CMD_ERROR_FAILED;

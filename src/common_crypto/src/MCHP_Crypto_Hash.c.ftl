@@ -364,7 +364,11 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest((void*)ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest(ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
+</#if>
                 break;
 #endif /* CRYPTO_HASH_HW_ALGO_EN */
                 
@@ -444,7 +448,11 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
                 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Update((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_shaStat_en = Crypto_Hash_Hw_Sha_Update((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen, ptr_shaCtx_st->shaAlgo_en);
+</#if>
                 break;
 #endif /* CRYPTO_HASH_HW_ALGO_EN */
 
@@ -480,7 +488,11 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
                 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Final((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+                ret_shaStat_en = Crypto_Hash_Hw_Sha_Final((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest, ptr_shaCtx_st->shaAlgo_en);
+</#if>
                 break;
 #endif /* CRYPTO_HASH_HW_ALGO_EN */
 

@@ -98,9 +98,6 @@ extern "C" {
     <#if HAVE_MCHP_CRYPTO_TRNG_HW_03597 == true>
         <#lt>#warning "03597 TRNG HW Driver Not Implemented"
     </#if>
-    <#if HAVE_MCHP_CRYPTO_SHA_HW_HSM    == true>
-        <#lt>#warning "HSM SHA HW Driver Not Implemented"
-    </#if>
     <#if HAVE_MCHP_CRYPTO_SHA_HW_11105  == true>
         <#lt>#warning "11105 SHA HW Driver Not Implemented"
     </#if>
@@ -118,9 +115,6 @@ extern "C" {
     </#if>
     <#if HAVE_MCHP_CRYPTO_BLAKE2_HW_HSM == true>
         <#lt>#warning "HSM BLAKE2 HW Driver Not Implemented"
-    </#if>
-    <#if HAVE_MCHP_CRYPTO_AES_HW_HSM == true>
-        <#lt>#warning "HSM AES HW Driver Not Implemented"
     </#if>
     <#if HAVE_MCHP_CRYPTO_AES_HW_U2238  == true>
         <#lt>#warning "U2238 AES HW Driver Not Implemented"

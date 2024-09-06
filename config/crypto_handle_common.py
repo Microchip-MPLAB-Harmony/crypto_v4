@@ -60,20 +60,16 @@ def CheckCommonHwFiles():
 
     # Loop over driver keys (ex. CPKCC, HSM, ...) and get the values which are dicts
     for driver, functionDict in g.hwDriverDict.items():
-        # print("Checking driver: ", driver)
 
         # Reset HW accl. logic
         HwEnable = False
         
         # Loop over functions in dict (ex. SHA, AES, ...)
         for function in functionDict.keys():
-            # print("Checking function: ", function)
 
             if function in g.hwFunctionDriverDict and g.hwFunctionDriverDict[function]:
-                # print("This function is being used...")
 
                 if driver in g.hwFunctionDriverDict.get(function, []):
-                    print("Driver: ", driver, " supported for function: ", function)
 
                     # HW config symbols for MCC
                     config_symbols = {
@@ -81,8 +77,6 @@ def CheckCommonHwFiles():
                         "SHA": g.CONFIG_USE_SHA_HW,
                         "AES": g.CONFIG_USE_AES_HW,
                         "AEAD": g.CONFIG_USE_AEAD_HW,
-                        #"TDES": g.CONFIG_USE_TDES_HW,
-                        #"RSA": g.CONFIG_USE_RSA_HW,
                         "ECDSA": g.CONFIG_USE_ECDSA_HW,
                         "ECDH": g.CONFIG_USE_ECDH_HW,
                     }
@@ -96,7 +90,7 @@ def CheckCommonHwFiles():
                         try:
                             if config_symbol.getValue() is True:
                                 HwEnable = True
-                                print("set HwEnable by function:", function)
+                                print("set HwEnable by function: %s" %(function))
                                 
                         except:
                             javaException = sys.exc_info()[1]
@@ -117,9 +111,9 @@ def CheckCommonHwFiles():
                                     filename = filename[:-4]
 
                                 if fSym.getOutputName() == filename:
-                                    fSym.setEnabled(HwEnable)                   # Enable/Disable by HwEnable val
-                                    print("COMMON:  update [COMMON]%s(%s)"%(
-                                        fSym.getOutputName(),fSym.getEnabled()))
+                                    fSym.setEnabled(HwEnable)
+                                    # print("update [COMMON]%s(%s)"%(
+                                    #     fSym.getOutputName(),fSym.getEnabled()))
                     else:
                         print("No COMMON files found to enable for driver: ", driver)
                 else:

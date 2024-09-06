@@ -72,17 +72,21 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHa
 #ifdef CRYPTO_DIGISIGN_WC_ECDSA_EN           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ecdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);
-            break; 
+            	break; 
 #endif /* CRYPTO_DIGISIGN_WC_ECDSA_EN */ 
 
 #ifdef CRYPTO_DIGISIGN_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-            ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);
-            break;
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+            	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+				ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);
+</#if>
+            	break;
 #endif /* CRYPTO_DIGISIGN_HW_ALGO_EN */            
             default:
                 ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            break;
+            	break;
         }
     }
 
@@ -126,19 +130,23 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
 #ifdef CRYPTO_DIGISIGN_WC_ECDSA_EN           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ecdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, ptr_hashVerifyStat, eccCurveType_En);
-            break; 
+            	break; 
 #endif /* CRYPTO_DIGISIGN_WC_ECDSA_EN */
             
 #ifdef CRYPTO_DIGISIGN_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-            ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+            	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
                                         ptr_hashVerifyStat, eccCurveType_En);
-            break;
+<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+            	ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, ptr_hashVerifyStat, eccCurveType_En);
+</#if>
+            	break;
 #endif /* CRYPTO_DIGISIGN_HW_ALGO_EN */ 
             
             default:
                 ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            break;
+            	break;
         }
     }
     return ret_ecdsaStat_en;

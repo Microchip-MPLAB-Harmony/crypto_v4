@@ -179,18 +179,25 @@ def SetupCommonCryptoFiles(basecomponent) :
     configName = Variables.get("__CONFIGURATION_NAME")  # e.g. "default"$
 
     print("CRYPTO:  setup CC Files %s"%(modulePath))
-    commonCryptoHeaderFiles = (modulePath + "src/common_crypto/*.h")
-    commonCryptoSourceFiles = (modulePath + "src/common_crypto/src/*.c")
+    headerFiles = (modulePath + "src/common_crypto/*.h")
+    headerTemplateFiles = (modulePath + "src/common_crypto/*.h.ftl")
+    sourceFiles = (modulePath + "src/common_crypto/src/*.c")
+    sourceTemplateFiles = (modulePath + "src/common_crypto/src/*.c.ftl")
 
     #All src/header files in the common/crypto directory
-    ccphfl = glob.glob(commonCryptoHeaderFiles)
-    ccpsfl = glob.glob(commonCryptoSourceFiles)
+    hfl = glob.glob(headerFiles)
+    htfl = glob.glob(headerTemplateFiles)
+    sfl = glob.glob(sourceFiles)
+    stfl = glob.glob(sourceTemplateFiles)
 
-    ccphfl_trim = TrimFileNameList(glob.glob(commonCryptoHeaderFiles))
-    ccpsfl_trim = TrimFileNameList(glob.glob(commonCryptoSourceFiles))
-
-    print("CRYPTO: %d Header"%(len(ccphfl)))
-    print("CRYPTO: %d Source"%(len(ccpsfl)))
+    print("CRYPTO: %d Header"%(len(hfl)))
+    print("CRYPTO: %d Header Template"%(len(htfl)))
+    print("CRYPTO: %d Source"%(len(sfl)))
+    print("CRYPTO: %d Source Template"%(len(stfl)))
+    phfl_trim = TrimFileNameList(hfl)
+    phtfl_trim = TrimFileNameList(htfl)
+    psfl_trim = TrimFileNameList(sfl)
+    pstfl_trim = TrimFileNameList(stfl)
 
     #All src files in the wolfssl/wolfcrypt/src directory
     #--AddFileName(fileName, prefix, component, 
@@ -198,10 +205,21 @@ def SetupCommonCryptoFiles(basecomponent) :
     projectPath = "config/" + configName + "/crypto/common_crypto/"
     dstPath = "crypto/common_crypto/"  #Path Dest
 
-    for fileName in ccphfl_trim:
+    # Handle .h
+    for fileName in phfl_trim:
         #AddFileName(fileName, prefix, component, 
         #            srcPath, destPath, enabled, projectPath):
         fileSym = AddFileName(fileName,                     #Filename 
+                         "common_crypto",              #MCC Symbol Name Prefix
+                         basecomponent,                #MCC Component
+                         "src/common_crypto/",         #Src Path
+                         dstPath,      #Dest Path
+                         True,                         #Enabled
+                         projectPath) #Project Path
+    # Handle .h.ftl
+    for fileName in phtfl_trim:
+        fileName = fileName[:len(fileName) - 4]             # to avoid .ftl.ftl
+        fileSym = AddMarkupFile(fileName,                     #Filename 
                          "common_crypto",              #MCC Symbol Name Prefix
                          basecomponent,                #MCC Component
                          "src/common_crypto/",         #Src Path
@@ -212,7 +230,8 @@ def SetupCommonCryptoFiles(basecomponent) :
     projectPath = "config/" + configName + "/crypto/common_crypto/src/"
     dstPath = "crypto/common_crypto/src"  #Path Dest
 
-    for fileName in ccpsfl_trim:
+    # Handle .c
+    for fileName in psfl_trim:
         fileSym = AddFileName(fileName,                     #Filename    
                          "common_crypto",              #MCC Symbol Name Prefix
                          basecomponent,                #MCC Component
@@ -220,6 +239,16 @@ def SetupCommonCryptoFiles(basecomponent) :
                          dstPath,  #Path Dest
                          True,                         #Enabled
                          projectPath)
+    # Handle .c.ftl
+    for fileName in pstfl_trim:
+        fileName = fileName[:len(fileName) - 4]             # to avoid .ftl.ftl
+        fileSym = AddMarkupFile(fileName,                     #Filename 
+                         "common_crypto",              #MCC Symbol Name Prefix
+                         basecomponent,                #MCC Component
+                         "src/common_crypto/src/",         #Src Path
+                         dstPath,      #Dest Path
+                         True,                         #Enabled
+                         projectPath) #Project Path
 
 ################################################################################
 ################################################################################
@@ -405,7 +434,7 @@ def instantiateComponent(cryptoComponent):
             if (g.trustZoneDevices[dev][1] in processor):
                 print("CRYPTO:  Trust Zone Supported for %s"%processor)
                 g.trustZoneSupported = True
-                break;
+                break
 
     #String Implementation of defines for crypto_config.h.ftl
     g.cryptoHwDefines = cryptoComponent.createStringSymbol(
@@ -739,6 +768,12 @@ def destroyComponent(cryptoComponent):
     idList = Database.getActiveComponentIDs()
     symIDList = Database.getComponentSymbolIDs("lib_crypto")
     symIDList_str = [str(item) for item in symIDList]
+
+    print("goodbye")
+    idList = Database.getActiveComponentIDs()
+    symIDList = Database.getComponentSymbolIDs("lib_crypto")
+    print(idList)
+    print(symIDList)
     
     return
 

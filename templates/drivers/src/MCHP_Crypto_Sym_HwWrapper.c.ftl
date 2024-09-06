@@ -50,6 +50,8 @@ Microchip or any third party.
 #include "crypto/common_crypto/MCHP_Crypto_Sym_HwWrapper.h"
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
 #include "crypto/drivers/drv_crypto_aes_hw_6149.h"
+<#elseif HAVE_MCHP_CRYPTO_SYM_AES_HW_05346 == true>
+#include "crypto/drivers/drv_crypto_sym_aes_hw_05346.h"
 </#if>
 
 // *****************************************************************************
@@ -153,7 +155,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
     crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen, 
     uint8_t *initVect)
 { 
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false || HAVE_MCHP_CRYPTO_SYM_AES_HW_05346 == false>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else> 
     CRYPTO_AES_CONFIG aesCfg;
@@ -238,9 +240,9 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
 crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData, 
     uint32_t dataLen, uint8_t *outData)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false || HAVE_MCHP_CRYPTO_SYM_AES_HW_05346 == false>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-<#else>
+<#elseif HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
     DRV_CRYPTO_AES_WritePCTextLen(dataLen);
     
     /* MISRA C-2012 deviation block start */
@@ -281,6 +283,30 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData,
     }
     
     return CRYPTO_SYM_CIPHER_SUCCESS;
+<#elseif HAVE_MCHP_CRYPTO_SYM_AES_HW_05346 == true>
+    const uint32_t *iData = (uint32_t*) inputData;
+    uint32_t *oData = (uint32_t*) outData;
+    uint32_t numOfPaddingBytes = 0;
+    uint32_t bytesOverAesBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
+
+    if (bytesOverAesBlock != (uint32_t) 0)
+    {
+        numOfPaddingBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverAesBlock;
+    }
+    
+    /* Write the data to be ciphered to the input data registers */
+    DRV_CRYPTO_AES_WriteInputData(iData, dataLen, numOfPaddingBytes);
+        
+    /* Wait for the cipher process to end */
+    while (!DRV_CRYPTO_AES_CipherIsReady())
+    {
+        ;
+    }
+    
+    /* Cipher complete - read out the data */    
+    DRV_CRYPTO_AES_ReadOutputData(oData);
+
+    return CRYPTO_SYM_CIPHER_SUCCESS;
 </#if>
 }
 
@@ -288,7 +314,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false || HAVE_MCHP_CRYPTO_SYM_AES_HW_05346 == false>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else> 
     crypto_Sym_Status_E result = CRYPTO_SYM_CIPHER_SUCCESS;
@@ -309,7 +335,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false || HAVE_MCHP_CRYPTO_SYM_AES_HW_05346 == false>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else> 
     crypto_Sym_Status_E result = CRYPTO_SYM_CIPHER_SUCCESS;

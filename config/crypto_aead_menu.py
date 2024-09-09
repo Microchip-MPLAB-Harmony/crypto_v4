@@ -202,7 +202,7 @@ def SetupCryptoAeadMenu(cryptoComponent):
     if (g.cryptoHwAeadAesSupported == True):
         g.cryptoHwAeadAesEnabledSymbol.setDependencies(
                 handleAeadAesHwEnabled,
-                ["crypto_aead_aes_hw_en", "crypto_aead_aes_hw_en"])
+                ["crypto_aead_aes_en", "crypto_aead_aes_hw_en"])
         g.cryptoHwAeadAesEnabledSymbol.setVisible(True)
         g.cryptoHwAeadAesEnabledSymbol.setDefaultValue(False)
     else:

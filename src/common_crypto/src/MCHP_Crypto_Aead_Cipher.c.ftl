@@ -34,9 +34,9 @@
 #include "crypto/common_crypto/MCHP_Crypto_Aead_WolfcryptWrapper.h"
 #endif /* CRYPTO_AEAD_WC_ALGO_EN */
 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+#ifdef CRYPTO_AEAD_HW_ALGO_EN
 #include "crypto/common_crypto/MCHP_Crypto_Aead_HwWrapper.h"
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -484,7 +484,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
                 break;
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */
                 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN                
+#ifdef CRYPTO_AEAD_HW_ALGO_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,cipherOper_en, ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize);    
@@ -493,7 +493,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
                                                                                                ptr_aesGcmCtx_st->aeadKeySize, ptr_initVect, initVectLen);
 </#if>
                 break;
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */                
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */                
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -524,7 +524,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
                 break;  
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */ 
             
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN                
+#ifdef CRYPTO_AEAD_HW_ALGO_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0);
@@ -532,7 +532,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_AddAad(ptr_aesGcmCtx_st, ptr_aad, aadLen); 
 </#if>
                 break;
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */
                 
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
@@ -569,7 +569,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
                 break;  
 #endif /* CRYPTO_AEAD_WC_AESCGM_EN */  
             
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN                
+#ifdef CRYPTO_AEAD_HW_ALGO_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen,
@@ -578,7 +578,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher(ptr_aesGcmCtx_st, ptr_inputData, dataLen, ptr_outData);
 </#if>
                 break;
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -609,7 +609,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
                 break; 
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */  
             
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN                
+#ifdef CRYPTO_AEAD_HW_ALGO_EN                
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0,NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);     
@@ -617,7 +617,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Final((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_authTag, authTagLen);
 </#if>
                 break;
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */
             
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
@@ -681,7 +681,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
                 break;
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */  
             
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN             
+#ifdef CRYPTO_AEAD_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
@@ -691,7 +691,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
                                                                         ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
 </#if>
                 break;
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */ 
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */ 
             
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
@@ -755,7 +755,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
                 break;
 #endif /* CRYPTO_AEAD_WC_AESGCM_EN */  
             
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN             
+#ifdef CRYPTO_AEAD_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, 
@@ -765,7 +765,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
                                                             ptr_initVect, initVectLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
 </#if>
                 break;
-#endif /* CRYPTO_AEAD_HW_AESGCM_EN */            
+#endif /* CRYPTO_AEAD_HW_ALGO_EN */            
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;

@@ -68,11 +68,8 @@
     <#lt>#define CRYPTO_AEAD_WC_ALGO_EN
 </#if>
 
-<#if (crypto_aead_aes_gcm_hw_en      == true  ||
-      crypto_aead_aes_ccm_hw_en      == true  || 
-      crypto_aead_aes_eax_hw_en      == true  || 
-      crypto_aead_aes_siv_cmac_hw_en == true  || 
-      crypto_aead_aes_siv_gcm_hw_en  == true)>
+<#if crypto_aead_aes_hw_en == true>
+    <#lt>//HW Acceleration Enable
     <#lt>#define CRYPTO_AEAD_HW_ALGO_EN
 </#if>
 

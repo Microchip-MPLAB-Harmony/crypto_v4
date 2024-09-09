@@ -11,8 +11,7 @@
     Crypto Framework Library interface file for hardware Cryptography.
 
   Description:
-    This file provides an example for interfacing with the CPKCC module
-    on the PIC32CXMxxx device family.
+    This file provides an example for interfacing with the CPKCC module.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

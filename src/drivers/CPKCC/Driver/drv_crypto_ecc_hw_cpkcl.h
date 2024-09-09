@@ -12,8 +12,8 @@
 
   Description:
     This file provides the memory mapping to interface with the CPKCC 
-    module on the PIC32CXMTxx device family. It also includes common
-    functions to handle the interface and the definitions of curves.
+    module. It also includes common functions to handle the interface and 
+    the definitions of curves.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

@@ -13,7 +13,7 @@
   Description:
     This header file contains the interface that make up the SHA hardware 
     driver for the following families of Microchip microcontrollers:
-    PIC32CXMTxx, SAMA5D2, SAM9X60.
+    PIC32CXMTxx, SAMA5D2, SAM9X60, SAMA7D65.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -81,7 +81,7 @@ typedef enum
   CRYPTO_SHA_ALGO_SHA384 = 2,           /* SHA384 algorithm processed */
   CRYPTO_SHA_ALGO_SHA512 = 3,           /* SHA512 algorithm processed */
   CRYPTO_SHA_ALGO_SHA224 = 4,           /* SHA224 algorithm processed */
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
   CRYPTO_SHA_ALGO_SHA512_224 = 5,       /* SHA512/224 algorithm processed */
   CRYPTO_SHA_ALGO_SHA512_256 = 6,       /* SHA512/256 algorithm processed */
 </#if>
@@ -90,7 +90,7 @@ typedef enum
   CRYPTO_SHA_ALGO_HMAC_SHA384 = 10,     /* HMAC algorithm with SHA384 Hash processed */
   CRYPTO_SHA_ALGO_HMAC_SHA512 = 11,     /* HMAC algorithm with SHA512 Hash processed */
   CRYPTO_SHA_ALGO_HMAC_SHA224 = 12,     /* HMAC algorithm with SHA224 Hash processed */
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
   CRYPTO_SHA_ALGO_HMAC_SHA512_224 = 13, /* HMAC algorithm with SHA512/224 Hash processed */
   CRYPTO_SHA_ALGO_HMAC_SHA512_256 = 14, /* HMAC algorithm with SHA512/256 Hash processed */
 </#if>
@@ -137,7 +137,7 @@ typedef union {
     uint8_t WUIHV : 1;
     uint8_t WUIEHV : 1;
     uint8_t : 2;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     uint8_t : 8;
     uint8_t UNLOCK : 1;
     uint8_t : 7;    
@@ -152,7 +152,7 @@ typedef union
 {
   struct {
     CRYPTO_SHA_START_MODE SMOD : 2;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     uint8_t : 1;
     uint8_t AOE : 1;
 <#else>
@@ -161,13 +161,13 @@ typedef union
     uint8_t PROCDLY : 1;
     uint8_t UIHV : 1;
     uint8_t UIEHV : 1;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     uint8_t BPE : 1;
 <#else>
     uint8_t : 1;
 </#if>
     CRYPTO_SHA_ALGO ALGO : 4;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     uint8_t : 3;
     uint8_t TMPLCK : 1;
 <#else>
@@ -197,7 +197,7 @@ typedef union
     uint8_t : 7;
     uint8_t CHECKF : 1;
     uint8_t : 7;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     uint8_t SECE : 1;
     uint8_t : 7;
 <#else>
@@ -230,7 +230,7 @@ typedef union
     uint8_t CHCKF : 1;
     uint8_t : 3;
     uint8_t CHKST : 4;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     uint8_t SECE : 1;
     uint8_t : 7;
 <#else>

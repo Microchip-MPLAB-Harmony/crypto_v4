@@ -59,7 +59,9 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#ifdef CRYPTO_AEAD_HW_AESGCM_EN
 static CRYPTO_AES_CONFIG aesGcmCfg;
+#endif
 
 // *****************************************************************************
 // *****************************************************************************
@@ -67,6 +69,7 @@ static CRYPTO_AES_CONFIG aesGcmCfg;
 // *****************************************************************************
 // *****************************************************************************
 
+#ifdef CRYPTO_AEAD_HW_AESGCM_EN
 static void lCrypto_Aead_Hw_Gcm_WriteKey(uint32_t *gcmKey)
 {
     DRV_CRYPTO_AES_WriteKey(gcmKey);
@@ -571,6 +574,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
    
     (void) memcpy(tag, (uint8_t*)gcmTag, tagLen);
 }
+#endif
 
 // *****************************************************************************
 // *****************************************************************************
@@ -578,6 +582,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
 // *****************************************************************************
 // *****************************************************************************
 
+#ifdef CRYPTO_AEAD_HW_AESGCM_EN
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen)
 {
@@ -718,3 +723,4 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
             dataLen, outData, aad, aadLen, authTag, authTagLen);
 </#if> 
 }
+#endif

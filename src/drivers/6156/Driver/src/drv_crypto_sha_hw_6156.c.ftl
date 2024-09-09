@@ -13,7 +13,7 @@
   Description:
     This source file contains the interface that make up the SHA hardware 
     driver for the following families of Microchip microcontrollers:
-    PIC32CXMTxx, SAMA5D2, SAM9X60.
+    PIC32CXMTxx, SAMA5D2, SAM9X60, SAMA7D65.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -87,7 +87,7 @@ static void lDRV_CRYPTO_SHA_Configure(CRYPTO_SHA_ALGO shaAlgo)
     /* MISRA C-2012 deviation block end */
     shaMr.s.CHKCNT = 0; 
     
-<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAM9X60") || __PROCESSOR?matches("SAMA7D65.*")>
     shaMr.s.AOE = 0;
     shaMr.s.BPE = 0; 
     shaMr.s.TMPLCK = 0;

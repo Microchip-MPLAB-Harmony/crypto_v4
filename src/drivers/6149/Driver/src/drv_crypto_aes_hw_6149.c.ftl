@@ -13,7 +13,7 @@
   Description:
     This source file contains the functions that make up the AES hardware 
     driver for the following families of Microchip microcontrollers:
-    PIC32CXMTxx, SAMx70, SAMA5D2, SAM9X60.
+    PIC32CXMTxx, SAMx70, SAMA5D2, SAM9X60, SAMA7D65.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -68,11 +68,14 @@ void DRV_CRYPTO_AES_GetConfigDefault(CRYPTO_AES_CONFIG *aesCfg)
 	aesCfg->lod = false;
 	aesCfg->gtagEn = false;
 	aesCfg->processingDelay = 0;
-    
+
 <#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+    aesCfg->algo = CRYPTO_AES_ALGORITHM_AES;
+</#if>    
+    
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
 	aesCfg->tampclr = false;
 	aesCfg->bpe = false;
-	aesCfg->algo = CRYPTO_AES_ALGORITHM_AES;
 	aesCfg->apen = false;
 	aesCfg->apm = CRYPTO_AES_AUTO_PADDING_IPSEC;
 	aesCfg->padLen = 0;
@@ -89,7 +92,7 @@ void DRV_CRYPTO_AES_Init(void)
 void DRV_CRYPTO_AES_SetConfig(CRYPTO_AES_CONFIG *aesCfg)
 {
     CRYPTO_AES_MR aesMR = {0};
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
     CRYPTO_AES_EMR aesEMR = {0};
 </#if>
       
@@ -142,7 +145,7 @@ void DRV_CRYPTO_AES_SetConfig(CRYPTO_AES_CONFIG *aesCfg)
     }
     
     /* Activate dual buffer in DMA mode */
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
     if ((aesCfg->startMode == CRYPTO_AES_IDATAR0_START) && (!aesCfg->apen))
 <#else>
     if (aesCfg->startMode == CRYPTO_AES_IDATAR0_START)
@@ -151,7 +154,7 @@ void DRV_CRYPTO_AES_SetConfig(CRYPTO_AES_CONFIG *aesCfg)
         aesMR.s.DUALBUFF = 0;
     }
     
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
     /* MISRA C-2012 deviation block start */
     /* MISRA C-2012 Rule 10.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_10_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
@@ -171,7 +174,9 @@ void DRV_CRYPTO_AES_SetConfig(CRYPTO_AES_CONFIG *aesCfg)
     /* MISRA C-2012 deviation block end */
 
     /* EMR fields */
+<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
     aesEMR.s.ALGO = aesCfg->algo;
+</#if>
     /* MISRA C-2012 deviation block start */
     /* MISRA C-2012 Rule 10.3 deviated: 2. Deviation record ID - H3_MISRAC_2012_R_10_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
@@ -370,3 +375,27 @@ void DRV_CRYPTO_AES_ReadGcmH(uint32_t *hBuffer)
         hBuffer++;
     }
 }
+
+<#if __PROCESSOR?matches("SAMA7D65.*")>
+void DRV_CRYPTO_AES_WriteTweak(const uint32_t *tweakBuffer)
+{
+    uint8_t i;
+
+    for (i = 0; i < 4U; i++) 
+    {
+        AES_REGS->AES_TWR[i] = *tweakBuffer;
+        tweakBuffer++;
+    }
+}
+
+void DRV_CRYPTO_AES_WriteAlpha(const uint32_t *alphaBuffer)
+{
+    uint8_t i;
+
+    for (i = 0; i < 4U; i++) 
+    {
+        AES_REGS->AES_ALPHAR[i] = *alphaBuffer;
+        alphaBuffer++;
+    }
+}
+</#if>

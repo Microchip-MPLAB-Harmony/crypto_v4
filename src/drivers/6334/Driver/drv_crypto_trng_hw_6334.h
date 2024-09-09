@@ -13,7 +13,7 @@
   Description:
     This header file contains the interface that make up the TRNG hardware 
     driver for the following families of Microchip microcontrollers:
-    PIC32CXMTxx, SAMx70, SAMA5D2, SAM9X60.
+    PIC32CXMTxx, SAMx70, SAMA5D2, SAM9X60, SAMA7D65.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

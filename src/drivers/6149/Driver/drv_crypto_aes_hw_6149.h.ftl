@@ -13,7 +13,7 @@
   Description:
     This header file contains the interface that make up the AES hardware 
     driver for the following families of Microchip microcontrollers:
-    PIC32CXMTxx, SAMx70, SAMA5D2, SAM9X60.
+    PIC32CXMTxx, SAMx70, SAMA5D2, SAM9X60, SAMA7D65.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -91,6 +91,9 @@ typedef enum {
     CRYPTO_AES_MODE_CFB,           /* Cipher Feedback (CFB) */
     CRYPTO_AES_MODE_CTR,           /* Counter (CTR) */
     CRYPTO_AES_MODE_GCM,           /* Galois Counter Mode (GCM) */
+<#if __PROCESSOR?matches("SAMA7D65.*")>
+    CRYPTO_AES_MODE_XTS,           /* XEX-based tweaked-codebook mode (XTS) */
+</#if>
 } CRYPTO_AES_OPERATION_MODE;
 
 typedef enum  {
@@ -106,7 +109,9 @@ typedef enum {
     CRYPTO_AES_ALGORITHM_AES = 0,  /* AES algorithm used for encryption */
     CRYPTO_AES_ALGORITHM_ARIA,     /* ARIA algorithm used for encryption */
 } CRYPTO_AES_ALGORITHM;
+</#if>
 
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
 typedef enum {
     CRYPTO_AES_KEY_FIRST = 0,  /* First key loaded by software */
     CRYPTO_AES_KEY_SECOND,     /* Second key loaded by software */
@@ -141,14 +146,14 @@ typedef enum {
 typedef union {
     struct {
         uint8_t START : 1;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
         uint8_t KSWP : 1;
         uint8_t : 6;
 <#else>
         uint8_t : 7;
 </#if>
         uint8_t SWRST : 1;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
         uint16_t : 15;
         uint8_t UNLOCK : 1;
         uint8_t : 7;
@@ -173,7 +178,7 @@ typedef union {
         CRYPTO_AES_CFB_SIZE CFBS : 3;
         uint8_t : 1;
         uint8_t CKEY : 4;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
         uint8_t : 7;
         uint8_t TAMPCLR;
 <#else>
@@ -183,7 +188,7 @@ typedef union {
     uint32_t v;
 } CRYPTO_AES_MR;
 
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
 typedef union {
     struct {
         uint8_t APEN : 1;
@@ -196,7 +201,11 @@ typedef union {
         CRYPTO_AES_PRIVATE_KEY_SELECTION PKRS : 2;
         uint8_t PADLEN;
         uint8_t NHEAD;
+<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
         CRYPTO_AES_ALGORITHM ALGO : 1;
+<#else>
+        uint8_t : 1;
+</#if>
         uint8_t : 6;
         uint8_t BPE : 4;
     } s;
@@ -219,7 +228,7 @@ typedef union {
         uint8_t URAD : 1;
         uint8_t : 7;
         uint8_t TAGRDY : 1;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
         uint8_t EOPAD : 1;
         uint8_t PLENERR : 1;
         uint8_t SECE : 1;
@@ -278,7 +287,7 @@ typedef union {
         uint8_t : 3;
         CRYPTO_AES_URAT URAT : 4;
         uint8_t TAGRDY : 1;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
         uint8_t EOPAD : 1;
         uint8_t PLENERR : 1;
         uint8_t SECE : 1;
@@ -316,13 +325,15 @@ typedef struct {
 	bool gtagEn;
 	/* Processing delay parameter */
 	uint32_t processingDelay;
-<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*") || __PROCESSOR?matches("SAMA7D65.*")>
 	/* Tamper clear enable */
 	bool tampclr;
 	/* Block processing end */
 	bool bpe;
+<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
 	/* Encryption algorithm */
 	CRYPTO_AES_ALGORITHM algo;
+</#if>
     /* Auto padding enable/disable */
 	bool apen;
 	/* Auto padding mode */
@@ -371,6 +382,12 @@ void DRV_CRYPTO_AES_ReadGcmHash(uint32_t *ghashBuffer);
 void DRV_CRYPTO_AES_WriteGcmHash(uint32_t *ghashBuffer);
 
 void DRV_CRYPTO_AES_ReadGcmH(uint32_t *hBuffer);
+
+<#if __PROCESSOR?matches("SAMA7D65.*")>
+void DRV_CRYPTO_AES_WriteTweak(const uint32_t *tweakBuffer);
+
+void DRV_CRYPTO_AES_WriteAlpha(const uint32_t *alphaBuffer);
+</#if>
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

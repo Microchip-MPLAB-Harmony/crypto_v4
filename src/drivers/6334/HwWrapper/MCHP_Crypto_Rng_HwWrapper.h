@@ -67,7 +67,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Rng_Status_E Crypto_Rng_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

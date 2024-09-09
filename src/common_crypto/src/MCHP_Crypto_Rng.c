@@ -70,7 +70,7 @@ crypto_Rng_Status_E Crypto_Rng_Prng_Generate(crypto_HandlerType_E rngHandlerType
 
 #ifdef CRYPTO_RNG_HW_TRNG_EN            
             case CRYPTO_HANDLER_HW_INTERNAL:
-                ret_rngStat_en = Crypto_Rng_Trng_Generate(ptr_rngData, rngLen);
+                ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
             break;
 #endif /* CRYPTO_RNG_HW_TRNG_EN */
             

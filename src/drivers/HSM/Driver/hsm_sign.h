@@ -16,7 +16,7 @@
 #define HSM_SIGN_H
 
 #include "hsm_common.h"
-#include "hsm_kas.h"
+
 
 typedef enum
 {
@@ -87,9 +87,12 @@ typedef struct
     uint32_t saltLenParm3;
 }st_Hsm_DigiSign_Cmd __attribute__((aligned(4)));
 
-hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDataLen, uint8_t *ptr_outSign, 
-                                uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_randomNumber, hsm_Ecc_CurveType_E keyCurveType_en);
-hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Verify(uint8_t *ptr_hashData, uint32_t hashDataLen, uint8_t *ptr_inputSign, 
-                                           uint8_t *ptr_pubKey, uint32_t pubKeyLen, int8_t *ptr_verifyStatus, hsm_Ecc_CurveType_E keyCurveType_en);
+hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_outSign, 
+                                            uint8_t *ptr_privKey, uint32_t privKeyLen, hsm_DigiSign_HashAlgo_E hashType_en, uint8_t *ptr_randomNumber,
+                                            hsm_Ecc_CurveType_E keyCurveType_en);
+
+hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_inputSign, 
+                                                uint8_t *ptr_pubKey, uint32_t pubKeyLen, hsm_DigiSign_HashAlgo_E hashType_en, int8_t *ptr_verifyStatus,
+                                                hsm_Ecc_CurveType_E keyCurveType_en);
 
 #endif /* HSM_SIGN_H */

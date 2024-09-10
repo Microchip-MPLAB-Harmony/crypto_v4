@@ -57,8 +57,8 @@ static void Hsm_DigiSign_Cmd(st_Hsm_DigiSign_Cmd *ptr_digiSignCmd_st, uint8_t cm
     ptr_digiSignCmd_st->cmdHeader_st.reserved4 = 0x00;
 }
 
-hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDataLen, uint8_t *ptr_outSign, 
-                                uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_randomNumber, hsm_Ecc_CurveType_E keyCurveType_en)
+hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_outSign, 
+                                uint8_t *ptr_privKey, uint32_t privKeyLen, hsm_DigiSign_HashAlgo_E hashType_en, uint8_t *ptr_randomNumber, hsm_Ecc_CurveType_E keyCurveType_en)
 {
     st_Hsm_DigiSign_Cmd ecdsaCmd_st = {0};
     st_Hsm_Vss_Ecc_AsymKeyDataType privKeyType_st; 
@@ -66,13 +66,11 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDat
     int status = -1;
     if(ptr_randomNumber == NULL)
     {
-        //???????????????????//Hash Type Solution need to find
-        Hsm_DigiSign_Cmd(&ecdsaCmd_st, 0x1c, HSM_DIGISIGN_CMD_SIGN, HSM_DIGISIGN_SHA256, HSM_DIGISIGN_NOPADDING, HSM_DIGISIGN_KEY_ECC, 0x00);
+        Hsm_DigiSign_Cmd(&ecdsaCmd_st, 0x1c, HSM_DIGISIGN_CMD_SIGN, hashType_en, HSM_DIGISIGN_NOPADDING, HSM_DIGISIGN_KEY_ECC, 0x00);
     }
     else
     {
-        //???????????????????//Hash Type Solution need to find
-        Hsm_DigiSign_Cmd(&ecdsaCmd_st, 0x1c, HSM_DIGISIGN_CMD_SIGN, HSM_DIGISIGN_SHA256, HSM_DIGISIGN_NOPADDING, HSM_DIGISIGN_KEY_ECC, 0x01);
+        Hsm_DigiSign_Cmd(&ecdsaCmd_st, 0x1c, HSM_DIGISIGN_CMD_SIGN, hashType_en, HSM_DIGISIGN_NOPADDING, HSM_DIGISIGN_KEY_ECC, 0x01);
     }
     
     status = Hsm_Vsm_Ecc_FillEccKeyProperties(&privKeyType_st, keyCurveType_en, HSM_VSM_ASYMKEY_PRIVATEKEY,HSM_VSM_ASYMKEY_ECC_SIGNATURE,HSM_VSM_ASYMKEY_ECC_ECDSA);
@@ -114,10 +112,10 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDat
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
         
         //Input SG-DMA Descriptor 4 for Hash Data Descriptor
-        ecdsaCmd_st.arr_inSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_hashData;
+        ecdsaCmd_st.arr_inSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_data;
         ecdsaCmd_st.arr_inSgDmaDes_st[3].nextDes_st.stop = 0x01; // stop
         ecdsaCmd_st.arr_inSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00;
-        ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.dataLen = hashDataLen;  //here key length is entered
+        ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.dataLen = dataLen;  //here key length is entered
         ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
         ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
@@ -127,10 +125,10 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDat
     else
     {
         //Input SG-DMA Descriptor 3 for Hash Data Descriptor
-        ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_hashData;
+        ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_data;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.stop = 0x01; // stop
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  0x00;
-        ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = hashDataLen;  //here key length is entered
+        ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = dataLen;  //here key length is entered
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
@@ -149,7 +147,7 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDat
         ecdsaCmd_st.arr_outSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
         
         //Output SG-DMA Descriptor 1 for Signature Output
-        ecdsaCmd_st.arr_outSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)&ptr_outSign[32];
+        ecdsaCmd_st.arr_outSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)&ptr_outSign[privKeyLen];
         ecdsaCmd_st.arr_outSgDmaDes_st[1].nextDes_st.stop = 0x01; //stop
         ecdsaCmd_st.arr_outSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  0x00;
         ecdsaCmd_st.arr_outSgDmaDes_st[1].flagAndLength_st.dataLen = privKeyLen;  //here key length is entered
@@ -173,7 +171,7 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDat
         ecdsaCmd_st.digiSignParm1_st.reserved1 = 0x00;
         
         //Parameter 2 for ECDSA //Input Hash Data
-        ecdsaCmd_st.dataLenParm2 = hashDataLen;
+        ecdsaCmd_st.dataLenParm2 = dataLen;
 
         //Parameter 3 for ECDSA //Salt Len
         ecdsaCmd_st.saltLenParm3 = 0x00;
@@ -203,8 +201,8 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Sign(uint8_t *ptr_hashData, uint32_t hashDat
     return ret_ecdsaStatus_en;
 }
 
-hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Verify(uint8_t *ptr_hashData, uint32_t hashDataLen, uint8_t *ptr_inputSign, 
-                                            uint8_t *ptr_pubKey, uint32_t pubKeyLen, int8_t *ptr_verifyStatus, hsm_Ecc_CurveType_E keyCurveType_en)
+hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_inputSign, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
+                                            hsm_DigiSign_HashAlgo_E hashType_en, int8_t *ptr_verifyStatus, hsm_Ecc_CurveType_E keyCurveType_en)
 {
     st_Hsm_DigiSign_Cmd ecdsaCmd_st;
     st_Hsm_Vss_Ecc_AsymKeyDataType pubKeyType_st;
@@ -212,7 +210,7 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Verify(uint8_t *ptr_hashData, uint32_t hashD
     int status = -1;
     *ptr_verifyStatus = 0x00; //Default set the signature verification to 0
     
-    Hsm_DigiSign_Cmd(&ecdsaCmd_st, 0x1c, HSM_DIGISIGN_CMD_VERIFY, HSM_DIGISIGN_SHA256, HSM_DIGISIGN_NOPADDING, HSM_DIGISIGN_KEY_ECC, 0x00); //?? hash type
+    Hsm_DigiSign_Cmd(&ecdsaCmd_st, 0x1c, HSM_DIGISIGN_CMD_VERIFY, hashType_en, HSM_DIGISIGN_NOPADDING, HSM_DIGISIGN_KEY_ECC, 0x00); //?? hash type
     
     status = Hsm_Vsm_Ecc_FillEccKeyProperties(&pubKeyType_st, keyCurveType_en, HSM_VSM_ASYMKEY_PUBLICKEY,HSM_VSM_ASYMKEY_ECC_KEYEXCHANGE,HSM_VSM_ASYMKEY_ECC_ECDSA);
     
@@ -241,10 +239,10 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Verify(uint8_t *ptr_hashData, uint32_t hashD
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
         
         //Input SG-DMA Descriptor 3 for Random Number Descriptor
-        ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_hashData;
+        ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_data;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[3])>>2);
-        ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = hashDataLen;  //here key length is entered
+        ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = dataLen;  //here key length is entered
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
@@ -276,7 +274,7 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_Verify(uint8_t *ptr_hashData, uint32_t hashD
         ecdsaCmd_st.digiSignParm1_st.outSlotIndex = 0x00;
         
         //Parameter 2 for ECDSA
-        ecdsaCmd_st.dataLenParm2 = hashDataLen;
+        ecdsaCmd_st.dataLenParm2 = dataLen;
 
         //Parameter 3 for ECDSA
         ecdsaCmd_st.saltLenParm3 = 0x00;

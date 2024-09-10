@@ -74,10 +74,10 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
 
 #ifdef CRYPTO_KAS_HW_ALGO_EN            
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+<#if HAVE_MCHP_CRYPTO_ECDH_HW_CPKCC == true>
 	            ret_ecdhStat_en = Crypto_Kas_Ecdh_Hw_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
 	                                                                    sharedSecretLen, eccCurveType_en);
-<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+<#elseif HAVE_MCHP_CRYPTO_ECDH_HW_HSM == true>
                 ret_ecdhStat_en =  Crypto_Kas_Hw_Ecdh_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
                                                                     sharedSecretLen, eccCurveType_en);
 </#if>

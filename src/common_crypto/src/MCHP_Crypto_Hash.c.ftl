@@ -364,9 +364,9 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest((void*)ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
-<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_HSM == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest(ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
 </#if>
                 break;
@@ -412,7 +412,11 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
                 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>			
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_HSM == true>
+				ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
+</#if>				
                 break;
 #endif /* CRYPTO_HASH_HW_ALGO_EN */
                 
@@ -448,9 +452,9 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
                 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Update((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen);
-<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_HSM == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Update((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen, ptr_shaCtx_st->shaAlgo_en);
 </#if>
                 break;
@@ -488,9 +492,9 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
                 
 #ifdef CRYPTO_HASH_HW_ALGO_EN           
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Final((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest);
-<#elseif HAVE_MCHP_CRYPTO_AEAD_HW_HSM == true>
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_HSM == true>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Final((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest, ptr_shaCtx_st->shaAlgo_en);
 </#if>
                 break;
@@ -826,5 +830,200 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
     return ret_blakeStat_en;    
 }
 #endif /* CRYPTO_HASH_WC_BLAKE2_EN */
+
+static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_en, uint32_t *hashSize)
+{
+    crypto_Hash_Status_E ret_val_en = CRYPTO_HASH_SUCCESS;
+       
+    switch(hashType_en)
+    {
+#ifdef CRYPTO_HASH_SHA1_EN            
+        case CRYPTO_HASH_SHA1:
+            *hashSize = 0x14;   //20 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA1_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_224_EN            
+        case CRYPTO_HASH_SHA2_224:
+            *hashSize = 0x1C;   //28 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA2_224_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_256_EN            
+        case CRYPTO_HASH_SHA2_256:
+            *hashSize = 0x20;   //32 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA2_256_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_384_EN            
+        case CRYPTO_HASH_SHA2_384:
+            *hashSize = 0x30;   //48 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA2_384_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_512_EN            
+        case CRYPTO_HASH_SHA2_512:
+            *hashSize = 0x40;   //64 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA2_512_EN */
+
+#ifdef CRYPTO_HASH_SHA2_512_224_EN            
+        case CRYPTO_HASH_SHA2_512_224:
+            *hashSize = 0x1C;   //28 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA2_512_224_EN */
+
+#ifdef CRYPTO_HASH_SHA2_512_256_EN            
+        case CRYPTO_HASH_SHA2_512_256:
+            *hashSize = 0x20;   //32 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA2_512_256_EN */            
+
+#ifdef CRYPTO_HASH_SHA3_224_EN            
+        case CRYPTO_HASH_SHA3_224:
+                *hashSize = 0x1C;   //28 Bytes
+                break;
+#endif /* CRYPTO_HASH_SHA3_224_EN */
+
+#ifdef CRYPTO_HASH_SHA3_256_EN            
+        case CRYPTO_HASH_SHA3_256:
+            *hashSize = 0x20;   //32 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA3_256_EN */
+
+#ifdef CRYPTO_HASH_SHA3_384_EN            
+        case CRYPTO_HASH_SHA3_384:
+            *hashSize = 0x30;   //48 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA3_384_EN */
+
+#ifdef CRYPTO_HASH_SHA3_512_EN                   
+        case CRYPTO_HASH_SHA3_512:
+            *hashSize = 0x40;   //64 Bytes
+            break;
+#endif /* CRYPTO_HASH_SHA3_512_EN */
+  
+#ifdef CRYPTO_HASH_MD5_EN            
+        case CRYPTO_HASH_MD5:
+            *hashSize = 0x10;   //16 Bytes
+            break;
+#endif /* CRYPTO_HASH_MD5_EN */
+
+#ifdef CRYPTO_HASH_RIPEMD160_EN           
+        case CRYPTO_HASH_RIPEMD160:
+                *hashSize = 0x14;   //20 Bytes
+                break;
+#endif /* CRYPTO_HASH_RIPEMD160_EN */
+        default:
+            ret_val_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+            break;    
+    }; 
+    return ret_val_en;
+}
+
+uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, crypto_Hash_Algo_E hashType_en, uint8_t *ptr_wcInputData, 
+                                                                                                        uint32_t wcDataLen, uint8_t *ptr_outHash)
+{
+    crypto_Hash_Status_E hashStatus_en = CRYPTO_HASH_ERROR_FAIL;
+    uint32_t hashSize = 0x00;
+       
+    switch(hashType_en)
+    {
+#ifdef CRYPTO_HASH_SHA1_EN
+        case CRYPTO_HASH_SHA1:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA1, 1); 
+            break;
+#endif /* CRYPTO_HASH_SHA1_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_224_EN            
+        case CRYPTO_HASH_SHA2_224:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_224, 1); 
+            break;
+#endif /* CRYPTO_HASH_SHA2_224_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_256_EN            
+        case CRYPTO_HASH_SHA2_256:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_256, 1); 
+            break;            
+#endif /* CRYPTO_HASH_SHA2_256_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_384_EN            
+        case CRYPTO_HASH_SHA2_384:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_384, 1); 
+            break;               
+#endif /* CRYPTO_HASH_SHA2_384_EN */
+            
+#ifdef CRYPTO_HASH_SHA2_512_EN            
+        case CRYPTO_HASH_SHA2_512:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_512, 1); 
+            break;              
+#endif /* CRYPTO_HASH_SHA2_512_EN */
+
+#ifdef CRYPTO_HASH_SHA2_512_224_EN            
+        case CRYPTO_HASH_SHA2_512_224:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_512_224, 1); 
+            break;              
+#endif /* CRYPTO_HASH_SHA2_512_224_EN */
+
+#ifdef CRYPTO_HASH_SHA2_512_256_EN            
+        case CRYPTO_HASH_SHA2_512_256:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_512_256, 1); 
+            break;              
+#endif /* CRYPTO_HASH_SHA2_512_256_EN */            
+
+#ifdef CRYPTO_HASH_SHA3_224_EN            
+        case CRYPTO_HASH_SHA3_224:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA3_224, 1); 
+            break;              
+#endif /* CRYPTO_HASH_SHA3_224_EN */
+
+#ifdef CRYPTO_HASH_SHA3_256_EN            
+        case CRYPTO_HASH_SHA3_256:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA3_256, 1); 
+            break;            
+#endif /* CRYPTO_HASH_SHA3_256_EN */
+
+#ifdef CRYPTO_HASH_SHA3_384_EN            
+        case CRYPTO_HASH_SHA3_384:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, *ptr_outHash, CRYPTO_HASH_SHA3_384, 1); 
+            break;              
+#endif /* CRYPTO_HASH_SHA3_384_EN */
+
+#ifdef CRYPTO_HASH_SHA3_512_EN                   
+        case CRYPTO_HASH_SHA3_512:
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, *ptr_outHash, CRYPTO_HASH_SHA3_512, 1); 
+            break;  
+#endif /* CRYPTO_HASH_SHA3_512_EN */            
+#ifdef CRYPTO_HASH_MD5_EN            
+        case CRYPTO_HASH_MD5:
+            hashStatus_en = Crypto_Hash_Md5_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, 1);
+            break;
+#endif /* CRYPTO_HASH_MD5_EN */
+
+#ifdef CRYPTO_HASH_RIPEMD160_EN           
+        case CRYPTO_HASH_RIPEMD160:
+            hashStatus_en = Crypto_Hash_Ripemd160_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash,1);
+            break;
+#endif /* CRYPTO_HASH_RIPEMD160_EN */
+        default:
+            hashStatus_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+            break;    
+    };
+    
+    if(hashStatus_en == CRYPTO_HASH_SUCCESS)
+    {
+        hashStatus_en = Crypto_Hash_GetHashSize(hashType_en, &hashSize);
+        
+        if(hashStatus_en != CRYPTO_HASH_SUCCESS)
+        {
+           hashSize = 0x00U;  
+        }
+    }
+    else
+    {
+       hashSize = 0x00U; 
+    }
+    return hashSize;
+}
 
 

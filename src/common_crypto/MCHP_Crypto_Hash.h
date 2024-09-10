@@ -217,4 +217,6 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Update(st_Crypto_Hash_Blake_Ctx * ptr_bla
 crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blakeCtx_st, uint8_t *ptr_digest);
 #endif /* CRYPTO_HASH_BLAKE2_EN */
 
+uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, crypto_Hash_Algo_E hashType_en, uint8_t *ptr_wcInputData, 
+                                                                                                        uint32_t wcDataLen, uint8_t *ptr_outHash);
 #endif //MCHP_CRYPTO_HASH_H

@@ -29,6 +29,9 @@
 #include "MCHP_Crypto_Common.h"
 #include "MCHP_Crypto_DigSign_Config.h"
 
+#ifdef CRYPTO_DIGISIGN_ECDSA_EN
+#include "crypto/common_crypto/MCHP_Crypto_Hash.h"
+#endif /* CRYPTO_DIGISIGN_ECDSA_EN */
 
 typedef enum
 {
@@ -44,18 +47,30 @@ typedef enum
     CRYPTO_DIGISIGN_ERROR_SID = -118,  ////session ID Error
     CRYPTO_DIGISIGN_ERROR_ARG = -117,
     CRYPTO_DIGISIGN_ERROR_CURVE = -116, 
-    CRYPTO_DIGISIGN_ERROR_RNG = -115,        
-    CRYPTO_DIGISIGN_ERROR_FAIL = -114,
+    CRYPTO_DIGISIGN_ERROR_RNG = -115, 
+    CRYPTO_DIGISIGN_ERROR_HASHTYPE = -114,        
+    CRYPTO_DIGISIGN_ERROR_FAIL = -113,
     CRYPTO_DIGISIGN_SUCCESS = 0,        
 }crypto_DigiSign_Status_E;
 
 
 #ifdef CRYPTO_DIGISIGN_ECDSA_EN
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_outSig, 
-                                                    uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+                                                    uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, 
+                                                    crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_inputSig, uint32_t sigLen, 
-                                                   uint8_t *ptr_pubKey, uint32_t pubKeyLen, int8_t *ptr_hashVerifyStat, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, 
+                                                        uint8_t *ptr_inputSig, uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
+                                                        int8_t *ptr_hashVerifyStat, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
+                                                        uint8_t *ptr_outSig, uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, 
+                                                        crypto_Hash_Algo_E hashType_en, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
+                                                            uint8_t *ptr_inputSig, uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, 
+                                                            crypto_Hash_Algo_E hashType_en, int8_t *ptr_hashVerifyStat, crypto_EccCurveType_E eccCurveType_En, 
+                                                            uint32_t ecdsaSessionId);
 #endif /* CRYPTO_DIGISIGN_ECDSA_EN */
 
 #endif /* MCHP_CRYPTO_DIGSIGN_H */

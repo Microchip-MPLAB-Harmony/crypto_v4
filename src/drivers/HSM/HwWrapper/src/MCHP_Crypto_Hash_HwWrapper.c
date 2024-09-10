@@ -47,7 +47,7 @@ Microchip or any third party.
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Hash_HwWrapper.h"
 #include "crypto/drivers/hsm_hash.h"
-
+#include "crypto/common_crypto/MCHP_Crypto_Common_HwWrapper.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro definitions
@@ -65,38 +65,7 @@ Microchip or any third party.
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en)
-{
-    hsm_Hash_Types_E algoType_en = HSM_CMD_HASH_INVALID;
-    
-    switch(hashAlgo_en)
-    {
-        case CRYPTO_HASH_SHA1:
-            algoType_en = HSM_CMD_HASH_SHA1;
-        break;
-        
-        case CRYPTO_HASH_SHA2_224:
-            algoType_en = HSM_CMD_HASH_SHA224;
-        break;
-        
-        case CRYPTO_HASH_SHA2_256:
-            algoType_en = HSM_CMD_HASH_SHA256;
-        break;
-        
-        case CRYPTO_HASH_SHA2_384:
-            algoType_en = HSM_CMD_HASH_SHA384;
-        break;
-        
-        case CRYPTO_HASH_SHA2_512:
-            algoType_en = HSM_CMD_HASH_SHA512;
-        break;
-        
-        default:
-            algoType_en = HSM_CMD_HASH_INVALID;
-        break;                  
-    }
-    return algoType_en;
-}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Hash Algorithms Common Interface Implementation
@@ -269,4 +238,36 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *ptr_shaCtx, uint8_t *ptr_dig
     return ret_shaStat_en; 
 }
 
+hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en)
+{
+    hsm_Hash_Types_E algoType_en = HSM_CMD_HASH_INVALID;
+    
+    switch(hashAlgo_en)
+    {
+        case CRYPTO_HASH_SHA1:
+            algoType_en = HSM_CMD_HASH_SHA1;
+        break;
+        
+        case CRYPTO_HASH_SHA2_224:
+            algoType_en = HSM_CMD_HASH_SHA224;
+        break;
+        
+        case CRYPTO_HASH_SHA2_256:
+            algoType_en = HSM_CMD_HASH_SHA256;
+        break;
+        
+        case CRYPTO_HASH_SHA2_384:
+            algoType_en = HSM_CMD_HASH_SHA384;
+        break;
+        
+        case CRYPTO_HASH_SHA2_512:
+            algoType_en = HSM_CMD_HASH_SHA512;
+        break;
+        
+        default:
+            algoType_en = HSM_CMD_HASH_INVALID;
+        break;                  
+    }
+    return algoType_en;
+}
 

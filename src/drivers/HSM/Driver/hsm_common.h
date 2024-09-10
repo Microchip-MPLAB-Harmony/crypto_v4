@@ -249,6 +249,16 @@ typedef struct
 
 typedef struct
 {
+    uint8_t apl         :2;
+    uint8_t reserved1   :1;
+    uint8_t hsmOnly     :1;
+    uint8_t storageType :2;
+    uint8_t valid       :1;
+    uint8_t ExtStorage  :1;
+}st_Hsm_Vsm_VaSlotStoDaLy;
+
+typedef struct
+{
 	hsm_CommandGroups_E aesCmdGroup_en          :8; //It represent the command group here command group is always HSM_CMD_AES for Hash Algorithm
     hsm_Aes_CmdTypes_E aesCmdType_en            :8;
     hsm_Aes_KeySize_E aesKeySize_en             :2; //Aes Key Size

@@ -25,16 +25,6 @@ typedef enum
 
 typedef struct
 {
-    uint8_t apl         :2;
-    uint8_t reserved1   :1;
-    uint8_t hsmOnly     :1;
-    uint8_t storageType :2;
-    uint8_t valid       :1;
-    uint8_t ExtStorage  :1;
-}st_Hsm_Vsm_VaSlotStoDaLy;
-
-typedef struct
-{
 	hsm_CommandGroups_E dhCmdGroup_en       :8; //It represent the command group here command group is always HSM_CMD_AES for Hash Algorithm
     uint8_t dhCmdType                       :8;
     uint8_t reserved1                       :8; //Reserved

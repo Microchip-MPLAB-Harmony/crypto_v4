@@ -137,19 +137,13 @@ def ScanShaHw():
             newValue = True
 
     # If any SHA HW toggles enabled, newValue is True
-
     print("SHA: sha_hw - current = %s (newValue = %s)"%(
-
     g.CONFIG_USE_SHA_HW.getValue(), newValue))
     for fSym in g.hwDriverFileDict[fKey]:
         fSym.setEnabled(newValue)
         print("SHA: update [SHA]%s(%s)"%(
               fSym.getOutputName(),fSym.getEnabled()))
-
-    if newValue is True:
-        g.CONFIG_USE_SHA_HW.setValue(True)
-    else:
-        g.CONFIG_USE_SHA_HW.setValue(False)
+    g.CONFIG_USE_SHA_HW.setValue(newValue)
 
     crypto_handle_common.CheckCommonHwFiles()
 

@@ -32,7 +32,6 @@ import ntpath
 
 import crypto_defs as g #Modified globals
 import crypto_handle_common
-#import superglobals
 
 ################################################################################
 #Scan to see if any of the Hash Selections is True and set the symbol

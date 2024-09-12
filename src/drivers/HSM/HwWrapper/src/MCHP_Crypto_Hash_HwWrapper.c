@@ -244,29 +244,39 @@ hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en)
     
     switch(hashAlgo_en)
     {
+#ifdef CRYPTO_HASH_SHA1_EN
         case CRYPTO_HASH_SHA1:
             algoType_en = HSM_CMD_HASH_SHA1;
-        break;
-        
+            break;
+#endif
+
+#ifdef CRYPTO_HASH_SHA2_224_EN
         case CRYPTO_HASH_SHA2_224:
             algoType_en = HSM_CMD_HASH_SHA224;
-        break;
-        
+            break;
+#endif
+
+#ifdef CRYPTO_HASH_SHA2_256_EN
         case CRYPTO_HASH_SHA2_256:
             algoType_en = HSM_CMD_HASH_SHA256;
-        break;
-        
+            break;
+#endif
+
+#ifdef CRYPTO_HASH_SHA2_384_EN 
         case CRYPTO_HASH_SHA2_384:
             algoType_en = HSM_CMD_HASH_SHA384;
-        break;
-        
+            break;
+#endif
+
+#ifdef CRYPTO_HASH_SHA2_512_EN  
         case CRYPTO_HASH_SHA2_512:
             algoType_en = HSM_CMD_HASH_SHA512;
-        break;
+            break;
+#endif
         
         default:
             algoType_en = HSM_CMD_HASH_INVALID;
-        break;                  
+            break;                  
     }
     return algoType_en;
 }

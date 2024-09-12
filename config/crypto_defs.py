@@ -127,8 +127,6 @@ hwDriverDict = {
     },
     "HSM": {
         "SHA":[
-            "MCHP_Crypto_Hash_HwWrapper.h", "MCHP_Crypto_Hash_HwWrapper.c",
-            "hsm_hash.h", "hsm_hash.c"
         ],
         "AES": [
             "MCHP_Crypto_Sym_HwWrapper.h", "MCHP_Crypto_Sym_HwWrapper.c",
@@ -140,7 +138,7 @@ hwDriverDict = {
         ],
         "ECDSA": [
             "MCHP_Crypto_DigSign_HwWrapper.h", "MCHP_Crypto_DigSign_HwWrapper.c",
-            "hsm_sign.h", "hsm_sign.c"
+            "hsm_sign.h", "hsm_sign.c", 
         ],
         "ECDH": [
             "MCHP_Crypto_Kas_HwWrapper.h", "MCHP_Crypto_Kas_HwWrapper.c",
@@ -149,7 +147,9 @@ hwDriverDict = {
         "COMMON": [
             "MCHP_Crypto_Common_HwWrapper.h", "MCHP_Crypto_Common_HwWrapper.c",
             "hsm_boot.h", "hsm_boot.c", "hsm_cmd.h", "hsm_cmd.c", 
-            "hsm_common.h", "hsm_common.c"
+            "hsm_common.h", "hsm_common.c",
+            "MCHP_Crypto_Hash_HwWrapper.h", "MCHP_Crypto_Hash_HwWrapper.c",
+            "hsm_hash.h", "hsm_hash.c"
         ]
     }
 }

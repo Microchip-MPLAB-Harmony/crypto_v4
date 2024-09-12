@@ -57,6 +57,7 @@ Microchip or any third party.
 #include "crypto/drivers/drv_crypto_sha_hw_05346.h"
 </#if>
 
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro definitions
@@ -81,6 +82,7 @@ static uint8_t hashPaddingMsg[CRYPTO_SHA_BLOCK_SIZE_WORDS_32 << 2] = {
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -151,6 +153,7 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
    return ret_status;
 }
 
+<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
 static uint32_t lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(crypto_Hash_Algo_E shaAlgorithm)
 {
     CRYPTO_SHA_BLOCK_SIZE blockSize = CRYPTO_SHA_BLOCK_SIZE_WORDS_32;
@@ -245,6 +248,7 @@ static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
     
    return digestSize;
 }
+</if>
  
 // *****************************************************************************
 // *****************************************************************************
@@ -257,7 +261,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 {
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
     CRYPTO_SHA_ALGO shaAlgo;
     crypto_Hash_Status_E result;
     uint8_t *retAdr = NULL;
@@ -284,6 +288,25 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     DRV_CRYPTO_SHA_Init(shaAlgo);
     
     return CRYPTO_HASH_SUCCESS;
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>
+    CRYPTO_SHA_ALGO shaAlgo;
+    crypto_Hash_Status_E result;
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*)shaInitCtx;
+            
+    /* Set algorithm for driver */
+    result = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &shaAlgo);
+    if (result != CRYPTO_HASH_SUCCESS)
+    {
+        return result;
+    }
+    
+    /* Initialize context */
+    shaCtx->algo = shaAlgorithm_en;
+    
+    /* Configure the driver */
+    DRV_CRYPTO_SHA_Init(shaAlgo);
+    
+    return CRYPTO_HASH_SUCCESS;
 </#if>
 }
 
@@ -292,7 +315,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 {
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
     uint32_t *localBuffer = NULL;
     uint32_t fill;
     uint32_t left;
@@ -372,6 +395,19 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     }
 
     return CRYPTO_HASH_SUCCESS;
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>
+    uint32_t numOfPaddingBytes = 0;
+    uint32_t bytesOverHashBlock = dataLen % (uint32_t) HASH_BLOCK_SIZE;
+
+    if (bytesOverHashBlock != (uint32_t) 0)
+    {
+        numOfPaddingBytes = (uint32_t) HASH_BLOCK_SIZE - bytesOverHashBlock;
+    }
+    
+    /* Write the data to be ciphered to the input data registers */
+    DRV_CRYPTO_SHA_Update((uint32_t *) data, dataLen, numOfPaddingBytes);
+    
+    return CRYPTO_HASH_SUCCESS;
 </#if>
 }
 
@@ -380,7 +416,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 {
 <#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false && HAVE_MCHP_CRYPTO_SHA_HW_05346 == false>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
     uint32_t blockSizeBytes;
     uint32_t last;
     uint8_t lenMsg[16] = {0};
@@ -457,6 +493,12 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     DRV_CRYPTO_SHA_GetOutputData(ptr_digest, digestLen);
 
     return retVal;
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>
+    uint32_t *ptr_digest = (uint32_t*) digest;
+    
+    DRV_CRYPTO_SHA_GetOutputData(ptr_digest);
+
+    return CRYPTO_HASH_SUCCESS;
 </#if>
 }
 

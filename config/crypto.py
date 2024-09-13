@@ -859,7 +859,7 @@ def SetupHwDriverFiles(basecomponent):
         drivers_dir = get_drivers_dir()  # ~/drivers
 
         # Check if the device hardware support is present
-        if ((dKey in g.cryptoHwDevSupport) or (dKey in g.cryptoHwIdSupport)):
+        if any(hwId in dKey for hwId in g.cryptoHwIdSupport):
 
             # Define the subpath to check for
             dKey_path = os.path.join("drivers", dKey)
@@ -888,10 +888,10 @@ def SetupHwDriverFiles(basecomponent):
 
     for dKey, fDict in g.hwDriverDict.items():  # Driver File Dict
 
-        if ((dKey in g.cryptoHwDevSupport) or (dKey in g.cryptoHwIdSupport)):
+        if any(hwId in dKey for hwId in g.cryptoHwIdSupport):
         
             # Special case for CryptoLib_CPKCL folder
-            if (dKey == "CPKCC"):
+            if (dKey == "CPKCC_44163"):
                 print("CRYPTO HW: Use CPKCC Driver Files ")
                 SetupCpkclDriverFiles(basecomponent)
 

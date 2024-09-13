@@ -37,7 +37,7 @@ import crypto_defs as g
 ################################################################################
 def CheckCpkclHwFiles(driver):
 
-    if driver == "CPKCC":
+    if driver == "CPKCC_44163":
         try:            
             enableCpkcl = g.CONFIG_USE_ECDSA_HW.getValue() or g.CONFIG_USE_ECDH_HW.getValue()
 
@@ -69,7 +69,7 @@ def CheckCommonHwFiles():
 
             if function in g.hwFunctionDriverDict and g.hwFunctionDriverDict[function]:
 
-                if driver in g.hwFunctionDriverDict.get(function, []):
+                if any(substring in driver for substring in g.hwFunctionDriverDict.get(function, [])):
 
                     # HW config symbols for MCC
                     config_symbols = {

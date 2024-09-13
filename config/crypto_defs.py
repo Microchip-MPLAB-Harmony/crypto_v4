@@ -85,9 +85,13 @@ hwDriverFileSymbols = []   #Files to Generate
 #       The MCHP prefix --> <config>/crypto/common_crypto 
 #
 ################################################################################
+
+# TODO: Allow inclusion of a dir in this dict
+# TODO: Allow for same file to be mentioned twice
+
 hwDriverDict = {
     # dKey
-    "CPKCC": {  # fDict
+    "CPKCC_44163": {  # fDict
         # fKey
         "RSA": [
             "drv_crypto_rsa_hw_cpkcl.h", "drv_crypto_rsa_hw_cpkcl.c"
@@ -102,7 +106,7 @@ hwDriverDict = {
         ],
         "COMMON": ["drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"]
     },
-    "6149": {
+    "AES_6149": {
         "AES": [
             "MCHP_Crypto_Sym_HwWrapper.h", "MCHP_Crypto_Sym_HwWrapper.c.ftl",
         ],
@@ -113,19 +117,19 @@ hwDriverDict = {
             "drv_crypto_aes_hw_6149.h.ftl", "drv_crypto_aes_hw_6149.c.ftl"
         }
     },
-    "6156": {
+    "SHA_6156": {
         "SHA": [
             "MCHP_Crypto_Hash_HwWrapper.h", "MCHP_Crypto_Hash_HwWrapper.c.ftl",
             "drv_crypto_sha_hw_6156.h.ftl", "drv_crypto_sha_hw_6156.c.ftl"
         ]
     },
-    "6334": {
+    "TRNG_6334": {
         "TRNG": [
             "MCHP_Crypto_Rng_HwWrapper.h", "MCHP_Crypto_Rng_HwWrapper.c.ftl",
             "drv_crypto_trng_hw_6334.h", "drv_crypto_trng_hw_6334.c"
         ]
     },
-    "HSM": {
+    "HSM_03785": {
         "SHA":[
         ],
         "AES": [
@@ -155,7 +159,7 @@ hwDriverDict = {
 }
 
 # TODO: Figure out a way to not hardcode CryptoLib_CPKCL files
-cpkclDriverPath     = "src/drivers/CPKCC/CPKCL_Lib/"
+cpkclDriverPath     = "src/drivers/CPKCC_44163/CPKCL_Lib/"
 cpkclDriverFileSyms = []   #Extra files used by CPKCC driver
 
 #The dict list of file symbols loaded for each function based on the

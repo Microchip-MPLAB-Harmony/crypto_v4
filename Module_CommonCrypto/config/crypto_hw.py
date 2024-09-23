@@ -55,12 +55,12 @@ def instantiateComponent(CommonCryptoComponent):
 # Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(CommonCryptoComponent):
     idList = Database.getActiveComponentIDs()
-    symIDList = Database.getComponentSymbolIDs("COMMON_CRYPTO")
+    symIDList = Database.getComponentSymbolIDs("lib_crypto")
     symIDList_str = [str(item) for item in symIDList]
 
     print("goodbye")
     idList = Database.getActiveComponentIDs()
-    symIDList = Database.getComponentSymbolIDs("COMMON_CRYPTO")
+    symIDList = Database.getComponentSymbolIDs("lib_crypto")
     print(idList)
     print(symIDList)
     

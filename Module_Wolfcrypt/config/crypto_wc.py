@@ -33,12 +33,12 @@ def instantiateComponent(WolfcryptComponent):
 # Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(WolfcryptComponent):
     idList = Database.getActiveComponentIDs()
-    symIDList = Database.getComponentSymbolIDs("WOLFCRYPT_LIB")
+    symIDList = Database.getComponentSymbolIDs("lib_wolfcrypt")
     symIDList_str = [str(item) for item in symIDList]
 
     print("goodbye")
     idList = Database.getActiveComponentIDs()
-    symIDList = Database.getComponentSymbolIDs("WOLFCRYPT_LIB")
+    symIDList = Database.getComponentSymbolIDs("lib_wolfcrypt")
     print(idList)
     print(symIDList)
     

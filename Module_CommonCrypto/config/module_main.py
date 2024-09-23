@@ -1,5 +1,5 @@
 #/*****************************************************************************
-# Copyright (C) 2013-2023 Microchip Technology Inc. and its subsidiaries.
+# Copyright (C) 2013-2024 Microchip Technology Inc. and its subsidiaries.
 #
 # Microchip Technology Inc. and its subsidiaries.
 #
@@ -22,7 +22,21 @@
 # ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY, 
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 # *****************************************************************************/
+
 def loadModule():
-    ########################## CRYPTO Module ###############################
-    CommonCryptoComponent = Module.CreateComponent("COMMON_CRYPTO", "Crypto_v4", "/Libraries/", "config/crypto_hw.py")
-    CommonCryptoComponent.addCapability("COMMON_CRYPTO_WC_CAPABILITY", "WOLFCRYPT_LIB", "Wolfcrypt Lib", False)
+
+    # Create Crypto_v4 Component
+    CommonCryptoComponent = Module.CreateComponent(
+        "lib_crypto",
+        "Crypto_v4",
+        "/Libraries/", 
+        "config/crypto_hw.py"
+    )
+
+    # Add wolfCrypt as a capability
+    CommonCryptoComponent.addCapability(
+        "LIB_WOLFCRYPT_CAPABILITY", 
+        "LIB_WOLFCRYPT", 
+        "LIB_WOLFCRYPT", 
+        False
+    )

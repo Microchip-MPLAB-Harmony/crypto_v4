@@ -28,7 +28,7 @@ execfile( Module.getPath() + os.path.join("config", "Crypto_WC_AllMenuList.py"))
 
 #----------------------------------------------------------------------------------------- 
 def instantiateComponent(WolfcryptComponent):
-    func_wolfcryptSetUpAllMenu(WolfcryptComponent)
+    wolfcryptSetUpAllMenu(WolfcryptComponent)
 #----------------------------------------------------------------------------------------- 
 # Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(WolfcryptComponent):

@@ -137,7 +137,7 @@ wolfcrypt_AllMenuList = [
     ["PRNG",                            "CRYPTO_WC_PRNG",               "Crypto_Wc_Prng",                  "Crypto_Wc_Rng_Menu",          True,   False],
 ]
 #----------------------------------------------------------------------------------------- 
-def func_wolfcryptSetUpAllMenu(WolfcryptComponent):
+def wolfcryptSetUpAllMenu(WolfcryptComponent):
     for menu in wolfcrypt_AllMenuList:
         if(menu[5] == None):
             if(menu[3] == None):

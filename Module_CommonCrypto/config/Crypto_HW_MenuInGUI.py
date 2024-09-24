@@ -31,16 +31,13 @@ execfile( Module.getPath() + os.path.join("config", "Crypto_HW_Driver.py"))
 Crypto_Hw_disorderAlgoMenuList = []
 Crypto_Hw_orderAlgoMenuList = Crypto_HW_AllMenusList
 
-global func_Crypto_HW_GetAllSupportMenuList
-global func_Crypto_HW_GetAllSupportAlgoMenuInOrder
-global func_Crypto_HW_CreateMenuInGUI
 #--------------------------------------------------------------------------------------- 
-def func_Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent):
-    func_Crypto_HW_GetAllSupportMenuList()
-    func_Crypto_HW_GetAllSupportAlgoMenuInOrder()
-    func_Crypto_HW_CreateMenuInGUI(CommonCryptoComponent)
+def Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent):
+    Crypto_HW_GetAllSupportMenuList()
+    Crypto_HW_GetAllSupportAlgoMenuInOrder()
+    Crypto_HW_CreateMenuInGUI(CommonCryptoComponent)
 #---------------------------------------------------------------------------------------
-def func_Crypto_HW_GetAllSupportMenuList():
+def Crypto_HW_GetAllSupportMenuList():
     for driver in Crypto_HW_AllSupportedDriver:
         for menu in Crypto_HW_AllMenusList:
             if menu[6] is not None: #if it is not a Menu Heading, Only Boolean Menu Allowed, Here menu[6] represent Default value of particular menu
@@ -48,7 +45,7 @@ def func_Crypto_HW_GetAllSupportMenuList():
                     if menu not in Crypto_Hw_disorderAlgoMenuList:#Do not duplicate Menus in the list
                             Crypto_Hw_disorderAlgoMenuList.append(menu)             
 #--------------------------------------------------------------------------------------- 
-def func_Crypto_HW_GetAllSupportAlgoMenuInOrder():
+def Crypto_HW_GetAllSupportAlgoMenuInOrder():
     for booleanMenu in Crypto_Hw_orderAlgoMenuList[:]:
         if booleanMenu[6] is not None:#if it is not a Menu Heading, Only Boolean Menu Allowed, Here menu[6] represent Default value of particular menu
             if booleanMenu not in Crypto_Hw_disorderAlgoMenuList:
@@ -64,7 +61,7 @@ def func_Crypto_HW_GetAllSupportAlgoMenuInOrder():
             if(parentMenuReq == False):
                 Crypto_Hw_orderAlgoMenuList.remove(menu)      
 #---------------------------------------------------------------------------------------
-def func_Crypto_HW_CreateMenuInGUI(CommonCryptoComponent):
+def Crypto_HW_CreateMenuInGUI(CommonCryptoComponent):
     for menu in Crypto_Hw_orderAlgoMenuList:
         if(menu[6] == None):
             if(menu[3] == None):

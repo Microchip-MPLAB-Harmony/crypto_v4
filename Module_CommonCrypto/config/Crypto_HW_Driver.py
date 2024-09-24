@@ -34,8 +34,6 @@ Crypto_Hw_HSM_03785_DriverSymbol = None
 Crypto_Hw_ICM_11105_DriverSymbol = None
 Crypto_Hw_TDES_6150_DriverSymbol = None
 
-global func_Crypto_HW_CreateDriverSymbols
-
 #---------------------------------------------------------------------------------------
 Crypto_HW_AllDriversList = [
         #AES_6149
@@ -84,7 +82,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
 } 
    
 #---------------------------------------------------------------------------------------
-def func_Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
+def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
     print("scanning atdf file")
     periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
     atdf_Modules = periphNode.getChildren()
@@ -96,9 +94,9 @@ def func_Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
                 and ((module.getAttribute("version") == driver[2]) or driver[2] == "")):
                 Crypto_HW_AllSupportedDriver.append(driver)
                 print(driver[3])
-    func_Crypto_HW_CreateDriverSymbols(CommonCryptoComponent)            
+    Crypto_HW_CreateDriverSymbols(CommonCryptoComponent)            
 #--------------------------------------------------------------------------------------- 
-def func_Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
+def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
     for hwDriver in Crypto_HW_AllSupportedDriver:
         globals()[hwDriver[5]] = CommonCryptoComponent.createMenuSymbol(hwDriver[4], None)
         globals()[hwDriver[5]].setLabel(hwDriver[3])

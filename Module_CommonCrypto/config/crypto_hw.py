@@ -48,8 +48,8 @@ execfile( Module.getPath() + os.path.join("config", "Crypto_HW_MenuInGUI.py"))
 
 
 def instantiateComponent(CommonCryptoComponent):
-    func_Crypto_HW_GetSupportedDriverList(CommonCryptoComponent)  
-    func_Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
+    Crypto_HW_GetSupportedDriverList(CommonCryptoComponent)  
+    Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
 #---------------------------------------------------------------------------------------
     
 # Figure out how to remove Component Symbols so that re-adding the module works

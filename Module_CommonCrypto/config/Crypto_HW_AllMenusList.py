@@ -119,7 +119,7 @@ Crypto_Hw_CommonCryptoFilesList = []
 Crypto_Hw_DriverFilesList = []
 Crypto_Hw_WrapperFilesList = []
 
-def func_Crypto_CallBack(symbol, event):
+def Crypto_CallBack(symbol, event):
     commcryptoFilesList = []
     WrapperDriverFilesList = []
     DriverFileList = []

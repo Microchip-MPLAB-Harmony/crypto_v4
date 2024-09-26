@@ -45,11 +45,20 @@
 import os
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_Driver.py"))
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_MenuInGUI.py"))
-
+execfile( Module.getPath() + os.path.join("config", "crypto_handle_files.py"))
 
 def instantiateComponent(CommonCryptoComponent):
-    Crypto_HW_GetSupportedDriverList(CommonCryptoComponent)  
+
+    # Check against ATDF for supported hardware and create necessary symbols
+    supported_drivers = Crypto_HW_GetSupportedDriverList(CommonCryptoComponent)
+
+    # Use supported drivers list to assemble list of sets containing relevant file symbols 
+    setup_hw_files(CommonCryptoComponent, supported_drivers)
+    
+    # Build GUI
     Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
+
+
 #---------------------------------------------------------------------------------------
     
 # Figure out how to remove Component Symbols so that re-adding the module works

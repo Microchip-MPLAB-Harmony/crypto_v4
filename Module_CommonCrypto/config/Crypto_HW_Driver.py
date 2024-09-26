@@ -37,7 +37,7 @@ Crypto_Hw_TDES_6150_DriverSymbol = None
 #---------------------------------------------------------------------------------------
 Crypto_HW_AllDriversList = [
         #AES_6149
-        ["AES", "6149", "ZN", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER_ID", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported",],   #AES_6149
+        ["AES", "6149", "ZN", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER_ID", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported"],   #AES_6149
         ["SHA", "6156", "S", "SHA_6156",  "HAVE_CRYPTO_HW_SHA_6156_DRIVER_ID", "Crypto_Hw_SHA_6156_DriverSymbol", "SHA_6156 Driver Supported"],    #SHA_6156
         ["TRNG", "6334", "S", "TRNG_6334", "HAVE_CRYPTO_HW_TRNG_6334_DRIVER_ID", "Crypto_Hw_TRNG_6334_DriverSymbol", "TRNG_6334 Driver Supported"],   #TRNG_6334
         ["CPKCC", "44163", "B", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER_ID", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
@@ -87,14 +87,25 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
     periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
     atdf_Modules = periphNode.getChildren()
     print("list of supported drivers")
+
+    # Initialize a set to hold the supported driver labels
+    supported_drivers = set()
+
     for module in atdf_Modules:
         for driver in Crypto_HW_AllDriversList:
             if ((module.getAttribute("name") == driver[0]) 
                 and (module.getAttribute("id") == driver[1]) 
                 and ((module.getAttribute("version") == driver[2]) or driver[2] == "")):
                 Crypto_HW_AllSupportedDriver.append(driver)
+                
+                # Add the driver's label to the supported drivers set
+                supported_drivers.add(driver[3])
                 print(driver[3])
-    Crypto_HW_CreateDriverSymbols(CommonCryptoComponent)            
+
+    Crypto_HW_CreateDriverSymbols(CommonCryptoComponent)
+
+    return supported_drivers
+
 #--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
     for hwDriver in Crypto_HW_AllSupportedDriver:
@@ -103,7 +114,5 @@ def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
         globals()[hwDriver[5]].setDescription(hwDriver[6])
         globals()[hwDriver[5]].setVisible(False)
         #globals()[driver[5]].setHelp('MC_CRYPTO_API_H')
-#---------------------------------------------------------------------------------------    
-            
         
-    
+#---------------------------------------------------------------------------------------    

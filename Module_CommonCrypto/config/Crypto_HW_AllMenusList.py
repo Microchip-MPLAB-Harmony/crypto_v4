@@ -23,6 +23,9 @@
 # ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 # ***************************************************************************'''
+
+execfile( Module.getPath() + os.path.join("config", "crypto_handle_files.py"))
+
 Crypto_Hw_Hash_Menu = None
 Crypto_Hw_Sha1 = None 
 Crypto_Hw_Sha2_Menu = None
@@ -120,35 +123,37 @@ Crypto_Hw_DriverFilesList = []
 Crypto_Hw_WrapperFilesList = []
 
 def Crypto_CallBack(symbol, event):
-    commcryptoFilesList = []
-    WrapperDriverFilesList = []
-    DriverFileList = []
-    UserSelectedcategoryList = []
-                    
-    for menu in Crypto_Hw_orderAlgoMenuList:
-        if menu[7] is not None: #if category is not None in menu List of the menu
-            if(globals()[menu[2]].getValue() == True): #check menu is selected ny user ot no
-                if menu[7] not in UserSelectedcategoryList:
-                    UserSelectedcategoryList.append(menu[7])
+    # Gather selected categories based on user input
+    UserSelectedcategoryList = {
+        menu[7] for menu in Crypto_Hw_orderAlgoMenuList 
+        if menu[7] is not None and globals()[menu[2]].getValue()
+    }
 
+    # Initialize sets to collect unique files
+    common_crypto_reqs = set()
+    wrapper_reqs = set()
+    driver_reqs = set()
+
+    # Collect files based on selected categories
     for category in UserSelectedcategoryList:
-        for CommonCryptoFile in Crypto_HW_CommonCryptoFilesDict[category]:
-            if CommonCryptoFile not in commcryptoFilesList:
-                commcryptoFilesList.append(CommonCryptoFile)
-        for driver in Crypto_HW_AllSupportedDriver:
-             if driver[3] in Crypto_HW_DriverAndWrapperFilesDict:
-                if category in Crypto_HW_DriverAndWrapperFilesDict[driver[3]]:
-                    for file in Crypto_HW_DriverAndWrapperFilesDict[driver[3]][category].get("WrapperFiles", []):
-                        if file not in WrapperDriverFilesList:
-                            WrapperDriverFilesList.append(file)
-                    for file in Crypto_HW_DriverAndWrapperFilesDict[driver[3]][category].get("DriverFiles", []):
-                        if file not in DriverFileList:
-                            DriverFileList.append(file)  
-    
-    Crypto_Hw_UserSelectedCategoryList = UserSelectedcategoryList    
-    Crypto_Hw_CommonCryptoFilesList = commcryptoFilesList                  
-    Crypto_Hw_DriverFilesList = DriverFileList 
-    Crypto_Hw_WrapperFilesList = WrapperDriverFilesList
+        # Update common crypto files list
+        common_crypto_reqs.update(Crypto_HW_CommonCryptoFilesDict.get(category, []))
 
-    
-    
+        # Update driver and wrapper files lists
+        for driver in Crypto_HW_AllSupportedDriver:
+            if driver[3] in Crypto_HW_DriverAndWrapperFilesDict:
+                driver_files = Crypto_HW_DriverAndWrapperFilesDict[driver[3]].get(category, {})
+                wrapper_reqs.update(driver_files.get("WrapperFiles", []))
+                driver_reqs.update(driver_files.get("DriverFiles", []))
+
+    # Print results for debugging
+    print(list(common_crypto_reqs))
+    print(list(driver_reqs))
+    print(list(wrapper_reqs))
+
+    # Combine all enabled files into a single set
+    all_enabled_files = common_crypto_reqs | driver_reqs | wrapper_reqs
+
+    # Enable or disable file symbols based on the combined list
+    for file_name in Crypto_HW_Files:
+        Crypto_HW_Files[file_name][1].setEnabled(file_name in all_enabled_files)

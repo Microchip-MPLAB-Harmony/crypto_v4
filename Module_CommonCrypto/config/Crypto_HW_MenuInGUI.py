@@ -25,6 +25,7 @@
 # ***************************************************************************'''
 
 import os
+
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_AllMenusList.py"))
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_Driver.py"))
 
@@ -57,7 +58,7 @@ def Crypto_HW_GetAllSupportAlgoMenuInOrder():
             for menuItem in Crypto_Hw_orderAlgoMenuList[:]:
                 if(menuItem[4] == menu[0]):#if it is a Menu Heading is parent of supported Menu,here menuItem[4] repsent that menu-parent and menu[0] represent menu 
                     parentMenuReq = True
-                    break;
+                    break
             if(parentMenuReq == False):
                 Crypto_Hw_orderAlgoMenuList.remove(menu)      
 #---------------------------------------------------------------------------------------
@@ -65,12 +66,16 @@ def Crypto_HW_CreateMenuInGUI(CommonCryptoComponent):
     for menu in Crypto_Hw_orderAlgoMenuList:
         if(menu[6] == None):
             if(menu[3] == None):
+               # Heading
                globals()[menu[2]] = CommonCryptoComponent.createMenuSymbol(menu[1], None)
             else:
+               # Subheading
                globals()[menu[2]] = CommonCryptoComponent.createMenuSymbol(menu[1], globals()[menu[3]])
-        else:    
+        else:
+            # Algorithms
             globals()[menu[2]] = CommonCryptoComponent.createBooleanSymbol(menu[1], globals()[menu[3]])
             globals()[menu[2]].setDefaultValue(menu[6])
+            globals()[menu[2]].setDependencies(Crypto_CallBack, [menu[1]])
                 
         globals()[menu[2]].setLabel(menu[0])
         #globals()[menu[2]].setDescription(menu[0])

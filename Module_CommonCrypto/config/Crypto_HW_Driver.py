@@ -48,12 +48,12 @@ Crypto_HW_AllDriversList = [
 
 #---------------------------------------------------------------------------------------        
 Crypto_HW_CommonCryptoFilesDict = {
-    "HashAlgo":["MCHP_Crypto_Hash.h", "MCHP_Crypto_Hash.c", "MCHP_Crypto_Hash_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h"],
-    "SymAlgo":["MCHP_Crypto_Sym_Cipher.h", "MCHP_Crypto_Sym_Cipher.c", "MCHP_Crypto_Sym_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h"],
+    "HashAlgo":["MCHP_Crypto_Hash.h", "MCHP_Crypto_Hash.c", "MCHP_Crypto_Hash_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
+    "SymAlgo":["MCHP_Crypto_Sym_Cipher.h", "MCHP_Crypto_Sym_Cipher.c", "MCHP_Crypto_Sym_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
     "MacAlgo":[],
-    "AeadAlgo":["MCHP_Crypto_Aead_Cipher.h", "MCHP_Crypto_Aead_Cipher.c", "MCHP_Crypto_Aead_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h"],
-    "DigisignAlgo":["MCHP_Crypto_DigSign.h", "MCHP_Crypto_DigSign.c", "MCHP_Crypto_DigSign_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h"],
-    "KasAlgo":["MCHP_Crypto_Kas.h", "MCHP_Crypto_Kas.c", "MCHP_Crypto_Kas_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h"],
+    "AeadAlgo":["MCHP_Crypto_Aead_Cipher.h", "MCHP_Crypto_Aead_Cipher.c", "MCHP_Crypto_Aead_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
+    "DigisignAlgo":["MCHP_Crypto_DigSign.h", "MCHP_Crypto_DigSign.c", "MCHP_Crypto_DigSign_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
+    "KasAlgo":["MCHP_Crypto_Kas.h", "MCHP_Crypto_Kas.c", "MCHP_Crypto_Kas_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
     "RngAlgo":[]
 }
 

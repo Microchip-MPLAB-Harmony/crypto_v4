@@ -129,3 +129,49 @@ def setup_hw_files(component, supported_drivers):
         print("  File Symbol: %s" % file_symbol)
 
     return
+
+# Will make file symbols for anything in Module_CommonCrypto/templates
+# which can then be toggled on and off by including the file in 
+# any of the file dicts
+def setup_config_files(component):
+      
+    config_name = Variables.get("__CONFIGURATION_NAME")
+    module_path = Module.getPath()
+    templates_path = os.path.join(module_path, "templates")
+
+    # Recursively go through the common_crypto directory and collect all file paths
+    if os.path.exists(templates_path):
+        for root, dirs, files in os.walk(templates_path):
+            for file in files:
+                
+                file_path = os.path.join(root, file)
+                file_name = os.path.basename(file_path)
+
+                # Settings for file being added
+                prefix = ""                                    # set impportant 
+                markup = file_name.endswith(".ftl")            # check if markup
+                
+                # Remove auto appended portion ex. ~\crypto_v4\Module_CommonCrypto\
+                relative_path = file_path.replace(module_path, '')
+
+                # Configure destination (/)
+                dest_path = os.path.join("")
+
+                # Configure MPLABX proj tree (config/default/)
+                project_path = os.path.join("config", config_name)
+                
+                # Create symbol
+                file_symbol = make_file_symbol(component,
+                                        file_name, 
+                                        relative_path,            # Source 
+                                        prefix, 
+                                        dest_path,     # Destination
+                                        project_path,  # MPLABX proj tree
+                                        markup,
+                                        False          # Disabled initial state 
+                                        )
+                
+            Crypto_HW_Files[file_name] = (file_path, file_symbol)
+            
+    else:
+        print("/templates directory damaged. Check that it exists.")    

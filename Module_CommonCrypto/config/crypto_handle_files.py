@@ -23,6 +23,8 @@ def make_file_symbol(component, file_name, relative_path, prefix, dest_path, pro
     file_symbol.setOutputName(file_name)
     file_symbol.setDestPath(dest_path)
 
+    file_symbol.setSecurity("SECURE" if Variables.get("__TRUSTZONE_ENABLED") else "NON_SECURE")
+
     if prefix in {'misc', 'imp'}:
         file_type = "IMPORTANT"
     elif file_name.endswith('.h'):
@@ -116,24 +118,10 @@ def setup_drivers(component, supported_drivers):
     return True
 
 
-# Make file symbols (.createFileSymbol) for crypto_v4
-def setup_hw_files(component, supported_drivers):
-
-    setup_common_crypto(component)
-    setup_drivers(component, supported_drivers)
-
-    # Print the data structure
-    for file_name, (file_path, file_symbol) in Crypto_HW_Files.items():
-        print("File: %s" % file_name)
-        print("  File Path: %s" % file_path)
-        print("  File Symbol: %s" % file_symbol)
-
-    return
-
 # Will make file symbols for anything in Module_CommonCrypto/templates
 # which can then be toggled on and off by including the file in 
 # any of the file dicts
-def setup_config_files(component):
+def setup_config(component):
       
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
@@ -175,3 +163,19 @@ def setup_config_files(component):
             
     else:
         print("/templates directory damaged. Check that it exists.")    
+
+
+# Make file symbols (.createFileSymbol) for crypto_v4
+def setup_hw_files(component, supported_drivers):
+
+    setup_config(component)
+    setup_common_crypto(component)
+    setup_drivers(component, supported_drivers)
+
+    # Print the data structure
+    for file_name, (file_path, file_symbol) in Crypto_HW_Files.items():
+        print("File: %s" % file_name)
+        print("  File Path: %s" % file_path)
+        print("  File Symbol: %s" % file_symbol)
+
+    return

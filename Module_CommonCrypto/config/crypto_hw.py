@@ -54,9 +54,7 @@ def instantiateComponent(CommonCryptoComponent):
 
     # Use supported drivers list to assemble list of sets containing relevant file symbols 
     setup_hw_files(CommonCryptoComponent, supported_drivers)
-
-    setup_config_files(CommonCryptoComponent)
-    
+  
     # Build GUI
     Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
 

@@ -70,23 +70,14 @@ THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 <#lt>#define CRYPTO_V4_API
 
 <#lt>/*** Hardware Driver Configuration ***/
-<#--  <#if cryptoHwSupported == true>
-    <#if cryptoHwDefines?has_content>
-        <#lt>//Crypto Processor Hardware Available
-        <#lt>//--Crypto HW Driver may not be available
-        <#list cryptoHwDefines?split(", ") as val>
-            <#lt>#define ${val}
-        </#list>
-    <#else>
-        <#lt>/*   (Crypto Hardware Drivers Not Available)   */ 
-    </#if>
-
-    // TODO:  HW Driver Implementation
-    //        --For now only Mistral drivers assumed to be implemented
-    //        --Other HW Drivers selections will generated warnings
+<#if driver_defines?has_content>
+    <#lt>//Hardware Drivers Available:
+    <#list driver_defines?split(", ") as driver>
+        <#lt>#define ${driver}
+    </#list>
 <#else>
-    <#lt>/*** Crypto Hardware Drivers Not Supported ***/
-</#if>  -->
+    <#lt>/*   (Crypto Hardware Drivers Not Available)   */ 
+</#if>
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

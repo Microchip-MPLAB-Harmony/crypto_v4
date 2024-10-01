@@ -77,7 +77,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHa
 
 #ifdef CRYPTO_DIGISIGN_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_ECDSA_HW_CPKCC == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER")>
             	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);
 </#if>
             	break;
@@ -133,7 +133,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
             
 #ifdef CRYPTO_DIGISIGN_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_ECDSA_HW_CPKCC == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER")>
             	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
                                         ptr_hashVerifyStat, eccCurveType_En);
 </#if>
@@ -192,7 +192,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecd
 
 #ifdef CRYPTO_DIGISIGN_HW_ALGO_EN             
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_ECDSA_HW_HSM == true>			
+<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>	
                 ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_SignData(ptr_inputData, dataLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, hashType_en, eccCurveType_En);
 </#if>   				
             break;

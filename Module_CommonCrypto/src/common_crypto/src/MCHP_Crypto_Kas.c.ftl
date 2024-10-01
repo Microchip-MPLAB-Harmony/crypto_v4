@@ -74,10 +74,10 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
 
 #ifdef CRYPTO_KAS_HW_ALGO_EN            
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if HAVE_MCHP_CRYPTO_ECDH_HW_CPKCC == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER")>
 	            ret_ecdhStat_en = Crypto_Kas_Ecdh_Hw_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
 	                                                                    sharedSecretLen, eccCurveType_en);
-<#elseif HAVE_MCHP_CRYPTO_ECDH_HW_HSM == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
                 ret_ecdhStat_en =  Crypto_Kas_Hw_Ecdh_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
                                                                     sharedSecretLen, eccCurveType_en);
 </#if>

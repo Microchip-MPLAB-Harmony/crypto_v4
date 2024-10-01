@@ -37,49 +37,85 @@ Crypto_Hw_TDES_6150_DriverSymbol = None
 #---------------------------------------------------------------------------------------
 Crypto_HW_AllDriversList = [
         #AES_6149
-        ["AES", "6149", "ZN", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER_ID", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported"],   #AES_6149
-        ["SHA", "6156", "S", "SHA_6156",  "HAVE_CRYPTO_HW_SHA_6156_DRIVER_ID", "Crypto_Hw_SHA_6156_DriverSymbol", "SHA_6156 Driver Supported"],    #SHA_6156
-        ["TRNG", "6334", "S", "TRNG_6334", "HAVE_CRYPTO_HW_TRNG_6334_DRIVER_ID", "Crypto_Hw_TRNG_6334_DriverSymbol", "TRNG_6334 Driver Supported"],   #TRNG_6334
-        ["CPKCC", "44163", "B", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER_ID", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
-        ["HSM", "03785", "", "HSM_03785", "HAVE_CRYPTO_HW_HSM_03785_DRIVER_ID", "Crypto_Hw_HSM_03785_DriverSymbol", "HSM_03785 Driver Supported"],    #HSM_03785
-        ["ICM", "11105", "", "ICM_11105", "HAVE_CRYPTO_HW_ICM_11105_DRIVER_ID", "Crypto_Hw_ICM_11105_DriverSymbol", "ICM_11105 Driver Supported"],    #ICM_11105
-        ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER_ID", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"]     #TDES_6150
+        ["AES", "6149", "ZN", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported"],   #AES_6149
+        ["SHA", "6156", "S", "SHA_6156",  "HAVE_CRYPTO_HW_SHA_6156_DRIVER", "Crypto_Hw_SHA_6156_DriverSymbol", "SHA_6156 Driver Supported"],    #SHA_6156
+        ["TRNG", "6334", "S", "TRNG_6334", "HAVE_CRYPTO_HW_TRNG_6334_DRIVER", "Crypto_Hw_TRNG_6334_DriverSymbol", "TRNG_6334 Driver Supported"],   #TRNG_6334
+        ["CPKCC", "44163", "B", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
+        ["HSM", "03785", "", "HSM_03785", "HAVE_CRYPTO_HW_HSM_03785_DRIVER", "Crypto_Hw_HSM_03785_DriverSymbol", "HSM_03785 Driver Supported"],    #HSM_03785
+        ["ICM", "11105", "", "ICM_11105", "HAVE_CRYPTO_HW_ICM_11105_DRIVER", "Crypto_Hw_ICM_11105_DriverSymbol", "ICM_11105 Driver Supported"],    #ICM_11105
+        ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"]     #TDES_6150
 ]
 
 #---------------------------------------------------------------------------------------        
 Crypto_HW_CommonCryptoFilesDict = {
-    "HashAlgo":["MCHP_Crypto_Hash.h", "MCHP_Crypto_Hash.c", "MCHP_Crypto_Hash_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
-    "SymAlgo":["MCHP_Crypto_Sym_Cipher.h", "MCHP_Crypto_Sym_Cipher.c", "MCHP_Crypto_Sym_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
-    "MacAlgo":[],
-    "AeadAlgo":["MCHP_Crypto_Aead_Cipher.h", "MCHP_Crypto_Aead_Cipher.c", "MCHP_Crypto_Aead_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
-    "DigisignAlgo":["MCHP_Crypto_DigSign.h", "MCHP_Crypto_DigSign.c", "MCHP_Crypto_DigSign_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
-    "KasAlgo":["MCHP_Crypto_Kas.h", "MCHP_Crypto_Kas.c", "MCHP_Crypto_Kas_Config.h", "MCHP_Crypto_Common.h", "crypto_config.h.ftl"],
-    "RngAlgo":[]
+    "HashAlgo": [
+        "MCHP_Crypto_Hash.h",
+        "MCHP_Crypto_Hash.c.ftl",
+        "MCHP_Crypto_Hash_Config.h.ftl",
+        "MCHP_Crypto_Common.h",
+        "crypto_config.h.ftl"
+    ],
+    "SymAlgo": [
+        "MCHP_Crypto_Sym_Cipher.h",
+        "MCHP_Crypto_Sym_Cipher.c.ftl",
+        "MCHP_Crypto_Sym_Config.h.ftl",
+        "MCHP_Crypto_Common.h",
+        "crypto_config.h.ftl"
+    ],
+    "MacAlgo": [],
+    "AeadAlgo": [
+        "MCHP_Crypto_Aead_Cipher.h",
+        "MCHP_Crypto_Aead_Cipher.c.ftl",
+        "MCHP_Crypto_Aead_Config.h.ftl",
+        "MCHP_Crypto_Common.h",
+        "crypto_config.h.ftl"
+    ],
+    "DigisignAlgo": [
+        "MCHP_Crypto_DigSign.h",
+        "MCHP_Crypto_DigSign.c.ftl",
+        "MCHP_Crypto_DigSign_Config.h.ftl",
+        "MCHP_Crypto_Common.h",
+        "crypto_config.h.ftl"
+    ],
+    "KasAlgo": [
+        "MCHP_Crypto_Kas.h",
+        "MCHP_Crypto_Kas.c.ftl",
+        "MCHP_Crypto_Kas_Config.h.ftl",
+        "MCHP_Crypto_Common.h",
+        "crypto_config.h.ftl"
+    ],
+    "RngAlgo": [
+        "MCHP_Crypto_Rng.h",
+        "MCHP_Crypto_Rng.c",
+        "MCHP_Crypto_Rng_Config.h.ftl",
+        "MCHP_Crypto_Common.h",
+        "crypto_config.h.ftl"
+    ]
 }
 
 #---------------------------------------------------------------------------------------
 Crypto_HW_DriverAndWrapperFilesDict = {
     "HSM_03785":{ 
         "HashAlgo":{
-            "WrapperFiles": ["Crypto_Hash_Hsm_HwWrapper.h", "Crypto_Hash_Hsm_HwWrapper.c"],
+            "WrapperFiles": ["MCHP_Crypto_Hash_Hsm_HwWrapper.h", "MCHP_Crypto_Hash_Hsm_HwWrapper.c"],
             "DriverFiles":["hsm_hash.h", "hsm_hash.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"],
         },
         "SymAlgo":{
-            "WrapperFiles":["Crypto_Sym_Hsm_HwWrapper.h", "Crypto_Sym_Hsm_HwWrapper.c", "Crypto_Hsm_Common_HwWrapper.h", "Crypto_Hsm_Common_HwWrapper.c"],    
+            "WrapperFiles":["MCHP_Crypto_Sym_Hsm_HwWrapper.h", "MCHP_Crypto_Sym_Hsm_HwWrapper.c", "MCHP_Crypto_Hsm_Common_HwWrapper.h", "MCHP_Crypto_Hsm_Common_HwWrapper.c"],    
             "DriverFiles":["hsm_sym.h", "hsm_sym.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"]
         }
     },
     "AES_6149":{ 
         "SymAlgo":{
-            "WrapperFiles": ["Crypto_Sym_Aes6149_HwWrapper.h", "Crypto_Sym_Aes6149_HwWrapper.c.ftl"],
+            "WrapperFiles": ["MCHP_Crypto_Sym_Aes6149_HwWrapper.h", "MCHP_Crypto_Sym_Aes6149_HwWrapper.c.ftl"],
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         },
         "AeadAlgo":{
-            "WrapperFiles":["Crypto_Aead_Aes6149_HwWrapper.h", "Crypto_Aead_Aes6149_HwWrapper.c.ftl"],    
+            "WrapperFiles":["MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c.ftl"],    
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"]
         }
     }
-} 
+}
    
 #---------------------------------------------------------------------------------------
 def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
@@ -108,11 +144,22 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
 
 #--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
+
+    #String Implementation of defines for crypto_config.h.ftl
+    driver_defines = CommonCryptoComponent.createStringSymbol("driver_defines", None)
+    driver_defines.setVisible(False)
+
     for hwDriver in Crypto_HW_AllSupportedDriver:
         globals()[hwDriver[5]] = CommonCryptoComponent.createMenuSymbol(hwDriver[4], None)
         globals()[hwDriver[5]].setLabel(hwDriver[3])
         globals()[hwDriver[5]].setDescription(hwDriver[6])
         globals()[hwDriver[5]].setVisible(False)
         #globals()[driver[5]].setHelp('MC_CRYPTO_API_H')
+    
+    #String Implementation of defines for crypto_config.h.ftl
+    #--created from each of the additional define strings
+    # Accumulate all hwDriver[4] items into a string to set as default
+    driver_define_strings = [hwDriver[4] for hwDriver in Crypto_HW_AllSupportedDriver]
+    driver_defines.setDefaultValue(", ".join(driver_define_strings))
         
 #---------------------------------------------------------------------------------------    

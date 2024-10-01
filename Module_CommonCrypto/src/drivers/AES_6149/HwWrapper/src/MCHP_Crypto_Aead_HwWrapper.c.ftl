@@ -49,7 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "crypto/common_crypto/MCHP_Crypto_Aead_HwWrapper.h"
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
 #include "crypto/drivers/drv_crypto_aes_hw_6149.h"
 </#if>
 
@@ -586,7 +586,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
 <#else>
     CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmInitCtx;
@@ -635,7 +635,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
     uint32_t dataLen, uint8_t *outData, uint8_t *aad, uint32_t aadLen,
     uint8_t *authTag, uint32_t authTagLen)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
 <#else> 
     CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmCipherCtx;
@@ -685,7 +685,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *inputData,
     uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
     uint8_t *authTag, uint32_t authTagLen)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
 <#else> 
     CRYPTO_GCM_HW_CONTEXT gcmCtx;
@@ -707,7 +707,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
     uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
     uint8_t *authTag, uint32_t authTagLen)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
 <#else> 
     CRYPTO_GCM_HW_CONTEXT gcmCtx;

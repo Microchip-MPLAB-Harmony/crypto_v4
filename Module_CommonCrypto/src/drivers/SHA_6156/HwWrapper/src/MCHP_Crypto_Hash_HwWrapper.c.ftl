@@ -50,7 +50,7 @@ Microchip or any third party.
 #include <string.h>
 #include "device.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash_HwWrapper.h"
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
 #include "crypto/drivers/drv_crypto_sha_hw_6156.h"
 </#if>
 
@@ -252,7 +252,7 @@ static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
     crypto_Hash_Algo_E shaAlgorithm_en)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     CRYPTO_SHA_ALGO shaAlgo;
@@ -287,7 +287,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     uint32_t *localBuffer = NULL;
@@ -375,7 +375,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     uint32_t blockSizeBytes;
@@ -460,7 +460,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
 {
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
     return CRYPTO_HASH_ERROR_NOTSUPPTED;
 <#else>
     CRYPTO_HASH_HW_CONTEXT shaCtx;

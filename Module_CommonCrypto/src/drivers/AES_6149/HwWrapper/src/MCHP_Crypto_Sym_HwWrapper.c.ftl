@@ -48,7 +48,7 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include "crypto/common_crypto/MCHP_Crypto_Sym_HwWrapper.h"
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == true>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
 #include "crypto/drivers/drv_crypto_aes_hw_6149.h"
 </#if>
 
@@ -153,7 +153,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
     crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen, 
     uint8_t *initVect)
 { 
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else> 
     CRYPTO_AES_CONFIG aesCfg;
@@ -238,7 +238,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
 crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData, 
     uint32_t dataLen, uint8_t *outData)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else>
     DRV_CRYPTO_AES_WritePCTextLen(dataLen);
@@ -288,7 +288,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else> 
     crypto_Sym_Status_E result = CRYPTO_SYM_CIPHER_SUCCESS;
@@ -309,7 +309,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-<#if HAVE_MCHP_CRYPTO_AES_HW_6149 == false>
+<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
     return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
 <#else> 
     crypto_Sym_Status_E result = CRYPTO_SYM_CIPHER_SUCCESS;

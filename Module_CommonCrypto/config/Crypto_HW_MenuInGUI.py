@@ -52,7 +52,7 @@ def Crypto_HW_GetAllSupportAlgoMenuInOrder():
             if booleanMenu not in Crypto_Hw_disorderAlgoMenuList:
                 Crypto_Hw_orderAlgoMenuList.remove(booleanMenu)
                 
-    for menu in Crypto_Hw_orderAlgoMenuList[:]:
+    for menu in reversed(Crypto_Hw_orderAlgoMenuList[:]):
         if menu[6] is None:#if it is a Menu Heading, Only Menu Heading Allowed, Here menu[6] represent Default value of particular menu
             parentMenuReq = False
             for menuItem in Crypto_Hw_orderAlgoMenuList[:]:

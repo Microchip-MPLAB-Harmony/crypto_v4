@@ -13,7 +13,7 @@
   Description:
     This header file contains the interface that make up the SHA hardware 
     driver for the following families of Microchip microcontrollers:
-    dsPIC33AK512MPS512.
+    dsPIC33AK with Crypto Accelerator Module.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

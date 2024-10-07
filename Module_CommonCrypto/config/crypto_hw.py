@@ -54,10 +54,18 @@ def instantiateComponent(CommonCryptoComponent):
 
     # Use supported drivers list to assemble list of sets containing relevant file symbols 
     setup_hw_files(CommonCryptoComponent, supported_drivers)
+
+    # Turn directories that are being requested in Crypto_HW_DriverAndWrapperFilesDict{} into its files
+    expand_dir_entries_in_driver_requests()
   
     # Build GUI
     Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
 
+
+def handleMessage(messageID, args):
+    print("hey it's crypto_hw receiving")
+    print("messageID: ", messageID)
+    print("args: ", args)
 
 #---------------------------------------------------------------------------------------
     

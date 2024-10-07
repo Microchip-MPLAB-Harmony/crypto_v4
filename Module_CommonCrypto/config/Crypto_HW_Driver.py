@@ -23,6 +23,7 @@
 # ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 # ***************************************************************************'''
+import os
 
 Crypto_HW_AllSupportedDriver = []
 
@@ -37,10 +38,10 @@ Crypto_Hw_TDES_6150_DriverSymbol = None
 #---------------------------------------------------------------------------------------
 Crypto_HW_AllDriversList = [
         #AES_6149
-        ["AES", "6149", "ZN", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported"],   #AES_6149
-        ["SHA", "6156", "S", "SHA_6156",  "HAVE_CRYPTO_HW_SHA_6156_DRIVER", "Crypto_Hw_SHA_6156_DriverSymbol", "SHA_6156 Driver Supported"],    #SHA_6156
-        ["TRNG", "6334", "S", "TRNG_6334", "HAVE_CRYPTO_HW_TRNG_6334_DRIVER", "Crypto_Hw_TRNG_6334_DriverSymbol", "TRNG_6334 Driver Supported"],   #TRNG_6334
-        ["CPKCC", "44163", "B", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
+        ["AES", "6149", "", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported"],   #AES_6149
+        ["SHA", "6156", "", "SHA_6156",  "HAVE_CRYPTO_HW_SHA_6156_DRIVER", "Crypto_Hw_SHA_6156_DriverSymbol", "SHA_6156 Driver Supported"],    #SHA_6156
+        ["TRNG", "6334", "", "TRNG_6334", "HAVE_CRYPTO_HW_TRNG_6334_DRIVER", "Crypto_Hw_TRNG_6334_DriverSymbol", "TRNG_6334 Driver Supported"],   #TRNG_6334
+        ["CPKCC", "44163", "", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
         ["HSM", "03785", "", "HSM_03785", "HAVE_CRYPTO_HW_HSM_03785_DRIVER", "Crypto_Hw_HSM_03785_DriverSymbol", "HSM_03785 Driver Supported"],    #HSM_03785
         ["ICM", "11105", "", "ICM_11105", "HAVE_CRYPTO_HW_ICM_11105_DRIVER", "Crypto_Hw_ICM_11105_DriverSymbol", "ICM_11105 Driver Supported"],    #ICM_11105
         ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"]     #TDES_6150
@@ -102,7 +103,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
         },
         "SymAlgo":{
             "WrapperFiles":["MCHP_Crypto_Sym_Hsm_HwWrapper.h", "MCHP_Crypto_Sym_Hsm_HwWrapper.c", "MCHP_Crypto_Hsm_Common_HwWrapper.h", "MCHP_Crypto_Hsm_Common_HwWrapper.c"],    
-            "DriverFiles":["hsm_sym.h", "hsm_sym.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"]
+            "DriverFiles":["hsm_sym.h", "hsm_sym.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"],
         }
     },
     "AES_6149":{ 
@@ -112,31 +113,40 @@ Crypto_HW_DriverAndWrapperFilesDict = {
         },
         "AeadAlgo":{
             "WrapperFiles":["MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"]
+            "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         }
     }
 }
    
 #---------------------------------------------------------------------------------------
 def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
-    print("scanning atdf file")
+    
+    # Harmony installed DSP:    %USERPROFILE%\.mcc\HarmonyContent\dev_packs\Microchip
+    # MPLABX installed DSP:     %USERPROFILE%\.mchp_packs\Microchip
+
     periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
     atdf_Modules = periphNode.getChildren()
-    print("list of supported drivers")
+    print("List of supported drivers (.atdf): ")
 
     # Initialize a set to hold the supported driver labels
     supported_drivers = set()
 
     for module in atdf_Modules:
         for driver in Crypto_HW_AllDriversList:
-            if ((module.getAttribute("name") == driver[0]) 
-                and (module.getAttribute("id") == driver[1]) 
-                and ((module.getAttribute("version") == driver[2]) or driver[2] == "")):
+            
+            name = module.getAttribute("name")
+            id = module.getAttribute("id")
+            version = module.getAttribute("version")
+
+            if ((name == driver[0]) 
+                and (id == driver[1]) 
+                and ((version == driver[2]) or driver[2] == "")):
+                
+                print("%s | %s | %s" % (name, id, version))
                 Crypto_HW_AllSupportedDriver.append(driver)
                 
                 # Add the driver's label to the supported drivers set
                 supported_drivers.add(driver[3])
-                print(driver[3])
 
     Crypto_HW_CreateDriverSymbols(CommonCryptoComponent)
 
@@ -163,3 +173,46 @@ def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
     driver_defines.setDefaultValue(", ".join(driver_define_strings))
         
 #---------------------------------------------------------------------------------------    
+
+def dir_item_to_files(path):
+    all_files = []
+
+    if os.path.exists(path): 
+        for root, dirs, files in os.walk(path):
+            all_files.extend(files)
+    else: 
+        print("%s damaged. Check that this path exists." % path)
+        return []
+    
+    return all_files
+
+# Function to check if an entry is a directory (no extension)
+def is_directory(item):
+    return os.path.splitext(item)[1] == ''
+
+def expand_dir_entries_in_driver_requests():
+    module_path = Module.getPath()
+
+    for driver, algorithms in Crypto_HW_DriverAndWrapperFilesDict.items():
+        driver_path = os.path.join(module_path, "src", "drivers", driver)
+
+        # Loop through algorithms and file types
+        for algo, file_types in algorithms.items():
+            for file_type, files in file_types.items():
+                # Loop through files in the file type list
+                for i, item in enumerate(files):
+                    if is_directory(item):
+                        # If it's a directory, replace it with the files inside it
+                        for root, dirs, _ in os.walk(driver_path):
+                            if item in dirs:
+                                dir_path = os.path.join(root, item)
+                                files_in_dir = dir_item_to_files(dir_path)
+                                
+                                files[i:i+1] = files_in_dir
+
+    # Show the updated dict structure
+    # for driver, algorithms in Crypto_HW_DriverAndWrapperFilesDict.items():
+    #     print("Driver: %s" % driver)
+    #     for algo, file_types in algorithms.items():
+    #         for file_type, files in file_types.items():
+    #             print("  %s: %s" % (file_type, files))

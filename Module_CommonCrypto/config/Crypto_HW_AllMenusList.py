@@ -24,6 +24,8 @@
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 # ***************************************************************************'''
 
+import os
+
 execfile( Module.getPath() + os.path.join("config", "crypto_handle_files.py"))
 
 Crypto_Hw_Hash_Menu = None
@@ -128,11 +130,13 @@ def Crypto_CallBack(symbol, event):
         menu[7] for menu in Crypto_Hw_orderAlgoMenuList 
         if menu[7] is not None and globals()[menu[2]].getValue()
     }
+    print("UserSelectedcategoryList: %s" % UserSelectedcategoryList)
 
     # Initialize sets to collect unique files
     common_crypto_reqs = set()
     wrapper_reqs = set()
     driver_reqs = set()
+    library_reqs = set()
 
     # Collect files based on selected categories
     for category in UserSelectedcategoryList:
@@ -145,15 +149,19 @@ def Crypto_CallBack(symbol, event):
                 driver_files = Crypto_HW_DriverAndWrapperFilesDict[driver[3]].get(category, {})
                 wrapper_reqs.update(driver_files.get("WrapperFiles", []))
                 driver_reqs.update(driver_files.get("DriverFiles", []))
+                library_reqs.update(driver_files.get("LibraryFiles", []))
 
     # Print results for debugging
-    print(list(common_crypto_reqs))
-    print(list(driver_reqs))
-    print(list(wrapper_reqs))
+    print("common_crypto_reqs: %s" % list(common_crypto_reqs))
+    print("driver_reqs:        %s" % list(driver_reqs))
+    print("wrapper_reqs:       %s" % list(wrapper_reqs))
+    print("library_reqs:       %s" % list(library_reqs))
 
     # Combine all enabled files into a single set
-    all_enabled_files = common_crypto_reqs | driver_reqs | wrapper_reqs
+    all_enabled_files = common_crypto_reqs | driver_reqs | wrapper_reqs | library_reqs
 
     # Enable or disable file symbols based on the combined list
     for file_name in Crypto_HW_Files:
         Crypto_HW_Files[file_name][1].setEnabled(file_name in all_enabled_files)
+
+    Database.sendMessage("lib_wolfcrypt", "fileTell", Crypto_HW_Files)

@@ -38,19 +38,17 @@ def make_file_symbol(component, file_name, relative_path, prefix, dest_path, pro
     return file_symbol
 
 
-# Insert row into Crypto_HW_Files dict
-def add_file_to_dict(component, file_name, file_path):
+# Insert row into Crypto_HW_Files dict and place files inside config/crypto
+def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
     
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
 
     # Settings for file being added
-    prefix = ""                                                                             # set impportant 
-    pre_path = "src" if file_name.endswith(".c") or file_name.endswith(".c.ftl") else ""  # sorts .c into /src
-    markup = file_name.endswith(".ftl")                                                     # check if markup
-    lowest_level_dir = os.path.join("common_crypto" if file_name.startswith("MCHP") else "drivers",
-                                     "CryptoLib_CPKCL" if file_name.startswith("CryptoLib") else "")
-    
+    prefix = ""                                                                          # set impportant (unused)
+    pre_path = "src" if file_name.endswith(".c") or file_name.endswith(".c.ftl") else "" # sorts .c into /src
+    markup = file_name.endswith(".ftl")                                                  # check if markup
+                                          
     # Remove auto appended portion ex. ~\crypto_v4\Module_CommonCrypto\
     relative_path = file_path.replace(module_path, '')
 
@@ -58,7 +56,7 @@ def add_file_to_dict(component, file_name, file_path):
     dest_path = os.path.join("crypto", lowest_level_dir, pre_path)
 
     # Configure MPLABX proj tree (config/default/crypto/common_crypto)
-    project_path = os.path.join("config", config_name, "crypto", lowest_level_dir, pre_path)
+    project_path = os.path.join("config", config_name, "crypto", lowest_level_dir)
     
     # Create symbol
     file_symbol = make_file_symbol(component,
@@ -71,8 +69,8 @@ def add_file_to_dict(component, file_name, file_path):
                               False          # Disabled initial state 
                               )
     
-    # Add the file as key and tuple (file_path, file_symbol) as the value
-    Crypto_HW_Files[file_name] = (file_path, file_symbol)
+    # Add the file as key and tuple (relative_path, file_symbol) as the value
+    Crypto_HW_Files[file_name] = (lowest_level_dir, file_symbol)
 
 
 # Make symbols for files in src/common_crypto and add to global dict
@@ -84,12 +82,12 @@ def setup_common_crypto(component):
     # Recursively go through the common_crypto directory and collect all file paths
     if os.path.exists(common_crypto_path):
         for root, dirs, files in os.walk(common_crypto_path):
-            for file in files:
-                
+            for file in files:                
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)
 
-                add_file_to_dict(component, file_name, file_path)
+                add_file_to_dict(component, file_name, file_path, "common_crypto")
+        print("src/common_crypto directory file symbols created.")
     else:
         print("src/common_crypto directory damaged. Check that it exists.")
 
@@ -111,7 +109,23 @@ def setup_drivers(component, supported_drivers):
                     file_path = os.path.join(root, file)
                     file_name = os.path.basename(file_path)
 
-                    add_file_to_dict(component, file_name, file_path)
+                    # Get the folder name right after the driver in the path
+                    relative_path = file_path.split(os.sep)
+                    try:
+                        # Find index of the current driver and get the next folder
+                        driver_index = relative_path.index(driver)
+                        next_folder = relative_path[driver_index + 1] if driver_index + 1 < len(relative_path) else None
+                        # print("Next folder after '%s':" % driver, next_folder)
+                    except ValueError:
+                        print("Driver '%s' not found in the path" % driver)
+
+                    # TODO: Decide how files should get put in (I support mirroring our library)
+                    to_folder = os.path.join("drivers", next_folder)
+                    add_file_to_dict(component, file_name, file_path, to_folder)
+                    # if next_folder.lower() not in ["driver", "hwwrapper"]:
+                    # else:
+                    #     add_file_to_dict(component, file_name, file_path, "drivers")
+            print("src/drivers/%s file symbols created." %driver)
         else:
             print("src/drivers/%s directory damaged. Check that this driver exists." %driver)
    
@@ -121,7 +135,7 @@ def setup_drivers(component, supported_drivers):
 # Will make file symbols for anything in Module_CommonCrypto/templates
 # which can then be toggled on and off by including the file in 
 # any of the file dicts
-def setup_config(component):
+def setup_templates(component):
       
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
@@ -159,23 +173,24 @@ def setup_config(component):
                                         False          # Disabled initial state 
                                         )
                 
-            Crypto_HW_Files[file_name] = (file_path, file_symbol)
-            
+            Crypto_HW_Files[file_name] = ("", file_symbol)
+        print("/templates file symbols created.")
     else:
-        print("/templates directory damaged. Check that it exists.")    
+        print("/templates directory damaged. Check that it exists.")
 
 
 # Make file symbols (.createFileSymbol) for crypto_v4
 def setup_hw_files(component, supported_drivers):
 
-    setup_config(component)
     setup_common_crypto(component)
     setup_drivers(component, supported_drivers)
+    setup_templates(component)
 
-    # Print the data structure
+    # Show the created file symbols
+    print("Created file symbols: ")
     for file_name, (file_path, file_symbol) in Crypto_HW_Files.items():
-        print("File: %s" % file_name)
-        print("  File Path: %s" % file_path)
-        print("  File Symbol: %s" % file_symbol)
+    #     print("File: %s" % file_name)
+    #     print("  Parent Dir: %s" % file_path)
+          print("  File Symbol: %s" % file_symbol.getID())
 
     return

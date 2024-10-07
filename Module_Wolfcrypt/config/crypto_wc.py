@@ -29,6 +29,37 @@ execfile( Module.getPath() + os.path.join("config", "Crypto_WC_AllMenuList.py"))
 #----------------------------------------------------------------------------------------- 
 def instantiateComponent(WolfcryptComponent):
     wolfcryptSetUpAllMenu(WolfcryptComponent)
+    
+
+    # TODO: Make dict attaching functions and their necessary files together
+
+    # TODO: Attach callback for wc menus and put sendMessage into the callback
+  
+    args = {
+        # filename: symbol
+        "someBool": True,
+        "someVal": 42,
+        "someStr": "/path/to/file",
+    }
+
+    # tell lib_crypto this module needs this dict of files
+    Database.sendMessage("lib_crypto", "fileReq", args)
+
+def handleMessage(messageID, args):
+    print("hey it's crypto_wc receiving")
+    print("messageID: ", messageID)
+    # print("args: ", args)
+
+    # Loop through all files in Crypto_HW_Files
+    for file_name, file_info in args.items():
+        # Get the file symbol from the tuple (file_path, file_symbol)
+        file_symbol = file_info[1]
+        
+        # Enable the file symbol if the file is in the all_enabled_files list, otherwise disable it
+        print("sym.getID(): ", file_symbol.getID())
+        print("sym.getEnabled(): ", file_symbol.getEnabled())
+
+
 #----------------------------------------------------------------------------------------- 
 # Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(WolfcryptComponent):

@@ -12,7 +12,9 @@
 
   Description:
     This source file contains the implementation for the 
-    ECDSA driver functionality.
+    ECDSA driver functionality for the following families 
+    of Microchip microcontrollers:
+    dsPIC33AK with Crypto Accelerator Module.
 **************************************************************************/
 
 /*
@@ -38,46 +40,38 @@ implied, are granted under any patent or other intellectual property rights of
 Microchip or any third party.
 */
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+
 #include "../drv_crypto_ecdsa_hw_05346.h"
 
-CRYPTO_ECDSA_RESULT GetSize(CAM_CMD_CURVE hwEccCurve, CAM_ECC_SIZE *size);
-CAM_ERROR CAM_Execute(CAM_ECC_STRUCT* ecc_data);
-CAM_ERROR CAM_Set_Locations(CAM_ECC_STRUCT* ecc_data);
-CAM_ERROR CAM_Clear_Memory(void);
-void getTRNGNumber(uint8_t* data, uint32_t size);
+// *****************************************************************************
+// *****************************************************************************
+// Section: File Scope Function declarations
+// *****************************************************************************
+// *****************************************************************************
 
-CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(CAM_ECC_STRUCT *eccData, uint8_t *hash, uint32_t hashLen, uint8_t * privKey, uint32_t privKeyLen, CAM_CMD_CURVE hwEccCurve)
-{
-    CAM_ECC_SIZE size;
-    CRYPTO_ECDSA_RESULT result = GetSize(hwEccCurve, &size);
-    uint8_t random_TRNG[MAX_TRNG_SIZE] = {0};
+void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size);
 
-    if (result != CRYPTO_ECDSA_RESULT_SUCCESS)
-    {
-        return result;
-    }
+CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size);
 
-    eccData->curve = hwEccCurve;
-    eccData->operation = eECDSA_S_GEN;
-    eccData->op1.data = privKey;
-    eccData->op1.size = privKeyLen;
+ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data);
 
-    getTRNGNumber(random_TRNG, sizeof (random_TRNG));
-    eccData->op2.data = random_TRNG;
-    eccData->op2.size = (uint32_t) size - 2U;
-    eccData->op3.data = hash;
-    eccData->op3.size = hashLen;
-    eccData->op_size = (uint32_t) size - 1U;
+ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data);
 
-    CAM_HAL_Setup_Engine();
-    CAM_HAL_Setup_Interrupts();
+ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void);
 
-    return result;
-}
+// *****************************************************************************
+// *****************************************************************************
+// Section: File Scope Function implementations
+// *****************************************************************************
+// *****************************************************************************
 
-//TODO: placeholder random number
-
-void getTRNGNumber(uint8_t* data, uint32_t size)
+//TODO: placeholder until TRNG implementation is available
+void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size)
 {
     for (uint32_t i = 0; i < size; i++)
     {
@@ -85,78 +79,22 @@ void getTRNGNumber(uint8_t* data, uint32_t size)
     }
 }
 
-CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CAM_ECC_STRUCT *eccData, uint8_t * pfulSignature, uint32_t signatureLen)
-{
-    CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
-    CAM_ERROR errorCode;
-
-    errorCode = CAM_Execute(eccData);
-    if (errorCode != CAM_NO_ERROR)
-    {
-        return CRYPTO_ECDSA_RESULT_ERROR_FAIL;
-    }
-
-    errorCode = CAM_HAL_Read_Location(ECDSA_R, pfulSignature, signatureLen / 2u);
-    if (errorCode != CAM_NO_ERROR)
-    {
-        return CRYPTO_ECDSA_RESULT_ERROR_FAIL;
-    }
-
-    errorCode = CAM_HAL_Read_Location(ECDSA_S, pfulSignature + signatureLen / 2u, signatureLen / 2u);
-    if (errorCode != CAM_NO_ERROR)
-    {
-        return CRYPTO_ECDSA_RESULT_ERROR_FAIL;
-    }
-
-    return result;
-}
-
-CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(CAM_ECC_STRUCT *eccData, uint8_t *inputHash, uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, CAM_CMD_CURVE hwEccCurve)
-{
-    CAM_ECC_SIZE size;
-    CRYPTO_ECDSA_RESULT result = GetSize(hwEccCurve, &size);
-
-    if (result != CRYPTO_ECDSA_RESULT_SUCCESS)
-    {
-        return result;
-    }
-
-    eccData->curve = hwEccCurve;
-    eccData->operation = eECDSA_S_VER;
-    eccData->op1.data = inputSig;
-    eccData->op1.size = sigLen / 2U;
-    eccData->op2.data = inputSig + (sizeof (uint8_t) * sigLen / 2U);
-    eccData->op2.size = sigLen / 2U;
-    eccData->op3.data = inputHash;
-    eccData->op3.size = hashLen;
-
-    eccData->p1.x = pubKey;
-    eccData->p1.y = pubKey + (sizeof (uint8_t) * pubKeyLen / 2U);
-    eccData->p1.size = pubKeyLen;
-    eccData->op_size = ((uint8_t) size - 1U);
-
-    CAM_HAL_Setup_Engine();
-    CAM_HAL_Setup_Interrupts();
-
-    return result;
-}
-
-CRYPTO_ECDSA_RESULT GetSize(CAM_CMD_CURVE hwEccCurve, CAM_ECC_SIZE *size)
+CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size)
 {
     CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
     switch (hwEccCurve)
     {
-    case eP256:
-        *size = eP256_sz;
+    case P256:
+        *size = P256_sz;
         break;
-    case eP384:
-        *size = eP384_sz;
+    case P384:
+        *size = P384_sz;
         break;
-    case eP521:
-        *size = eP521_sz;
+    case P521:
+        *size = P521_sz;
         break;
-    case eP192:
-        *size = eP192_sz;
+    case P192:
+        *size = P192_sz;
         break;
     default:
         result = CRYPTO_ECDSA_RESULT_ERROR_CURVE;
@@ -165,115 +103,90 @@ CRYPTO_ECDSA_RESULT GetSize(CAM_CMD_CURVE hwEccCurve, CAM_ECC_SIZE *size)
     return result;
 }
 
-CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(CAM_ECC_STRUCT *eccData)
+ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data)
 {
-    CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
-    CAM_ERROR errorCode;
+    ECDSA_ERROR error_code;
 
-    errorCode = CAM_Execute(eccData);
-
-    if (errorCode != CAM_NO_ERROR)
+    error_code = lDRV_CRYPTO_ECDSA_ClearMemory();
+    if (error_code == ECDSA_NO_ERROR)
     {
-        result = CRYPTO_ECDSA_RESULT_ERROR_FAIL;
+        error_code = lDRV_CRYPTO_ECDSA_SetVariableLocations(ecc_data);
     }
-
-    return result;
-}
-
-CAM_ERROR CAM_Execute(CAM_ECC_STRUCT* ecc_data)
-{
-    CAM_ERROR error_code;
-
-    error_code = CAM_Clear_Memory();
-    if (CAM_NO_ERROR != error_code)
+    
+    if (error_code == ECDSA_NO_ERROR)
     {
-        return error_code;
+        DRV_CRYPTO_ECDSA_SetCommand(ecc_data);
+
+        DRV_CRYPTO_ECDSA_StartEngine();
     }
-
-    error_code = CAM_Set_Locations(ecc_data);
-    if (CAM_NO_ERROR != error_code)
-    {
-        return error_code;
-    }
-
-    CAM_HAL_Set_Cmd(ecc_data);
-
-    CAM_HAL_Start();
 
     if (0x99U != ecc_data->result_location)
     {
-        error_code = CAM_HAL_Read_Location(ecc_data->result_location, ecc_data->r1.data, ecc_data->r1.size);
+        error_code = DRV_CRYPTO_ECDSA_ReadLocation(ecc_data->result_location, ecc_data->r1.data, ecc_data->r1.size);
         ecc_data->result_location = 0x99;
-        if (CAM_NO_ERROR != error_code)
-        {
-            return error_code;
-        }
     }
-
-    return CAM_HAL_Check_Errors();
+    
+    if (error_code == ECDSA_NO_ERROR)
+    {
+        error_code = DRV_CRYPTO_ECDSA_CheckErrors();
+    }
+    
+    return error_code;
 }
 
-CAM_ERROR CAM_Set_Locations(CAM_ECC_STRUCT* ecc_data)
+ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
 {
-    CAM_ERROR error_code = CAM_NO_ERROR;
+    ECDSA_ERROR error_code = ECDSA_NO_ERROR;
 
     switch (ecc_data->operation)
     {
-    case eECDSA_S_GEN:
-        error_code = CAM_HAL_Write_Location(ECDSA_D, ecc_data->op1.data, ecc_data->op1.size);
-        if (CAM_NO_ERROR != error_code)
+    case ECDSA_SIGNATURE_GENERATION:
+        error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_D, ecc_data->op1.data, ecc_data->op1.size);
+        
+        if (error_code == ECDSA_NO_ERROR)
         {
-            break;
+            error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_K, ecc_data->op2.data, ecc_data->op2.size);
         }
-        error_code = CAM_HAL_Write_Location(ECDSA_K, ecc_data->op2.data, ecc_data->op2.size);
-        if (CAM_NO_ERROR != error_code)
+        
+        if (error_code == ECDSA_NO_ERROR)
         {
-            break;
-        }
-        error_code = CAM_HAL_Write_Location(ECDSA_H, ecc_data->op3.data, ecc_data->op3.size);
-        if (CAM_NO_ERROR != error_code)
-        {
-            break;
+            error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_H, ecc_data->op3.data, ecc_data->op3.size);
         }
         break;
-    case eECDSA_S_VER:
-        error_code = CAM_HAL_Write_Location(ECDSA_R, ecc_data->op1.data, ecc_data->op1.size);
-        if (CAM_NO_ERROR != error_code)
+    case ECDSA_SIGNATURE_VERIFICATION:
+        error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_R, ecc_data->op1.data, ecc_data->op1.size);
+        
+        if (error_code == ECDSA_NO_ERROR)
         {
-            break;
+            error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_S, ecc_data->op2.data, ecc_data->op2.size);
         }
-        error_code = CAM_HAL_Write_Location(ECDSA_S, ecc_data->op2.data, ecc_data->op2.size);
-        if (CAM_NO_ERROR != error_code)
+        
+        if (error_code == ECDSA_NO_ERROR)
         {
-            break;
+            error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_H, ecc_data->op3.data, ecc_data->op3.size);
         }
-        error_code = CAM_HAL_Write_Location(ECDSA_H, ecc_data->op3.data, ecc_data->op3.size);
-        if (CAM_NO_ERROR != error_code)
+        
+        if (error_code == ECDSA_NO_ERROR)
         {
-            break;
+            error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_QX, ecc_data->p1.x, ecc_data->p1.size);
         }
-        error_code = CAM_HAL_Write_Location(ECDSA_QX, ecc_data->p1.x, ecc_data->p1.size);
-        if (CAM_NO_ERROR != error_code)
+        
+        if (error_code == ECDSA_NO_ERROR)
         {
-            break;
-        }
-        error_code = CAM_HAL_Write_Location(ECDSA_QX + 1, ecc_data->p1.y, ecc_data->p1.size);
-        if (CAM_NO_ERROR != error_code)
-        {
-            break;
+            error_code = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_QX + 1, ecc_data->p1.y, ecc_data->p1.size);
         }
         break;
-        /************* Other PKE functions ****************/
     default:
-        return CAM_INVALID_OPERATION;
+        error_code = ECDSA_INVALID_OPERATION;
+        break;
     }
     return error_code;
 }
 
-CAM_ERROR CAM_Clear_Memory(void)
+ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
 {
-    CAM_ECC_STRUCT eccData = {
-        .operation = eCLR_MEM,
+    ECDSA_CONFIG eccData = {
+        .operation = ECDSA_CLEAR_MEMORY,
         .field = 0,
         .op_size = 0,
         .curve = 0,
@@ -282,12 +195,117 @@ CAM_ERROR CAM_Clear_Memory(void)
         .flag_b = 0
     };
 
-    CAM_HAL_Set_Cmd(&eccData);
+    DRV_CRYPTO_ECDSA_SetCommand(&eccData);
 
-    CAM_HAL_Start();
+    DRV_CRYPTO_ECDSA_StartEngine();
 
-    return CAM_HAL_Check_Errors();
+    return DRV_CRYPTO_ECDSA_CheckErrors();
+}
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: ECDSA Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(ECDSA_CONFIG *eccData, uint8_t *hash, uint32_t hashLen, uint8_t * privKey, uint32_t privKeyLen, ECDSA_CMD_CURVE hwEccCurve)
+{
+    ECDSA_ECC_SIZE size;
+    CRYPTO_ECDSA_RESULT result = lDRV_CRYPTO_ECDSA_GetCurveSize(hwEccCurve, &size);
+    uint8_t random_TRNG[P521_sz] = {0};
+
+    if (result == CRYPTO_ECDSA_RESULT_SUCCESS)
+    {
+        eccData->curve = hwEccCurve;
+        eccData->operation = ECDSA_SIGNATURE_GENERATION;
+        eccData->op1.data = privKey;
+        eccData->op1.size = privKeyLen;
+
+        lDRV_CRYPTO_ECDSA_GetRandomNumber(random_TRNG, sizeof (random_TRNG));
+        eccData->op2.data = random_TRNG;
+        eccData->op2.size = (uint32_t) size - 2U;
+        eccData->op3.data = hash;
+        eccData->op3.size = hashLen;
+        eccData->op_size = (uint32_t) size - 1U;
+
+        DRV_CRYPTO_ECDSA_SetupEngine();
+        DRV_CRYPTO_ECDSA_InterruptSetup();
+    }
+
+    return result;
 }
 
 
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(ECDSA_CONFIG *eccData, uint8_t * pfulSignature, uint32_t signatureLen)
+{
+    CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
+    ECDSA_ERROR error_code;
 
+    error_code = lDRV_CRYPTO_ECDSA_ExecuteCommand(eccData);
+    
+    if (error_code == ECDSA_NO_ERROR)
+    {
+        error_code = DRV_CRYPTO_ECDSA_ReadLocation(ECDSA_R, pfulSignature, signatureLen / 2u);
+    }
+    
+    if (error_code == ECDSA_NO_ERROR)
+    {
+        error_code = DRV_CRYPTO_ECDSA_ReadLocation(ECDSA_S, pfulSignature + (signatureLen / 2u), signatureLen / 2u);
+    }
+    
+    if(error_code != ECDSA_NO_ERROR){
+        result = CRYPTO_ECDSA_RESULT_ERROR_FAIL;
+    }
+    
+    return result;
+}
+
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(ECDSA_CONFIG *eccData, uint8_t *inputHash, uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, ECDSA_CMD_CURVE hwEccCurve)
+{
+    ECDSA_ECC_SIZE size;
+    CRYPTO_ECDSA_RESULT result = lDRV_CRYPTO_ECDSA_GetCurveSize(hwEccCurve, &size);
+    
+    /* Compressed keys not supported */
+    if (pubKey[0] != 0x04U) 
+    {
+        return CRYPTO_ECDSA_ERROR_PUBKEYCOMPRESS;
+    }
+    
+    if (result == CRYPTO_ECDSA_RESULT_SUCCESS)
+    {
+        eccData->curve = hwEccCurve;
+        eccData->operation = ECDSA_SIGNATURE_VERIFICATION;
+        eccData->op1.data = inputSig;
+        eccData->op1.size = sigLen / 2U;
+        eccData->op2.data = inputSig + (sizeof (uint8_t) * sigLen / 2U);
+        eccData->op2.size = sigLen / 2U;
+        eccData->op3.data = inputHash;
+        eccData->op3.size = hashLen;
+
+        eccData->p1.x = pubKey + 1U;
+        eccData->p1.y = pubKey + 1U + (sizeof (uint8_t) * (pubKeyLen - 1U) / 2U);
+        eccData->p1.size = pubKeyLen - 1U;
+        eccData->op_size = ((uint8_t) size - 1U);
+
+        DRV_CRYPTO_ECDSA_SetupEngine();
+        DRV_CRYPTO_ECDSA_InterruptSetup();
+    }
+
+    return result;
+}
+
+
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(ECDSA_CONFIG *eccData)
+{
+    CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
+    ECDSA_ERROR error_code;
+
+    error_code = lDRV_CRYPTO_ECDSA_ExecuteCommand(eccData);
+
+    if (error_code != ECDSA_NO_ERROR)
+    {
+        result = CRYPTO_ECDSA_RESULT_ERROR_FAIL;
+    }
+
+    return result;
+}

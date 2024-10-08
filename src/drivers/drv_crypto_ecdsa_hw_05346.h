@@ -11,7 +11,9 @@
     ECDSA Hardware function declarations.
 
   Description:
-    This header file contains the ECDSA API for crypto functionality. 
+    This header file contains the ECDSA API for crypto functionality 
+    for the following families of Microchip microcontrollers:
+    dsPIC33AK with Crypto Accelerator Module.
 **************************************************************************/
 
 /*
@@ -37,10 +39,6 @@ implied, are granted under any patent or other intellectual property rights of
 Microchip or any third party.
 */
 
-#include <xc.h>
-#include <stdint.h>
-#include "../../../../ecdsa_hal.h"
-
 #ifndef DRV_CRYPTO_ECDSA_HW_05346_H
 #define	DRV_CRYPTO_ECDSA_HW_05346_H
 
@@ -48,20 +46,28 @@ Microchip or any third party.
 extern "C" {
 #endif
     // DOM-IGNORE-END
-#define MAX_TRNG_SIZE   
-    // *****************************************************************************
-    // *****************************************************************************
-    // Section: ECDSA Common Interface 
-    // *****************************************************************************
-    // *****************************************************************************
-    CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(CAM_ECC_STRUCT *eccData, uint8_t *hash, uint32_t hashLen, uint8_t * privKey, uint32_t privKeyLen, CAM_CMD_CURVE hwEccCurve);
-    CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CAM_ECC_STRUCT *eccData, uint8_t * pfulSignature, uint32_t signatureLen);
-    CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(CAM_ECC_STRUCT *eccData, uint8_t *inputHash, uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, CAM_CMD_CURVE hwEccCurve);
-    CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(CAM_ECC_STRUCT *eccData);
+    
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+    
+#include "cam_ecdsa.h"
+        
+// *****************************************************************************
+// *****************************************************************************
+// Section: ECDSA Common Interface 
+// *****************************************************************************
+// *****************************************************************************
+    
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(ECDSA_CONFIG *eccData, uint8_t *hash, uint32_t hashLen, uint8_t * privKey, uint32_t privKeyLen, ECDSA_CMD_CURVE hwEccCurve);
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(ECDSA_CONFIG *eccData, uint8_t * pfulSignature, uint32_t signatureLen);
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(ECDSA_CONFIG *eccData, uint8_t *inputHash, uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, ECDSA_CMD_CURVE hwEccCurve);
+CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(ECDSA_CONFIG *eccData);
 
 #ifdef	__cplusplus
 }
 #endif
 
 #endif	/* DRV_CRYPTO_ECDSA_HW_05346_H */
-

@@ -27,6 +27,8 @@ import os
 
 Crypto_HW_AllSupportedDriver = []
 
+#---------------------------------------------------------------------------------------
+
 Crypto_Hw_Aes_6149_DriverSymbol = None
 Crypto_Hw_SHA_6156_DriverSymbol = None
 Crypto_Hw_TRNG_6334_DriverSymbol = None
@@ -35,7 +37,6 @@ Crypto_Hw_HSM_03785_DriverSymbol = None
 Crypto_Hw_ICM_11105_DriverSymbol = None
 Crypto_Hw_TDES_6150_DriverSymbol = None
 
-#---------------------------------------------------------------------------------------
 Crypto_HW_AllDriversList = [
         #AES_6149
         ["AES", "6149", "", "AES_6149", "HAVE_CRYPTO_HW_AES_6149_DRIVER", "Crypto_Hw_Aes_6149_DriverSymbol", "AES_6149 Driver Supported"],   #AES_6149
@@ -115,7 +116,18 @@ Crypto_HW_DriverAndWrapperFilesDict = {
             "WrapperFiles":["MCHP_Crypto_Aead_HwWrapper.h", "MCHP_Crypto_Aead_HwWrapper.c.ftl"],    
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         }
-    }
+    },
+    "CPKCC_44163":{ 
+        "DigisignAlgo":{
+            "WrapperFiles":[],    
+            "DriverFiles":[],
+        },
+        "KasAlgo":{
+            "WrapperFiles":["HwWrapper"],
+            "DriverFiles":["Driver"],
+            "LibraryFiles":["CPKCL_Lib"]
+        }        
+    },
 }
    
 #---------------------------------------------------------------------------------------

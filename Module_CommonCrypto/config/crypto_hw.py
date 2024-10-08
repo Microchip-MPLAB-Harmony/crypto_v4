@@ -42,10 +42,12 @@
 #### NOTE(s): 
 ####    1) crypto component module defined by module.py in crypto/config
 #################################################################################
+from email import message
 import os
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_Driver.py"))
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_MenuInGUI.py"))
 execfile( Module.getPath() + os.path.join("config", "crypto_handle_files.py"))
+execfile( Module.getPath() + os.path.join("config", "crypto_globals.py"))
 
 def instantiateComponent(CommonCryptoComponent):
 
@@ -62,10 +64,13 @@ def instantiateComponent(CommonCryptoComponent):
     Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
 
 
+# Insert messages into Crypto_Attached_Category_Reqs
 def handleMessage(messageID, args):
-    print("hey it's crypto_hw receiving")
-    print("messageID: ", messageID)
-    print("args: ", args)
+    # TODO: Cleanse input and error check
+    Crypto_Attached_Category_Reqs[messageID] = args
+
+    print("Crypto_Attached_Category_Reqs: ")
+    print(Crypto_Attached_Category_Reqs)
 
 #---------------------------------------------------------------------------------------
     

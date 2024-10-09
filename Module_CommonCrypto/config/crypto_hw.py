@@ -67,25 +67,33 @@ def instantiateComponent(CommonCryptoComponent):
 # Insert messages into Crypto_Attached_Category_Reqs
 def handleMessage(messageID, args):
     # TODO: Cleanse input and error check
-    Crypto_Attached_Category_Reqs[messageID] = args
 
-    print("Crypto_Attached_Category_Reqs: ")
-    print(Crypto_Attached_Category_Reqs)
+    # Insert algoCategories from message into global dict
+    for key in args.keys():
+        Crypto_Attached_Category_Reqs[key] = args[key]
 
-#---------------------------------------------------------------------------------------
-    
+    Refresh_Files()
+
+
+# Clean up entries into Crypto_Attached_Category_Reqs
+def onAttachmentDisconnected(source, target):
+    print("Disconnected" + source["component"].getID() + " and " + target["component"].getID())
+
+    for key in list(Crypto_Attached_Category_Reqs.keys()):
+        if key == source["component"].getID() or key == target["component"].getID():
+            del Crypto_Attached_Category_Reqs[key]
+
+    Refresh_Files()
+
+
 # Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(CommonCryptoComponent):
-    idList = Database.getActiveComponentIDs()
-    symIDList = Database.getComponentSymbolIDs("lib_crypto")
-    symIDList_str = [str(item) for item in symIDList]
 
-    print("goodbye")
+    print("goodbye :)")
     idList = Database.getActiveComponentIDs()
-    symIDList = Database.getComponentSymbolIDs("lib_crypto")
+    symIDList = Database.getComponentSymbolIDs(CommonCryptoComponent.getID())
+    symIDList_str = [str(item) for item in symIDList]
     print(idList)
     print(symIDList)
     
     return
-        
-

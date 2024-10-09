@@ -25,12 +25,13 @@
 # ***************************************************************************'''
 import os
 execfile( Module.getPath() + os.path.join("config", "Crypto_WC_AllMenuList.py"))
+execfile( Module.getPath() + os.path.join("config", "wolfcrypt_handle_files.py"))
 
 #----------------------------------------------------------------------------------------- 
 def instantiateComponent(WolfcryptComponent):
     wolfcryptSetUpAllMenu(WolfcryptComponent)
 
-    # TODO: Setup files for wolfcrypt
+    setup_wc_files(WolfcryptComponent)
 
 #----------------------------------------------------------------------------------------- 
 # Figure out how to remove Component Symbols so that re-adding the module works

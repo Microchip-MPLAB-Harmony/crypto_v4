@@ -104,23 +104,20 @@ Crypto_HW_AllMenusList = [
 ]
 
 def Crypto_CallBack(symbol, event):
+    Refresh_Files()
+
+def Refresh_Files():
     # Check algoCategories needed by lib_crypto
     crypto_selected_categories = {
         menu[7] for menu in Crypto_Hw_orderAlgoMenuList 
         if menu[7] is not None and globals()[menu[2]].getValue()
     }
 
-    # Check the algoCategories that attached modules may need 
+    # Check algoCategories needed by attached modules
+    print(Crypto_Attached_Category_Reqs)
     attachment_selected_categories = set()
-    for category_dict in Crypto_Attached_Category_Reqs.values():
-        for category_set in category_dict.values():
-            attachment_selected_categories.update(category_set)
-
-    # Superset of algoCategories that lib_crypto and it's attachments need
-    user_selected_categories = set()
-    user_selected_categories.update(crypto_selected_categories)
-    user_selected_categories.update(attachment_selected_categories)
-    print("user_selected_categories: %s" % user_selected_categories)
+    for category_set in Crypto_Attached_Category_Reqs.values():
+        attachment_selected_categories.update(category_set)
 
     # Initialize sets to collect unique files
     common_crypto_reqs = set()
@@ -128,6 +125,10 @@ def Crypto_CallBack(symbol, event):
     driver_reqs = set()
     library_reqs = set()
 
+    # Superset of algoCategories that lib_crypto and it's attachments need
+    user_selected_categories = crypto_selected_categories | attachment_selected_categories
+    print("Enable categories:  %s" % list(user_selected_categories))
+    
     # Update common crypto files list for call algoCategories
     for category in user_selected_categories:
         common_crypto_reqs.update(Crypto_HW_CommonCryptoFilesDict.get(category, []))
@@ -153,4 +154,3 @@ def Crypto_CallBack(symbol, event):
     # Enable or disable file symbols based on the combined list
     for file_name in Crypto_HW_Files:
         Crypto_HW_Files[file_name][1].setEnabled(file_name in all_enabled_files)
-        

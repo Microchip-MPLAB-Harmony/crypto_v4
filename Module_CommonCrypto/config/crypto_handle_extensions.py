@@ -19,3 +19,7 @@
 #               lib_wolfcrypt : (HashAlgo, SymAlgo, AeadAlgo)
 #               lib_random_sw : (RngAlgo)
 #            }
+
+# NOTES
+# make sure to name the <Module name="Wolfcrypt_Lib" ...> and Module.CreateComponent("lib_wolfcrypt", ...) the same
+# make sure sendMessage sends a dictionary with only one key-value pair. not sure how it would handle other cases

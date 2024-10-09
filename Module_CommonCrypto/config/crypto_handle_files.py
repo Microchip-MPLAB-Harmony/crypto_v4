@@ -1,6 +1,4 @@
 import os
-import sys
-import inspect
 
 # Initialize an empty dictionary to store file data
 Crypto_HW_Files = {}
@@ -89,7 +87,7 @@ def setup_common_crypto(component):
                 add_file_to_dict(component, file_name, file_path, "common_crypto")
         print("src/common_crypto directory file symbols created.")
     else:
-        print("src/common_crypto directory damaged. Check that it exists.")
+        Log.writeWarningMessage("src/common_crypto directory damaged. Check that it exists.")
 
     return True
 
@@ -127,7 +125,7 @@ def setup_drivers(component, supported_drivers):
                     #     add_file_to_dict(component, file_name, file_path, "drivers")
             print("src/drivers/%s file symbols created." %driver)
         else:
-            print("src/drivers/%s directory damaged. Check that this driver exists." %driver)
+            Log.writeWarningMessage("src/drivers/%s directory damaged. Check that this driver exists." %driver)
    
     return True
 
@@ -176,7 +174,7 @@ def setup_templates(component):
             Crypto_HW_Files[file_name] = ("", file_symbol)
         print("/templates file symbols created.")
     else:
-        print("/templates directory damaged. Check that it exists.")
+        Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
 
 
 # Make file symbols (.createFileSymbol) for crypto_v4

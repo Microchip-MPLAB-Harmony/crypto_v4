@@ -25,6 +25,7 @@
 # ***************************************************************************'''
 import os
 
+execfile( Module.getPath() + os.path.join("config", "wolfcrypt_handle_files.py"))
 execfile( Module.getPath() + os.path.join("config", "wolfcrypt_globals.py"))
 
 Crypto_Wc_Hash_Menu = None,
@@ -163,27 +164,30 @@ def wolfcryptSetUpAllMenu(WolfcryptComponent):
         globals()[menu[2]].setVisible(menu[4])   
 #-----------------------------------------------------------------------------------------         
 def wolfCrypt_CallBack(symbol, event):
+    Refresh_Files()
 
+def Refresh_Files():
+    
     # Gather selected categories based on user input
-    user_selected_categories = set()
+    wolfcrypt_selected_categories = set()
     for menu in wolfcrypt_AllMenuList:
         if(menu[5] != None):
             if globals()[menu[2]].getValue():
-                user_selected_categories.add(menu[6])
-
-    # Initialize sets to collect unique files
-    wolfcrypt_reqs = set()
+                wolfcrypt_selected_categories.add(menu[6])
 
     # Collect files based on selected categories
-    for category in user_selected_categories:
+    wolfcrypt_reqs = set()
+    for category in wolfcrypt_selected_categories:
         wolfcrypt_reqs.update(wolfCrypt_CommonFilesDict.get(category, []))
+    print("wolfcrypt_reqs:     %s" % list(wolfcrypt_reqs))
 
-    # Print results for debugging
-    print("wolfcrypt_reqs: %s" % list(wolfcrypt_reqs))
-
+    # Combine all enabled files into a single set
     all_enabled_files = wolfcrypt_reqs
 
-    # TODO: Enable WC files
+    # Enable or disable file symbols based on the combined list
+    for file_name in wolfCrypt_Files:
+        wolfCrypt_Files[file_name][1].setEnabled(file_name in all_enabled_files)
 
-    msg = {Module.getName(): user_selected_categories}
-    Database.sendMessage("lib_crypto", "categoriesEnabled", msg)
+    # TODO: Generalize this? it'll break if we change the name
+    msg = {Module.getName(): wolfcrypt_selected_categories}
+    Database.sendMessage("lib_crypto", "wolfcryptAlgoCategories", msg)

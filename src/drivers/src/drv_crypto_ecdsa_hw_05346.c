@@ -50,91 +50,11 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: File Scope Function declarations
-// *****************************************************************************
-// *****************************************************************************
-
-void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size);
-
-CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size);
-
-ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data);
-
-ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data);
-
-ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void);
-
-// *****************************************************************************
-// *****************************************************************************
 // Section: File Scope Function implementations
 // *****************************************************************************
 // *****************************************************************************
 
-//TODO: placeholder until TRNG implementation is available
-void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size)
-{
-    for (uint32_t i = 0; i < size; i++)
-    {
-        data[i] = i;
-    }
-}
-
-CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size)
-{
-    CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
-    switch (hwEccCurve)
-    {
-    case P256:
-        *size = P256_sz;
-        break;
-    case P384:
-        *size = P384_sz;
-        break;
-    case P521:
-        *size = P521_sz;
-        break;
-    case P192:
-        *size = P192_sz;
-        break;
-    default:
-        result = CRYPTO_ECDSA_RESULT_ERROR_CURVE;
-        break;
-    }
-    return result;
-}
-
-ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data)
-{
-    ECDSA_ERROR error_code;
-
-    error_code = lDRV_CRYPTO_ECDSA_ClearMemory();
-    if (error_code == ECDSA_NO_ERROR)
-    {
-        error_code = lDRV_CRYPTO_ECDSA_SetVariableLocations(ecc_data);
-    }
-    
-    if (error_code == ECDSA_NO_ERROR)
-    {
-        DRV_CRYPTO_ECDSA_SetCommand(ecc_data);
-
-        DRV_CRYPTO_ECDSA_StartEngine();
-    }
-
-    if (0x99U != ecc_data->result_location)
-    {
-        error_code = DRV_CRYPTO_ECDSA_ReadLocation(ecc_data->result_location, ecc_data->r1.data, ecc_data->r1.size);
-        ecc_data->result_location = 0x99;
-    }
-    
-    if (error_code == ECDSA_NO_ERROR)
-    {
-        error_code = DRV_CRYPTO_ECDSA_CheckErrors();
-    }
-    
-    return error_code;
-}
-
-ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
+static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
 {
     ECDSA_ERROR error_code = ECDSA_NO_ERROR;
 
@@ -183,7 +103,7 @@ ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
     return error_code;
 }
 
-ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
+static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
 {
     ECDSA_CONFIG eccData = {
         .operation = ECDSA_CLEAR_MEMORY,
@@ -200,6 +120,70 @@ ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
     DRV_CRYPTO_ECDSA_StartEngine();
 
     return DRV_CRYPTO_ECDSA_CheckErrors();
+}
+
+//TODO: placeholder until TRNG implementation is available
+static inline void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size)
+{
+    for (uint32_t i = 0; i < size; i++)
+    {
+        data[i] = i;
+    }
+}
+
+static inline CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size)
+{
+    CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
+    switch (hwEccCurve)
+    {
+    case P256:
+        *size = P256_sz;
+        break;
+    case P384:
+        *size = P384_sz;
+        break;
+    case P521:
+        *size = P521_sz;
+        break;
+    case P192:
+        *size = P192_sz;
+        break;
+    default:
+        result = CRYPTO_ECDSA_RESULT_ERROR_CURVE;
+        break;
+    }
+    return result;
+}
+
+static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data)
+{
+    ECDSA_ERROR error_code;
+
+    error_code = lDRV_CRYPTO_ECDSA_ClearMemory();
+    if (error_code == ECDSA_NO_ERROR)
+    {
+        error_code = lDRV_CRYPTO_ECDSA_SetVariableLocations(ecc_data);
+    }
+    
+    if (error_code == ECDSA_NO_ERROR)
+    {
+        DRV_CRYPTO_ECDSA_SetCommand(ecc_data);
+
+        DRV_CRYPTO_ECDSA_StartEngine();
+    }
+
+    if (0x99U != ecc_data->result_location)
+    {
+        error_code = DRV_CRYPTO_ECDSA_ReadLocation(ecc_data->result_location, ecc_data->r1.data, ecc_data->r1.size);
+        ecc_data->result_location = 0x99;
+    }
+    
+    if (error_code == ECDSA_NO_ERROR)
+    {
+        error_code = DRV_CRYPTO_ECDSA_CheckErrors();
+    }
+    
+    return error_code;
 }
 
 // *****************************************************************************

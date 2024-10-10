@@ -84,9 +84,53 @@ def setup_wolfcrypt_wrappers(component):
 
     return True
 
+def setup_templates(component):
+      
+    config_name = Variables.get("__CONFIGURATION_NAME")
+    module_path = Module.getPath()
+    templates_path = os.path.join(module_path, "templates")
+
+    # Recursively go through the common_crypto directory and collect all file paths
+    if os.path.exists(templates_path):
+        for root, dirs, files in os.walk(templates_path):
+            for file in files:
+                
+                file_path = os.path.join(root, file)
+                file_name = os.path.basename(file_path)
+
+                # Settings for file being added
+                prefix = ""                                    # set impportant 
+                markup = file_name.endswith(".ftl")            # check if markup
+                
+                # Remove auto appended portion ex. ~\crypto_v4\Module_CommonCrypto\
+                relative_path = file_path.replace(module_path, '')
+
+                # Configure destination (/)
+                dest_path = os.path.join("")
+
+                # Configure MPLABX proj tree (config/default/)
+                project_path = os.path.join("config", config_name)
+                
+                # Create symbol
+                file_symbol = make_file_symbol(component,
+                                        file_name, 
+                                        relative_path,            # Source 
+                                        prefix, 
+                                        dest_path,     # Destination
+                                        project_path,  # MPLABX proj tree
+                                        markup,
+                                        False          # Disabled initial state 
+                                        )
+                
+            wolfCrypt_Files[file_name] = ("", file_symbol)
+        print("/templates file symbols created.")
+    else:
+        Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
+
 def setup_wc_files(component):
     
     setup_wolfcrypt_wrappers(component)
+    setup_templates(component)
 
     print("Created file symbols: ")
     for file_name, (file_path, file_symbol) in wolfCrypt_Files.items():

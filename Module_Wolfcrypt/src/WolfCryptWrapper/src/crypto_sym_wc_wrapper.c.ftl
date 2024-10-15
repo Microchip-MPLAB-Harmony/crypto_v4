@@ -879,7 +879,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_DecryptDirect(crypto_Sym_OpModes_E sy
                 case CRYPTO_SYM_OPMODE_CBC:
                     wcCamStatus = wc_CamelliaCbcDecrypt(camCtx,(byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break; 
-#endif /* CRYPTO_SYM_CAMCBC_EN */
+</#if> <#-- CRYPTO_WC_CAMELLIA_CBC -->
                     
                 default:
                     ret_camStat_en = CRYPTO_SYM_ERROR_OPMODE;

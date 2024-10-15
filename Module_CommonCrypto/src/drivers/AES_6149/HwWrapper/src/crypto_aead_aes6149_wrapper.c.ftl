@@ -49,9 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "crypto/common_crypto/crypto_aead_aes6149_wrapper.h"
-<#if driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
 #include "crypto/drivers/drv_crypto_aes_hw_6149.h"
-</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,9 +57,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN
 static CRYPTO_AES_CONFIG aesGcmCfg;
-#endif
 
 // *****************************************************************************
 // *****************************************************************************
@@ -69,7 +65,7 @@ static CRYPTO_AES_CONFIG aesGcmCfg;
 // *****************************************************************************
 // *****************************************************************************
 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
 static void lCrypto_Aead_Hw_Gcm_WriteKey(uint32_t *gcmKey)
 {
     DRV_CRYPTO_AES_WriteKey(gcmKey);
@@ -574,7 +570,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
    
     (void) memcpy(tag, (uint8_t*)gcmTag, tagLen);
 }
-#endif
+</#if> <#-- CRYPTO_HW_AES_GCM -->
 
 // *****************************************************************************
 // *****************************************************************************
@@ -582,7 +578,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
 // *****************************************************************************
 // *****************************************************************************
 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen)
 {
@@ -723,4 +719,4 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
             dataLen, outData, aad, aadLen, authTag, authTagLen);
 </#if> 
 }
-#endif
+</#if> <#-- CRYPTO_HW_AES_GCM -->

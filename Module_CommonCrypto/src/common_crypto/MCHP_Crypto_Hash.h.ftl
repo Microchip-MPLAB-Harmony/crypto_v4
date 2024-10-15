@@ -235,7 +235,6 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Final(st_Crypto_Hash_Ripemd160_Ctx *p
     ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))
     ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>
 //SHA-1, SHA-2, SHA-3(Except SHAKE)
-#if (defined(CRYPTO_HASH_SHA1_EN) || defined(CRYPTO_HASH_SHA2_EN) || defined(CRYPTO_HASH_SHA3_EN))
 crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en, uint32_t shaSessionId);
 crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, crypto_Hash_Algo_E shaAlgorithm_en, crypto_HandlerType_E shaHandler_en, uint32_t shaSessionId);
 crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, uint8_t *ptr_data, uint32_t dataLen);

@@ -47,10 +47,8 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/MCHP_Crypto_Sym_HwWrapper.h"
-<#if driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
+#include "crypto/common_crypto/crypto_sym_aes6149_wrapper.h"
 #include "crypto/drivers/drv_crypto_aes_hw_6149.h"
-</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -66,70 +64,70 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperationMode
     crypto_Sym_Status_E retStat = CRYPTO_SYM_CIPHER_SUCCESS;
     switch (opMode) 
     {
-#ifdef CRYPTO_SYM_AESECB_EN
+<#if (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>
         case CRYPTO_SYM_OPMODE_ECB:
             *aesMode = CRYPTO_AES_MODE_ECB;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_ECB -->
         
-#ifdef CRYPTO_SYM_AESCBC_EN
+<#if (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true))>
         case CRYPTO_SYM_OPMODE_CBC:
             *aesMode = CRYPTO_AES_MODE_CBC;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CBC -->
         
-#ifdef CRYPTO_SYM_AESOFB_EN
+<#if (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true))>
         case CRYPTO_SYM_OPMODE_OFB:
             *aesMode = CRYPTO_AES_MODE_OFB;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_OFB -->
             
-#ifdef CRYPTO_SYM_AESCFB1_EN
+<#if (CRYPTO_HW_AES_CFB1?? &&(CRYPTO_HW_AES_CFB1 == true))>
         case CRYPTO_SYM_OPMODE_CFB1:
             retStat = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CFB1 -->
             
-#ifdef CRYPTO_SYM_AESCFB8_EN
+<#if (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))>
         case CRYPTO_SYM_OPMODE_CFB8:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_8BIT;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CFB8 -->
             
-#ifdef CRYPTO_SYM_AESCFB16_EN
+<#if (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true))>
         case CRYPTO_SYM_OPMODE_CFB16:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_16BIT;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CFB16 -->
         
-#ifdef CRYPTO_SYM_AESCFB32_EN
+<#if (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))>
         case CRYPTO_SYM_OPMODE_CFB32:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_32BIT;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CFB32 -->
            
-#ifdef CRYPTO_SYM_AESCFB64_EN
+<#if (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))>
         case CRYPTO_SYM_OPMODE_CFB64:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_64BIT;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CFB64 -->
             
-#ifdef CRYPTO_SYM_AESCFB128_EN
+<#if (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>
         case CRYPTO_SYM_OPMODE_CFB128:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_128BIT;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CFB128 -->
         
-#ifdef CRYPTO_SYM_AESCTR_EN
+<#if (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))>
         case CRYPTO_SYM_OPMODE_CTR:
             *aesMode = CRYPTO_AES_MODE_CTR;
             break;
-#endif
+</#if>  <#-- CRYPTO_HW_AES_CTR -->
             
         case CRYPTO_SYM_OPMODE_INVALID:
             retStat = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -153,9 +151,6 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
     crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen, 
     uint8_t *initVect)
 { 
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-<#else> 
     CRYPTO_AES_CONFIG aesCfg;
     CRYPTO_AES_OPERATION_MODE opMode = CRYPTO_AES_MODE_ECB;
     CRYPTO_AES_CFB_SIZE cfbSize;
@@ -232,15 +227,11 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
     }
     
     return CRYPTO_SYM_CIPHER_SUCCESS;
-</#if>
 }
     
 crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData, 
     uint32_t dataLen, uint8_t *outData)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-<#else>
     DRV_CRYPTO_AES_WritePCTextLen(dataLen);
     
     /* MISRA C-2012 deviation block start */
@@ -281,16 +272,12 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData,
     }
     
     return CRYPTO_SYM_CIPHER_SUCCESS;
-</#if>
 }
 
 crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_en, 
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-<#else> 
     crypto_Sym_Status_E result = CRYPTO_SYM_CIPHER_SUCCESS;
     
     result = Crypto_Sym_Hw_Aes_Init(CRYPTO_CIOP_ENCRYPT, opMode_en, key, 
@@ -302,16 +289,12 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_
     }
     
     return Crypto_Sym_Hw_Aes_Cipher(inputData, dataLen, outData);
-</#if>
 }
 
 crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_en, 
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-<#else> 
     crypto_Sym_Status_E result = CRYPTO_SYM_CIPHER_SUCCESS;
     
     result = Crypto_Sym_Hw_Aes_Init(CRYPTO_CIOP_DECRYPT, opMode_en, key, 
@@ -323,5 +306,4 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
     }
     
     return Crypto_Sym_Hw_Aes_Cipher(inputData, dataLen, outData);
-</#if>
 }

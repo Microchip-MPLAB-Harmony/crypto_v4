@@ -50,9 +50,7 @@ Microchip or any third party.
 #include <string.h>
 #include "device.h"
 #include "crypto/common_crypto/crypto_hash_sha6156_wrapper.h"
-<#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
 #include "crypto/drivers/drv_crypto_sha_hw_6156.h"
-</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -91,54 +89,54 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
     crypto_Hash_Status_E ret_status = CRYPTO_HASH_ERROR_FAIL;
     switch(shaAlgorithm)
     {  
-#ifdef CRYPTO_HASH_SHA1_EN
+<#if (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true))>
         case CRYPTO_HASH_SHA1:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA1;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-#endif
+</#if> <#-- CRYPTO_HW_SHA1 -->
          
-#ifdef CRYPTO_HASH_SHA2_224_EN
+<#if (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true))>
         case CRYPTO_HASH_SHA2_224:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA224;
             ret_status = CRYPTO_HASH_SUCCESS;
             break; 
-#endif
+</#if> <#-- CRYPTO_HW_SHA2_224 -->
             
-#ifdef CRYPTO_HASH_SHA2_256_EN
+<#if (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true))>
         case CRYPTO_HASH_SHA2_256:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA256;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-#endif
+</#if> <#-- CRYPTO_HW_SHA2_256 -->
        
-#ifdef CRYPTO_HASH_SHA2_384_EN 
+<#if (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>
         case CRYPTO_HASH_SHA2_384:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA384;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-#endif
+</#if> <#-- CRYPTO_HW_SHA2_384 -->
            
-#ifdef CRYPTO_HASH_SHA2_512_EN  
+<#if (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>  
         case CRYPTO_HASH_SHA2_512:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA512;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-#endif
+</#if> <#-- CRYPTO_HW_SHA2_512 -->
 
-#ifdef CRYPTO_HASH_SHA2_512_224_EN 
+<#if (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>  
         case CRYPTO_HASH_SHA2_512_224:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA512_224;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;        
-#endif
+</#if> <#-- CRYPTO_HW_SHA2_512_224 -->
         
-#ifdef CRYPTO_HASH_SHA2_512_256_EN
+<#if (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))> 
         case CRYPTO_HASH_SHA2_512_256:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA512_256;
             ret_status = CRYPTO_HASH_SUCCESS;
             break; 
-#endif
+</#if> <#-- CRYPTO_HW_SHA2_512_256 -->
 
         default:
             ret_status = CRYPTO_HASH_ERROR_ALGO;

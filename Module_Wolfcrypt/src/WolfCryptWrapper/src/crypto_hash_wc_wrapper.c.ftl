@@ -820,8 +820,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeFinal(void *ptr_shakeCtx_st, uint8_t *p
     else
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
-    }
-#endif /* WOLFSSL_SHA3 */    
+    }  
     return ret_shakeStat_en;
 } 
 </#if> <#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
@@ -993,8 +992,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeUpdate(void *ptr_blakeCtx_st, uint8_t *
     else
     {
         ret_blakeStat_en = CRYPTO_HASH_ERROR_ARG;
-    }
-#endif /* HAVE_BLAKE2 */    
+    }    
     return ret_blakeStat_en;       
 }
 

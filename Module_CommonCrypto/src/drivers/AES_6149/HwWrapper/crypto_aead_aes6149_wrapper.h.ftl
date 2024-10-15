@@ -68,7 +68,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
 typedef struct 
 {
     uint32_t key[16];
@@ -77,7 +77,7 @@ typedef struct
     uint32_t H[4];
     uint32_t invokeCtr[2];
 } CRYPTO_GCM_HW_CONTEXT;
-#endif
+</#if> <#-- CRYPTO_HW_AES_GCM -->
 
 // *****************************************************************************
 // *****************************************************************************
@@ -85,7 +85,7 @@ typedef struct
 // *****************************************************************************
 // *****************************************************************************
 
-#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen);
     
@@ -103,7 +103,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
     uint32_t dataLen, uint8_t *outData, uint8_t *key, uint32_t keyLen, 
     uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
     uint8_t *authTag, uint32_t authTagLen);
-#endif
+</#if> <#-- CRYPTO_HW_AES_GCM -->
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

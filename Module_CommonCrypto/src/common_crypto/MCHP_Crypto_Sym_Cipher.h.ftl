@@ -54,52 +54,18 @@ typedef enum
 
 typedef enum
 {
-    CRYPTO_SYM_OPMODE_INVALID = 0,
-
-#if (defined(CRYPTO_SYM_AESECB_EN) || defined(CRYPTO_SYM_CAMECB_EN) || defined(CRYPTO_SYM_TDESECB_EN))           
-    CRYPTO_SYM_OPMODE_ECB = 1,
-#endif
-            
-#if (defined(CRYPTO_SYM_AESCBC_EN) || defined(CRYPTO_SYM_CAMCBC_EN) || defined(CRYPTO_SYM_TDESCBC_EN))            
-    CRYPTO_SYM_OPMODE_CBC = 2,
-#endif
-
-#if (defined(CRYPTO_SYM_AESOFB_EN) || defined(CRYPTO_SYM_CAMOFB_EN))              
-    CRYPTO_SYM_OPMODE_OFB = 3,
-#endif
-            
-#if (defined(CRYPTO_SYM_AESCFB1_EN) || defined(CRYPTO_SYM_CAMCFB1_EN))            
-    CRYPTO_SYM_OPMODE_CFB1 = 4,
-#endif
-            
-#if (defined(CRYPTO_SYM_AESCFB8_EN) || defined(CRYPTO_SYM_CAMCFB8_EN))            
-    CRYPTO_SYM_OPMODE_CFB8 = 5,
-#endif
-
-#if (defined(CRYPTO_SYM_AESCFB16_EN) || defined(CRYPTO_SYM_CAMCFB32_EN))            
-    CRYPTO_SYM_OPMODE_CFB16 = 6,
-#endif
-
-#if (defined(CRYPTO_SYM_AESCFB32_EN) || defined(CRYPTO_SYM_CAMCFB32_EN))            
-    CRYPTO_SYM_OPMODE_CFB32 = 7,
-#endif
-            
-#if (defined(CRYPTO_SYM_AESCFB64_EN) || defined(CRYPTO_SYM_CAMCFB64_EN))          
-    CRYPTO_SYM_OPMODE_CFB64 = 8,
-#endif
-            
-#if (defined(CRYPTO_SYM_AESCFB128_EN) || defined(CRYPTO_SYM_CAMCFB128_EN))            
-    CRYPTO_SYM_OPMODE_CFB128 = 9,
-#endif
-            
-#if (defined(CRYPTO_SYM_AESCTR_EN) || defined(CRYPTO_SYM_CAMCTR_EN))            
-    CRYPTO_SYM_OPMODE_CTR = 10,
-#endif
-            
-#if (defined( CRYPTO_SYM_AESXTS_EN) || defined(CRYPTO_SYM_CAMXTS_EN))            
-    CRYPTO_SYM_OPMODE_XTS = 11,
-#endif
-            
+    CRYPTO_SYM_OPMODE_INVALID = 0,        
+    CRYPTO_SYM_OPMODE_ECB = 1,            
+    CRYPTO_SYM_OPMODE_CBC = 2,            
+    CRYPTO_SYM_OPMODE_OFB = 3,            
+    CRYPTO_SYM_OPMODE_CFB1 = 4,           
+    CRYPTO_SYM_OPMODE_CFB8 = 5,          
+    CRYPTO_SYM_OPMODE_CFB16 = 6,           
+    CRYPTO_SYM_OPMODE_CFB32 = 7,         
+    CRYPTO_SYM_OPMODE_CFB64 = 8,          
+    CRYPTO_SYM_OPMODE_CFB128 = 9,          
+    CRYPTO_SYM_OPMODE_CTR = 10,           
+    CRYPTO_SYM_OPMODE_XTS = 11,        
     CRYPTO_SYM_OPMODE_MAX
 }crypto_Sym_OpModes_E;
 

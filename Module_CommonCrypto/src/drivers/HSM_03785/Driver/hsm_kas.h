@@ -25,6 +25,9 @@ typedef enum
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"    
 	hsm_CommandGroups_E dhCmdGroup_en       :8; //It represent the command group here command group is always HSM_CMD_AES for Hash Algorithm
     uint8_t dhCmdType                       :8;
     uint8_t reserved1                       :8; //Reserved
@@ -33,35 +36,57 @@ typedef struct
     uint8_t reserved2                       :2;  
     hsm_Kas_dh_KeyType_E dhKeyType_en       :2; 
     uint8_t	reserved3                       :2; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop    
 }st_Hsm_Kas_Dh_CmdHeader;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
     uint8_t useOutputSlot                       :1;
     uint16_t reserved1                          :15;
     st_Hsm_Vsm_VaSlotStoDaLy outputSlotStorDes_st;
     uint8_t outSlotIndex                        :8;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop   
 }st_Hsm_Kas_Dh_Param1;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"    
     uint8_t usePrivKey          :1;
     uint8_t usePubkey           :1;
     uint16_t reserved1          :14;
     uint8_t privKeyVarSlotIndx  :8;
     uint8_t pubKeyVarSlotIndx   :8;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop       
 }st_Hsm_Kas_Dh_Param2;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"      
     uint16_t privKeyLen :16;
     uint16_t pubKeyLen  :16;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop    
 }st_Hsm_Kas_Dh_Param3;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
     uint16_t keyAuthDataLen :16;
     uint16_t reserved1      :16;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop      
 }st_Hsm_Kas_Dh_Param4;
 
 typedef struct

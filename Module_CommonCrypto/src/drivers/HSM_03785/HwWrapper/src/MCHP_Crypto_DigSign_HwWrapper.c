@@ -138,8 +138,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_SignData(uint8_t *ptr_inputDat
     uint8_t *randomNumber = NULL;
 
     hsm_Hash_Types_E hashAlgo_en = HSM_CMD_HASH_INVALID;
+    uint32_t hashBlockSize = 0;
     
-    hashAlgo_en = Crypto_Hash_Hw_GetShaAlgoType(hashType_en);
+    hashAlgo_en = Crypto_Hash_Hw_GetShaAlgoType(hashType_en, &hashBlockSize);
     
     if(hashAlgo_en != HSM_CMD_HASH_INVALID)
     {
@@ -177,8 +178,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_VerifyData(uint8_t *ptr_inputD
     hsm_Cmd_Status_E hsmStatus_en = HSM_CMD_ERROR_FAILED;
     
     hsm_Hash_Types_E hashAlgo_en = HSM_CMD_HASH_INVALID;
+    uint32_t hashBlockSize = 0;
     
-    hashAlgo_en = Crypto_Hash_Hw_GetShaAlgoType(hashType_en);
+    hashAlgo_en = Crypto_Hash_Hw_GetShaAlgoType(hashType_en, &hashBlockSize);
     
     if(hashAlgo_en != HSM_CMD_HASH_INVALID)
     {

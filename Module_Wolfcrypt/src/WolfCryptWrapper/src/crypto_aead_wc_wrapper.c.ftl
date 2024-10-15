@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Aead_Cipher.c
+    crypto_aead_wc_wrapper.c
 
   Summary:
     This file contains the source code for the MPLAB Harmony application.
@@ -30,21 +30,22 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_WolfcryptWrapper.h"
+#include "crypto/common_crypto/crypto_aead_wc_wrapper.h"
 
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
-#ifndef NO_AES
+<#if 	(CRYPTO_WC_AES_CCM?? &&(CRYPTO_WC_AES_CCM == true))
+	||	(CRYPTO_WC_AES_EAX?? &&(CRYPTO_WC_AES_EAX == true))
+	||	(CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>
 #include "wolfssl/wolfcrypt/aes.h"
-#endif /* NO_AES */
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
 
-#if (!defined(NO_AES))
-#if (defined(HAVE_AESCCM) && defined(CRYPTO_AEAD_WC_AESCCM_EN))
+<#if (CRYPTO_WC_AES_CCM?? &&(CRYPTO_WC_AES_CCM == true))>
 crypto_Aead_Status_E Crypto_Aead_Wc_AesCcm_Init(void *ptr_aesCcmCtx, uint8_t *ptr_key, uint32_t keySize)
 {
     crypto_Aead_Status_E ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -120,9 +121,9 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesCcm_Cipher(crypto_CipherOper_E cipherOper
     }
     return ret_aesCcmStat_en;
 }
-#endif /* HAVE_AESCCM && CRYPTO_AEAD_AESCCM_EN */
+</#if>  <#-- CRYPTO_WC_AES_CCM --> 
 
-#if (defined(WOLFSSL_AES_EAX) && defined(CRYPTO_AEAD_WC_AESEAX_EN))
+<#if (CRYPTO_WC_AES_EAX?? &&(CRYPTO_WC_AES_EAX == true))>
 crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_Init(void *ptr_aesEaxCtx, uint8_t *ptr_key, uint32_t keySize, 
                                                 uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen)
 {
@@ -334,9 +335,9 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_EncDecAuthDirect(crypto_CipherOper_E 
     
     return ret_aesEaxStat_en;
 }        
-#endif /* WOLFSSL_AES_EAX && CRYPTO_AEAD_WC_AESEAX_EN */
+</#if>  <#-- CRYPTO_WC_AES_EAX --> 
 
-#if (defined(HAVE_AESGCM) && defined(CRYPTO_AEAD_WC_AESGCM_EN))
+<#if (CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>   
 #ifdef WOLFSSL_AESGCM_STREAM
 crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_Init(void *ptr_aesGcmCtx, uint8_t *ptr_key, uint32_t keySize, 
                                                 uint8_t *ptr_initVect, uint32_t initVectLen)
@@ -567,8 +568,6 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
     }
     return ret_aesGcmStat_en;
 }
+</#if> <#--CRYPTO_WC_AES_GCM-->
 
-#endif /* HAVE_AESGCM && CRYPTO_AEAD_WC_AESGCM_EN*/
-
-#endif /* !NO_AES  */
 // *****************************************************************************

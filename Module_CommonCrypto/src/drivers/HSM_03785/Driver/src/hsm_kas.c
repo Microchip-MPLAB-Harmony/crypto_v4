@@ -55,8 +55,13 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
     
     if(status == 0)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Input SG-DMA Descriptor 1 for ECC private key Descriptor
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)&privKeyType_st;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1])>>2);
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].flagAndLength_st.dataLen = 4;  //here key length is entered
@@ -65,9 +70,14 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Input SG-DMA Descriptor 2 for ECC private key Descriptor
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_privKey;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2])>>2);
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].flagAndLength_st.dataLen = privKeyLen;  //here key length is entered
@@ -76,9 +86,14 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Input SG-DMA Descriptor 3 for ECC Public key Descriptor
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)&publicKeyType_st;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3])>>2);
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].flagAndLength_st.dataLen = 4;  //here key length is entered
@@ -87,9 +102,14 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"         
         //Input SG-DMA Descriptor 4 for ECC Public key Descriptor
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_Pubkey;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].nextDes_st.stop = 0x01; //do not stop
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].flagAndLength_st.dataLen = pubKeyLen;  //here key length is entered
@@ -98,9 +118,14 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
         ptr_ecdhCmd_st->arr_dhInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"          
         //Output SG-DMA Descriptor 1 for Generated Shared Secret Output
         ptr_ecdhCmd_st->arr_dhOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)ptr_sharedSecret;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop         
         ptr_ecdhCmd_st->arr_dhOutSgDmaDes_st[0].nextDes_st.stop = 0x01; // stop
         ptr_ecdhCmd_st->arr_dhOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  0x00;
         ptr_ecdhCmd_st->arr_dhOutSgDmaDes_st[0].flagAndLength_st.dataLen = sharedSecretLen;  //here key length is entered
@@ -139,12 +164,17 @@ hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st,
     
     st_Hsm_ResponseCmd cmdResponse_st;
     st_Hsm_SendCmdLayout sendCmd_st;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"      
     sendCmd_st.mailBoxHdr = (uint32_t*)&(ptr_ecdhCmd_st->dhMailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)&(ptr_ecdhCmd_st->dhCmdHeader_st);
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ptr_ecdhCmd_st->arr_dhInSgDmaDes_st;
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)ptr_ecdhCmd_st->arr_dhOutSgDmaDes_st;
     sendCmd_st.ptr_params = (uint32_t*)&(ptr_ecdhCmd_st->dhSharSecretParm1_st);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop
     sendCmd_st.paramsCount = (uint8_t)((ptr_ecdhCmd_st->dhMailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox

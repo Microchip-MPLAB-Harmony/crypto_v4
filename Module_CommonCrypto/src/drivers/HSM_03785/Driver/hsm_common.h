@@ -45,10 +45,10 @@ typedef enum
 
 typedef enum
 {
-    HSM_CMD_PS_RESET = 0x00U,
-    HSM_CMD_PS_BOOT = 0x01U,
-    HSM_CMD_PS_OPERATIONAL = 0x02U,        
-    HSM_CMD_PS_SAFEMODE = 0x3U,         
+    HSM_CMD_PS_RESET = 0x00UL,
+    HSM_CMD_PS_BOOT = 0x01UL,
+    HSM_CMD_PS_OPERATIONAL = 0x02UL,        
+    HSM_CMD_PS_SAFEMODE = 0x3UL,         
 }hsm_Cmd_StatusPs_E;
 
 
@@ -99,6 +99,16 @@ typedef enum
     HSM_ECC_MAXIMUM_CURVES_LIMIT,
 }hsm_Ecc_CurveType_E;
 
+typedef enum
+{
+	HSM_CMD_HASH_INVALID 		= 0x00,
+    HSM_CMD_HASH_MD5    		= 0x01,
+    HSM_CMD_HASH_SHA1   		= 0x02,
+    HSM_CMD_HASH_SHA224 		= 0x03,
+    HSM_CMD_HASH_SHA256 		= 0x04,
+    HSM_CMD_HASH_SHA384 		= 0x05,
+    HSM_CMD_HASH_SHA512 		= 0x06,
+}hsm_Hash_Types_E;
 
 //This enum needs to be in Common.h //?????????????
 typedef enum
@@ -185,26 +195,41 @@ typedef enum
 //mailbox FIFO,
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
 	uint16_t	msgSize			:16; //The size of the message that is placed in the mailbox, including the 4 bytes for this message
 	uint8_t		reserved1		:5; //Reserved
 	uint8_t		unProtection	:1; //Bit to determine whether(0) or not(1) the protection bits //HSM pays attention to the mailbox protection bits else Ignore
 	uint16_t	reserved2		:10; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop
 }st_Hsm_MailBoxHeader;
 
 typedef struct 
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"    
    	uint8_t stop                    :1;   //This bit is used to tell the DMA Hardware to stop after this descriptor is processed  
 	uint8_t  reserved1              :1;   //reserved
 	uint32_t nextDescriptorAddr     :30;  //This is pointer or not , need to check //jk ?? 
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop    
 }st_Hsm_SgDesNextAddr;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
   	uint32_t dataLen  				:28;
 	uint8_t	cstAddr                 :1;   //Constant address bit to determine whether the DMA increment the address on every access
 	uint8_t reAlign                 :1;   //Pad the pointed by this descriptor to the 32-bit boundry
 	uint8_t discard                 :1;   //This is for output descriptor to determine if the DMA controller discards data written to it.
-	uint8_t intEn                   :1;   //Interrupt Enable Bit  
+	uint8_t intEn                   :1;   //Interrupt Enable Bit
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop
 }st_Hsm_SgDesFlagLen;
 
 typedef struct 
@@ -226,6 +251,9 @@ typedef struct
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
     uint8_t busy : 1;
     uint8_t reserved1 : 3;
     hsm_Cmd_StatusPs_E ps : 3;
@@ -236,29 +264,44 @@ typedef struct
     uint8_t reserved4 : 1;
     uint8_t ecode : 4;
     uint16_t reserved5 : 12;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop
 }st_Hsm_StatusReg;
 
 typedef struct
 {
    uint32_t respMailBoxHdr;
    uint32_t respCmdHeader;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"   
    hsm_CmdResultCodes_E resultCode_en :32; 
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop   
    st_Hsm_StatusReg status_st;
    uint32_t arr_params[8]; 
 }st_Hsm_ResponseCmd;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"    
     uint8_t apl         :2;
     uint8_t reserved1   :1;
     uint8_t hsmOnly     :1;
     uint8_t storageType :2;
     uint8_t valid       :1;
     uint8_t ExtStorage  :1;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop    
 }st_Hsm_Vsm_VaSlotStoDaLy;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
 	hsm_CommandGroups_E aesCmdGroup_en          :8; //It represent the command group here command group is always HSM_CMD_AES for Hash Algorithm
     hsm_Aes_CmdTypes_E aesCmdType_en            :8;
     hsm_Aes_KeySize_E aesKeySize_en             :2; //Aes Key Size
@@ -267,6 +310,8 @@ typedef struct
     uint8_t aesAuthInc                          :1; //Authentication Included in input bit
     uint8_t aesSlotParamInc                     :1; //This field indicates if slot parameters are included in the list of parameters
     uint8_t	reserved2                           :6; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop    
 }st_Hsm_Sym_Aes_CmdHeader, st_Hsm_Mac_AesCmac_CmdHeader, st_Hsm_Aead_AesCcm_CmdHeader;
 
 
@@ -289,6 +334,9 @@ typedef struct
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"    
     hsm_Vsm_Asym_KeyTypes_E asymKeyType_en      :3; 
     uint8_t reserved1                           :1;
     hsm_Vsm_Asym_Ecc_KeyType_E eccKeyType_en    :3;
@@ -303,7 +351,9 @@ typedef struct
     uint8_t domainIncBit                        :1;
     uint8_t publicKeyIncBit                     :1;
     uint8_t privateKeyIncBit                    :1;
-    uint8_t reserved6                           :1;                   
+    uint8_t reserved6                           :1;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop    
 }st_Hsm_Vss_Ecc_AsymKeyDataType;
 
 

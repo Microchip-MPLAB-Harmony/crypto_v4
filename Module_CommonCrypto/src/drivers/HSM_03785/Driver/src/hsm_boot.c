@@ -88,9 +88,14 @@ static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
     ptr_loadFimrwareCmd_st->metaData0Parm1 = HSM_BOOT_FIRMWARE_INIT_ADDR;
     //Parameter 2: Pointer to Firmware Meta Data #1
     ptr_loadFimrwareCmd_st->metaData1Parm2 = 0x00000000UL;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
     bootSendCmd_st.mailBoxHdr = (uint32_t*)&ptr_loadFimrwareCmd_st->mailBoxHdr_st;
     bootSendCmd_st.algocmdHdr = (uint32_t*)&ptr_loadFimrwareCmd_st->cmdHeader_st;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop     
     bootSendCmd_st.ptr_sgDescriptorIn = (uint32_t*)0x00000000;//ptr_loadFimrwareCmd_st->arr_bootInSgDmaDes_st;
     bootSendCmd_st.ptr_sgDescriptorOut = (uint32_t*)0x00000000;//ptr_loadFimrwareCmd_st->arr_bootOutSgDmaDes_st;
     bootSendCmd_st.ptr_params = (uint32_t*)&(ptr_loadFimrwareCmd_st->metaData0Parm1);
@@ -103,7 +108,7 @@ static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
     Hsm_Cmd_ReadCmdResponse(&bootCmdResponse_st);
 
     //Check the command response with expected values for Boot Load Firmware Cmd
-    ret_cmdStat_en = Hsm_Cmd_CheckCmdRespParms(bootCmdResponse_st,(*bootSendCmd_st.mailBoxHdr-8), *bootSendCmd_st.algocmdHdr);
+    ret_cmdStat_en = Hsm_Cmd_CheckCmdRespParms(bootCmdResponse_st,(*bootSendCmd_st.mailBoxHdr - 8UL), *bootSendCmd_st.algocmdHdr);
     
     return ret_cmdStat_en;
 }
@@ -115,15 +120,21 @@ int Hsm_Boot_Intialisation(void)
     uint8_t hsmFirmware[1024];
     //HSM Firmware image is loaded via .hex project to flash
     uint8_t *hsmFirmwareLoc = (uint8_t *) HSM_BOOT_FIRMWARE_INIT_ADDR; //0x0c7df800;
-    memcpy(hsmFirmware, hsmFirmwareLoc, sizeof(hsmFirmware));
-
-    hsmFirmwareLoc = (uint8_t *) HSM_BOOT_FIRMWARE_ADDR; //0x0c7e0000;
-    memcpy(hsmFirmware, hsmFirmwareLoc, sizeof(hsmFirmware));
-    
-    initStat_en = Hsm_Boot_LoadBootFirmware();
-    
+    if(memcpy(hsmFirmware, hsmFirmwareLoc, sizeof(hsmFirmware)) == hsmFirmware)
+    {
+        hsmFirmwareLoc = (uint8_t *) HSM_BOOT_FIRMWARE_ADDR; //0x0c7e0000;
+        if(memcpy(hsmFirmware, hsmFirmwareLoc, sizeof(hsmFirmware)) == hsmFirmware)
+        {
+           initStat_en = Hsm_Boot_LoadBootFirmware(); 
+        }
+    }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1"    
     if( (initStat_en == HSM_CMD_SUCCESS) && (HSM_CMD_STATUS_PS == HSM_CMD_PS_OPERATIONAL))
     {
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.4"
+#pragma GCC diagnostic pop        
         ret_status = 0x01;
         #ifdef HSM_PRINT 
         printf("\r\nHSM is Operation\n");
@@ -142,9 +153,16 @@ int Hsm_Boot_Intialisation(void)
 int Hsm_Boot_GetStatus(void)
 {
     int retStatus = 0x00;
-    if( ((bool) ((HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) >> HSM_STATUS_BUSY_Pos) == 0x00) && (HSM_CMD_STATUS_PS == HSM_CMD_PS_OPERATIONAL))
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1"    
+    if( ((bool) ((HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) >> HSM_STATUS_BUSY_Pos) == 0x00U) && (HSM_CMD_STATUS_PS == HSM_CMD_PS_OPERATIONAL))
     {
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.4"
+#pragma GCC diagnostic pop         
+        #ifdef HSM_PRINT
         printf("\r\nHSM is operation\r\n");
+        #endif
         retStatus = 0x01;
     }
     return retStatus;

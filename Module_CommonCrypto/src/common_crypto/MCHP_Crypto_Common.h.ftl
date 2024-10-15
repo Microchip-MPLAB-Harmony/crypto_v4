@@ -32,7 +32,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "crypto_config.h"
-#include "wolfssl/wolfcrypt/ecc.h"
+//#include "wolfssl/wolfcrypt/ecc.h" //????
 //******************************************************************************
 #define CRYPTO_ECC_MAX_KEY_LENGTH (66) //Max size of Private key; Public Key will be double of it for ECC
 

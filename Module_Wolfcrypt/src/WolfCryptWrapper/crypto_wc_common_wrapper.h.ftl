@@ -5,10 +5,10 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Rng_WolfcryptWrapper.h
+    crypto_wc_common_wrapper.h
 
   Summary:
-    This header file provides prototypes and definitions for the application.
+    This header file provides Common Prototypes and definitions for the Wolfcrypt Library.
 
   Description:
     This header file provides function prototypes and data type definitions for
@@ -17,11 +17,16 @@
     internally by the application (such as the "APP_STATES" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
-#ifndef MCHP_CRYPTO_RNG_WOLFCRYPTWRAPPER_H
-#define MCHP_CRYPTO_RNG_WOLFCRYPTWRAPPER_H
 
-#ifdef CRYPTO_RNG_WC_PRNG_EN
-crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen);
-#endif /* CRYPTO_RNG_WC_PRNG_EN */     
+#ifndef CRYPTO_WC_COMMON_WRAPPER_H
+#define CRYPTO_WC_COMMON_WRAPPER_H
 
-#endif /* MCHP_CRYPTO_RNG_WOLFCRYPTWRAPPER_H */
+#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+
+#define CRYPTO_WC_ECC_TOTAL_CURVES (5)
+
+<#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true)) || (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
+int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en);
+</#if> <#-- CRYPTO_WC_ECDSA || CRYPTO_WC_ECDH -->
+
+#endif /* CRYPTO_WC_COMMON_WRAPPER_H */

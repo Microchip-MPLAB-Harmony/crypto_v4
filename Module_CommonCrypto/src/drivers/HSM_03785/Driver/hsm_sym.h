@@ -16,10 +16,7 @@
 #ifndef HSM_SYM_H
 #define HSM_SYM_H
 
-#include <stdint.h>
-#include <stdbool.h>
 #include "hsm_common.h"
-//#include "hsm_command.h"
 
 //DES Algorithms Enums
 typedef enum
@@ -39,20 +36,30 @@ typedef enum
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
     uint8_t useNonce        :1;
     uint8_t useAadIv        :1;
 	uint8_t reserved1       :6; //Reserved
 	uint8_t varSlotNum      :8;  //Can variable slot be negative ???????????
 	uint16_t reserved2      :16; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop     
 }st_Hsm_Aead_ChaCha20_CmdParam2, st_Hsm_Sym_ChaCha20_CmdParam2;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1" 
     uint8_t useCtx          :1;
     uint8_t resetIV         :1;
 	uint8_t reserved1       :6; //Reserved
 	uint8_t varSlotNum      :8;  //Can variable slot be negative ??
 	uint16_t reserved2      :16; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop      
 }st_Hsm_Sym_Aes_CmdParam2, st_Hsm_Sym_Tdes_CmdParam2, st_Hsm_Sym_Des_CmdParam2;
 
 typedef struct
@@ -74,16 +81,24 @@ typedef struct
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"    
 	hsm_CommandGroups_E chachaCmdGroup_en       :8; //It represent the command group here command group is always HSM_CMD_CHACHA for Hash Algorithm
     hsm_ChaCha_CmdTypes_E chachaCmdType_en      :8;
     uint8_t reserved1                           :8; //Reserved
     uint8_t chaChaAuthInc                       :1; //Authentication Included in input bit
     uint8_t chaChaSlotParamInc                  :1; //This field indicates if slot parameters are included in the list of parameters
     uint8_t	reserved2                           :6; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop        
 }st_Hsm_ChaCha_CmdHeader;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"      
 	hsm_CommandGroups_E tdesCmdGroup_en     :8; //It represent the command group here command group is always HSM_CMD_TDES for Hash Algorithm
     hsm_Tdes_CmdTypes_E tdesCmdType_en      :8;
     hsm_Sym_Tdes_ModeTypes_E tdesMode_en    :1;
@@ -91,6 +106,8 @@ typedef struct
     uint8_t desAuthInc                      :1; //Authentication Included in input bit
     uint8_t desSlotParamInc                 :1; //This field indicates if slot parameters are included in the list of parameters
     uint8_t	reserved2                       :6; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop      
 }st_Hsm_Sym_Tdes_CmdHeader;
 
 typedef struct
@@ -214,9 +231,9 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
 
 hsm_Cmd_Status_E Hsm_Sym_Tdes_CipherDirect(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTypes_E tdesModeType_en, hsm_Tdes_CmdTypes_E tdesOperType_en, 
                             uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut, uint8_t *tdesKey, uint8_t *ptr_initVect, uint8_t varslotNum);
-
-void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_CmdTypes_E chaChaOperType_en, uint8_t *ptr_tdesKey, 
-                            uint8_t *ptr_initVect, uint32_t counter, uint8_t varslotNum);
-
-void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut);
+//
+//void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_CmdTypes_E chaChaOperType_en, uint8_t *ptr_tdesKey, 
+//                            uint8_t *ptr_initVect, uint32_t counter, uint8_t varslotNum);
+//
+//void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut);
 #endif /* HSM_SYM_H*/

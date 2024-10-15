@@ -31,12 +31,17 @@ typedef enum
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
 	hsm_CommandGroups_E bootCmdGroup_en     :8; 
     hsm_Boot_CmdTypes_E bootCmdType_en		:8;  
     uint8_t reserved1          				:8; //Reserved 1
     uint8_t bootAuthInc		      			:1; 
     uint8_t bootSlotParamInc				:1; 
     uint8_t	reserved2          				:6; //Reserved 2
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop
 }st_Hsm_Boot_CmdHeader;
 
 typedef struct

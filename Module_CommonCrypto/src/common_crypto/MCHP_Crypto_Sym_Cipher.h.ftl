@@ -104,7 +104,7 @@ typedef enum
 }crypto_Sym_OpModes_E;
 
 
-
+<#if (CRYPTO_WC_CHACHA20?? &&(CRYPTO_WC_CHACHA20 == true))>
 typedef struct 
 {
     uint32_t cryptoSessionID;
@@ -113,7 +113,17 @@ typedef struct
     uint8_t *ptr_initVect;
     uint8_t arr_symDataCtx[70];
 }st_Crypto_Sym_StreamCtx;
+</#if> <#-- CRYPTO_WC_CHACHA20  -->
 
+<#if (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
+    || (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
+    || (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
+    || (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) 
+    || (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))     || (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
+    || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
+    || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
+    || (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true)) 
+    || (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true)) >
 typedef struct 
 {
     uint32_t cryptoSessionID;
@@ -126,27 +136,35 @@ typedef struct
     uint8_t arr_symDataCtx[500];
 }st_Crypto_Sym_BlockCtx;
 
-
 //AES
-#ifdef CRYPTO_SYM_AES_ENABLE
 crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
-
-crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
-
 
 crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 
 crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
-                                                        uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
-#ifdef CRYPTO_SYM_AESXTS_EN
-crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_tweak);
-#endif /* CRYPTO_SYM_AESXTS_EN */
-#endif /*CRYPTO_SYM_AES_ENABLE */
+                                                        uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);                                                
 
+<#if (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
+    || (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
+    || (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
+    || (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) 
+    || (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))     || (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
+    || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
+    || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
+    || (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>
+crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
+</#if>
+
+<#if (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true)) >
+crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_tweak);
+</#if> <#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
+
+</#if>
+
+<#if  (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true)) || (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true)) >
 //Camellia
-#ifdef CRYPTO_SYM_CAMELLIA_ENABLE
 crypto_Sym_Status_E Crypto_Sym_Camellia_Init(st_Crypto_Sym_BlockCtx *ptr_camCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_Camellia_Cipher(st_Crypto_Sym_BlockCtx *ptr_camCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
@@ -154,10 +172,13 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
-#endif /* CRYPTO_SYM_CAMELLIA_ENABLE */
+</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
 
+<#if    (CRYPTO_WC_TDES_ECB?? &&(CRYPTO_WC_TDES_ECB == true)) 
+    ||  (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
+    ||  (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true)) 
+    ||  (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
 //DES3 or Triple-DES
-#ifdef CRYPTO_SYM_TDES_ENABLE
 crypto_Sym_Status_E Crypto_Sym_Tdes_Init(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_Tdes_Cipher(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
@@ -165,10 +186,10 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_EncryptDirect(crypto_HandlerType_E handlerTy
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_Tdes_DecryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
-#endif /* CRYPTO_SYM_TDES_ENABLE */
+</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB ||  CRYPTO_WC_TDES_CBC || CRYPTO_HW_TDES_CBC-->
 
+<#if (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>
 //AES-KEYWRAP
-#ifdef CRYPTO_SYM_AESKEYWRAP_ENABLE
 crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                                                       uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
@@ -176,17 +197,16 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrapDirect(crypto_HandlerType_E handlerType
                                                     uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_AesKeyUnWrapDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t inputLen, 
                                                     uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
-#endif /* CRYPTO_SYM_AESKEYWRAP_ENABLE */
+</#if> <#-- CRYPTO_WC_AES_KW  -->
 
+<#if (CRYPTO_WC_CHACHA20?? &&(CRYPTO_WC_CHACHA20 == true))>
 //CHACHA-20
-#ifdef CRYPTO_SYM_CHACHA20_ENABLE
 crypto_Sym_Status_E Crypto_Sym_ChaCha20_Init(st_Crypto_Sym_StreamCtx *ptr_chaChaCtx_st, crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
 
 crypto_Sym_Status_E Crypto_Sym_ChaCha20_Cipher(st_Crypto_Sym_StreamCtx *ptr_chaChaCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
 
 crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                                 uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
-
-#endif /* CRYPTO_SYM_CHACHA20_ENABLE */
+</#if> <#-- CRYPTO_WC_CHACHA20  -->
 
 #endif //MCHP_CRYPTO_SYM_CIPHER_H

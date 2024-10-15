@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Mac_WolfcryptWrapper.h
+    crypto_mac_wc_wrapper.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,8 +18,8 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef MCHP_CRYPTO_MAC_WOLFCRYPTWRAPPER_H
-#define MCHP_CRYPTO_MAC_WOLFCRYPTWRAPPER_H
+#ifndef CRYPTO_MAC_WC_WRAPPER_H
+#define CRYPTO_MAC_WC_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -32,19 +32,19 @@
 // *****************************************************************************
 // Section: Type Definitions
 // *****************************************************************************
-#if !defined(NO_AES) && defined(WOLFSSL_CMAC)
+<#if (CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))>
 crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Init(void *ptr_aesCmacCtx, uint8_t *ptr_key, uint32_t keySize);
 crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Cipher(void *ptr_aesCmacCtx, uint8_t *ptr_inputData, uint32_t dataLen);
 crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Final(void *ptr_aesCmacCtx, uint8_t *ptr_outMac, uint32_t macLen);
 crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Direct(uint8_t *ptr_inputData, uint32_t inuptLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, uint32_t keyLen);
-#endif /* !NO_AES && WOLFSSL_CMAC */
+</#if>  <#-- CRYPTO_WC_AES_CMAC -->
 
-#ifdef CRYPTO_MAC_WC_AESGMAC_EN
+<#if (CRYPTO_WC_AES_GMAC?? &&(CRYPTO_WC_AES_GMAC == true))>
 crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Init(void *ptr_aesGmacCtx, uint8_t *ptr_key, uint32_t keySize);
 crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Cipher(void *ptr_aesGmacCtx, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, 
                                                                                                                 uint8_t *ptr_outMac, uint32_t macLen);
 crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Direct(uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, 
                                                                                                   uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen);
-#endif /* CRYPTO_MAC_WC_AESGMAC_EN */
+</#if>  <#-- CRYPTO_WC_AES_GMAC -->
         
-#endif //MCHP_CRYPTO_MAC_WOLFCRYPTWRAPPER_H
+#endif //CRYPTO_MAC_WC_WRAPPER_H

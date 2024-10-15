@@ -25,7 +25,7 @@
 #include "hsm_cmd.h"
 
 static void Hsm_DigiSign_Cmd(st_Hsm_DigiSign_Cmd *ptr_digiSignCmd_st, uint8_t cmdLen, hsm_DigiSign_CmdType_E cmdType_en,
-                                     hsm_DigiSign_HashAlgo_E hashAlgo_en, hsm_DigiSign_PadType_E padType_en, hsm_DigiSign_KeyType_E keyType_en,
+                                     hsm_Hash_Types_E hashAlgo_en, hsm_DigiSign_PadType_E padType_en, hsm_DigiSign_KeyType_E keyType_en,
                                      uint8_t rngInclude)
 {
     //Mailbox Header
@@ -58,7 +58,7 @@ static void Hsm_DigiSign_Cmd(st_Hsm_DigiSign_Cmd *ptr_digiSignCmd_st, uint8_t cm
 }
 
 hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_outSign, 
-                                uint8_t *ptr_privKey, uint32_t privKeyLen, hsm_DigiSign_HashAlgo_E hashType_en, uint8_t *ptr_randomNumber, hsm_Ecc_CurveType_E keyCurveType_en)
+                                uint8_t *ptr_privKey, uint32_t privKeyLen, hsm_Hash_Types_E hashType_en, uint8_t *ptr_randomNumber, hsm_Ecc_CurveType_E keyCurveType_en)
 {
     st_Hsm_DigiSign_Cmd ecdsaCmd_st = {0};
     st_Hsm_Vss_Ecc_AsymKeyDataType privKeyType_st; 
@@ -76,9 +76,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
     status = Hsm_Vsm_Ecc_FillEccKeyProperties(&privKeyType_st, keyCurveType_en, HSM_VSM_ASYMKEY_PRIVATEKEY,HSM_VSM_ASYMKEY_ECC_SIGNATURE,HSM_VSM_ASYMKEY_ECC_ECDSA);
 
     if(status == 0)
-    {              
+    {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"         
         //Input SG-DMA Descriptor 1 for ECC private key Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)&privKeyType_st;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop           
         ecdsaCmd_st.arr_inSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[1])>>2);
         ecdsaCmd_st.arr_inSgDmaDes_st[0].flagAndLength_st.dataLen = 4;  //here key length is entered
@@ -88,8 +93,13 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
         ecdsaCmd_st.arr_inSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
         
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
         //Input SG-DMA Descriptor 2 for ECC private key Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_privKey;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[2])>>2);
         ecdsaCmd_st.arr_inSgDmaDes_st[1].flagAndLength_st.dataLen = privKeyLen;  //here key length is entered
@@ -99,9 +109,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
         ecdsaCmd_st.arr_inSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
     if(ptr_randomNumber != NULL)
-    {    
+    {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"         
         //Input SG-DMA Descriptor 3 for Random Number Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_randomNumber;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop           
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[3])>>2);
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = privKeyLen;  //here Random Number length is entered
@@ -111,8 +126,13 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
         
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
         //Input SG-DMA Descriptor 4 for Hash Data Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_data;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop           
         ecdsaCmd_st.arr_inSgDmaDes_st[3].nextDes_st.stop = 0x01; // stop
         ecdsaCmd_st.arr_inSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.dataLen = dataLen;  //here key length is entered
@@ -124,8 +144,13 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
     }
     else
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"         
         //Input SG-DMA Descriptor 3 for Hash Data Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_data;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop         
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.stop = 0x01; // stop
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = dataLen;  //here key length is entered
@@ -134,9 +159,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
-    }   
+    }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Output SG-DMA Descriptor 1 for Signature Output
         ecdsaCmd_st.arr_outSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)&ptr_outSign[0];
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop         
         ecdsaCmd_st.arr_outSgDmaDes_st[0].nextDes_st.stop = 0x00; //stop
         ecdsaCmd_st.arr_outSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_outSgDmaDes_st[1])>>2);
         ecdsaCmd_st.arr_outSgDmaDes_st[0].flagAndLength_st.dataLen = privKeyLen;  //here key length is entered
@@ -145,9 +175,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
         ecdsaCmd_st.arr_outSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
         ecdsaCmd_st.arr_outSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_outSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Output SG-DMA Descriptor 1 for Signature Output
         ecdsaCmd_st.arr_outSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)&ptr_outSign[privKeyLen];
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop            
         ecdsaCmd_st.arr_outSgDmaDes_st[1].nextDes_st.stop = 0x01; //stop
         ecdsaCmd_st.arr_outSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  0x00;
         ecdsaCmd_st.arr_outSgDmaDes_st[1].flagAndLength_st.dataLen = privKeyLen;  //here key length is entered
@@ -169,22 +204,31 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
         ecdsaCmd_st.digiSignParm1_st.outputSlotStorDes_st.reserved1 = 0x00;
         ecdsaCmd_st.digiSignParm1_st.outSlotIndex = 0x00;
         ecdsaCmd_st.digiSignParm1_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 2.2" "H3_MISRAC_2012_R_2_2_DR_1"       
         //Parameter 2 for ECDSA //Input Hash Data
         ecdsaCmd_st.dataLenParm2 = dataLen;
-
+ 
         //Parameter 3 for ECDSA //Salt Len
-        ecdsaCmd_st.saltLenParm3 = 0x00;
+        ecdsaCmd_st.saltLenParm3 = 0x00UL;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 2.2"
+#pragma GCC diagnostic pop         
     }
     
     st_Hsm_ResponseCmd cmdResponse_st;
     st_Hsm_SendCmdLayout sendCmd_st;
-    
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"      
     sendCmd_st.mailBoxHdr = (uint32_t*)&(ecdsaCmd_st.mailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)&(ecdsaCmd_st.cmdHeader_st);
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ecdsaCmd_st.arr_inSgDmaDes_st;
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)ecdsaCmd_st.arr_outSgDmaDes_st;
     sendCmd_st.ptr_params = (uint32_t*)&(ecdsaCmd_st.digiSignParm1_st);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
     sendCmd_st.paramsCount = (uint8_t)((ecdsaCmd_st.mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox
@@ -202,7 +246,7 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_SignData(uint8_t *ptr_data, uint32_t dataLen
 }
 
 hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_inputSign, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
-                                            hsm_DigiSign_HashAlgo_E hashType_en, int8_t *ptr_verifyStatus, hsm_Ecc_CurveType_E keyCurveType_en)
+                                            hsm_Hash_Types_E hashType_en, int8_t *ptr_verifyStatus, hsm_Ecc_CurveType_E keyCurveType_en)
 {
     st_Hsm_DigiSign_Cmd ecdsaCmd_st;
     st_Hsm_Vss_Ecc_AsymKeyDataType pubKeyType_st;
@@ -216,8 +260,13 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataL
     
     if(status == 0)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"      
         //Input SG-DMA Descriptor 1 for ECC private key Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)&pubKeyType_st;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ecdsaCmd_st.arr_inSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[1])>>2);
         ecdsaCmd_st.arr_inSgDmaDes_st[0].flagAndLength_st.dataLen = 4;  //here key length is entered
@@ -226,9 +275,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataL
         ecdsaCmd_st.arr_inSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Input SG-DMA Descriptor 2 for ECC private key Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_pubKey;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[2])>>2);
         ecdsaCmd_st.arr_inSgDmaDes_st[1].flagAndLength_st.dataLen = pubKeyLen;  //here key length is entered
@@ -237,9 +291,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataL
         ecdsaCmd_st.arr_inSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Input SG-DMA Descriptor 3 for Random Number Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_data;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ecdsaCmd_st.arr_inSgDmaDes_st[3])>>2);
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.dataLen = dataLen;  //here key length is entered
@@ -248,9 +307,14 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataL
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
-        
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Input SG-DMA Descriptor 4 for Hash Data Descriptor
         ecdsaCmd_st.arr_inSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_inputSign;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop        
         ecdsaCmd_st.arr_inSgDmaDes_st[3].nextDes_st.stop = 0x01; // stop
         ecdsaCmd_st.arr_inSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00;
         ecdsaCmd_st.arr_inSgDmaDes_st[3].flagAndLength_st.dataLen = pubKeyLen;  //here key length is entered
@@ -273,21 +337,31 @@ hsm_Cmd_Status_E Hsm_DigiSign_Ecdsa_VerifyData(uint8_t *ptr_data, uint32_t dataL
         ecdsaCmd_st.digiSignParm1_st.outputSlotStorDes_st.reserved1 = 0x00;
         ecdsaCmd_st.digiSignParm1_st.outSlotIndex = 0x00;
         
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 2.2" "H3_MISRAC_2012_R_2_2_DR_1"        
         //Parameter 2 for ECDSA
         ecdsaCmd_st.dataLenParm2 = dataLen;
-
+        
         //Parameter 3 for ECDSA
-        ecdsaCmd_st.saltLenParm3 = 0x00;
+        ecdsaCmd_st.saltLenParm3 = 0x00UL;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 2.2"
+#pragma GCC diagnostic pop         
     }
     
     st_Hsm_ResponseCmd cmdResponse_st;
     st_Hsm_SendCmdLayout sendCmd_st;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
     sendCmd_st.mailBoxHdr = (uint32_t*)&(ecdsaCmd_st.mailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)&(ecdsaCmd_st.cmdHeader_st);
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ecdsaCmd_st.arr_inSgDmaDes_st;
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)0x00000000;
     sendCmd_st.ptr_params = (uint32_t*)&(ecdsaCmd_st.digiSignParm1_st);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
     sendCmd_st.paramsCount = (uint8_t)((ecdsaCmd_st.mailBoxHdr_st.msgSize/4U) - 4U);
     
     //Send the Command to MailBox

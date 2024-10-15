@@ -21,15 +21,12 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "pic32cz8110ca90208.h"
-#include "system/system_module.h"
-#include "core_cm7.h"
-#include "user.h"
 #include "hsm_common.h"
 #include "hsm_cmd.h"
+#ifdef HSM_PRINT 
+#include <stdio.h>
+#endif
 
 void HSM_Cmd_Send(st_Hsm_SendCmdLayout sendCmd_st) 
 {
@@ -37,7 +34,10 @@ void HSM_Cmd_Send(st_Hsm_SendCmdLayout sendCmd_st)
     printf("-------------Cmd Send Started----------\r\n");
 #endif    
     // Make sure the HSM is not busy
-    while (HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk);
+    while ((uint32_t)(HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) == 1UL)
+    {
+        //do nothing
+    };
     
     HSM_REGS->HSM_MBCONFIG = HSM_MBCONFIG_RXINT(0);
     
@@ -97,9 +97,14 @@ void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st)
     
     // Check Mailbox Command Header
     response_st->respCmdHeader = HSM_REGS->HSM_MBFIFO[0];
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 10.3" "H3_MISRAC_2012_R_10_3_DR_1"
     // Check Result Code
-    response_st->resultCode_en  = HSM_REGS->HSM_MBFIFO[0];    
+    response_st->resultCode_en = HSM_REGS->HSM_MBFIFO[0];
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.3"
+#pragma GCC diagnostic pop     
     
     //Command Length in 32-bit WORD
     cmdLen = (uint8_t) ((response_st->respMailBoxHdr & 0x0000FFFFUL)/4UL);
@@ -174,13 +179,18 @@ hsm_Cmd_Status_E Hsm_Cmd_CheckCmdRespParms(st_Hsm_ResponseCmd respParms_st, uint
 #endif        
     }
     //delay before HSM status register read //?? how much delay exactly, that needs to confirm???????????????
-    for(int i = 0 ; i < 10000; i++)
+    for(uint32_t i = 0UL; i < 10000UL; i++)
     {
 	    //|4| Fetch the HSM Status Register (STATUS)
 	    respParms_st.status_st.busy = (uint8_t)HSM_CMD_STATUS_BUSY;    //HSM CPU Busy Status  
-	    respParms_st.status_st.ps = (hsm_Cmd_StatusPs_E)HSM_CMD_STATUS_PS;        //Processing State Status
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 10.8" "H3_MISRAC_2012_R_10_8_DR_1"        
+	    respParms_st.status_st.ps = (hsm_Cmd_StatusPs_E)HSM_CMD_STATUS_PS;        //Processing State Status        
 	    respParms_st.status_st.lcs = (hsm_Cmd_StatusLcs_E)HSM_CMD_STATUS_LCS;      //Lifecycle State Status
 	    respParms_st.status_st.sbs = (hsm_Cmd_StatusSbs_E)HSM_CMD_STATUS_SBS;      //Secure Boot Status
+#pragma coverity compliance end_block "MISRA C-2012 Rule 10.8"
+#pragma GCC diagnostic pop         
 	    respParms_st.status_st.ecode = (uint8_t)HSM_CMD_STATUS_ECODE;  //Error Code
 #ifdef HSM_PRINT    
 	    printf("Busy Status = 0x%08x\r\n", respParms_st.status_st.busy);
@@ -190,21 +200,19 @@ hsm_Cmd_Status_E Hsm_Cmd_CheckCmdRespParms(st_Hsm_ResponseCmd respParms_st, uint
 	    printf("ECODE Status = 0x%08x\r\n", respParms_st.status_st.ecode);
 #endif    
         //Check status of HSM Status Registers
-        if( (respParms_st.status_st.busy != 0x00)
+        if( (respParms_st.status_st.busy != 0x00U)
                 || (respParms_st.status_st.ps != HSM_CMD_PS_OPERATIONAL)
                 || (respParms_st.status_st.lcs != HSM_CMD_LCS_OPEN)
                 || ( (respParms_st.status_st.sbs != HSM_CMD_SBS_DISABLED) && (respParms_st.status_st.sbs != HSM_CMD_SBS_RESET) )
-                || (respParms_st.status_st.ecode != 0x00) )
+                || (respParms_st.status_st.ecode != 0x00U) )
 
         {
-            if( i == 10000)
+            if(i == 9999UL)
             {
                  //Issue: HSM Status Failed 
                 ret_status_en = HSM_CMD_ERROR_STATUSREG;
 #ifdef HSM_PRINT 
         		printf("Status Register Failed\r\n");
-#else
-                //do nothing
 #endif 
             }
         }

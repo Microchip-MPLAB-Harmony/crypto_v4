@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Kas_WolfcryptWrapper.h
+    crypto_kas_wc_wrapper.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,8 +18,8 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef MCHP_CRYPTO_KAS_WOLFCRYPTWRAPPER_H
-#define MCHP_CRYPTO_KAS_WOLFCRYPTWRAPPER_H
+#ifndef CRYPTO_KAS_WC_WRAPPER_H
+#define CRYPTO_KAS_WC_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -32,9 +32,9 @@
 // *****************************************************************************
 // Section: Type Definitions
 // *****************************************************************************
-#ifdef CRYPTO_KAS_WC_ECDH_EN
+<#if (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 crypto_Kas_Status_E Crypto_Kas_Wc_Ecdh_SharedSecret(uint8_t *ptr_wcPrivKey, uint32_t wcPrivKeyLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, uint8_t *ptr_wcSharedSecret,
                                                     uint32_t wcSharedSecretLen, crypto_EccCurveType_E wcEccCurveType_en);
-#endif /* #ifdef CRYPTO_KAS_WC_ECDH_EN */
+</#if> <#-- CRYPTO_WC_ECDH -->
 
-#endif /* MCHP_CRYPTO_KAS_WOLFCRYPTWRAPPER_H */
+#endif /* CRYPTO_KAS_WC_WRAPPER_H */

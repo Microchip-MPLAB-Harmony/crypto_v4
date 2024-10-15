@@ -30,17 +30,6 @@ typedef enum
 
 typedef enum
 {
-	HSM_CMD_HASH_INVALID 		= 0x00,
-    HSM_CMD_HASH_MD5    		= 0x01,
-    HSM_CMD_HASH_SHA1   		= 0x02,
-    HSM_CMD_HASH_SHA224 		= 0x03,
-    HSM_CMD_HASH_SHA256 		= 0x04,
-    HSM_CMD_HASH_SHA384 		= 0x05,
-    HSM_CMD_HASH_SHA512 		= 0x06,
-}hsm_Hash_Types_E;
-
-typedef enum
-{
 	HSM_CMD_HASH_MD5_HMAC 		= 0x0B,
 	HSM_CMD_HASH_SHA1_HMAC 		= 0x0C,
 	HSM_CMD_HASH_SHA2_224_HMAC 	= 0x0D,
@@ -62,6 +51,9 @@ typedef enum
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"        
 	hsm_CommandGroups_E hashCmdGroup_en     :8; //It represent the command group here command group is always HSM_CMD_HASH for Hash Algorithm
     hsm_Hash_CmdTypes_E hashCmdType_en		:8; //Hash Command Type
     hsm_Hash_Types_E hashType_en  			:4; //Hash Algorithm Type
@@ -69,6 +61,8 @@ typedef struct
     uint8_t hashAuthInc		      			:1; //Authentication Included in input bit
     uint8_t hashSlotParamInc				:1; //This field indicates if slot parameters are included in the list of parameters
     uint8_t	reserved2          				:6; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop        
 }st_Hsm_Hash_CmdHeader;
 
 typedef struct
@@ -83,32 +77,50 @@ typedef struct
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
     uint8_t apl             :2;
     uint8_t reserved1       :1; //reserved
     uint8_t hsmOnly         :1;
     uint8_t storageType     :2;
     uint8_t valid           :1;
     uint8_t exStorage       :1; //
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop     
 }st_Hsm_Hash_VarSlotHeader;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
 	uint8_t reserved1          :8; //Reserved	
 	uint8_t	varSlotNum         :8;
     st_Hsm_Hash_VarSlotHeader   varSlotData_st;
 	uint8_t reserved2          :8; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop     
 }st_Hsm_Hash_BlockCmdParam2, st_Hsm_Hash_InitCmdParam1;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
 	uint8_t useVsForCtx :1;
 	uint8_t	reserved1	:7;//Reserved
 	uint8_t varSlotNum;
 	uint16_t reserved2  :16; //Reserved
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop 
 }st_Hsm_Hash_UpdateCmdParam2;
 
 typedef struct
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"     
 	uint8_t useVsForCtx 	:1;
 	uint8_t	reserved1				:7;//Reserved
 	uint8_t ctxVarSlotNum	:8;
@@ -117,6 +129,8 @@ typedef struct
 	uint8_t	hsmOnly			:1;
 	uint8_t	reserved2				:4; //Reserved		
 	uint8_t	valVarSlotNum	:8;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+#pragma GCC diagnostic pop     
 }st_Hsm_Hash_FinalCmdParam2;
 
 typedef struct
@@ -223,6 +237,6 @@ typedef enum
 hsm_Cmd_Status_E HSM_Hash_DigestDirect(hsm_Hash_Types_E hashType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
 hsm_Cmd_Status_E HSM_Hash_InitCmd(uint8_t *ptr_hashCtx, hsm_Hash_Types_E hashType_en);
 hsm_Cmd_Status_E HSM_Hash_UpdateCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_inputData, uint32_t dataLen, hsm_Hash_Types_E hashType_en);
-hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverInData, uint32_t dataLen, uint8_t *ptr_OutputData, hsm_Hash_Types_E hashType_en);
+hsm_Cmd_Status_E HSM_Hash_FinalCmd(uint8_t *ptr_hashCtx, uint8_t *ptr_leftoverInData, uint32_t dataLen, uint32_t totalLen, uint8_t *ptr_OutputData, hsm_Hash_Types_E hashType_en);
 
 #endif /* HSM_HASH_H*/

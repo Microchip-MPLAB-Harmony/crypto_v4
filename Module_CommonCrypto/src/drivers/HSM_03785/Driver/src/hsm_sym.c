@@ -20,14 +20,6 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "stdbool.h"
-#include "pic32cz8110ca90208.h"
-#include "system/system_module.h"
-#include "core_cm7.h"
-#include "user.h"
 #include "hsm_common.h"
 #include "hsm_sym.h"
 #include "hsm_cmd.h"
@@ -60,9 +52,14 @@ void Hsm_Sym_Tdes_Init(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTyp
     ptr_tdesCmd_st->tdesCmdHeader_st.desSlotParamInc = 0x00;
     ptr_tdesCmd_st->tdesCmdHeader_st.reserved1 = 0x00;
     ptr_tdesCmd_st->tdesCmdHeader_st.reserved2 = 0x00;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"     
     //Input SG-DMA Descriptor 1 for AES Key
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)tdesKey;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[1])>>2);
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[0].flagAndLength_st.dataLen = 24;  //here key length is entered
@@ -101,12 +98,17 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     
     //AES Parameter 1
     ptr_tdesCmd_st->tdesInputDataLenParm1 = inputDataLen;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"     
     //Output SG-DMA Descriptor 1
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop      
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.dataLen = inputDataLen; //length of the Output data which will be same as input Len
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
-    ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x00;
+    ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
     ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     
@@ -117,13 +119,18 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = ((uint32_t)(&ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1])>>2);
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[0].nextDes_st.stop = 0x00; //Do not stop after this descriptor 1 
         
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"   
         //Output SG-DMA Descriptor 2
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_tdesCmd_st->arr_tdesIvCtx);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop          
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = (uint32_t)0x00;
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].nextDes_st.stop = 0x01; //stop after this descriptor 2           
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.dataLen = 16; //length of the data in bytes and it is always 16 bytes
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-        ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x00;
+        ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
         ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
         
@@ -139,9 +146,14 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     {
         //do nothing
     }
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"      
     //Input SG-DMA Descriptor for Plain Text/ Encrypted Text for Any Mode
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].ptr_dataAddr = (uint32_t*)(ptr_dataIn); 
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].flagAndLength_st.dataLen = inputDataLen;  //length of input data in bytes
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].nextDes_st.stop = 0x01; //Stop after this
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].flagAndLength_st.cstAddr = 0x00;
@@ -150,10 +162,16 @@ hsm_Cmd_Status_E Hsm_Sym_Tdes_Cipher(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, uint8_
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].flagAndLength_st.intEn = 0x00;
     ptr_tdesCmd_st->arr_tdesInSgDmaDes_st[inputIndex].nextDes_st.reserved1 = 0x00; 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"   
     sendCmd_st.mailBoxHdr = (uint32_t*)(&ptr_tdesCmd_st->tdesMailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)(&ptr_tdesCmd_st->tdesCmdHeader_st);
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)(ptr_tdesCmd_st->arr_tdesInSgDmaDes_st);
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)(ptr_tdesCmd_st->arr_tdesOutSgDmaDes_st);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop
+    
     sendCmd_st.ptr_params = (uint32_t*)&(ptr_tdesCmd_st->tdesInputDataLenParm1);
     sendCmd_st.paramsCount = (uint8_t)((ptr_tdesCmd_st->tdesMailBoxHdr_st.msgSize/4U) - 4U);
     
@@ -200,9 +218,14 @@ void Hsm_Sym_Aes_Init(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E
     ptr_aesCmd_st->aesCmdHeader_st.aesSlotParamInc = 0x00;
     ptr_aesCmd_st->aesCmdHeader_st.reserved1 = 0x00;
     ptr_aesCmd_st->aesCmdHeader_st.reserved2 = 0x00;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"       
     //Input SG-DMA Descriptor 1 for AES Key
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_aeskey);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop         
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_aesCmd_st->arr_aesInSgDmaDes_st[1])>>2);
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.dataLen = (uint32_t)(((uint32_t)keyLen_en*8UL)+16UL);  //here key length is entered
@@ -224,12 +247,17 @@ void Hsm_Sym_Aes_Init(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, hsm_Sym_Aes_ModeTypes_E
     
         if( (aesModeType_en == HSM_SYM_AES_OPMODE_CBC) || (aesModeType_en == HSM_SYM_AES_OPMODE_CTR) )
         {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"             
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_aesCmd_st->arr_aesIvCtx);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop                 
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = ((uint32_t)(&ptr_aesCmd_st->arr_aesInSgDmaDes_st[2])>>2);
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = 16;  //128 bit of IV for AES
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-            ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x00;
+            ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
             ptr_aesCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
@@ -258,12 +286,17 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
     
     //AES Parameter 1
     ptr_aesCmd_st->aesInputDataLenParm1 = inputDataLen;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"     
     //Output SG-DMA Descriptor 1
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop       
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.dataLen = inputDataLen; //length of the Output data which will be same as input Len
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x00;
+    ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
     ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     
@@ -275,14 +308,18 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
         //Output SG-DMA Descriptor 1
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = ((uint32_t)(&ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1])>>2);
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.stop = 0x00; //Do not stop after this descriptor 1 
-        
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"        
         //Output SG-DMA Descriptor 2
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_aesCmd_st->arr_aesIvCtx);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop           
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = (uint32_t)0x00;
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.stop = 0x01; //stop after this descriptor 2           
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.dataLen = 16; //length of the data in bytes and it is always 16 bytes
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-        ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x00;
+        ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
         ptr_aesCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
         
@@ -302,9 +339,13 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
     {
         //do nothing
     }
-    
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
     //Input SG-DMA Descriptor for Plain Text/ Encrypted Text for Any Mode
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[inputIndex].ptr_dataAddr = (uint32_t*)ptr_dataIn; 
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[inputIndex].flagAndLength_st.dataLen = inputDataLen;  //length of input data in bytes
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[inputIndex].nextDes_st.stop = 0x01; //Stop after this
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[inputIndex].nextDes_st.nextDescriptorAddr = (uint32_t)0x00;
@@ -314,10 +355,15 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[inputIndex].flagAndLength_st.intEn = 0x00;
     ptr_aesCmd_st->arr_aesInSgDmaDes_st[inputIndex].nextDes_st.reserved1 = 0x00; 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
     sendCmd_st.mailBoxHdr = (uint32_t*)&(ptr_aesCmd_st->aesMailBoxHdr_st);
     sendCmd_st.algocmdHdr = (uint32_t*)&(ptr_aesCmd_st->aesCmdHeader_st);
     sendCmd_st.ptr_sgDescriptorIn = (uint32_t*)(ptr_aesCmd_st->arr_aesInSgDmaDes_st);
     sendCmd_st.ptr_sgDescriptorOut = (uint32_t*)(ptr_aesCmd_st->arr_aesOutSgDmaDes_st);
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
     sendCmd_st.ptr_params = (uint32_t*)&(ptr_aesCmd_st->aesInputDataLenParm1);
     sendCmd_st.paramsCount = (uint8_t)((ptr_aesCmd_st->aesMailBoxHdr_st.msgSize/4U) - 4U);
     
@@ -486,89 +532,89 @@ hsm_Cmd_Status_E Hsm_Sym_Aes_Cipher(st_Hsm_Sym_Aes_Cmd *ptr_aesCmd_st, uint8_t *
 //    ptr_desCtx_st->desCmdParm2_st.reserved1 = 0x00;
 //}
 
+//
+//void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_CmdTypes_E chaChaOperType_en, uint8_t *ptr_tdesKey, 
+//                            uint8_t *ptr_initVect, uint32_t counter, uint8_t varslotNum)
+//{
+//    //Mailbox Header
+//    ptr_chachaCmd_st->chachaMailBoxHdr_st.msgSize =  0x18;
+//    ptr_chachaCmd_st->chachaMailBoxHdr_st.unProtection = 0x1;
+//    ptr_chachaCmd_st->chachaMailBoxHdr_st.reserved1 = 0x00;
+//    ptr_chachaCmd_st->chachaMailBoxHdr_st.reserved2 = 0x00;
+//    
+//    //Command Header
+//    ptr_chachaCmd_st->chachaCmdHeader_st.chachaCmdGroup_en = HSM_CMD_CHACHA;
+//    ptr_chachaCmd_st->chachaCmdHeader_st.chachaCmdType_en = chaChaOperType_en; //this argument can be other instead of Cmd type because here we support encrypt or decrypt not GCM and others type.
+//    ptr_chachaCmd_st->chachaCmdHeader_st.chaChaAuthInc = 0x00;
+//    ptr_chachaCmd_st->chachaCmdHeader_st.chaChaSlotParamInc = 0x00;
+//    ptr_chachaCmd_st->chachaCmdHeader_st.reserved1 = 0x00;
+//    ptr_chachaCmd_st->chachaCmdHeader_st.reserved2 = 0x00;
+//    
+//    //Input SG-DMA Descriptor 1 for ChaCha Key
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_tdesKey);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1])>>2);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.dataLen = 32;  //here key length is entered in bytes
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
+//	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
+//
+//    //Input SG-DMA Descriptor 2 for IV
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_initVect);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2])>>2);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.dataLen = 4;  //here key length is entered in bytes
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
+//	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
+//    
+//    //Input SG-DMA Descriptor 3 for Nonce
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)&counter;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2])>>2);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.dataLen = 12;  //here key length is entered in bytes
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
+//	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
+//    
+//    //ChaCha Parameter 2
+//    ptr_chachaCmd_st->chachaCmdParm2_st.useNonce = 0x00;
+//    ptr_chachaCmd_st->chachaCmdParm2_st.useAadIv = 0x00;  //this need to study ??????????????????????????????
+//    ptr_chachaCmd_st->chachaCmdParm2_st.varSlotNum = varslotNum; //This also need to develop when slot number is used to fetch key//?????????
+//    ptr_chachaCmd_st->chachaCmdParm2_st.reserved1 = 0x00;
+//    ptr_chachaCmd_st->chachaCmdParm2_st.reserved2 = 0x00;
+//}
 
-void Hsm_Sym_ChaCha_Init(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, hsm_ChaCha_CmdTypes_E chaChaOperType_en, uint8_t *ptr_tdesKey, 
-                            uint8_t *ptr_initVect, uint32_t counter, uint8_t varslotNum)
-{
-    //Mailbox Header
-    ptr_chachaCmd_st->chachaMailBoxHdr_st.msgSize =  0x18;
-    ptr_chachaCmd_st->chachaMailBoxHdr_st.unProtection = 0x1;
-    ptr_chachaCmd_st->chachaMailBoxHdr_st.reserved1 = 0x00;
-    ptr_chachaCmd_st->chachaMailBoxHdr_st.reserved2 = 0x00;
-    
-    //Command Header
-    ptr_chachaCmd_st->chachaCmdHeader_st.chachaCmdGroup_en = HSM_CMD_CHACHA;
-    ptr_chachaCmd_st->chachaCmdHeader_st.chachaCmdType_en = chaChaOperType_en; //this argument can be other instead of Cmd type because here we support encrypt or decrypt not GCM and others type.
-    ptr_chachaCmd_st->chachaCmdHeader_st.chaChaAuthInc = 0x00;
-    ptr_chachaCmd_st->chachaCmdHeader_st.chaChaSlotParamInc = 0x00;
-    ptr_chachaCmd_st->chachaCmdHeader_st.reserved1 = 0x00;
-    ptr_chachaCmd_st->chachaCmdHeader_st.reserved2 = 0x00;
-    
-    //Input SG-DMA Descriptor 1 for ChaCha Key
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_tdesKey);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.stop = 0x00; //do not stop
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1])>>2);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.dataLen = 32;  //here key length is entered in bytes
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
-	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
-
-    //Input SG-DMA Descriptor 2 for IV
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)(ptr_initVect);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2])>>2);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.dataLen = 4;  //here key length is entered in bytes
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
-    
-    //Input SG-DMA Descriptor 3 for Nonce
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)&counter;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2])>>2);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.dataLen = 12;  //here key length is entered in bytes
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
-    
-    //ChaCha Parameter 2
-    ptr_chachaCmd_st->chachaCmdParm2_st.useNonce = 0x00;
-    ptr_chachaCmd_st->chachaCmdParm2_st.useAadIv = 0x00;  //this need to study ??????????????????????????????
-    ptr_chachaCmd_st->chachaCmdParm2_st.varSlotNum = varslotNum; //This also need to develop when slot number is used to fetch key//?????????
-    ptr_chachaCmd_st->chachaCmdParm2_st.reserved1 = 0x00;
-    ptr_chachaCmd_st->chachaCmdParm2_st.reserved2 = 0x00;
-}
-
-void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut)
-{
-    //Input SG-DMA Descriptor 4 for ChaCha Cipher
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)(ptr_dataIn);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.stop = 0x01; //do not stop
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00; //((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1])>>2);
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.dataLen = inputDataLen;  //here key length is entered in bytes
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
-	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
-    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00;
-    
-    //ChaCha Parameter 1
-    ptr_chachaCmd_st->chachaInputDataLenParm1 = inputDataLen;
-    
-    //Output SG-DMA Descriptor 1 for ChaCha Cipher
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.stop = 0x01;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.dataLen = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
-    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x00;
-}
+//void Hsm_Sym_ChaCha20_Cipher(st_Hsm_Sym_ChaCha20_Cmd *ptr_chachaCmd_st, uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut)
+//{
+//    //Input SG-DMA Descriptor 4 for ChaCha Cipher
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)(ptr_dataIn);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.stop = 0x01; //do not stop
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  0x00; //((uint32_t)(&ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[1])>>2);
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.dataLen = inputDataLen;  //here key length is entered in bytes
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
+//	ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
+//    ptr_chachaCmd_st->arr_chachaInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00;
+//    
+//    //ChaCha Parameter 1
+//    ptr_chachaCmd_st->chachaInputDataLenParm1 = inputDataLen;
+//    
+//    //Output SG-DMA Descriptor 1 for ChaCha Cipher
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t*)(ptr_dataOut);
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = 0x00;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.stop = 0x01;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.dataLen = 0x00;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
+//    ptr_chachaCmd_st->arr_chachaOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
+//}

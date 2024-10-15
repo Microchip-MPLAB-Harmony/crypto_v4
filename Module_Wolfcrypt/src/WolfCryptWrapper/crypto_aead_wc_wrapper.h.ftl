@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Aead_WolfcryptWrapper.h
+    crypto_aead_wc_wrapper.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,8 +18,8 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef MCHP_CRYPTO_AEAD_WOLFCRYPTWRAPPER_H
-#define MCHP_CRYPTO_AEAD_WOLFCRYPTWRAPPER_H
+#ifndef CRYPTO_AEAD_WC_WRAPPER_H
+#define CRYPTO_AEAD_WC_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -32,14 +32,14 @@
 // *****************************************************************************
 // Section: Type Definitions
 // *****************************************************************************
-#if (defined(HAVE_AESCCM) && defined(CRYPTO_AEAD_WC_AESCCM_EN))
+<#if (CRYPTO_WC_AES_CCM?? &&(CRYPTO_WC_AES_CCM == true))>
 crypto_Aead_Status_E Crypto_Aead_Wc_AesCcm_Init(void *ptr_aesCcmCtx, uint8_t *ptr_key, uint32_t keySize);
 crypto_Aead_Status_E Crypto_Aead_Wc_AesCcm_Cipher(crypto_CipherOper_E cipherOper_en, void *ptr_aesCcmCtx, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                     uint8_t *ptr_outData, uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_authTag,
                                                     uint32_t authTagLen, uint8_t *ptr_aad, uint32_t aadLen);
-#endif /* HAVE_AESCCM && CRYPTO_AEAD_AESCCM_EN */
+</#if>  <#-- CRYPTO_WC_AES_CCM --> 
 
-#if (defined(WOLFSSL_AES_EAX) && defined(CRYPTO_AEAD_WC_AESEAX_EN))
+<#if (CRYPTO_WC_AES_EAX?? &&(CRYPTO_WC_AES_EAX == true))>
 crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_Init(void *ptr_aesEaxCtx, uint8_t *ptr_key, uint32_t keySize, 
                                                 uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen);
 crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_Cipher(crypto_CipherOper_E cipherOper_en, void *ptr_aesEaxCtx, uint8_t *ptr_inputData, uint32_t dataLen, 
@@ -51,9 +51,9 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_AddAadData(void *ptr_aesEaxCtx, uint8
 crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_nonce, 
                                                             uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen);
-#endif /* WOLFSSL_AES_EAX && CRYPTO_AEAD_WC_AESEAX_EN*/
+</#if>  <#-- CRYPTO_WC_AES_EAX -->
 
-#if (defined(HAVE_AESGCM) && defined(CRYPTO_AEAD_WC_AESGCM_EN))
+<#if (CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>   
 #ifdef WOLFSSL_AESGCM_STREAM
 crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_Init(void *ptr_aesGcmCtx, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect, uint32_t initVectLen);
 crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_AddAadData(crypto_CipherOper_E cipherOper_en, void *ptr_aesGcmCtx, uint8_t *ptr_aad, uint32_t aadLen);
@@ -62,6 +62,6 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_Final(crypto_CipherOper_E cipherOper_
 #endif /*WOLFSSL_AESGCM_STREAM */
 crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keySize, 
                                                 uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen);
-#endif /* HAVE_AESGCM && CRYPTO_AEAD_WC_AESGCM_EN*/
+</#if> <#--CRYPTO_WC_AES_GCM-->
 
-#endif //MCHP_CRYPTO_AEAD_WOLFCRYPTWRAPPER_H
+#endif //CRYPTO_AEAD_WC_WRAPPER_H

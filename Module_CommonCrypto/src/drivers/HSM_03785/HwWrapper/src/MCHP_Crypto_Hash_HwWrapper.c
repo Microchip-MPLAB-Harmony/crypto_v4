@@ -129,7 +129,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Final(void *ptr_md5Ctx, uint8_t *ptr_dig
     crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED; 
     hsm_Cmd_Status_E hsmApiStatus_en = HSM_CMD_ERROR_FAILED;
     
-    hsmApiStatus_en = HSM_Hash_FinalCmd((uint8_t*)ptr_md5Ctx, NULL, 0, ptr_digest, HSM_CMD_HASH_MD5);
+    hsmApiStatus_en = HSM_Hash_FinalCmd((uint8_t*)ptr_md5Ctx, NULL, 0, 0, ptr_digest, HSM_CMD_HASH_MD5);
 
     if(hsmApiStatus_en == HSM_CMD_SUCCESS)
     {
@@ -147,8 +147,8 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *ptr_inputData, uint32_t 
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED; 
     hsm_Cmd_Status_E hsmApiStatus_en = HSM_CMD_ERROR_FAILED;
     hsm_Hash_Types_E shaAlgoType_en = HSM_CMD_HASH_INVALID;
-    
-    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en);
+    uint32_t hashBlockSize = 0;
+    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en, &hashBlockSize);
         
     if(shaAlgoType_en != HSM_CMD_HASH_INVALID)
     {
@@ -171,11 +171,18 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *ptr_shaCtx, crypto_Hash_Algo_
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED; 
     hsm_Cmd_Status_E hsmApiStatus_en = HSM_CMD_ERROR_FAILED;
     hsm_Hash_Types_E shaAlgoType_en = HSM_CMD_HASH_INVALID;
+    uint32_t hashBlockSize = 0;
+    uint8_t *ptr_byteShaCtx = (uint8_t*)ptr_shaCtx;
+    uint8_t *ptr_restBytesLen = &ptr_byteShaCtx[CRYPTO_HW_RESTBYTES_LEN_INEX];
+    uint32_t *ptr_wordTotalLen = (uint32_t*)ptr_shaCtx;
+    uint32_t *ptr_totalDataLen = &ptr_wordTotalLen[CRYPTO_HW_TOTAL_LEN_INDEX];
     
-    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en);
+    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en, &hashBlockSize);
         
     if(shaAlgoType_en != HSM_CMD_HASH_INVALID)
-    {        
+    {   
+        *ptr_restBytesLen = 0x00U;
+        *ptr_totalDataLen = 0x00000000UL;
         hsmApiStatus_en =  HSM_Hash_InitCmd( (uint8_t*)ptr_shaCtx, shaAlgoType_en);
     }
     
@@ -195,12 +202,91 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *ptr_shaCtx, uint8_t *ptr_in
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED; 
     hsm_Cmd_Status_E hsmApiStatus_en = HSM_CMD_ERROR_FAILED;
     hsm_Hash_Types_E shaAlgoType_en = HSM_CMD_HASH_INVALID;
+    uint32_t hashBlockSize = 0;
+    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en, &hashBlockSize);
+    uint32_t dataLenInBlock = 0; 
     
-    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en);
-        
+    uint8_t *ptr_byteShaCtx = (uint8_t*)ptr_shaCtx;
+    uint8_t *ptr_restBytesLen = &ptr_byteShaCtx[CRYPTO_HW_RESTBYTES_LEN_INEX];
+    uint8_t *ptr_restDataByte = &ptr_byteShaCtx[CRYPTO_HW_RESTBYTES_INDEX];
+    uint32_t *ptr_wordTotalLen = (uint32_t*)ptr_shaCtx;
+    uint32_t *ptr_totalDataLen = &ptr_wordTotalLen[CRYPTO_HW_TOTAL_LEN_INDEX];
+    
     if(shaAlgoType_en != HSM_CMD_HASH_INVALID)
     {
-        hsmApiStatus_en = HSM_Hash_UpdateCmd((uint8_t*)ptr_shaCtx, ptr_inputData, dataLen, shaAlgoType_en);
+        if(*ptr_restBytesLen > 0U)
+        {
+            if((*ptr_restBytesLen + dataLen) >= hashBlockSize)
+            {
+                uint8_t reqBytes = (uint8_t)(hashBlockSize - (uint32_t)*ptr_restBytesLen);
+                for(uint8_t i = 0U; i < reqBytes; i++)
+                {
+                    ptr_restDataByte[*ptr_restBytesLen + i] =  ptr_inputData[i]; 
+                }
+                hsmApiStatus_en = HSM_Hash_UpdateCmd((uint8_t*)ptr_shaCtx, ptr_restDataByte, hashBlockSize, shaAlgoType_en);
+                *ptr_restBytesLen = 0U;
+                for(uint8_t i = 0U; i < hashBlockSize; i++) //clear the already saved data
+                {
+                     ptr_restDataByte[i] = 0x00;
+                }
+                *ptr_totalDataLen = *ptr_totalDataLen + hashBlockSize;
+                
+                uint32_t totalBlocks = (dataLen - reqBytes)/hashBlockSize;
+                if(totalBlocks > 0UL)
+                {
+                    hsmApiStatus_en = HSM_Hash_UpdateCmd((uint8_t*)ptr_shaCtx, &ptr_inputData[reqBytes], (hashBlockSize*totalBlocks), shaAlgoType_en);
+                    *ptr_totalDataLen = *ptr_totalDataLen + (hashBlockSize*totalBlocks);
+                    *ptr_restBytesLen = (uint8_t)((dataLen - (uint32_t)reqBytes)% hashBlockSize);
+                }
+                else
+                {
+                    *ptr_restBytesLen = (uint8_t)((dataLen - (uint32_t)reqBytes));
+                }
+                for(uint8_t k = 0U; k < *ptr_restBytesLen; k++)
+                {
+                    ptr_restDataByte[k] = ptr_inputData[reqBytes + k];
+                }
+            }
+            else
+            {
+                for(uint8_t k = 0U; k < dataLen; k++)
+                {
+                    ptr_restDataByte[*ptr_restBytesLen + k] = ptr_inputData[k];
+                }
+                *ptr_restBytesLen = (uint8_t)(*ptr_restBytesLen + dataLen);
+                hsmApiStatus_en = HSM_CMD_SUCCESS;
+            }
+        }
+        else
+        {
+            if(dataLen >= hashBlockSize)
+            {
+                *ptr_restBytesLen = (uint8_t)(dataLen % hashBlockSize);
+                if(*ptr_restBytesLen == 0U)        
+                {
+                    dataLenInBlock = dataLen;
+                }
+                else
+                {
+                    for(uint8_t k = 0U; k < *ptr_restBytesLen; k++)
+                    {
+                        ptr_restDataByte[k] = ptr_inputData[dataLen - *ptr_restBytesLen + k];
+                    }
+                    dataLenInBlock = (dataLen - *ptr_restBytesLen);
+                }
+                hsmApiStatus_en = HSM_Hash_UpdateCmd((uint8_t*)ptr_shaCtx, ptr_inputData, dataLenInBlock, shaAlgoType_en);
+                *ptr_totalDataLen = *ptr_totalDataLen + dataLenInBlock;
+            }
+            else
+            {
+                *ptr_restBytesLen = (uint8_t)dataLen;
+                for(uint8_t k = 0U; k < *ptr_restBytesLen; k++)
+                {
+                    ptr_restDataByte[k] = ptr_inputData[k];
+                }
+                hsmApiStatus_en = HSM_CMD_SUCCESS;
+            }
+        }
     }
     
     if(hsmApiStatus_en == HSM_CMD_SUCCESS)
@@ -219,12 +305,18 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *ptr_shaCtx, uint8_t *ptr_dig
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED; 
     hsm_Cmd_Status_E hsmApiStatus_en = HSM_CMD_ERROR_FAILED;
     hsm_Hash_Types_E shaAlgoType_en = HSM_CMD_HASH_INVALID;
+    uint32_t hashBlockSize = 0;
+    uint8_t *ptr_byteShaCtx = (uint8_t*)ptr_shaCtx;
+    uint8_t *ptr_restBytesLen = &ptr_byteShaCtx[CRYPTO_HW_RESTBYTES_LEN_INEX];
+    uint8_t *ptr_restDataByte = &ptr_byteShaCtx[CRYPTO_HW_RESTBYTES_INDEX];
+    uint32_t *ptr_wordTotalLen = (uint32_t*)ptr_shaCtx;
+    uint32_t *ptr_totalDataLen = &ptr_wordTotalLen[CRYPTO_HW_TOTAL_LEN_INDEX];
     
-    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en);
+    shaAlgoType_en = Crypto_Hash_Hw_GetShaAlgoType(shaAlgorithm_en, &hashBlockSize);
     
     if(shaAlgoType_en != HSM_CMD_HASH_INVALID)
-    {
-        hsmApiStatus_en = HSM_Hash_FinalCmd((uint8_t*)ptr_shaCtx, NULL, 0, ptr_digest, shaAlgoType_en);
+    {        
+        hsmApiStatus_en = HSM_Hash_FinalCmd((uint8_t*)ptr_shaCtx, ptr_restDataByte, *ptr_restBytesLen, *ptr_totalDataLen, ptr_digest, shaAlgoType_en);
     }
 
     if(hsmApiStatus_en == HSM_CMD_SUCCESS)
@@ -238,7 +330,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *ptr_shaCtx, uint8_t *ptr_dig
     return ret_shaStat_en; 
 }
 
-hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en)
+hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en, uint32_t *blockSize)
 {
     hsm_Hash_Types_E algoType_en = HSM_CMD_HASH_INVALID;
     
@@ -247,35 +339,41 @@ hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en)
 #ifdef CRYPTO_HASH_SHA1_EN
         case CRYPTO_HASH_SHA1:
             algoType_en = HSM_CMD_HASH_SHA1;
+            *blockSize = 64U;
             break;
 #endif
 
 #ifdef CRYPTO_HASH_SHA2_224_EN
         case CRYPTO_HASH_SHA2_224:
             algoType_en = HSM_CMD_HASH_SHA224;
+            *blockSize = 64U;
             break;
 #endif
 
 #ifdef CRYPTO_HASH_SHA2_256_EN
         case CRYPTO_HASH_SHA2_256:
             algoType_en = HSM_CMD_HASH_SHA256;
+            *blockSize = 64U;
             break;
 #endif
 
 #ifdef CRYPTO_HASH_SHA2_384_EN 
         case CRYPTO_HASH_SHA2_384:
             algoType_en = HSM_CMD_HASH_SHA384;
+            *blockSize = 128U;
             break;
 #endif
 
 #ifdef CRYPTO_HASH_SHA2_512_EN  
         case CRYPTO_HASH_SHA2_512:
             algoType_en = HSM_CMD_HASH_SHA512;
+            *blockSize = 128U;
             break;
 #endif
         
         default:
             algoType_en = HSM_CMD_HASH_INVALID;
+            *blockSize = 0x00U;
             break;                  
     }
     return algoType_en;

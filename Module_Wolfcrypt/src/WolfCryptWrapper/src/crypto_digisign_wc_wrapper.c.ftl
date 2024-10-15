@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_DigSign_WolfcryptWrapper.c
+    crypto_digisign_wc_wrapper.c
 
   Summary:
     This file contains the source code for the MPLAB Harmony application.
@@ -29,17 +29,18 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_DigSign_WolfcryptWrapper.h"
-#include "crypto/common_crypto/MCHP_Crypto_Common_WolfcryptWrapper.h"
+#include "crypto/common_crypto/crypto_digisign_wc_wrapper.h"
+#include "crypto/common_crypto/crypto_wc_common_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
-#ifdef CRYPTO_DIGISIGN_WC_ECDSA_EN
+<#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
 #include "wolfssl/wolfcrypt/random.h"
 #include "wolfssl/wolfcrypt/ecc.h"
-#endif /* CRYPTO_DIGISIGN_WC_ECDSA_EN */
+#include "crypto/common_crypto/MCHP_Crypto_Hash.h"
+</#if> <#-- CRYPTO_WC_ECDSA -->
 
-#ifdef CRYPTO_DIGISIGN_WC_ECDSA_EN
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_Sign(uint8_t *ptr_wcInputHash, uint32_t wcHashLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, uint8_t *ptr_wcPrivKey, 
+<#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_SignHash(uint8_t *ptr_wcInputHash, uint32_t wcHashLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, uint8_t *ptr_wcPrivKey, 
                                                        uint32_t wcPrivKeyLen, crypto_EccCurveType_E wcEccCurveType_en)
 {
     crypto_DigiSign_Status_E ret_wcEcdsaStat_en;
@@ -124,7 +125,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_Sign(uint8_t *ptr_wcInputHash,
     return ret_wcEcdsaStat_en;
 }
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_Verify(uint8_t *ptr_wcInputHash, uint32_t wcHashLen, uint8_t *ptr_wcInputSig, uint32_t wcSigLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1" 
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_VerifyHash(uint8_t *ptr_wcInputHash, uint32_t wcHashLen, uint8_t *ptr_wcInputSig, uint32_t wcSigLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, 
                                                          int8_t *ptr_wcHashVerifyStat, crypto_EccCurveType_E wcEccCurveType_en)
 {
     crypto_DigiSign_Status_E ret_wcEcdsaStat_en;
@@ -201,4 +205,60 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_Verify(uint8_t *ptr_wcInputHas
     
     return ret_wcEcdsaStat_en;
 }
-#endif /* CRYPTO_DIGISIGN_WC_ECDSA_EN */
+#pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
+#pragma GCC diagnostic pop 
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_SignData(uint8_t *ptr_wcInputData, uint32_t wcDataLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, 
+                                                            uint8_t *ptr_wcPrivKey, uint32_t wcPrivKeyLen, crypto_Hash_Algo_E hashType_en,                                                            
+                                                            crypto_EccCurveType_E wcEccCurveType_en)
+{
+    crypto_DigiSign_Status_E ret_wcEcdsaStat_en;
+    uint8_t arr_hash[512];
+    uint32_t wcHashLen = 0x00UL;
+    
+    //calculate the hash before signing
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, hashType_en, ptr_wcInputData,wcDataLen, arr_hash);
+    
+    if(wcHashLen == 0x00UL)
+    {
+        ret_wcEcdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+    }
+    else
+    {
+        //Sign the Hash
+        ret_wcEcdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_SignHash(arr_hash, wcHashLen, ptr_wcSig, wcSigLen, ptr_wcPrivKey, 
+                                                       wcPrivKeyLen, wcEccCurveType_en);
+    }
+    
+    return ret_wcEcdsaStat_en;
+}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1" 
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_VerifyData(uint8_t *ptr_wcInputData, uint32_t wcDataLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, 
+                                                            uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, crypto_Hash_Algo_E hashType_en,
+                                                            int8_t *ptr_wcHashVerifyStat, crypto_EccCurveType_E wcEccCurveType_en)
+{
+    crypto_DigiSign_Status_E ret_wcEcdsaStat_en;
+    uint8_t arr_hash[512];
+    uint32_t wcHashLen = 0x00UL;
+    
+    //calculate the hash before verify
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, hashType_en, ptr_wcInputData,wcDataLen, arr_hash);
+    
+    if(wcHashLen == 0x00UL)
+    {
+        ret_wcEcdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+    }
+    else
+    {
+        //Verify the Hash
+        ret_wcEcdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_VerifyHash(arr_hash, wcHashLen, ptr_wcSig, wcSigLen, ptr_wcPubKey, 
+                                                                wcPubKeyLen, ptr_wcHashVerifyStat, wcEccCurveType_en);
+    }
+    
+    return ret_wcEcdsaStat_en;
+}
+#pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
+#pragma GCC diagnostic pop 
+</#if> <#-- CRYPTO_WC_ECDSA -->

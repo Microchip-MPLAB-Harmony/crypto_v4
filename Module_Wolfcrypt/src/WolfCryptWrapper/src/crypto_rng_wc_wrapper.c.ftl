@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Rng_WolfcryptWrapper.c
+    crypto_rng_wc_wrapper.c
 
   Summary:
     This file contains the source code for the MPLAB Harmony application.
@@ -28,11 +28,11 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Rng.h"
-#include "crypto/common_crypto/MCHP_Crypto_Rng_WolfcryptWrapper.h"
+#include "crypto/common_crypto/crypto_rng_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/random.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
-#ifdef CRYPTO_RNG_WC_PRNG_EN
+<#if (CRYPTO_WC_PRNG?? &&(CRYPTO_WC_PRNG == true))>
 crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen)
 {
     crypto_Rng_Status_E ret_rngStat_en = CRYPTO_RNG_ERROR_FAIL;
@@ -72,4 +72,4 @@ crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint3
     
     return ret_rngStat_en;
 }
-#endif  /* CRYPTO_RNG_WC_PRNG_EN */
+</#if> <#-- CRYPTO_WC_PRNG --> 

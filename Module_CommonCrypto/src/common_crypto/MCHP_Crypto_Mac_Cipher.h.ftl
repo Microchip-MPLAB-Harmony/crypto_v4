@@ -60,7 +60,7 @@ typedef struct
     uint8_t arr_macDataCtx[70];
 }st_Crypto_Mac_Aes_ctx;
 // *****************************************************************************
-#ifdef CRYPTO_MAC_AESCMAC_EN 
+<#if (CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))>
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, uint8_t *ptr_inputData, uint32_t dataLen);
@@ -69,13 +69,13 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Final(st_Crypto_Mac_Aes_ctx *ptr_aesCmacC
 
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                 uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
-#endif /* CRYPTO_MAC_AESCMAC_EN */
+</#if>  <#-- CRYPTO_WC_AES_CMAC -->
 
-#ifdef CRYPTO_MAC_AESCMAC_EN
+<#if (CRYPTO_WC_AES_GMAC?? &&(CRYPTO_WC_AES_GMAC == true))>
 crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
 
 crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, 
                                                                                                   uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID);
-#endif /* CRYPTO_MAC_AESCMAC_EN */
+</#if>  <#-- CRYPTO_WC_AES_GMAC -->
 #endif /* MCHP_CRYPTO_MAC_CIPHER_H */

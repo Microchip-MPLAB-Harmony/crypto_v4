@@ -5,15 +5,15 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_DigSign_HwWrapper.h
+    crypto_kas_cpkcc44163_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for the digital signature in the 
+    Crypto Framework Library wrapper file for the key agreement in the 
     hardware cryptographic library.
 
   Description:
     This header file contains the wrapper interface to access the hardware 
-    cryptographic library in Microchip microcontrollers for digital signature.
+    cryptographic library in Microchip microcontrollers for key agreement.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H
-#define MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H
+#ifndef CRYPTO_KAS_CPKCC44163_WRAPPER_H
+#define CRYPTO_KAS_CPKCC44163_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -50,36 +50,34 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#include <stdint.h>
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
+#include "crypto/common_crypto/MCHP_Crypto_Kas.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     extern "C" {
+
 #endif
 // DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DigSign Common Interface 
+// Section: Kas Common Interface 
 // *****************************************************************************
 // *****************************************************************************
 
-//crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_Sign(uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_Sig, uint32_t sigLen,  
-//                                                       uint8_t *ptr_privKey, uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_en);
-//
-//crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_Verify(uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_Sig, uint32_t sigLen, uint8_t *ptr_pubKey, 
-//                                                       uint32_t pubKeyLen, int8_t *ptr_verifyStatus, crypto_EccCurveType_E eccCurveType_en);        
+crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 
+    uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen, 
+    uint8_t *secret, uint32_t secretLen, crypto_EccCurveType_E eccCurveType_en);
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_SignData(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_Sig, uint32_t sigLen, uint8_t *ptr_privKey, 
-                                                                uint32_t privKeyLen, crypto_Hash_Algo_E hashType_en, crypto_EccCurveType_E eccCurveType_en);
-
-crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_VerifyData(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_Sig, uint32_t sigLen, uint8_t *ptr_pubKey, 
-                                                    uint32_t pubKeyLen, crypto_Hash_Algo_E hashType_en, int8_t *ptr_verifyStatus, crypto_EccCurveType_E eccCurveType_en);
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     }
+
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H */
+#endif /* CRYPTO_KAS_CPKCC44163_WRAPPER_H */

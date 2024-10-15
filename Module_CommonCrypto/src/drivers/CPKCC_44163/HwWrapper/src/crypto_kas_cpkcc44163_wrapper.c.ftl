@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Kas_HwWrapper.c
+    crypto_kas_cpkcc44163_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for the key agreement in the 
@@ -48,7 +48,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/MCHP_Crypto_Kas_HwWrapper.h"
+#include "crypto/common_crypto/crypto_kas_cpkcc44163_wrapper.h"
 #include "crypto/drivers/drv_crypto_ecc_hw_cpkcl.h"
 #include "crypto/drivers/drv_crypto_ecdh_hw_cpkcl.h"
 

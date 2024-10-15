@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Aead_HwWrapper.h
+    crypto_aead_aes6149_wrapper..h
 
   Summary:
     Crypto Framework Library wrapper file for hardware AES.
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_AEAD_HWWRAPPER_H
-#define MCHP_CRYPTO_AEAD_HWWRAPPER_H
+#ifndef CRYPTO_AEAD_AES6149_WRAPPER_H
+#define CRYPTO_AEAD_AES6149_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -49,14 +49,16 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-//#include <stdint.h>
-//#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-//#include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
-//#include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
+#include <stdint.h>
+#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
+#include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     extern "C" {
+
 #endif
 // DOM-IGNORE-END
 
@@ -64,8 +66,18 @@ Microchip or any third party.
 // *****************************************************************************
 // Section: Data Types
 // *****************************************************************************
-// ***************************** ************************************************
+// *****************************************************************************
 
+#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+typedef struct 
+{
+    uint32_t key[16];
+    uint32_t calculatedIv[4];  
+    uint32_t intermediateHash[4];
+    uint32_t H[4];
+    uint32_t invokeCtr[2];
+} CRYPTO_GCM_HW_CONTEXT;
+#endif
 
 // *****************************************************************************
 // *****************************************************************************
@@ -73,22 +85,32 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#ifdef CRYPTO_AEAD_HW_AESGCM_EN
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
+    crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen);
+    
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,  
+    uint8_t *initVect, uint32_t initVectLen, uint8_t *inputData,uint32_t dataLen, 
+    uint8_t *outData, uint8_t *aad, uint32_t aadLen, uint8_t *authTag, 
+    uint32_t authTagLen);
+ 
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *inputData, 
+    uint32_t dataLen, uint8_t *outData, uint8_t *key, uint32_t keyLen, 
+    uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
+    uint8_t *authTag, uint32_t authTagLen);
+ 
+crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData, 
+    uint32_t dataLen, uint8_t *outData, uint8_t *key, uint32_t keyLen, 
+    uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
+    uint8_t *authTag, uint32_t authTagLen);
+#endif
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     }
+
 #endif
 // DOM-IGNORE-END
 
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *ptr_aesGcmCtx, crypto_CipherOper_E cipherOper_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect,uint32_t ivLen);
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_AddAad(void *ptr_aesGcmCtx, uint8_t *ptr_aad, uint32_t aadLen);
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *ptr_aesGcmCtx, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Final(void *ptr_aesGcmCtx, uint8_t *ptr_authTag, uint8_t authTagLen);
-
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *ptr_dataIn, uint32_t dataLen, uint8_t *ptr_outData, 
-                                                      uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, 
-                                                      uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen);
-    
-crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *ptr_dataIn, uint32_t dataLen, uint8_t *ptr_outData, 
-                                                      uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, 
-                                                      uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen);
-#endif /* MCHP_CRYPTO_AEAD_HWWRAPPER_H */
+#endif /* CRYPTO_AEAD_AES6149_WRAPPER_H */

@@ -5,15 +5,15 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_DigSign_HwWrapper.h
+    crypto_kas_hsm03785_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for the digital signature in the 
+    Crypto Framework Library wrapper file for the key agreement in the 
     hardware cryptographic library.
 
   Description:
-    This header file contains the wrapper interface to access the hardware 
-    cryptographic library in Microchip microcontrollers for digital signature.
+    This source file contains the wrapper interface to access the hardware 
+    cryptographic library in Microchip microcontrollers for key agreement.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -41,49 +41,53 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H
-#define MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
-#endif
-// DOM-IGNORE-END
+#include "crypto/common_crypto/crypto_kas_hsm03785_wrapper.h"
+#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
+#include "crypto/drivers/hsm_kas.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DigSign Common Interface 
+// Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash, 
-    uint32_t hashLen, uint8_t *outSig, uint32_t sigLen, uint8_t *privKey, 
-    uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En);
-
-crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash, 
-    uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, 
-    uint32_t pubKeyLen, int8_t *hashVerifyStatus, 
-    crypto_EccCurveType_E eccCurveType_En);
-
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
+// *****************************************************************************
+// *****************************************************************************
+// Section: Kas Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+crypto_Kas_Status_E Crypto_Kas_Hw_Ecdh_SharedSecret(uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, uint8_t *ptr_sharedSecret,
+                                                    uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en)
+{
+    crypto_Kas_Status_E ret_ecdhStatus_en = CRYPTO_KAS_ERROR_FAIL;
+    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
+    hsm_Cmd_Status_E hsmEcdhStatus_en = HSM_CMD_ERROR_FAILED;
+    st_Hsm_Kas_Dh_Cmd arr_ecdhCmdCtx_st[1] = {0};
+    
+    hsmCurveType_en = Crypto_Hw_ECC_GetEccCurveType(eccCurveType_en);
+    if(hsmCurveType_en != HSM_ECC_MAXIMUM_CURVES_LIMIT)
+    {
+        hsmEcdhStatus_en = Hsm_Kas_Dh_Ecdh_SharedSecret(arr_ecdhCmdCtx_st, ptr_privKey, privKeyLen, &ptr_pubKey[1], (pubKeyLen-1U),
+                                            ptr_sharedSecret, (uint16_t)sharedSecretLen, hsmCurveType_en);
+        
+        if(hsmEcdhStatus_en == HSM_CMD_SUCCESS)
+        {
+            ret_ecdhStatus_en = CRYPTO_KAS_SUCCESS;
+        }
+        else
+        {
+            ret_ecdhStatus_en = CRYPTO_KAS_ERROR_FAIL;
+        }
     }
-
-#endif
-// DOM-IGNORE-END
-
-#endif /* MCHP_CRYPTO_DIGSIGN_HWWRAPPER_H */
+    else
+    {
+        ret_ecdhStatus_en = CRYPTO_KAS_ERROR_CURVE;
+    }
+    return ret_ecdhStatus_en;
+}

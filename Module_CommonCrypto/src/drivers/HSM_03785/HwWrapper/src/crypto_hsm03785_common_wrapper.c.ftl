@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Sym_HwWrapper.h
+    crypto_hsm03785_common_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for hardware AES.
+    Crypto Framework Library wrapper file for the common Function across HW Wrappers.
 
   Description:
-    This header file contains the wrapper interface to access the symmetric 
-    AES algorithms in the AES hardware driver for Microchip microcontrollers.
+    This source file contains the wrapper interface to access the hardware 
+    cryptographic library in Microchip microcontrollers for key agreement.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,46 +40,68 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_SYM_HWWRAPPER_H
-#define MCHP_CRYPTO_SYM_HWWRAPPER_H
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-//#include "crypto/common_crypto/MCHP_Crypto_Sym_Config.h"
-#include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-    extern "C" {
-#endif
-// DOM-IGNORE-END
-
+#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
+#include "crypto/drivers/hsm_common.h"
 // *****************************************************************************
 // *****************************************************************************
-// Section: Symmetric Algorithms Common Interface 
+// Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E cipherOpType_en, crypto_Sym_OpModes_E opMode_en, 
-                                                                    uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect);
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *ptr_aesCtx, uint8_t *ptr_dataIn, uint32_t dataLen, uint8_t *ptr_dataOut);
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_CipherDirect(crypto_CipherOper_E cipherOpType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
-                                                        uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect);
 
-
-crypto_Sym_Status_E Crypto_Sym_Hw_Tdes_Init(void *ptr_tdesCtx, crypto_CipherOper_E cipherOpType_en, 
-                                                    crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint8_t *ptr_initVect);
-crypto_Sym_Status_E Crypto_Sym_Hw_Tdes_Cipher(void *ptr_tdesCtx, uint8_t *ptr_dataIn, uint32_t dataLen, uint8_t *ptr_dataOut);
-crypto_Sym_Status_E Crypto_Sym_Hw_Tdes_CipherDirect(crypto_CipherOper_E cipherOpType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
-                                                        uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect);
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
+hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen)
+{
+    hsm_Aes_KeySize_E ret_keySize_en = HSM_SYM_AES_KEY_128;
+    
+    if(keyLen == 16U)
+    {
+       ret_keySize_en = HSM_SYM_AES_KEY_128;
     }
-#endif
-// DOM-IGNORE-END
+    else if(keyLen == 24U)
+    {
+        ret_keySize_en = HSM_SYM_AES_KEY_192;
+    }
+    else if(keyLen == 32U)
+    {
+        ret_keySize_en = HSM_SYM_AES_KEY_256;
+    }
+    else
+    {
+        ret_keySize_en = HSM_SYM_AES_KEY_128;
+    }
+    return ret_keySize_en;
+}
 
-#endif /* MCHP_CRYPTO_SYM_HWWRAPPER_H */
+hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurveType_en)
+{
+    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
+    
+    switch(eccCurveType_en)
+    {
+        case CRYPTO_ECC_CURVE_P192:        
+            hsmCurveType_en = HSM_ECC_CURVETYPE_P192;
+        break;
+     
+        case CRYPTO_ECC_CURVE_P256:       
+            hsmCurveType_en = HSM_ECC_CURVETYPE_P256;
+        break;
+        
+        case CRYPTO_ECC_CURVE_P384:
+            hsmCurveType_en = HSM_ECC_CURVETYPE_P384;
+        break;
+        
+        case CRYPTO_ECC_CURVE_P521:
+            hsmCurveType_en = HSM_ECC_CURVETYPE_P521;
+        break;
+        
+        default:
+            hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
+        break;       
+    };
+    return hsmCurveType_en;
+}

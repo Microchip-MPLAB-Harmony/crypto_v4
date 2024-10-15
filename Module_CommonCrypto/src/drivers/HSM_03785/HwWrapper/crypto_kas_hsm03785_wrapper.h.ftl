@@ -5,13 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Common_HwWrapper.c
+    crypto_kas_hsm03785_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for the common Function across HW Wrappers.
+    Crypto Framework Library wrapper file for the key agreement in the 
+    hardware cryptographic library.
 
   Description:
-    This source file contains the wrapper interface to access the hardware 
+    This header file contains the wrapper interface to access the hardware 
     cryptographic library in Microchip microcontrollers for key agreement.
 **************************************************************************/
 
@@ -40,68 +41,37 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
+#ifndef CRYPTO_KAS_HSM03785_WRAPPER_H
+#define CRYPTO_KAS_HSM03785_WRAPPER_H
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
 
-#include "crypto/common_crypto/MCHP_Crypto_Common_HwWrapper.h"
-#include "crypto/drivers/hsm_common.h"
+#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/MCHP_Crypto_Kas.h"
+
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+    extern "C" {
+#endif
+// DOM-IGNORE-END
+
 // *****************************************************************************
 // *****************************************************************************
-// Section: File scope functions
+// Section: Kas Common Interface 
 // *****************************************************************************
 // *****************************************************************************
 
-hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen)
-{
-    hsm_Aes_KeySize_E ret_keySize_en = HSM_SYM_AES_KEY_128;
-    
-    if(keyLen == 16U)
-    {
-       ret_keySize_en = HSM_SYM_AES_KEY_128;
-    }
-    else if(keyLen == 24U)
-    {
-        ret_keySize_en = HSM_SYM_AES_KEY_192;
-    }
-    else if(keyLen == 32U)
-    {
-        ret_keySize_en = HSM_SYM_AES_KEY_256;
-    }
-    else
-    {
-        ret_keySize_en = HSM_SYM_AES_KEY_128;
-    }
-    return ret_keySize_en;
-}
+crypto_Kas_Status_E Crypto_Kas_Hw_Ecdh_SharedSecret(uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, 
+                                                    uint8_t *ptr_sharedSecret, uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en);
 
-hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurveType_en)
-{
-    hsm_Ecc_CurveType_E hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
-    
-    switch(eccCurveType_en)
-    {
-        case CRYPTO_ECC_CURVE_P192:        
-            hsmCurveType_en = HSM_ECC_CURVETYPE_P192;
-        break;
-     
-        case CRYPTO_ECC_CURVE_P256:       
-            hsmCurveType_en = HSM_ECC_CURVETYPE_P256;
-        break;
-        
-        case CRYPTO_ECC_CURVE_P384:
-            hsmCurveType_en = HSM_ECC_CURVETYPE_P384;
-        break;
-        
-        case CRYPTO_ECC_CURVE_P521:
-            hsmCurveType_en = HSM_ECC_CURVETYPE_P521;
-        break;
-        
-        default:
-            hsmCurveType_en = HSM_ECC_MAXIMUM_CURVES_LIMIT;
-        break;       
-    };
-    return hsmCurveType_en;
-}
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+    }
+#endif
+// DOM-IGNORE-END
+
+#endif /* CRYPTO_KAS_HSM03785_WRAPPER_H */

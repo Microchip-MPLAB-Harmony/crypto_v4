@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Hash_HwWrapper.h
+    crypto_hash_sha6156_wrapper.h
 
   Summary:
     Crypto Framework Library wrapper file for hardware SHA.
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_HASH_HWWRAPPER_H
-#define MCHP_CRYPTO_HASH_HWWRAPPER_H
+#ifndef CRYPTO_HASH_SHA6156_WRAPPER_H
+#define CRYPTO_HASH_SHA6156_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -49,12 +49,16 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#include <stdint.h>
+#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/MCHP_Crypto_Hash_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash.h"
-#include "crypto/drivers/hsm_hash.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     extern "C" {
+
 #endif
 // DOM-IGNORE-END
 
@@ -63,31 +67,38 @@ Microchip or any third party.
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-#define CRYPTO_HW_TOTAL_LEN_INDEX (120/4)
-#define CRYPTO_HW_RESTBYTES_LEN_INEX (127)
-#define CRYPTO_HW_RESTBYTES_INDEX (128)
-        
+
+typedef struct 
+{
+    uint64_t totalLen;   /* Number of bytes to be processed  */
+    crypto_Hash_Algo_E algo;
+    uint8_t buffer[128]; /* Maximum size for all */
+} CRYPTO_HASH_HW_CONTEXT;
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Hash Algorithms Common Interface 
 // *****************************************************************************
 // *****************************************************************************
-crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Digest(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_digest);
-crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Init(void *ptr_md5Ctx);
-crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Update(void *ptr_md5Ctx, uint8_t *ptr_inputData, uint32_t dataLen);
-crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Final(void *ptr_md5Ctx, uint8_t *ptr_digest);
-        
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en);
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *ptr_shaCtx, crypto_Hash_Algo_E shaAlgorithm_en);
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *ptr_shaCtx, uint8_t *ptr_inputData, uint32_t dataLen, crypto_Hash_Algo_E shaAlgorithm_en);
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *ptr_shaCtx, uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en);
 
-hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en, uint32_t *blockSize);
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
+    uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
+    
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
+    crypto_Hash_Algo_E shaAlgorithm_en);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx, 
+    uint8_t *data, uint32_t dataLen);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
+    uint8_t *digest);
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     }
+
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_HASH_HWWRAPPER_H */
+#endif /* CRYPTO_HASH_SHA6156_WRAPPER_H */

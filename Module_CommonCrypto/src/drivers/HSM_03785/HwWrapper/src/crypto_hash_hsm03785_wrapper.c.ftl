@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Hash_HwWrapper.c
+    crypto_hash_hsm03785_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware MD5 and SHA.
@@ -45,9 +45,9 @@ Microchip or any third party.
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_Hash_HwWrapper.h"
+#include "crypto/common_crypto/crypto_hash_hsm03785_wrapper.h"
 #include "crypto/drivers/hsm_hash.h"
-#include "crypto/common_crypto/MCHP_Crypto_Common_HwWrapper.h"
+#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro definitions

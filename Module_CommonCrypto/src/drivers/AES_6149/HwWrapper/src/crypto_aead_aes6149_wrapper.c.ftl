@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Aead_HwWrapper.c
+    crypto_aead_aes6149_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware AES.
@@ -48,7 +48,7 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/common_crypto/MCHP_Crypto_Aead_HwWrapper.h"
+#include "crypto/common_crypto/crypto_aead_aes6149_wrapper.h"
 <#if driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
 #include "crypto/drivers/drv_crypto_aes_hw_6149.h"
 </#if>

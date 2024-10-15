@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Hash_HwWrapper.h
+    crypto_rng_trng6334_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for hardware SHA.
+    Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to access the SHA 
+    This source file contains the wrapper interface to access the TRNG 
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -40,9 +40,6 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_HASH_HWWRAPPER_H
-#define MCHP_CRYPTO_HASH_HWWRAPPER_H
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -50,55 +47,24 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash_Config.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
-#endif
-// DOM-IGNORE-END
+#include "crypto/common_crypto/crypto_rng_trng6334_wrapper.h"
+<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_6334_DRIVER")>
+#include "crypto/drivers/drv_crypto_trng_hw_6334.h"
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: TRNG Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
-typedef struct 
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
 {
-    uint64_t totalLen;   /* Number of bytes to be processed  */
-    crypto_Hash_Algo_E algo;
-    uint8_t buffer[128]; /* Maximum size for all */
-} CRYPTO_HASH_HW_CONTEXT;
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Hash Algorithms Common Interface 
-// *****************************************************************************
-// *****************************************************************************
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
-    uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
+<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_6334_DRIVER")>
+    DRV_CRYPTO_TRNG_Generate(rngData, rngLen);
     
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
-    crypto_Hash_Algo_E shaAlgorithm_en);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx, 
-    uint8_t *data, uint32_t dataLen);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
-    uint8_t *digest);
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
-#endif
-// DOM-IGNORE-END
-
-#endif /* MCHP_CRYPTO_HASH_HWWRAPPER_H */
+    return CRYPTO_RNG_SUCCESS;
+<#else>
+    return CRYPTO_RNG_ERROR_NOTSUPPTED;
+</#if>
+}    

@@ -5,15 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Kas_HwWrapper.h
+    crypto_rng_trng6334_wrapper..h
 
   Summary:
-    Crypto Framework Library wrapper file for the key agreement in the 
-    hardware cryptographic library.
+    Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to access the hardware 
-    cryptographic library in Microchip microcontrollers for key agreement.
+    This header file contains the wrapper interface to access the TRNG 
+    hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -41,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_KAS_HWWRAPPER_H
-#define MCHP_CRYPTO_KAS_HWWRAPPER_H
+#ifndef CRYPTO_RNG_TRNG6334_WRAPPER_H
+#define CRYPTO_RNG_TRNG6334_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -50,28 +49,32 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#include <stdint.h>
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Kas.h"
+#include "crypto/common_crypto/MCHP_Crypto_Rng.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     extern "C" {
+
 #endif
 // DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Kas Common Interface 
+// Section: TRNG Common Interface 
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Kas_Status_E Crypto_Kas_Hw_Ecdh_SharedSecret(uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, 
-                                                    uint8_t *ptr_sharedSecret, uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en);
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
+
     }
+
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_KAS_HWWRAPPER_H */
+#endif /* CRYPTO_RNG_TRNG6334_WRAPPER_H */

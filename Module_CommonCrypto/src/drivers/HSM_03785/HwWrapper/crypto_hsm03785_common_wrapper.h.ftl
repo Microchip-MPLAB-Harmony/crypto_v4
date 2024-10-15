@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Hw_Common.h
+    crypto_hsm03785_common_wrapper.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,8 +18,8 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef MCHP_CRYPTO_HW_COMMON_H
-#define MCHP_CRYPTO_HW_COMMON_H
+#ifndef CRYPTO_HSM03785_COMMON_WRAPPER_H
+#define CRYPTO_HSM03785_COMMON_WRAPPER_H
 
 #include "crypto/drivers/hsm_common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
@@ -32,4 +32,4 @@
 hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen);
 hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurveType_en);
 
-#endif /* MCHP_CRYPTO_HW_COMMON_H */
+#endif /* CRYPTO_HSM03785_COMMON_WRAPPER_H */

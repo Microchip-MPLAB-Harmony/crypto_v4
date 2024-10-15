@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_DigSign_HwWrapper.c
+    crypto_digisign_hsm03785_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for the digital signature in the 
@@ -47,10 +47,10 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include "crypto/common_crypto/MCHP_Crypto_DigSign_HwWrapper.h"
-#include "crypto/common_crypto/MCHP_Crypto_Common_HwWrapper.h"
+#include "crypto/common_crypto/crypto_digisign_hsm03785_wrapper.h"
+#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
 #include "crypto/drivers/hsm_sign.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash_HwWrapper.h"
+#include "crypto/common_crypto/crypto_hash_hsm03785_wrapper.h"
 #include "crypto/drivers/hsm_hash.h"
 // *****************************************************************************
 // *****************************************************************************

@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Sym_HwWrapper.h
+    crypto_hash_hsm03785_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware AES.
+    Crypto Framework Library wrapper file for hardware SHA.
 
   Description:
-    This header file contains the wrapper interface to access the symmetric 
-    AES algorithms in the AES hardware driver for Microchip microcontrollers.
+    This header file contains the wrapper interface to access the SHA 
+    hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_SYM_HWWRAPPER_H
-#define MCHP_CRYPTO_SYM_HWWRAPPER_H
+#ifndef CRYPTO_HASH_HSM03785_WRAPPER_H
+#define CRYPTO_HASH_HSM03785_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -49,46 +49,45 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Sym_Config.h"
-#include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
+#include "crypto/common_crypto/MCHP_Crypto_Hash.h"
+#include "crypto/drivers/hsm_hash.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
-
     extern "C" {
-
 #endif
 // DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Symmetric Algorithms Common Interface 
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
+#define CRYPTO_HW_TOTAL_LEN_INDEX (120/4)
+#define CRYPTO_HW_RESTBYTES_LEN_INEX (127)
+#define CRYPTO_HW_RESTBYTES_INDEX (128)
+        
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en, 
-    crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen, 
-    uint8_t *initVect);
-    
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData, 
-    uint32_t dataLen, uint8_t *outData);
+// *****************************************************************************
+// *****************************************************************************
+// Section: Hash Algorithms Common Interface 
+// *****************************************************************************
+// *****************************************************************************
+crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Digest(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_digest);
+crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Init(void *ptr_md5Ctx);
+crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Update(void *ptr_md5Ctx, uint8_t *ptr_inputData, uint32_t dataLen);
+crypto_Hash_Status_E Crypto_Hash_Hw_Md5_Final(void *ptr_md5Ctx, uint8_t *ptr_digest);
+        
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en);
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *ptr_shaCtx, crypto_Hash_Algo_E shaAlgorithm_en);
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *ptr_shaCtx, uint8_t *ptr_inputData, uint32_t dataLen, crypto_Hash_Algo_E shaAlgorithm_en);
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *ptr_shaCtx, uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en);
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_en, 
-    uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
-    uint8_t *key, uint32_t keyLen, uint8_t *initVect);
-
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_en, 
-    uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
-    uint8_t *key, uint32_t keyLen, uint8_t *initVect);
-
+hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en, uint32_t *blockSize);
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
-
     }
-
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_SYM_HWWRAPPER_H */
+#endif /* CRYPTO_HASH_HSM03785_WRAPPER_H */

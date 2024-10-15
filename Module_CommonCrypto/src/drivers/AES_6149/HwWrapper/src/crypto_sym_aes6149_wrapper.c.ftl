@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Sym_HwWrapper.c
+    crypto_sym_aes6149_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware AES.

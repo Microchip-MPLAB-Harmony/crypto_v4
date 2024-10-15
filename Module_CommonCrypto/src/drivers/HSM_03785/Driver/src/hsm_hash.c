@@ -21,9 +21,9 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include "hsm_common.h"
-#include "hsm_hash.h"
-#include "hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_common.h"
+#include "crypto/drivers/Driver/hsm_hash.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
 
 static uint8_t Hsm_Hash_HashLen(hsm_Hash_Types_E hashType_en)
 {

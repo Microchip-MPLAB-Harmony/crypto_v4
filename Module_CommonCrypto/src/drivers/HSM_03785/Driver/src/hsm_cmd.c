@@ -22,8 +22,8 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 #include "pic32cz8110ca90208.h"
-#include "hsm_common.h"
-#include "hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_common.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
 #ifdef HSM_PRINT 
 #include <stdio.h>
 #endif

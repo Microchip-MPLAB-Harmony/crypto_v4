@@ -46,9 +46,9 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
-#include "crypto/common_crypto/crypto_aead_hsm03785_wrapper.h"
-#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
-#include "crypto/drivers/hsm_aead.h"
+#include "crypto/drivers/HwWrapper/crypto_aead_hsm03785_wrapper.h"
+#include "crypto/drivers/HwWrapper/crypto_hsm03785_common_wrapper.h"
+#include "crypto/drivers/Driver/hsm_aead.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: File Scope Variables
@@ -174,7 +174,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *ptr_dataIn
     }
     return ret_aesGcmStatus_en;
 }
-
 
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *ptr_dataIn, uint32_t dataLen, uint8_t *ptr_outData, 
                                                           uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, 

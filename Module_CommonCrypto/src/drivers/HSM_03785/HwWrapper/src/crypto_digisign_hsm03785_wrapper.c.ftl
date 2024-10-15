@@ -47,11 +47,11 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include "crypto/common_crypto/crypto_digisign_hsm03785_wrapper.h"
-#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
-#include "crypto/drivers/hsm_sign.h"
-#include "crypto/common_crypto/crypto_hash_hsm03785_wrapper.h"
-#include "crypto/drivers/hsm_hash.h"
+#include "crypto/drivers/HwWrapper/crypto_digisign_hsm03785_wrapper.h"
+#include "crypto/drivers/HwWrapper/crypto_hsm03785_common_wrapper.h"
+#include "crypto/drivers/Driver/hsm_sign.h"
+#include "crypto/drivers/HwWrapper/crypto_hash_hsm03785_wrapper.h"
+#include "crypto/drivers/Driver/hsm_hash.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions

@@ -47,9 +47,9 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
-#include "crypto/common_crypto/crypto_sym_hsm03785_wrapper.h"
-#include "crypto/drivers/hsm_sym.h"
-#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
+#include "crypto/drivers/HwWrapper/crypto_sym_hsm03785_wrapper.h"
+#include "crypto/drivers/Driver/hsm_sym.h"
+#include "crypto/drivers/HwWrapper/crypto_hsm03785_common_wrapper.h"
 
 // *****************************************************************************
 // *****************************************************************************

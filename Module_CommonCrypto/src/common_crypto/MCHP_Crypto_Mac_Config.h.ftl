@@ -53,20 +53,5 @@
 // *****************************************************************************
 // *****************************************************************************
 
-//*****OPERATION MODE ENABLE MACROS************
-
-//AES Algorithm Operational Mode Macros
-<#if crypto_mac_aes_cmac_en == true>
-    <#lt>#define CRYPTO_MAC_AESCMAC_EN
-</#if>
-
-//****WolfcryptWrapper Algorithm Macros*************
-<#if crypto_mac_aes_cmac_hw_en == false>
-    <#lt>#define CRYPTO_MAC_WC_ALGO_EN
-    <#lt>#define CRYPTO_MAC_WC_AESCMAC_EN
-<#else>
-    #warning "HW Implementation of MAC algorithms not implemented"
-</#if>
-
 #endif //MCHP_CRYPTO_MAC_CONFIG_H
 

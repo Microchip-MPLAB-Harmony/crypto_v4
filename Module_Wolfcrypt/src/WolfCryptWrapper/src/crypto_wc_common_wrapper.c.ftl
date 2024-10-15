@@ -28,7 +28,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "crypto/common_crypto/crypto_wc_common_wrapper.h"
+#include "crypto/wolfcrypt/crypto_wc_common_wrapper.h"
 
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true)) || (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 #include "wolfssl/wolfcrypt/ecc.h"

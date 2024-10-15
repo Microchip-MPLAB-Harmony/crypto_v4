@@ -31,24 +31,24 @@
 #include "crypto/common_crypto/MCHP_Crypto_Hash_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash.h"
 
-<#if    (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true)) 
-    ||  (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true)) 
-    ||  (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) 
-    ||  (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) 
-    ||  (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))
-    ||  (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) 
-    ||  (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) 
-    ||  (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))
-    ||  (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) 
-    ||  (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true)) 
-    ||  (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
-    ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true)) 
-    ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true)) 
-    ||  (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) 
-    ||  (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))
-    ||  (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) 
-    ||  (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>
-#include "crypto/common_crypto/crypto_hash_wc_wrapper.h"
+<#if    (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) 
+    ||  (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))>
+#include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
 </#if>
 
 <#if    (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true)) 
@@ -73,7 +73,7 @@
 
 
 // *****************************************************************************
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true)) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
 //MD5 Algorithm
 crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t md5SessionId)
 {
@@ -95,7 +95,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, 
     {
         switch(md5Handler_en)
         {
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>          
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_md5Stat_en = Crypto_Hash_Wc_Md5Digest(ptr_data, dataLen, ptr_digest);
                 break;
@@ -134,7 +134,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Init(st_Crypto_Hash_Md5_Ctx *ptr_md5Ctx_st,
         
         switch(ptr_md5Ctx_st->md5Handler_en)
         {
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>         
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))>         
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_md5Stat_en = Crypto_Hash_Wc_Md5Init((void*)ptr_md5Ctx_st->arr_md5DataCtx);
                 break;
@@ -170,7 +170,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Update(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_
     {
         switch(ptr_md5Ctx_st->md5Handler_en)
         {
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>       
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))>       
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_md5Stat_en = Crypto_Hash_Wc_Md5Update((void*)ptr_md5Ctx_st->arr_md5DataCtx, ptr_data, dataLen);
                 break;
@@ -206,7 +206,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Final(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_s
     {
         switch(ptr_md5Ctx_st->md5Handler_en)
         {
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>          
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_md5Stat_en = Crypto_Hash_Wc_Md5Final((void*)ptr_md5Ctx_st->arr_md5DataCtx, ptr_digest);
                 break;
@@ -227,7 +227,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Final(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_s
 }
 </#if>  <#-- CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
 
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))>
 //RIPEMD160 Algorithm
 crypto_Hash_Status_E Crypto_Hash_Ripemd160_Digest(crypto_HandlerType_E ripedmd160Handler_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t ripemdSessionId)
 {
@@ -249,7 +249,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Digest(crypto_HandlerType_E ripedmd16
     {
         switch(ripedmd160Handler_en)
         {
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ripemdStat_en = Crypto_Hash_Wc_Ripemd160Digest(ptr_data, dataLen, ptr_digest);
                 break;
@@ -286,7 +286,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Init(st_Crypto_Hash_Ripemd160_Ctx *pt
         
         switch(ptr_ripemdCtx_st->ripedmd160Handler_en)
         {
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))>  
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))>  
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ripemdStat_en = Crypto_Hash_Wc_Ripemd160Init((void*)ptr_ripemdCtx_st->arr_ripemd160DataCtx);
                 break;
@@ -319,7 +319,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Update(st_Crypto_Hash_Ripemd160_Ctx *
     {
         switch(ptr_ripemdCtx_st->ripedmd160Handler_en)
         {
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))>  
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))>  
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ripemdStat_en = Crypto_Hash_Wc_Ripemd160Update((void*)ptr_ripemdCtx_st->arr_ripemd160DataCtx, ptr_data, dataLen);
                 break;
@@ -351,7 +351,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Final (st_Crypto_Hash_Ripemd160_Ctx *
     {
         switch(ptr_ripemdCtx_st->ripedmd160Handler_en)
         {
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))> 
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))> 
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ripemdStat_en = Crypto_Hash_Wc_Ripemd160Final((void*)ptr_ripemdCtx_st->arr_ripemd160DataCtx, ptr_digest);
                 break;
@@ -369,17 +369,17 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Final (st_Crypto_Hash_Ripemd160_Ctx *
 </#if>  <#-- CRYPTO_WC_RIPEMD160 -->
 
 
-<#if    (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true))           || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true))  || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))
-    ||  (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true))   || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))
-    ||  (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))   || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))
-    ||  (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true))   || (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))
-    ||  (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true))   || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))
-    ||  (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true)) || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))
-    ||  (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))
-    ||  (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))
-    ||  (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
-    ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))
-    ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>
+<#if    (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true))           || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true))  || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true))   || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))   || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true))   || (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true))   || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true)) || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))>
 //SHA-1, SHA-2 and SHA-3 except SHAKE Algorithm
 crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, uint8_t *ptr_data, uint32_t dataLen, 
                                                 uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en,  uint32_t shaSessionId)
@@ -406,10 +406,10 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
     {
         switch(shaHandler_en)
         {
-<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) || (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))
-    ||  (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))
-    ||  (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true)) || (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
-    ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true)) ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>          
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shaStat_en = Crypto_Hash_Wc_ShaDigest(ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
                 break;
@@ -468,10 +468,10 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
 
         switch(ptr_shaCtx_st->shaHandler_en)
         {
-<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) || (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))
-    ||  (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))
-    ||  (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true)) || (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
-    ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true)) ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))> 
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))> 
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shaStat_en = Crypto_Hash_Wc_ShaInit((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
                 break;
@@ -524,10 +524,10 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
     {
         switch(ptr_shaCtx_st->shaHandler_en)
         {
-<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) || (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))
-    ||  (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))
-    ||  (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true)) || (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
-    ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true)) ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>        
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))>        
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shaStat_en = Crypto_Hash_Wc_ShaUpdate((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen, ptr_shaCtx_st->shaAlgo_en);
                 break;
@@ -576,10 +576,10 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
     {
         switch(ptr_shaCtx_st->shaHandler_en)
         {
-<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) || (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))
-    ||  (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))
-    ||  (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true)) || (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
-    ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true)) ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
+    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shaStat_en = Crypto_Hash_Wc_ShaFinal((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest, ptr_shaCtx_st->shaAlgo_en);
                 break;
@@ -611,13 +611,13 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
     }
 	return ret_shaStat_en;
 }
-</#if> <#--  CRYPTO_WC_SHA1 || CRYPTO_HW_SHA1 || CRYPTO_ICM11105_SHA1 || CRYPTO_WC_SHA2_224 || CRYPTO_HW_SHA2_224 || CRYPTO_ICM11105_SHA2_224
-        || CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 || CRYPTO_WC_SHA2_384 || CRYPTO_HW_SHA2_384 || CRYPTO_WC_SHA2_512
-        || CRYPTO_HW_SHA2_512 || CRYPTO_WC_SHA2_512_224 || CRYPTO_HW_SHA2_512_224 || CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256
-        || CRYPTO_WC_SHA3_224 || CRYPTO_WC_SHA3_256 || CRYPTO_WC_SHA3_384 || CRYPTO_WC_SHA3_512 -->
+</#if> <#--  lib_wolfcrypt.CRYPTO_WC_SHA1 || CRYPTO_HW_SHA1 || CRYPTO_ICM11105_SHA1 || lib_wolfcrypt.CRYPTO_WC_SHA2_224 || CRYPTO_HW_SHA2_224 || CRYPTO_ICM11105_SHA2_224
+        || lib_wolfcrypt.CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 || lib_wolfcrypt.CRYPTO_WC_SHA2_384 || CRYPTO_HW_SHA2_384 || lib_wolfcrypt.CRYPTO_WC_SHA2_512
+        || CRYPTO_HW_SHA2_512 || lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 || CRYPTO_HW_SHA2_512_224 || lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256
+        || lib_wolfcrypt.CRYPTO_WC_SHA3_224 || lib_wolfcrypt.CRYPTO_WC_SHA3_256 || lib_wolfcrypt.CRYPTO_WC_SHA3_384 || lib_wolfcrypt.CRYPTO_WC_SHA3_512 -->
 
 
-<#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) || (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))>
 //SHAKE
 crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerType_en, crypto_Hash_Algo_E shakeAlgorithm_en, 
                                                     uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t digestLen, uint32_t shakeSessionId)
@@ -644,11 +644,11 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerT
     {
         switch(shakeHandlerType_en)
         {
-<#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) || (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeDigest(ptr_data, dataLen, ptr_digest, digestLen, shakeAlgorithm_en);
                 break;
-</#if> <#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
+</#if> <#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
             case CRYPTO_HANDLER_HW_INTERNAL:
                 break;
 
@@ -690,11 +690,11 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Init(st_Crypto_Hash_Shake_Ctx* ptr_shakeC
 
         switch(ptr_shakeCtx_st->shakeHandler_en)
         {
-<#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) || (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))>           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeInit((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_shakeCtx_st->shakeAlgo_en);
                 break;
-</#if> <#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
+</#if> <#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
             case CRYPTO_HANDLER_HW_INTERNAL:
                 break;
 
@@ -722,7 +722,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shak
     {
         switch(ptr_shakeCtx_st->shakeHandler_en)
         {
-<#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) || (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeUpdate((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_data, dataLen, ptr_shakeCtx_st->shakeAlgo_en);
                 break;
@@ -754,7 +754,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shake
     {
         switch(ptr_shakeCtx_st->shakeHandler_en)
         {
-<#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) || (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))>           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeFinal((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_digest, ptr_shakeCtx_st->digestLen, ptr_shakeCtx_st->shakeAlgo_en);
                 break;
@@ -773,7 +773,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shake
 </#if> <#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
 
 
-<#if (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) || (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))>
 //BLAKE
 crypto_Hash_Status_E Crypto_Hash_Blake_Digest(crypto_HandlerType_E blakeHandlerType_en, crypto_Hash_Algo_E blakeAlgorithm_en, uint8_t *ptr_data, uint32_t dataLen, 
                                                 uint8_t *ptr_blakeKey, uint32_t keySize, uint8_t *ptr_digest, uint32_t digestLen, uint32_t blakeSessionId)
@@ -805,7 +805,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Digest(crypto_HandlerType_E blakeHandlerT
     {
         switch(blakeHandlerType_en)
         {
-<#if (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) || (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))>           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_blakeStat_en = Crypto_Hash_Wc_BlakeDigest(ptr_data, dataLen, ptr_blakeKey, keySize, ptr_digest, digestLen, blakeAlgorithm_en);
                 break;
@@ -857,7 +857,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Init(st_Crypto_Hash_Blake_Ctx* ptr_blakeC
 
         switch(ptr_blakeCtx_st->blakeHandler_en)
         {
-<#if (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) || (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>    
+<#if (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))>    
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_blakeStat_en = Crypto_Hash_Wc_BlakeInit((void*)ptr_blakeCtx_st->arr_blakeDataCtx, ptr_blakeCtx_st->blakeAlgo_en, ptr_blakeKey, keySize, digestSize);
                 break;
@@ -889,7 +889,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Update(st_Crypto_Hash_Blake_Ctx * ptr_bla
     {
         switch(ptr_blakeCtx_st->blakeHandler_en)
         {
-<#if (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) || (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))>           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_blakeStat_en = Crypto_Hash_Wc_BlakeUpdate((void*)ptr_blakeCtx_st->arr_blakeDataCtx, ptr_data, dataLen, ptr_blakeCtx_st->blakeAlgo_en);
                 break;
@@ -921,7 +921,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
     {
         switch(ptr_blakeCtx_st->blakeHandler_en)
         {
-<#if (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) || (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>         
+<#if (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))>         
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_blakeStat_en = Crypto_Hash_Wc_BlakeFinal((void*)ptr_blakeCtx_st->arr_blakeDataCtx, ptr_digest, ptr_blakeCtx_st->digestLen, ptr_blakeCtx_st->blakeAlgo_en);
                 break;
@@ -944,79 +944,79 @@ static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_
        
     switch(hashType_en)
     {
-<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true)) || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))>          
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true)) || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))>          
         case CRYPTO_HASH_SHA1:
             *hashSize = 0x14;   //20 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA1 || CRYPTO_HW_SHA1 || CRYPTO_ICM11105_SHA1 --> 
             
-<#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))>            
         case CRYPTO_HASH_SHA2_224:
             *hashSize = 0x1C;   //28 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA2_224 || CRYPTO_HW_SHA2_224 || CRYPTO_ICM11105_SHA2_224 --> 
             
-<#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true)) || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true)) || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>            
         case CRYPTO_HASH_SHA2_256:
             *hashSize = 0x20;   //32 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 --> 
             
-<#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>             
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>             
         case CRYPTO_HASH_SHA2_384:
             *hashSize = 0x30;   //48 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA2_384 || CRYPTO_HW_SHA2_384 --> 
             
-<#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>            
         case CRYPTO_HASH_SHA2_512:
             *hashSize = 0x40;   //64 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA2_512 || CRYPTO_HW_SHA2_512 -->  
 
-<#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true)) || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true)) || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>           
         case CRYPTO_HASH_SHA2_512_224:
             *hashSize = 0x1C;   //28 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA2_512_224 || CRYPTO_HW_SHA2_512_224 -->  
 
-<#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))>            
         case CRYPTO_HASH_SHA2_512_256:
             *hashSize = 0x20;   //32 Bytes
             break;
 </#if> <#-- CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256 -->             
 
-<#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true))>            
         case CRYPTO_HASH_SHA3_224:
                 *hashSize = 0x1C;   //28 Bytes
                 break;
 </#if>  <#-- CRYPTO_WC_SHA3_224 -->
 
-<#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>             
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))>             
         case CRYPTO_HASH_SHA3_256:
             *hashSize = 0x20;   //32 Bytes
             break;
 </#if>  <#-- CRYPTO_WC_SHA3_256 -->
 
-<#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true))>            
         case CRYPTO_HASH_SHA3_384:
             *hashSize = 0x30;   //48 Bytes
             break;
 </#if>  <#-- CRYPTO_WC_SHA3_384 -->
 
-<#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>                    
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))>                    
         case CRYPTO_HASH_SHA3_512:
             *hashSize = 0x40;   //64 Bytes
             break;
 </#if>  <#-- CRYPTO_WC_SHA3_512 -->
   
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true)) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>            
         case CRYPTO_HASH_MD5:
             *hashSize = 0x10;   //16 Bytes
             break;
 </#if>  <#-- CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
 
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))>           
         case CRYPTO_HASH_RIPEMD160:
                 *hashSize = 0x14;   //20 Bytes
                 break;
@@ -1036,79 +1036,79 @@ uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, cryp
        
     switch(hashType_en)
     {
-<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true)) || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true)) || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))> 
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true)) || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))> 
         case CRYPTO_HASH_SHA1:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA1, 1); 
             break;
 </#if> <#-- CRYPTO_WC_SHA1 || CRYPTO_HW_SHA1 || CRYPTO_ICM11105_SHA1 --> 
             
-<#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))>            
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))>            
         case CRYPTO_HASH_SHA2_224:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_224, 1); 
             break;
 </#if> <#-- CRYPTO_WC_SHA2_224 || CRYPTO_HW_SHA2_224 || CRYPTO_ICM11105_SHA2_224 -->
             
-<#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true)) || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true)) || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>           
         case CRYPTO_HASH_SHA2_256:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_256, 1); 
             break;            
 </#if> <#-- CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 --> 
             
-<#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>           
         case CRYPTO_HASH_SHA2_384:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_384, 1); 
             break;               
 </#if> <#-- CRYPTO_WC_SHA2_384 || CRYPTO_HW_SHA2_384 --> 
             
-<#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>           
         case CRYPTO_HASH_SHA2_512:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_512, 1); 
             break;              
 </#if> <#-- CRYPTO_WC_SHA2_512 || CRYPTO_HW_SHA2_512 --> 
 
-<#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true)) || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true)) || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>
         case CRYPTO_HASH_SHA2_512_224:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_512_224, 1); 
             break;              
 </#if> <#-- CRYPTO_WC_SHA2_512_224 || CRYPTO_HW_SHA2_512_224 --> 
 
-<#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))> 
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))> 
         case CRYPTO_HASH_SHA2_512_256:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA2_512_256, 1); 
             break;              
 </#if> <#-- CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256 -->           
 
-<#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true))>
         case CRYPTO_HASH_SHA3_224:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA3_224, 1); 
             break;              
 </#if> <#-- CRYPTO_WC_SHA3_224 --> 
 
-<#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>         
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))>         
         case CRYPTO_HASH_SHA3_256:
             hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA3_256, 1); 
             break;            
 </#if> <#-- CRYPTO_WC_SHA3_256 --> 
 
-<#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true))>           
         case CRYPTO_HASH_SHA3_384:
-            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, *ptr_outHash, CRYPTO_HASH_SHA3_384, 1); 
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA3_384, 1); 
             break;              
 </#if> <#-- CRYPTO_WC_SHA3_384 --> 
 
-<#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>                   
+<#if (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))>                   
         case CRYPTO_HASH_SHA3_512:
-            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, *ptr_outHash, CRYPTO_HASH_SHA3_512, 1); 
+            hashStatus_en = Crypto_Hash_Sha_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, CRYPTO_HASH_SHA3_512, 1); 
             break;  
 </#if> <#-- CRYPTO_WC_SHA3_512 --> 
 
-<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true)) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>           
         case CRYPTO_HASH_MD5:
             hashStatus_en = Crypto_Hash_Md5_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash, 1);
             break;
 </#if>  <#-- CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
 
-<#if (CRYPTO_WC_RIPEMD160?? &&(CRYPTO_WC_RIPEMD160 == true))>           
+<#if (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true))>           
         case CRYPTO_HASH_RIPEMD160:
             hashStatus_en = Crypto_Hash_Ripemd160_Digest(shaHandler_en, ptr_wcInputData, wcDataLen, ptr_outHash,1);
             break;

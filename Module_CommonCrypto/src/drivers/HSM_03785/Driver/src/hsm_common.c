@@ -21,7 +21,7 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
-#include "crypto/drivers/hsm_common.h"
+#include "crypto/drivers/Driver/hsm_common.h"
 
 static st_Hsm_Vsm_Ecc_CurveData CurveData[HSM_ECC_MAX_CURVE] = 
 {

@@ -21,9 +21,9 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
-#include "hsm_cmd.h"
-#include "hsm_kas.h"
-#include "hsm_common.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_kas.h"
+#include "crypto/drivers/Driver/hsm_common.h"
 
 hsm_Cmd_Status_E Hsm_Kas_Dh_Ecdh_SharedSecret(st_Hsm_Kas_Dh_Cmd *ptr_ecdhCmd_st, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_Pubkey, uint32_t pubKeyLen,
                                         uint8_t *ptr_sharedSecret, uint16_t sharedSecretLen, hsm_Ecc_CurveType_E keyCurveType_en)

@@ -28,7 +28,7 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Rng.h"
-#include "crypto/common_crypto/crypto_rng_wc_wrapper.h"
+#include "crypto/wolfcrypt/crypto_rng_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/random.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 

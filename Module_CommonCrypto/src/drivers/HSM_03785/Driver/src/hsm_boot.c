@@ -22,10 +22,10 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 #include "stdio.h"
-#include "hsm_boot.h"
-#include "hsm_common.h"
+#include "crypto/drivers/Driver/hsm_boot.h"
+#include "crypto/drivers/Driver/hsm_common.h"
 #include "string.h"
-#include "hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
 
 void Hsm_Initialsation(void)
 {

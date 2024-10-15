@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
-#include "crypto/common_crypto/crypto_sym_wc_wrapper.h"
+#include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"
 
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) 

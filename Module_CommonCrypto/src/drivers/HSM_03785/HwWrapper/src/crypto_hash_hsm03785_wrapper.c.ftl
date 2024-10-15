@@ -45,9 +45,8 @@ Microchip or any third party.
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/crypto_hash_hsm03785_wrapper.h"
-#include "crypto/drivers/hsm_hash.h"
-#include "crypto/common_crypto/crypto_hsm03785_common_wrapper.h"
+#include "crypto/drivers/HwWrapper/crypto_hash_hsm03785_wrapper.h"
+#include "crypto/drivers/Driver/hsm_hash.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro definitions

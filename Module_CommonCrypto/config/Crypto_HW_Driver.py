@@ -51,46 +51,52 @@ Crypto_HW_AllDriversList = [
 #---------------------------------------------------------------------------------------        
 Crypto_HW_CommonCryptoFilesDict = {
     "HashAlgo": [
-        "MCHP_Crypto_Hash.h",
+        "MCHP_Crypto_Hash.h.ftl",
         "MCHP_Crypto_Hash.c.ftl",
         "MCHP_Crypto_Hash_Config.h.ftl",
-        "MCHP_Crypto_Common.h",
+        "MCHP_Crypto_Common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "SymAlgo": [
-        "MCHP_Crypto_Sym_Cipher.h",
+        "MCHP_Crypto_Sym_Cipher.h.ftl",
         "MCHP_Crypto_Sym_Cipher.c.ftl",
         "MCHP_Crypto_Sym_Config.h.ftl",
-        "MCHP_Crypto_Common.h",
+        "MCHP_Crypto_Common.h.ftl",
         "crypto_config.h.ftl"
     ],
-    "MacAlgo": [],
+    "MacAlgo": [
+        "MCHP_Crypto_Mac_Cipher.h.ftl",
+        "MCHP_Crypto_Mac_Cipher.c.ftl",
+        "MCHP_Crypto_Mac_Config.h.ftl",
+        "MCHP_Crypto_Common.h.ftl",
+        "crypto_config.h.ftl"
+    ],
     "AeadAlgo": [
-        "MCHP_Crypto_Aead_Cipher.h",
+        "MCHP_Crypto_Aead_Cipher.h.ftl",
         "MCHP_Crypto_Aead_Cipher.c.ftl",
         "MCHP_Crypto_Aead_Config.h.ftl",
-        "MCHP_Crypto_Common.h",
+        "MCHP_Crypto_Common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "DigisignAlgo": [
-        "MCHP_Crypto_DigSign.h",
+        "MCHP_Crypto_DigSign.h.ftl",
         "MCHP_Crypto_DigSign.c.ftl",
         "MCHP_Crypto_DigSign_Config.h.ftl",
-        "MCHP_Crypto_Common.h",
+        "MCHP_Crypto_Common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "KasAlgo": [
-        "MCHP_Crypto_Kas.h",
+        "MCHP_Crypto_Kas.h.ftl",
         "MCHP_Crypto_Kas.c.ftl",
         "MCHP_Crypto_Kas_Config.h.ftl",
-        "MCHP_Crypto_Common.h",
+        "MCHP_Crypto_Common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "RngAlgo": [
-        "MCHP_Crypto_Rng.h",
-        "MCHP_Crypto_Rng.c",
+        "MCHP_Crypto_Rng.h.ftl",
+        "MCHP_Crypto_Rng.c.ftl",
         "MCHP_Crypto_Rng_Config.h.ftl",
-        "MCHP_Crypto_Common.h",
+        "MCHP_Crypto_Common.h.ftl",
         "crypto_config.h.ftl"
     ]
 }
@@ -105,7 +111,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
         "SymAlgo":{
             "WrapperFiles":["crypto_sym_hsm03785_wrapper.h.ftl", "crypto_sym_hsm03785_wrapper.c.ftl", "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"],    
             "DriverFiles":["hsm_sym.h", "hsm_sym.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"],
-        }
+        },
         "AeadAlgo":{
             "WrapperFiles":["crypto_aead_hsm03785_wrapper.h.ftl", "crypto_aead_hsm03785_wrapper.c.ftl", "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"],    
             "DriverFiles":["hsm_aead.h", "hsm_aead.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"]
@@ -123,11 +129,11 @@ Crypto_HW_DriverAndWrapperFilesDict = {
     
     "AES_6149":{ 
         "SymAlgo":{
-            "WrapperFiles": ["crypto_aead_aes6149_wrapper.h.ftl", "crypto_aead_aes6149_wrapper.c.ftl"],
+            "WrapperFiles": ["crypto_sym_aes6149_wrapper.h.ftl", "crypto_sym_aes6149_wrapper.c.ftl"],
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         },
         "AeadAlgo":{
-            "WrapperFiles":["crypto_sym_aes6149_wrapper.h.ftl", "crypto_sym_aes6149_wrapper.c.ftl"],    
+            "WrapperFiles":["crypto_aead_aes6149_wrapper.h.ftl", "crypto_sym_aes6149_wrapper.c.ftl"],    
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         }
     },

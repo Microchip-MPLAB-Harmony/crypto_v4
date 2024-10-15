@@ -29,8 +29,8 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
-#include "crypto/common_crypto/crypto_kas_wc_wrapper.h"
-#include "crypto/common_crypto/crypto_wc_common_wrapper.h"
+#include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
+#include "crypto/wolfcrypt/crypto_wc_common_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
 <#if (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>

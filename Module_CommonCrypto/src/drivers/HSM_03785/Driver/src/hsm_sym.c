@@ -20,9 +20,9 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include "hsm_common.h"
-#include "hsm_sym.h"
-#include "hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_common.h"
+#include "crypto/drivers/Driver/hsm_sym.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
 
 hsm_Cmd_Status_E Hsm_Sym_Tdes_CipherDirect(st_Hsm_Sym_Tdes_Cmd *ptr_tdesCmd_st, hsm_Sym_Tdes_ModeTypes_E tdesModeType_en, hsm_Tdes_CmdTypes_E tdesOperType_en, 
                             uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_dataOut, uint8_t *tdesKey, uint8_t *ptr_initVect, uint8_t varslotNum)

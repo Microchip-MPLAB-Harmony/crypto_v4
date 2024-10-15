@@ -23,9 +23,9 @@
 
 #include <stdlib.h>
 
-#include "hsm_common.h"
-#include "hsm_cmd.h"
-#include "hsm_aead.h"
+#include "crypto/drivers/Driver/hsm_common.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_aead.h"
 
 hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, uint8_t *ptr_aesGcmCtx, hsm_Aes_CmdTypes_E aesCipherOper_en, uint8_t *ptr_aeskey, hsm_Aes_KeySize_E aesKeyLen_en, uint8_t *ptr_initVect, uint32_t ivLen)
 {

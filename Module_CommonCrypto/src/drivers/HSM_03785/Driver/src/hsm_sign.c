@@ -21,8 +21,8 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 #include "stdlib.h"
-#include "hsm_sign.h"
-#include "hsm_cmd.h"
+#include "crypto/drivers/Driver/hsm_sign.h"
+#include "crypto/drivers/Driver/hsm_cmd.h"
 
 static void Hsm_DigiSign_Cmd(st_Hsm_DigiSign_Cmd *ptr_digiSignCmd_st, uint8_t cmdLen, hsm_DigiSign_CmdType_E cmdType_en,
                                      hsm_Hash_Types_E hashAlgo_en, hsm_DigiSign_PadType_E padType_en, hsm_DigiSign_KeyType_E keyType_en,

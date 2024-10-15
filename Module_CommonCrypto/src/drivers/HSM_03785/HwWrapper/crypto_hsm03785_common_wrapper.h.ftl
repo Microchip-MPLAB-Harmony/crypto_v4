@@ -21,7 +21,7 @@
 #ifndef CRYPTO_HSM03785_COMMON_WRAPPER_H
 #define CRYPTO_HSM03785_COMMON_WRAPPER_H
 
-#include "crypto/drivers/hsm_common.h"
+#include "crypto/drivers/Driver/hsm_common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 
 // *****************************************************************************

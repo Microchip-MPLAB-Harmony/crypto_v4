@@ -50,7 +50,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include "crypto/common_crypto/MCHP_Crypto_Hash.h"
-#include "crypto/drivers/hsm_hash.h"
+#include "crypto/drivers/Driver/hsm_hash.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

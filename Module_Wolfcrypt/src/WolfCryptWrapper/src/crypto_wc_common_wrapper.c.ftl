@@ -33,7 +33,6 @@
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true)) || (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 #include "wolfssl/wolfcrypt/ecc.h"
 
-
 static const int arr_EccCurveWcMap[CRYPTO_WC_ECC_TOTAL_CURVES][2] =  {
                                                                         {(int)CRYPTO_ECC_CURVE_INVALID, (int)ECC_CURVE_INVALID},
                                                                         {(int)CRYPTO_ECC_CURVE_SECP224R1, (int)ECC_SECP224R1}, 
@@ -41,7 +40,6 @@ static const int arr_EccCurveWcMap[CRYPTO_WC_ECC_TOTAL_CURVES][2] =  {
                                                                         {(int)CRYPTO_ECC_CURVE_SECP384R1, (int)ECC_SECP384R1},
                                                                         {(int)CRYPTO_ECC_CURVE_SECP521R1, (int)ECC_SECP521R1},
                                                                     };
-
 
 int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en)
 {
@@ -54,8 +52,7 @@ int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en)
             wcCurveId = arr_EccCurveWcMap[curve][1];
             break;
         }
-    }
-    
+    }    
     return wcCurveId;
 }
-</#if> <#-- CRYPTO_WC_ECDSA || CRYPTO_WC_ECDH -->
+</#if><#-- CRYPTO_WC_ECDSA || CRYPTO_WC_ECDH -->

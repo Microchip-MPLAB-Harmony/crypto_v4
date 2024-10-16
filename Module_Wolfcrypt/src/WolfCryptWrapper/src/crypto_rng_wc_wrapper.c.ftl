@@ -72,4 +72,4 @@ crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint3
     
     return ret_rngStat_en;
 }
-</#if> <#-- CRYPTO_WC_PRNG --> 
+</#if><#-- CRYPTO_WC_PRNG --> 

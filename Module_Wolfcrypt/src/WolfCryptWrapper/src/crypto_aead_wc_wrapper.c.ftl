@@ -31,9 +31,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
 #include "crypto/wolfcrypt/crypto_aead_wc_wrapper.h"
-
 #include "wolfssl/wolfcrypt/error-crypt.h"
-
 <#if 	(CRYPTO_WC_AES_CCM?? &&(CRYPTO_WC_AES_CCM == true))
 	||	(CRYPTO_WC_AES_EAX?? &&(CRYPTO_WC_AES_EAX == true))
 	||	(CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>
@@ -44,7 +42,6 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-
 <#if (CRYPTO_WC_AES_CCM?? &&(CRYPTO_WC_AES_CCM == true))>
 crypto_Aead_Status_E Crypto_Aead_Wc_AesCcm_Init(void *ptr_aesCcmCtx, uint8_t *ptr_key, uint32_t keySize)
 {
@@ -121,9 +118,9 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesCcm_Cipher(crypto_CipherOper_E cipherOper
     }
     return ret_aesCcmStat_en;
 }
-</#if>  <#-- CRYPTO_WC_AES_CCM --> 
-
+</#if><#-- CRYPTO_WC_AES_CCM --> 
 <#if (CRYPTO_WC_AES_EAX?? &&(CRYPTO_WC_AES_EAX == true))>
+
 crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_Init(void *ptr_aesEaxCtx, uint8_t *ptr_key, uint32_t keySize, 
                                                 uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen)
 {
@@ -335,9 +332,9 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesEax_EncDecAuthDirect(crypto_CipherOper_E 
     
     return ret_aesEaxStat_en;
 }        
-</#if>  <#-- CRYPTO_WC_AES_EAX --> 
+</#if><#-- CRYPTO_WC_AES_EAX --> 
+<#if (CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>
 
-<#if (CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>   
 crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_Init(void *ptr_aesGcmCtx, uint8_t *ptr_key, uint32_t keySize, 
                                                 uint8_t *ptr_initVect, uint32_t initVectLen)
 {
@@ -566,6 +563,5 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
     }
     return ret_aesGcmStat_en;
 }
-</#if> <#--CRYPTO_WC_AES_GCM-->
-
+</#if><#--CRYPTO_WC_AES_GCM-->
 // *****************************************************************************

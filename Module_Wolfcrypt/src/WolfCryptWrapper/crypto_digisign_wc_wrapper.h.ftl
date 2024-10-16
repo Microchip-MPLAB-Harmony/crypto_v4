@@ -26,9 +26,7 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
-
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_SignHash(uint8_t *ptr_wcInputHash, uint32_t wcHashLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, uint8_t *ptr_wcPrivKey, 
                                                        uint32_t wcPrivKeyLen, crypto_EccCurveType_E wcEccCurveType_en);
 
@@ -42,9 +40,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_SignData(uint8_t *ptr_wcInputD
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_VerifyData(uint8_t *ptr_wcInputData, uint32_t wcDataLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, 
                                                             uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, crypto_Hash_Algo_E hashType_en,
                                                             int8_t *ptr_wcHashVerifyStat, crypto_EccCurveType_E wcEccCurveType_en);
-</#if> <#-- CRYPTO_WC_ECDSA -->
-
-
-
+</#if><#-- CRYPTO_WC_ECDSA -->
 
 #endif /* CRYPTO_DIGISIGN_WC_WRAPPER_H */

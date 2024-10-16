@@ -22,6 +22,6 @@
 
 <#if (CRYPTO_WC_PRNG?? &&(CRYPTO_WC_PRNG == true))>
 crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen);
-</#if> <#-- CRYPTO_WC_PRNG -->      
+</#if><#-- CRYPTO_WC_PRNG -->      
 
 #endif /* CRYPTO_RNG_WC_WRAPPER_H */

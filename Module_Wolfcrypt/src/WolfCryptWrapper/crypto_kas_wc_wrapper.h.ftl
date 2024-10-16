@@ -35,6 +35,6 @@
 <#if (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 crypto_Kas_Status_E Crypto_Kas_Wc_Ecdh_SharedSecret(uint8_t *ptr_wcPrivKey, uint32_t wcPrivKeyLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, uint8_t *ptr_wcSharedSecret,
                                                     uint32_t wcSharedSecretLen, crypto_EccCurveType_E wcEccCurveType_en);
-</#if> <#-- CRYPTO_WC_ECDH -->
+</#if><#-- CRYPTO_WC_ECDH -->
 
 #endif /* CRYPTO_KAS_WC_WRAPPER_H */

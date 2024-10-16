@@ -23,7 +23,6 @@
 
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
 #include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"
-
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) 
     ||  (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) 
@@ -35,35 +34,30 @@
     ||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>
 #include "wolfssl/wolfcrypt/aes.h"
 </#if>
-
 <#if (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true)) || (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true))>
 #include "wolfssl/wolfcrypt/camellia.h"
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
-
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
 <#if    (CRYPTO_WC_TDES_ECB?? &&(CRYPTO_WC_TDES_ECB == true)) 
     ||  (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))>
 #include "wolfssl/wolfcrypt/des3.h"
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
-
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
 <#if (CRYPTO_WC_CHACHA20?? &&(CRYPTO_WC_CHACHA20 == true))>
 #include "wolfssl/wolfcrypt/chacha.h"
-</#if> <#-- CRYPTO_WC_CHACHA20  -->
-
+</#if><#-- CRYPTO_WC_CHACHA20  -->
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
- 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
-// *****************************************************************************
- 
+// ***************************************************************************** 
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))
     ||  (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) 
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
-    ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true)) >
+    ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
+	
 crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -112,8 +106,8 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E
     return ret_aesStatus_en;
 }
 </#if>
-
-<#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>   
+<#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>
+   
 crypto_Sym_Status_E Crypto_Sym_Wc_AesCTR_Init(void *ptr_aesCtx, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
 	crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -122,15 +116,15 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesCTR_Init(void *ptr_aesCtx, uint8_t *ptr_key
 	
     return ret_aesStatus_en;
 }
-</#if> <#-- CRYPTO_WC_AES_CTR --> 
-
+</#if><#-- CRYPTO_WC_AES_CTR --> 
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) 
     ||  (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) 
     ||  (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) 
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
-    ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>   
+    ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
+	
 crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Encrypt(void *ptr_aesCtx, crypto_Sym_OpModes_E symAlgoMode_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -144,44 +138,37 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Encrypt(void *ptr_aesCtx, crypto_Sym_OpMod
             case CRYPTO_SYM_OPMODE_ECB:
                 wcAesStatus = wc_AesEcbEncrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_ECB -->
-
+</#if><#-- CRYPTO_WC_AES_ECB -->
 <#if (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))>
             case CRYPTO_SYM_OPMODE_CBC:
                 wcAesStatus = wc_AesCbcEncrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CBC -->
-
+</#if><#-- CRYPTO_WC_AES_CBC -->
 <#if (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))>
             case CRYPTO_SYM_OPMODE_OFB:
                 wcAesStatus = wc_AesOfbEncrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_OFB -->
-
+</#if><#-- CRYPTO_WC_AES_OFB -->
 <#if (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))> 
             case CRYPTO_SYM_OPMODE_CFB1:         
                 wcAesStatus = wc_AesCfb1Encrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CFB1 -->
-
+</#if><#-- CRYPTO_WC_AES_CFB1 -->
 <#if (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))>                
             case CRYPTO_SYM_OPMODE_CFB8:
                 wcAesStatus = wc_AesCfb8Encrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CFB8 -->
-
+</#if><#-- CRYPTO_WC_AES_CFB8 -->
 <#if (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>               
             case CRYPTO_SYM_OPMODE_CFB128:
                 wcAesStatus = wc_AesCfbEncrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;  
-</#if> <#-- CRYPTO_WC_AES_CFB128 -->                
-
+</#if><#-- CRYPTO_WC_AES_CFB128 -->                
 <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>            
             case CRYPTO_SYM_OPMODE_CTR:
                 wcAesStatus = wc_AesCtrEncrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CTR --> 
-
+</#if><#-- CRYPTO_WC_AES_CTR --> 
             default:
                 ret_aesStatus_en = CRYPTO_SYM_ERROR_OPMODE;
                 break;
@@ -227,44 +214,37 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Decrypt(void *ptr_aesCtx, crypto_Sym_OpMod
             case CRYPTO_SYM_OPMODE_ECB:
                 wcAesStatus = wc_AesEcbDecrypt( (Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_ECB -->
-
+</#if><#-- CRYPTO_WC_AES_ECB -->
 <#if (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))>
             case CRYPTO_SYM_OPMODE_CBC:
                 wcAesStatus = wc_AesCbcDecrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CBC -->
-
+</#if><#-- CRYPTO_WC_AES_CBC -->
 <#if (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))>
             case CRYPTO_SYM_OPMODE_OFB:
                 wcAesStatus = wc_AesOfbDecrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_OFB -->
-
+</#if><#-- CRYPTO_WC_AES_OFB -->
 <#if (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))>               
             case CRYPTO_SYM_OPMODE_CFB1:         
                 wcAesStatus = wc_AesCfb1Decrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CFB1 -->
-
+</#if><#-- CRYPTO_WC_AES_CFB1 -->
 <#if (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))>                  
             case CRYPTO_SYM_OPMODE_CFB8:
                 wcAesStatus = wc_AesCfb8Decrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CFB8 -->
-                
+</#if><#-- CRYPTO_WC_AES_CFB8 -->                
 <#if (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>                  
             case CRYPTO_SYM_OPMODE_CFB128:
                 wcAesStatus = wc_AesCfbDecrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break; 
-</#if> <#-- CRYPTO_WC_AES_CFB128 --> 
-
+</#if><#-- CRYPTO_WC_AES_CFB128 --> 
 <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>            
             case CRYPTO_SYM_OPMODE_CTR:
                 wcAesStatus = wc_AesCtrEncrypt((Aes*)ptr_aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_AES_CTR -->  
-
+</#if><#-- CRYPTO_WC_AES_CTR -->  
             default:
                 ret_aesStatus_En = CRYPTO_SYM_ERROR_OPMODE;
                 break;
@@ -294,8 +274,8 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Decrypt(void *ptr_aesCtx, crypto_Sym_OpMod
     return ret_aesStatus_En;
 }
 </#if>
+<#if (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true))>
 
-<#if (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true))> 
 crypto_Sym_Status_E Crypto_Sym_Wc_AesXts_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize)
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -404,8 +384,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesXts_Decrypt(void *ptr_aesXtsCtx, uint8_t *p
     
     return ret_aesXtsStatus_en;
 }
-</#if> <#-- CRYPTO_WC_AES_XTS -->
-
+</#if><#-- CRYPTO_WC_AES_XTS -->
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) 
     ||  (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))
@@ -413,7 +392,8 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesXts_Decrypt(void *ptr_aesXtsCtx, uint8_t *p
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true)) 
-    ||  (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true))>  
+    ||  (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true))>
+	
 crypto_Sym_Status_E Crypto_Sym_Wc_Aes_EncryptDirect(crypto_Sym_OpModes_E symAlgoMode_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData,
                                                         uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
@@ -432,7 +412,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_EncryptDirect(crypto_Sym_OpModes_E symAlgo
         ret_aesStat_en = CRYPTO_SYM_ERROR_OPMODE;            
     }
     else
-</#if> <#-- CRYPTO_WC_AES_XTS -->         
+</#if><#-- CRYPTO_WC_AES_XTS -->         
     {
         Aes aesCtx[1];
         wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_ENCRYPTION);
@@ -444,43 +424,37 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_EncryptDirect(crypto_Sym_OpModes_E symAlgo
                 case CRYPTO_SYM_OPMODE_ECB:
                     wcAesStatus = wc_AesEcbEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_ECB -->
-
+</#if><#-- CRYPTO_WC_AES_ECB -->
 <#if (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))>
                 case CRYPTO_SYM_OPMODE_CBC:
                     wcAesStatus = wc_AesCbcEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_CBC -->
-
+</#if><#-- CRYPTO_WC_AES_CBC -->
 <#if (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))>
                 case CRYPTO_SYM_OPMODE_OFB:
                     wcAesStatus = wc_AesOfbEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_OFB -->
-
+</#if><#-- CRYPTO_WC_AES_OFB -->
 <#if (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))>                     
                 case CRYPTO_SYM_OPMODE_CFB1:           
                     wcAesStatus = wc_AesCfb1Encrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_CFB1 -->
-                    
+</#if><#-- CRYPTO_WC_AES_CFB1 -->                    
 <#if (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))>                    
                 case CRYPTO_SYM_OPMODE_CFB8:  
                     wcAesStatus = wc_AesCfb8Encrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_CFB8 -->
-
+</#if><#-- CRYPTO_WC_AES_CFB8 -->
 <#if (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>                    
                 case CRYPTO_SYM_OPMODE_CFB128:
                     wcAesStatus = wc_AesCfbEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_CFB128 -->                   
-
+</#if><#-- CRYPTO_WC_AES_CFB128 -->                   
 <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>            
                 case CRYPTO_SYM_OPMODE_CTR:
                     wcAesStatus = wc_AesCtrEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_AES_CTR --> 
+</#if><#-- CRYPTO_WC_AES_CTR --> 
                 default:
                     ret_aesStat_en = CRYPTO_SYM_ERROR_OPMODE;
                     break;
@@ -528,7 +502,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
             }
         }
         else
-</#if> <#-- CRYPTO_WC_AES_XTS -->            
+</#if><#-- CRYPTO_WC_AES_XTS -->            
         {
             Aes aesCtx[1];
 <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>  			
@@ -537,7 +511,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
             	wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_ENCRYPTION);
 			}
 			else
-</#if> <#-- CRYPTO_WC_AES_CTR -->			
+</#if><#-- CRYPTO_WC_AES_CTR -->			
 			{
 				wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_DECRYPTION);
 			}
@@ -550,43 +524,37 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
                     case CRYPTO_SYM_OPMODE_ECB:
                         wcAesStatus = wc_AesEcbDecrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_ECB -->
-
+</#if><#-- CRYPTO_WC_AES_ECB -->
 <#if (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))>
                     case CRYPTO_SYM_OPMODE_CBC:
                         wcAesStatus = wc_AesCbcDecrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_CBC -->
-
+</#if><#-- CRYPTO_WC_AES_CBC -->
 <#if (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))>
                     case CRYPTO_SYM_OPMODE_OFB:
                         wcAesStatus = wc_AesOfbDecrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_OFB -->
-
+</#if><#-- CRYPTO_WC_AES_OFB -->
 <#if (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))>                         
                     case CRYPTO_SYM_OPMODE_CFB1:           
                         wcAesStatus = wc_AesCfb1Decrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_CFB1 -->
-
+</#if><#-- CRYPTO_WC_AES_CFB1 -->
 <#if (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))>                       
                     case CRYPTO_SYM_OPMODE_CFB8:  
                         wcAesStatus = wc_AesCfb8Decrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_CFB8 -->
-
+</#if><#-- CRYPTO_WC_AES_CFB8 -->
 <#if (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>                          
                     case CRYPTO_SYM_OPMODE_CFB128:
                         wcAesStatus = wc_AesCfbDecrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_CFB128 -->                       
-
+</#if><#-- CRYPTO_WC_AES_CFB128 -->                       
 <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>            
                     case CRYPTO_SYM_OPMODE_CTR:
                         wcAesStatus = wc_AesCtrEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                         break;
-</#if> <#-- CRYPTO_WC_AES_CTR --> 
+</#if><#-- CRYPTO_WC_AES_CTR --> 
                     default:
                         ret_aesStat_en = CRYPTO_SYM_ERROR_OPMODE;
                         break;
@@ -620,8 +588,8 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
     return ret_aesStat_en;
 }
 </#if>
-
 <#if (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true)) || (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true))>
+
 //Camellia
 crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_Init(void *ptr_camCtx, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
@@ -657,7 +625,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_Encrypt(void *ptr_camCtx, crypto_Sym_
 <#if (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true))>      
     uint32_t dataBlocks = 0;
     uint32_t dataIndex = 0;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->     
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->     
     if( (ptr_camCtx != NULL) && (ptr_inputData != NULL) && (dataLen > 0u) && (ptr_outData != NULL) )
     {
         switch(symAlgoMode_en)
@@ -673,14 +641,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_Encrypt(void *ptr_camCtx, crypto_Sym_
                     dataBlocks = dataBlocks - 1u;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB --> 
-
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB --> 
 <#if (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true))>                
             case CRYPTO_SYM_OPMODE_CBC:
                 wcCamStatus = wc_CamelliaCbcEncrypt( (Camellia*)ptr_camCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_CBC -->
-                
+</#if><#-- CRYPTO_WC_CAMELLIA_CBC -->                
             default:
                 ret_camStatus_en = CRYPTO_SYM_ERROR_OPMODE;
                 break;
@@ -717,7 +683,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_Decrypt(void *ptr_camCtx, crypto_Sym_
 <#if (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true))>     
     uint32_t dataBlocks = 0;
     uint32_t dataIndex = 0;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->    
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->    
     if( (ptr_camCtx != NULL) && (ptr_inputData != NULL) && (dataLen > 0u) && (ptr_outData != NULL) )
     {
         switch(symAlgoMode_en)
@@ -733,13 +699,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_Decrypt(void *ptr_camCtx, crypto_Sym_
                     dataBlocks = dataBlocks - 1u;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB --> 
-
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB --> 
 <#if (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true))>                
             case CRYPTO_SYM_OPMODE_CBC:
                 wcCamStatus = wc_CamelliaCbcDecrypt( (Camellia*)ptr_camCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_CBC -->                
+</#if><#-- CRYPTO_WC_CAMELLIA_CBC -->                
             default:
                 ret_camStatus_en = CRYPTO_SYM_ERROR_OPMODE;
                 break;
@@ -780,7 +745,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_EncryptDirect(crypto_Sym_OpModes_E sy
 <#if (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true))>         
         uint32_t dataBlocks = 0;
         uint32_t dataIndex = 0;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->        
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->        
         wcCamStatus = wc_CamelliaSetKey(camCtx,(const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect);
         if(wcCamStatus == 0)
         {
@@ -801,13 +766,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_EncryptDirect(crypto_Sym_OpModes_E sy
                         dataBlocks = dataBlocks - 1u;
                     }
                     break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB --> 
-                    
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->                     
 <#if (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true))>    
                 case CRYPTO_SYM_OPMODE_CBC:
                     wcCamStatus = wc_CamelliaCbcEncrypt(camCtx,(byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break; 
-</#if> <#-- CRYPTO_WC_CAMELLIA_CBC -->                
+</#if><#-- CRYPTO_WC_CAMELLIA_CBC -->                
                 default:
                     ret_camStat_en = CRYPTO_SYM_ERROR_OPMODE;
                     break;
@@ -852,7 +816,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_DecryptDirect(crypto_Sym_OpModes_E sy
 <#if (CRYPTO_WC_CAMELLIA_ECB?? &&(CRYPTO_WC_CAMELLIA_ECB == true))>         
         uint32_t dataBlocks;
         uint32_t dataIndex = 0;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->       
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->       
         wcCamStatus = wc_CamelliaSetKey(camCtx,(const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect);
         if(wcCamStatus == 0)
         {
@@ -873,14 +837,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_DecryptDirect(crypto_Sym_OpModes_E sy
                         dataBlocks = dataBlocks - 1u;
                     }
                     break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB --> 
-
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB --> 
 <#if (CRYPTO_WC_CAMELLIA_CBC?? &&(CRYPTO_WC_CAMELLIA_CBC == true))>                    
                 case CRYPTO_SYM_OPMODE_CBC:
                     wcCamStatus = wc_CamelliaCbcDecrypt(camCtx,(byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break; 
-</#if> <#-- CRYPTO_WC_CAMELLIA_CBC -->
-                    
+</#if><#-- CRYPTO_WC_CAMELLIA_CBC -->                    
                 default:
                     ret_camStat_en = CRYPTO_SYM_ERROR_OPMODE;
                     break;
@@ -917,10 +879,10 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_DecryptDirect(crypto_Sym_OpModes_E sy
      
     return ret_camStat_en;    
 }
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
-
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
 <#if    (CRYPTO_WC_TDES_ECB?? &&(CRYPTO_WC_TDES_ECB == true)) 
     ||  (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))>
+	
 //Triple DES or 3-DES
 crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_Init(void *ptr_tdesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint8_t *ptr_initVect)
 {
@@ -979,14 +941,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_Encrypt(void *ptr_tdesCtx, crypto_Sym_OpM
             case CRYPTO_SYM_OPMODE_ECB:
                 wcTdesStat = wc_Des3_EcbEncrypt( (Des3*)ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_ECB -->
-
+</#if><#-- CRYPTO_WC_TDES_ECB -->
 <#if (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))>                
             case CRYPTO_SYM_OPMODE_CBC:
                 wcTdesStat = wc_Des3_CbcEncrypt( (Des3*)ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_CBC -->
-                
+</#if><#-- CRYPTO_WC_TDES_CBC -->                
             default:
                 ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
                 break;
@@ -1028,13 +988,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_Decrypt(void *ptr_tdesCtx, crypto_Sym_OpM
             case CRYPTO_SYM_OPMODE_ECB:
                 wcTdesStat = wc_Des3_EcbDecrypt( (Des3*)ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_ECB -->
-                
+</#if><#-- CRYPTO_WC_TDES_ECB -->                
 <#if (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))> 
             case CRYPTO_SYM_OPMODE_CBC:
                 wcTdesStat = wc_Des3_CbcDecrypt( (Des3*)ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_CBC -->                
+</#if><#-- CRYPTO_WC_TDES_CBC -->                
             default:
                 ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
                 break;
@@ -1086,14 +1045,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_EncryptDirect(crypto_Sym_OpModes_E symAlg
                 case CRYPTO_SYM_OPMODE_ECB:
                     wcTdesStat = wc_Des3_EcbEncrypt(ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_TDES_ECB -->
-
+</#if><#-- CRYPTO_WC_TDES_ECB -->
 <#if (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))>                     
                 case CRYPTO_SYM_OPMODE_CBC:
                     wcTdesStat = wc_Des3_CbcEncrypt(ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break; 
-</#if> <#-- CRYPTO_WC_TDES_CBC -->
-                    
+</#if><#-- CRYPTO_WC_TDES_CBC -->                    
                 default:
                     ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
                     break;
@@ -1149,14 +1106,12 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_DecryptDirect(crypto_Sym_OpModes_E symAlg
                 case CRYPTO_SYM_OPMODE_ECB:
                     wcTdesStat = wc_Des3_EcbDecrypt(ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break;
-</#if> <#-- CRYPTO_WC_TDES_ECB -->
-                    
+</#if><#-- CRYPTO_WC_TDES_ECB -->                    
 <#if (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))>                     
                 case CRYPTO_SYM_OPMODE_CBC:
                     wcTdesStat = wc_Des3_CbcDecrypt(ptr_tdesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
                     break; 
-</#if> <#-- CRYPTO_WC_TDES_CBC -->
-                    
+</#if><#-- CRYPTO_WC_TDES_CBC -->                    
                 default:
                     ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
                     break;
@@ -1189,10 +1144,9 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_DecryptDirect(crypto_Sym_OpModes_E symAlg
     
     return ret_tdesStat_en;    
 }
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
-
-
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
 <#if (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>
+
 //AES-KW
 crypto_Sym_Status_E Crypto_Sym_Wc_AesKeyWrap_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
@@ -1332,9 +1286,9 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesKeyUnWrapDirect(uint8_t *ptr_inputData, uin
     }
     return ret_aesKwStat_en;
 }
-</#if> <#-- CRYPTO_WC_AES_KW  -->
-
+</#if><#-- CRYPTO_WC_AES_KW  -->
 <#if (CRYPTO_WC_CHACHA20?? &&(CRYPTO_WC_CHACHA20 == true))>
+
 //ChaCha20
 crypto_Sym_Status_E Crypto_Sym_Wc_ChaCha_Init(void *ptr_chaChaCtx, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
@@ -1445,4 +1399,4 @@ crypto_Sym_Status_E Crypto_Sym_Wc_ChaChaDirect(uint8_t *ptr_inputData, uint32_t 
     }   
     return ret_chaChaStat_en;
 }
-</#if> <#-- CRYPTO_WC_CHACHA20  -->
+</#if><#-- CRYPTO_WC_CHACHA20  -->

@@ -31,13 +31,10 @@
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
 #include "crypto/wolfcrypt/crypto_mac_wc_wrapper.h"
-
 #include "wolfssl/wolfcrypt/error-crypt.h"
-
 <#if (CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))>
 #include "wolfssl/wolfcrypt/cmac.h"
-</#if>  <#-- CRYPTO_WC_AES_CMAC -->
-
+</#if><#-- CRYPTO_WC_AES_CMAC -->
 <#if 	(CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))
 	|| 	(CRYPTO_WC_AES_GMAC?? &&(CRYPTO_WC_AES_GMAC == true))>
 #include "wolfssl/wolfcrypt/aes.h"
@@ -47,9 +44,6 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-
-
-
 <#if (CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))>
 crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Init(void *ptr_aesCmacCtx, uint8_t *ptr_key, uint32_t keySize)
 {
@@ -165,9 +159,9 @@ crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Direct(uint8_t *ptr_inputData, uint32_
     }
     return ret_aesStat_en;  
 }   
-</#if>  <#-- CRYPTO_WC_AES_CMAC -->
-
+</#if><#-- CRYPTO_WC_AES_CMAC -->
 <#if (CRYPTO_WC_AES_GMAC?? &&(CRYPTO_WC_AES_GMAC == true))>
+
 crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Init(void *ptr_aesGmacCtx, uint8_t *ptr_key, uint32_t keySize)
 {
     crypto_Mac_Status_E ret_aesGmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
@@ -270,5 +264,5 @@ crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Direct(uint8_t *ptr_initVect, uint32_t
     }
     return ret_aesStat_en;  
 }
-</#if>  <#-- CRYPTO_WC_AES_GMAC -->
+</#if><#-- CRYPTO_WC_AES_GMAC -->
 // *****************************************************************************

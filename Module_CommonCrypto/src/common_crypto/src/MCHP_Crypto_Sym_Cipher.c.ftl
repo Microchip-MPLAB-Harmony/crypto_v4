@@ -29,7 +29,6 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
-
 <#if    (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) 
     ||  (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)) 
     ||  (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)) 
@@ -46,7 +45,6 @@
     ||  (lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))>
 #include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"
 </#if>
-
 <#if    (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     ||  (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
     ||  (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
@@ -63,12 +61,11 @@
 #include "crypto/common_crypto/crypto_sym_aes6149_wrapper.h"
 <#elseif (HAVE_CRYPTO_HW_HSM_03785_DRIVER?? &&(HAVE_CRYPTO_HW_HSM_03785_DRIVER == true))>
 #include "crypto/common_crypto/crypto_sym_hsm03785_wrapper.h"
-</#if>  <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
 <#if (HAVE_CRYPTO_HW_TDES_6150_DRIVER?? &&(HAVE_CRYPTO_HW_TDES_6150_DRIVER == true))>
 <#--  #include "crypto/common_crypto/crypto_sym_des6150_wrapper.h" -->
-</#if> <#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
 </#if>
-
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
@@ -77,7 +74,8 @@
     || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
     || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
     || (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true)) 
-    || (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true)) >
+    || (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>
+	
 crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
 {
@@ -98,7 +96,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     else if(
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>             
             (opMode_en != CRYPTO_SYM_OPMODE_XTS) && 
-</#if> <#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->           
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->           
             ( (ptr_key == NULL) || (keyLen < (uint32_t)CRYPTO_AESKEYSIZE_128) || (keyLen > (uint32_t)CRYPTO_AESKEYSIZE_256) )  ) //key length check other than XTS mode 
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;
@@ -113,7 +111,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     {
         ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
     }
-</#if> <#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->       
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->       
     else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
@@ -121,11 +119,10 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     else if( ptr_initVect == NULL
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB --> 
-            
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->             
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>            
             && (opMode_en != CRYPTO_SYM_OPMODE_XTS)
-</#if> <#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->            
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->            
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -153,24 +150,21 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
                                                                       ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize);
                 }
                 else
-</#if> <#-- CRYPTO_WC_AES_XTS -->
-                    
+</#if><#-- CRYPTO_WC_AES_XTS -->                 
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true))>                      
                 if(ptr_aesCtx_st->symAlgoMode_en == CRYPTO_SYM_OPMODE_CTR)
                 {                   
                     ret_aesStatus_en = Crypto_Sym_Wc_AesCTR_Init((void*)ptr_aesCtx_st->arr_symDataCtx,ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
                 }
                 else
-</#if> <#-- CRYPTO_WC_AES_CTR -->    
+</#if><#-- CRYPTO_WC_AES_CTR -->    
                 {
                 
                     ret_aesStatus_en = Crypto_Sym_Wc_Aes_Init((void*)ptr_aesCtx_st->arr_symDataCtx,ptr_aesCtx_st->symCipherOper_en, 
                                                   ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
                 }
-                break;
-                
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 ||  CRYPTO_WC_AES_XTS --> 
-
+                break;                
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 ||  CRYPTO_WC_AES_XTS --> 
 <#if (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
   || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true)) || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
@@ -182,9 +176,9 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
 <#elseif (HAVE_CRYPTO_HW_HSM_03785_DRIVER?? &&(HAVE_CRYPTO_HW_HSM_03785_DRIVER == true))>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_Init((void*)ptr_aesCtx_st->arr_symDataCtx, ptr_aesCtx_st->symCipherOper_en, ptr_aesCtx_st->symAlgoMode_en, 
                                                                     ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
-</#if> <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
+</#if><#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
          || CRYPTO_HW_AES_CFB128 || CRYPTO_HW_AES_XTS -->               
             default:
                 ret_aesStatus_en = CRYPTO_SYM_ERROR_HDLR;
@@ -194,7 +188,6 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     }
     return ret_aesStatus_en;
 }
-
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
@@ -203,6 +196,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
     || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
     || (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>
+	
 crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -240,8 +234,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st,
                     ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPOPER;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 -->   
-                
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 -->                  
 <#if (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
   || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true)) || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>              
@@ -250,11 +243,10 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st,
                 ret_aesStatus_en =  Crypto_Sym_Hw_Aes_Cipher(ptr_inputData, dataLen, ptr_outData);
 <#elseif (HAVE_CRYPTO_HW_HSM_03785_DRIVER?? &&(HAVE_CRYPTO_HW_HSM_03785_DRIVER == true))>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_Cipher((void*)ptr_aesCtx_st->arr_symDataCtx, ptr_inputData, dataLen, ptr_outData);
-</#if> <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
-         || CRYPTO_HW_AES_CFB128-->  
-                
+</#if><#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
+         || CRYPTO_HW_AES_CFB128-->       
             default:
                 ret_aesStatus_en = CRYPTO_SYM_ERROR_HDLR;
                 break;
@@ -262,10 +254,10 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st,
     }
     return ret_aesStatus_en; 
 }
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_HW_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_HW_AES_CTR|| CRYPTO_WC_AES_OFB || CRYPTO_HW_AES_OFB 
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_HW_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_HW_AES_CTR|| CRYPTO_WC_AES_OFB || CRYPTO_HW_AES_OFB 
         || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32 || CRYPTO_HW_AES_CFB64 || CRYPTO_WC_AES_CFB128 || CRYPTO_HW_AES_CFB128 -->
+<#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>
 
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true)) >
 crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_tweak)
 {
     crypto_Sym_Status_E ret_aesXtsStat_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -305,12 +297,11 @@ crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_
                     ret_aesXtsStat_en = CRYPTO_SYM_ERROR_CIPOPER;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_AES_XTS --> 
-                
+</#if><#-- CRYPTO_WC_AES_XTS -->           
 <#if (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>                
             case CRYPTO_HANDLER_HW_INTERNAL:
                 break;
-</#if> <#-- CRYPTO_HW_AES_XTS --> 
+</#if><#-- CRYPTO_HW_AES_XTS --> 
             default:
                 ret_aesXtsStat_en = CRYPTO_SYM_ERROR_HDLR;
                 break;
@@ -318,7 +309,7 @@ crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_
     }
     return ret_aesXtsStat_en; 
 }
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
 
 crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
@@ -344,7 +335,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
 	else if(
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>            
             (opMode_en != CRYPTO_SYM_OPMODE_XTS) && 
-</#if> <#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->             
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->             
             ((keyLen < (uint32_t)CRYPTO_AESKEYSIZE_128) || (keyLen > (uint32_t)CRYPTO_AESKEYSIZE_256) ) ) //key length check other than XTS mode 
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;
@@ -357,7 +348,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
     {
         ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
     }
-</#if> <#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->  
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->  
     else if( (sessionID <= 0u ) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
@@ -365,7 +356,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
     else if( (ptr_initVect == NULL) 
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) >           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB) 
-</#if> <#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->             
+</#if><#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->             
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -380,8 +371,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesStatus_en = Crypto_Sym_Wc_Aes_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 ||  CRYPTO_WC_AES_XTS -->                 
-
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 ||  CRYPTO_WC_AES_XTS -->                 
 <#if (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
   || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true)) || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
@@ -392,9 +382,9 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
 <#elseif (HAVE_CRYPTO_HW_HSM_03785_DRIVER?? &&(HAVE_CRYPTO_HW_HSM_03785_DRIVER == true))>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_CipherDirect(CRYPTO_CIOP_ENCRYPT, opMode_en, ptr_inputData, dataLen, 
                                                                                 ptr_outData, ptr_key, keyLen, ptr_initVect);
-</#if> <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
+</#if><#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
          || CRYPTO_HW_AES_CFB128 || CRYPTO_HW_AES_XTS -->  
             default:
                 ret_aesStatus_en = CRYPTO_SYM_ERROR_HDLR;
@@ -424,7 +414,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     else if(
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>             
             (opMode_en != CRYPTO_SYM_OPMODE_XTS) && 
-</#if> <#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->              
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->              
             ( (ptr_key == NULL) || (keyLen < (uint32_t)CRYPTO_AESKEYSIZE_128) || (keyLen > (uint32_t)CRYPTO_AESKEYSIZE_256) )  ) //key length check other than XTS mode 
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;
@@ -439,7 +429,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     {
         ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
     }
-</#if> <#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS --> 
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS --> 
     else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
@@ -447,7 +437,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     else if( (ptr_initVect == NULL)
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) >            
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->            
+</#if><#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->            
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -462,8 +452,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesStatus_en = Crypto_Sym_Wc_Aes_DecryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 ||  CRYPTO_WC_AES_XTS -->  
-                
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_WC_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_WC_AES_CFB128 ||  CRYPTO_WC_AES_XTS -->               
 <#if (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
   || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true)) || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
@@ -474,9 +463,9 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
 <#elseif (HAVE_CRYPTO_HW_HSM_03785_DRIVER?? &&(HAVE_CRYPTO_HW_HSM_03785_DRIVER == true))>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_CipherDirect(CRYPTO_CIOP_DECRYPT, opMode_en, ptr_inputData, dataLen, 
                                                                                 ptr_outData, ptr_key, keyLen, ptr_initVect);
-</#if> <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
+</#if><#-- CRYPTO_HW_AES_ECB|| CRYPTO_HW_AES_CBC || CRYPTO_HW_AES_CTR || CRYPTO_HW_AES_OFB || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16 || CRYPTO_HW_AES_CFB32|| CRYPTO_HW_AES_CFB64
          || CRYPTO_HW_AES_CFB128 || CRYPTO_HW_AES_XTS -->  
                 
             default:
@@ -486,11 +475,11 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     }
     return ret_aesStatus_en;    
 }
-</#if> <#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_HW_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_HW_AES_CTR
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB || CRYPTO_WC_AES_CBC || CRYPTO_HW_AES_CBC || CRYPTO_WC_AES_CTR || CRYPTO_HW_AES_CTR
          || CRYPTO_WC_AES_OFB || CRYPTO_HW_AES_OFB || CRYPTO_WC_AES_CFB1 || CRYPTO_WC_AES_CFB8 || CRYPTO_HW_AES_CFB8 || CRYPTO_HW_AES_CFB16
          || CRYPTO_HW_AES_CFB32 || CRYPTO_HW_AES_CFB64 || CRYPTO_WC_AES_CFB128 || CRYPTO_HW_AES_CFB128 || CRYPTO_WC_AES_XTS -->
+<#if  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) || (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))>
 
-<#if  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) || (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true)) >
 crypto_Sym_Status_E Crypto_Sym_Camellia_Init(st_Crypto_Sym_BlockCtx *ptr_camCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
 {
@@ -519,7 +508,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_Init(st_Crypto_Sym_BlockCtx *ptr_camCtx_
     else if( (ptr_initVect == NULL) 
 <#if  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) >           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->            
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->            
             )
     {
         ret_camStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -540,7 +529,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_Init(st_Crypto_Sym_BlockCtx *ptr_camCtx_
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_camStatus_en =  Crypto_Sym_Wc_Camellia_Init(ptr_camCtx_st->arr_symDataCtx, ptr_camCtx_st->ptr_key, ptr_camCtx_st->symKeySize, ptr_camCtx_st->ptr_initVect);
                 break;
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB || lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC -->                 
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB || lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC -->                 
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -588,7 +577,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_Cipher(st_Crypto_Sym_BlockCtx *ptr_camCt
                     ret_camStatus_en = CRYPTO_SYM_ERROR_CIPOPER;;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -599,7 +588,6 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_Cipher(st_Crypto_Sym_BlockCtx *ptr_camCt
     }
     return ret_camStatus_en; 
 }
-
 
 crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
@@ -629,7 +617,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
     else if( (ptr_initVect == NULL) 
 <#if  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) >            
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB) 
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->             
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->             
             )
     {
         ret_camStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -642,7 +630,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, (keyLen/8u), ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
@@ -682,7 +670,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handl
     else if( (ptr_initVect == NULL) 
 <#if  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) >            
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB -->             
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB -->             
             )
     {
         ret_camStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -695,7 +683,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handl
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, (keyLen/8u), ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
@@ -706,10 +694,10 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handl
     }
     return ret_camStatus_en;
 }
-</#if> <#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
-
+</#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
 <#if  (lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)) || (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
    || (lib_wolfcrypt.CRYPTO_WC_TDES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC == true)) || (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
+   
 crypto_Sym_Status_E Crypto_Sym_Tdes_Init(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID)
 {
@@ -738,7 +726,7 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_Init(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st,
     else if( (ptr_initVect == NULL) 
 <#if (lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)) || (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) >           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB -->           
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB -->           
             )
     {
         ret_tdesStat_en = CRYPTO_SYM_ERROR_IV;
@@ -759,14 +747,14 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_Init(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st,
                 ret_tdesStat_en = Crypto_Sym_Wc_Tdes_Init(ptr_tdesCtx_st->arr_symDataCtx, ptr_tdesCtx_st->symCipherOper_en, 
                                                                        ptr_tdesCtx_st->ptr_key, ptr_tdesCtx_st->ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
 <#if (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) || (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true)) >                 
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (HAVE_CRYPTO_HW_TDES_6150_DRIVER?? &&(HAVE_CRYPTO_HW_TDES_6150_DRIVER == true))>
 
-</#if> <#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->   
+</#if><#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->   
                 break;
-</#if> <#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->                
+</#if><#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->                
             default:
                 ret_tdesStat_en = CRYPTO_SYM_ERROR_HDLR;
                 break;
@@ -810,16 +798,14 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_Cipher(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_s
                     ret_tdesStat_en = CRYPTO_SYM_ERROR_CIPOPER;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
-
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->
 <#if (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) || (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true)) >
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (HAVE_CRYPTO_HW_TDES_6150_DRIVER?? &&(HAVE_CRYPTO_HW_TDES_6150_DRIVER == true))> 
 
-</#if> <#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->
-
+</#if><#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->
             default:
                 ret_tdesStat_en = CRYPTO_SYM_ERROR_HDLR;
                 break;
@@ -852,7 +838,7 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_EncryptDirect(crypto_HandlerType_E handlerTy
     else if( (ptr_initVect == NULL) 
 <#if (lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)) || (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) >            
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB -->             
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB -->             
             )
     {
         ret_tdesStat_en = CRYPTO_SYM_ERROR_IV;
@@ -865,14 +851,14 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_EncryptDirect(crypto_HandlerType_E handlerTy
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_tdesStat_en = Crypto_Sym_Wc_Tdes_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->   
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->   
 <#if (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) || (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true)) >            
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (HAVE_CRYPTO_HW_TDES_6150_DRIVER?? &&(HAVE_CRYPTO_HW_TDES_6150_DRIVER == true))> 
 
-</#if> <#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->                
+</#if><#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->                
             default:
                 ret_tdesStat_en = CRYPTO_SYM_ERROR_HDLR;
                 break;
@@ -905,7 +891,7 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_DecryptDirect(crypto_HandlerType_E handlerTy
     else if( (ptr_initVect == NULL) 
 <#if (lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)) || (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) >           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB -->            
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB -->            
             )
     {
         ret_tdesStat_en = CRYPTO_SYM_ERROR_IV;
@@ -918,14 +904,14 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_DecryptDirect(crypto_HandlerType_E handlerTy
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_tdesStat_en = Crypto_Sym_Wc_Tdes_DecryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->       
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_WC_TDES_CBC -->       
 <#if (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) || (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true)) >         
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (HAVE_CRYPTO_HW_TDES_6150_DRIVER?? &&(HAVE_CRYPTO_HW_TDES_6150_DRIVER == true))> 
 
-</#if> <#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
                 break;
-</#if> <#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->                
+</#if><#-- CRYPTO_HW_TDES_ECB || CRYPTO_HW_TDES_CBC -->                
             default:
                 ret_tdesStat_en = CRYPTO_SYM_ERROR_HDLR;
                 break;
@@ -933,9 +919,9 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_DecryptDirect(crypto_HandlerType_E handlerTy
     }
     return ret_tdesStat_en; 
 }
-</#if> <#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB ||  CRYPTO_WC_TDES_CBC || CRYPTO_HW_TDES_CBC-->
-
+</#if><#-- CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB ||  CRYPTO_WC_TDES_CBC || CRYPTO_HW_TDES_CBC-->
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_KW?? &&(lib_wolfcrypt.CRYPTO_WC_AES_KW == true))>
+
 crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                                                       uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
 {
@@ -973,7 +959,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Init(st_Crypto_Sym_BlockCtx *ptr_aesCt
                 ret_aesKwStat_en = Crypto_Sym_Wc_AesKeyWrap_Init(ptr_aesCtx_st->arr_symDataCtx, ptr_aesCtx_st->symCipherOper_en, 
                                                                        ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_AES_KW  -->                
+</#if><#-- CRYPTO_WC_AES_KW  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -1021,7 +1007,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Cipher(st_Crypto_Sym_BlockCtx *ptr_aes
                     ret_aesKwStat_en = CRYPTO_SYM_ERROR_CIPOPER;
                 }
                 break;
-</#if> <#-- CRYPTO_WC_AES_KW  -->               
+</#if><#-- CRYPTO_WC_AES_KW  -->               
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -1032,7 +1018,6 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Cipher(st_Crypto_Sym_BlockCtx *ptr_aes
     }
     return ret_aesKwStat_en; 
 }
-
 
 crypto_Sym_Status_E Crypto_Sym_AesKeyWrapDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t inputLen, 
                                                     uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
@@ -1063,7 +1048,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrapDirect(crypto_HandlerType_E handlerType
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesKwStat_en = Crypto_Sym_Wc_AesKeyWrapDirect(ptr_inputData, inputLen, ptr_outData, (inputLen + 8u), ptr_key, keyLen, ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_AES_KW  -->                
+</#if><#-- CRYPTO_WC_AES_KW  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
@@ -1104,7 +1089,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyUnWrapDirect(crypto_HandlerType_E handlerTy
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesKwStat_en = Crypto_Sym_Wc_AesKeyUnWrapDirect(ptr_inputData, inputLen, ptr_outData, (inputLen + 8u), ptr_key, keyLen, ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_AES_KW  -->                
+</#if><#-- CRYPTO_WC_AES_KW  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
@@ -1115,9 +1100,9 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyUnWrapDirect(crypto_HandlerType_E handlerTy
     }
     return ret_aesKwStat_en;    
 }
-</#if> <#-- CRYPTO_WC_AES_KW  -->
-
+</#if><#-- CRYPTO_WC_AES_KW  -->
 <#if (lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))>
+
 crypto_Sym_Status_E Crypto_Sym_ChaCha20_Init(st_Crypto_Sym_StreamCtx *ptr_chaChaCtx_st, crypto_HandlerType_E handlerType_en, 
                                                                     uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID)
 {
@@ -1152,7 +1137,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20_Init(st_Crypto_Sym_StreamCtx *ptr_chaCha
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaCha_Init(ptr_chaChaCtx_st->arr_symDataCtx, ptr_chaChaCtx_st->ptr_key, 32, ptr_chaChaCtx_st->ptr_initVect);
                 break;
-</#if> <#-- CRYPTO_WC_CHACHA20  -->                
+</#if><#-- CRYPTO_WC_CHACHA20  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -1189,7 +1174,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20_Cipher(st_Crypto_Sym_StreamCtx *ptr_chaC
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaChaUpdate(ptr_chaChaCtx_st, ptr_inputData, dataLen, ptr_outData);
                 break;
-</#if> <#-- CRYPTO_WC_CHACHA20  -->                
+</#if><#-- CRYPTO_WC_CHACHA20  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -1234,7 +1219,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_e
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaChaDirect(ptr_inputData, dataLen, ptr_outData, ptr_key, 32u, ptr_initVect); //key size is 32 bytes for chacha20
                 break;
-</#if> <#-- CRYPTO_WC_CHACHA20  -->               
+</#if><#-- CRYPTO_WC_CHACHA20  -->               
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
@@ -1245,4 +1230,4 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_e
     }
     return ret_chaCha20Stat_en;
 }
-</#if> <#-- CRYPTO_WC_CHACHA20  -->
+</#if><#-- CRYPTO_WC_CHACHA20  -->

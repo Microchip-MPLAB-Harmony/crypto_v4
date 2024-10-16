@@ -68,7 +68,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
 typedef struct 
 {
     uint32_t key[16];
@@ -85,7 +85,7 @@ typedef struct
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen);
     

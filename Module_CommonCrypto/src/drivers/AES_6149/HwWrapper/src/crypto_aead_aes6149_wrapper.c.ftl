@@ -65,7 +65,7 @@ static CRYPTO_AES_CONFIG aesGcmCfg;
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
 static void lCrypto_Aead_Hw_Gcm_WriteKey(uint32_t *gcmKey)
 {
     DRV_CRYPTO_AES_WriteKey(gcmKey);
@@ -578,7 +578,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen)
 {

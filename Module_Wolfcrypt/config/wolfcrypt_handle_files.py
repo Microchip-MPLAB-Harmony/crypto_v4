@@ -31,6 +31,16 @@ def make_file_symbol(component, file_name, relative_path, prefix, dest_path, pro
 
     return file_symbol
 
+# Create a MCC bool symbol with a unique identifier with _flag appended
+def make_file_symbol_flag(component, file_name, prefix, enabled):
+
+    file_id = os.path.join(prefix, file_name.replace('.', '_')) + "_flag"
+
+    file_symbol_flag = component.createBooleanSymbol(file_id, None)
+    file_symbol_flag.setDefaultValue(enabled)
+
+    return file_symbol_flag
+
 # Insert row into wolfCrypt_Files dict and place files inside config/crypto
 def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
     
@@ -56,14 +66,20 @@ def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
                               file_name, 
                               relative_path,            # Source 
                               prefix, 
-                              dest_path,     # Destination
-                              project_path,  # MPLABX proj tree
+                              dest_path,                # Destination
+                              project_path,             # MPLABX proj tree
                               markup,
-                              False          # Disabled initial state 
+                              False                     # Disabled initial state 
                               )
+
+    file_symbol_flag = make_file_symbol_flag(component, 
+                                             file_name,
+                                             prefix, 
+                                             False      # Disabled initial state 
+                                             )
     
     # Add the file as key and tuple (relative_path, file_symbol) as the value
-    wolfCrypt_Files[file_name] = (lowest_level_dir, file_symbol)
+    wolfCrypt_Files[file_name] = (lowest_level_dir, file_symbol, file_symbol_flag)
 
 # Make symbols for files in src/WolfCryptWrapper and add to global dict
 def setup_wolfcrypt_wrappers(component):
@@ -114,15 +130,21 @@ def setup_templates(component):
                 # Create symbol
                 file_symbol = make_file_symbol(component,
                                         file_name, 
-                                        relative_path,            # Source 
+                                        relative_path,              # Source 
                                         prefix, 
-                                        dest_path,     # Destination
-                                        project_path,  # MPLABX proj tree
+                                        dest_path,                  # Destination
+                                        project_path,               # MPLABX proj tree
                                         markup,
-                                        False          # Disabled initial state 
+                                        False                       # Disabled initial state 
                                         )
+                            
+                file_symbol_flag = make_file_symbol_flag(component, 
+                                                        file_name,
+                                                        prefix, 
+                                                        False       # Disabled initial state 
+                                                        )
                 
-            wolfCrypt_Files[file_name] = ("", file_symbol)
+            wolfCrypt_Files[file_name] = ("", file_symbol, file_symbol_flag)
         print("/templates file symbols created.")
     else:
         Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
@@ -133,9 +155,9 @@ def setup_wc_files(component):
     setup_templates(component)
 
     print("Created file symbols: ")
-    for file_name, (file_path, file_symbol) in wolfCrypt_Files.items():
+    for file_name, (file_path, file_symbol, file_symbol_flag) in wolfCrypt_Files.items():
         # print("File: %s" % file_name)
         # print("  Parent Dir: %s" % file_path)
-        print("  File Symbol: %s" % file_symbol.getID())
+        print("  File Symbol: %s (on? %s)" %(file_symbol.getID(), file_symbol_flag.getValue()))
 
     return

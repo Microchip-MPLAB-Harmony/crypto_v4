@@ -1,14 +1,17 @@
 import os
 
-# Initialize an empty dictionary to store file data
-Crypto_HW_Files = {}
+execfile( Module.getPath() + os.path.join("config", "crypto_globals.py"))
 
-# Create a MCC file symbol with a unique identifier and an identical 
-# output name to a source or header file. This means the .ftl will be removed
-# from the output name but remain in the identifier. 
-# - dest_path:  Files from Crypto_v4 Library moved into current project's src/config 
-# - project_path: Make src/config files visible in project file browser in MPLABX
+#################################################################################
+
 def make_file_symbol(component, file_name, relative_path, prefix, dest_path, project_path, markup, enabled):
+    """ 
+    Create an MCC file symbol with a unique identifier and an identical 
+    output name to a source or header file. This means the .ftl will be removed
+    from the output name but remain in the identifier. 
+    - dest_path:  Files from Crypto_v4 Library moved into current project's src/config 
+    - project_path: Make src/config files visible in project file browser in MPLABX
+    """
 
     file_id = os.path.join(prefix, file_name.replace('.', '_'))
     file_name = file_name[:-4] if markup else file_name
@@ -36,14 +39,31 @@ def make_file_symbol(component, file_name, relative_path, prefix, dest_path, pro
     return file_symbol
 
 
-# Insert row into Crypto_HW_Files dict and place files inside config/crypto
+def make_file_symbol_flag(component, file_name, prefix, enabled):
+    """
+    Create an MCC boolean symbol with a unique identifier (and _flag)
+    appended to be referenced in FreeMarker Templates
+    """
+
+    file_id = os.path.join(prefix, file_name.replace('.', '_')) + "_flag"   # Reference this in FreeMarker Template
+
+    file_symbol_flag = component.createBooleanSymbol(file_id, None)
+    file_symbol_flag.setDefaultValue(enabled)
+
+    return file_symbol_flag
+
+
 def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
-    
+    """
+    Insert row into Crypto_HW_Files dict and 
+    initialize files to appear in config/crypto/$(lowest_level_dir)
+    """
+
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
 
     # Settings for file being added
-    prefix = ""                                                                          # set impportant (unused)
+    prefix = ""                                                                          # set important (unused)
     pre_path = "src" if file_name.endswith(".c") or file_name.endswith(".c.ftl") else "" # sorts .c into /src
     markup = file_name.endswith(".ftl")                                                  # check if markup
                                           
@@ -61,18 +81,27 @@ def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
                               file_name, 
                               relative_path,            # Source 
                               prefix, 
-                              dest_path,     # Destination
-                              project_path,  # MPLABX proj tree
+                              dest_path,                # Destination
+                              project_path,             # MPLABX proj tree
                               markup,
-                              False          # Disabled initial state 
+                              False                     # Disabled initial state 
                               )
     
+    file_symbol_flag = make_file_symbol_flag(component, 
+                                             file_name,
+                                             prefix, 
+                                             False      # Disabled initial state 
+                                             )
+    
     # Add the file as key and tuple (relative_path, file_symbol) as the value
-    Crypto_HW_Files[file_name] = (lowest_level_dir, file_symbol)
+    Crypto_HW_Files[file_name] = (lowest_level_dir, file_symbol, file_symbol_flag)
 
+#################################################################################
 
-# Make symbols for files in src/common_crypto and add to global dict
 def setup_common_crypto(component):
+    """
+    Make symbols for files in src/common_crypto and add to global dict
+    """
 
     module_path = Module.getPath()
     common_crypto_path = os.path.join(module_path, "src", "common_crypto")
@@ -92,9 +121,11 @@ def setup_common_crypto(component):
     return True
 
 
-# Make symbols for *relevant* files in src/drivers and add to global dict
 def setup_drivers(component, supported_drivers):
-    
+    """
+    Make symbols for *relevant* files in src/drivers and add to global dict
+    """
+
     module_path = Module.getPath()
     
     # Recursively go through the driver's directory and collect all relevant file paths
@@ -130,11 +161,12 @@ def setup_drivers(component, supported_drivers):
     return True
 
 
-# Will make file symbols for anything in Module_CommonCrypto/templates
-# which can then be toggled on and off by including the file in 
-# any of the file dicts
 def setup_templates(component):
-      
+    """
+    # Will make file symbols for anything in Module_CommonCrypto/templates
+    # which can then be toggled on and off by including the file in any of the file dicts
+    """
+
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
     templates_path = os.path.join(module_path, "templates")
@@ -148,7 +180,7 @@ def setup_templates(component):
                 file_name = os.path.basename(file_path)
 
                 # Settings for file being added
-                prefix = ""                                    # set impportant 
+                prefix = ""                                    # set important 
                 markup = file_name.endswith(".ftl")            # check if markup
                 
                 # Remove auto appended portion ex. ~\crypto_v4\Module_CommonCrypto\
@@ -163,7 +195,7 @@ def setup_templates(component):
                 # Create symbol
                 file_symbol = make_file_symbol(component,
                                         file_name, 
-                                        relative_path,            # Source 
+                                        relative_path, # Source 
                                         prefix, 
                                         dest_path,     # Destination
                                         project_path,  # MPLABX proj tree
@@ -171,24 +203,31 @@ def setup_templates(component):
                                         False          # Disabled initial state 
                                         )
                 
-            Crypto_HW_Files[file_name] = ("", file_symbol)
+                file_symbol_flag = make_file_symbol_flag(component, 
+                                            file_name,
+                                            prefix, 
+                                            False      # Disabled initial state 
+                                            )
+                
+            Crypto_HW_Files[file_name] = ("", file_symbol, file_symbol_flag)
         print("/templates file symbols created.")
     else:
         Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
 
 
-# Make file symbols (.createFileSymbol) for crypto_v4
 def setup_hw_files(component, supported_drivers):
+    """
+    Make symbols for crypto_v4
+    """
 
     setup_common_crypto(component)
     setup_drivers(component, supported_drivers)
     setup_templates(component)
 
-    # Show the created file symbols
     print("Created file symbols: ")
-    for file_name, (file_path, file_symbol) in Crypto_HW_Files.items():
-    #     print("File: %s" % file_name)
-    #     print("  Parent Dir: %s" % file_path)
-          print("  File Symbol: %s" % file_symbol.getID())
+    for file_name, (file_path, file_symbol, file_symbol_flag) in Crypto_HW_Files.items():
+        # print("File: %s" % file_name)
+        # print("  Parent Dir: %s" % file_path)
+        print("  File Symbol: %s (on? %s)" %(file_symbol.getID(), file_symbol_flag.getValue()))
 
     return

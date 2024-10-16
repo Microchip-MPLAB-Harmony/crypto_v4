@@ -187,6 +187,7 @@ def Refresh_Files():
     # Enable or disable file symbols based on the combined list
     for file_name in wolfCrypt_Files:
         wolfCrypt_Files[file_name][1].setEnabled(file_name in all_enabled_files)
+        wolfCrypt_Files[file_name][2].setValue(file_name in all_enabled_files)
 
     # TODO: Generalize this? it'll break if we change the name
     msg = {Module.getName(): wolfcrypt_selected_categories}

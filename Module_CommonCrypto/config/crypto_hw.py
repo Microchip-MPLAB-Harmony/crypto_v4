@@ -42,7 +42,6 @@
 #### NOTE(s): 
 ####    1) crypto component module defined by module.py in crypto/config
 #################################################################################
-from email import message
 import os
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_Driver.py"))
 execfile( Module.getPath() + os.path.join("config", "Crypto_HW_MenuInGUI.py"))
@@ -65,20 +64,47 @@ def instantiateComponent(CommonCryptoComponent):
 
 
 # Insert messages into Crypto_Attached_Category_Reqs
+# TODO: Cleanse input and error check
 def handleMessage(messageID, args):
-    # TODO: Cleanse input and error check
+    # print("handleMessage")
+
+    # remoteComponent = Database.getComponentByID(Module.getName())
+    # remoteSymbol = remoteComponent.getSymbolByID(remoteComponent.getID())
 
     # Insert algoCategories from message into global dict
     for key in args.keys():
         Crypto_Attached_Category_Reqs[key] = args[key]
 
+        # mysymb = remoteSymbol.createStringSymbol(args[key], None)
+        # mysymb.setVisible(False)
+        # mysymb.setDefaultValue("hi")
+    
+        # val = mysymb.getValue()
+        # print("here: ", val)
+
     Refresh_Files()
+
+def onAttachmentConnected(source, target):
+    print("attachment connected")
+    # source: lib_crypto
+    # target: lib_wolfcrypt
+
+    sourceComponent = source["component"]
+    id = sourceComponent.getID()
+    print(sourceComponent)
+    print(id)
+
+    targetComponent = target["component"]
+    id = targetComponent.getID()
+    print(targetComponent)
+    print(id)
 
 
 # Clean up entries into Crypto_Attached_Category_Reqs
 def onAttachmentDisconnected(source, target):
-    print("Disconnected" + source["component"].getID() + " and " + target["component"].getID())
+    print("Disconnected " + source["component"].getID() + " and " + target["component"].getID())
 
+    # Remove entries in Crypto_Attached_Category_Reqs from disconnected component 
     for key in list(Crypto_Attached_Category_Reqs.keys()):
         if key == source["component"].getID() or key == target["component"].getID():
             del Crypto_Attached_Category_Reqs[key]
@@ -90,6 +116,15 @@ def onAttachmentDisconnected(source, target):
 def destroyComponent(CommonCryptoComponent):
 
     print("goodbye :)")
+    
+    print("wijd")
+    print("module.getID():", Module.getID())
+    print("module.getName():", Module.getName())
+
+    remoteComponent = Database.getComponentByID("lib_crypto")
+    print(remoteComponent.getID())
+
+
     idList = Database.getActiveComponentIDs()
     symIDList = Database.getComponentSymbolIDs(CommonCryptoComponent.getID())
     symIDList_str = [str(item) for item in symIDList]

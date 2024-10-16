@@ -133,7 +133,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         },
         "AeadAlgo":{
-            "WrapperFiles":["crypto_aead_aes6149_wrapper.h.ftl", "crypto_sym_aes6149_wrapper.c.ftl"],    
+            "WrapperFiles":["crypto_aead_aes6149_wrapper.h.ftl", "crypto_aead_aes6149_wrapper.c.ftl"],    
             "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
         }
     },
@@ -141,17 +141,19 @@ Crypto_HW_DriverAndWrapperFilesDict = {
     "CPKCC_44163":{ 
         "DigisignAlgo":{
             "WrapperFiles":["crypto_digisign_cpkcc44163_wrapper.h.ftl", "crypto_digisign_cpkcc44163_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c"]
+            "DriverFiles":["drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c"],
+            "LibraryFiles":["CPKCL_Lib"],
         },
         "KasAlgo":{
             "WrapperFiles":["crypto_kas_cpkcc44163_wrapper.h.ftl", "crypto_kas_cpkcc44163_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c"]
+            "DriverFiles":["drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c"],
+            "LibraryFiles":["CPKCL_Lib"],
         }        
     }, 
     
     "SHA_6156":{ 
         "HashAlgo":{
-            "WrapperFiles": ["crypto_hash_sha6156_wrapper.h.ftl", "crypto_hash_sha6156_wrapper.c.ftl"],
+            "WrapperFiles":["crypto_hash_sha6156_wrapper.h.ftl", "crypto_hash_sha6156_wrapper.c.ftl"],
             "DriverFiles":["drv_crypto_sha_hw_6156.h.ftl", "drv_crypto_sha_hw_6156.c.ftl"],
         }
     },

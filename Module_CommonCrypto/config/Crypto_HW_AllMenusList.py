@@ -81,6 +81,7 @@ Crypto_HW_AllMenusList = [
     ["AES-CTR",                       "CRYPTO_HW_AES_CTR",         "Crypto_Hw_Aes_Ctr",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"]],
     ["AES-OFB",                       "CRYPTO_HW_AES_OFB",         "Crypto_Hw_Aes_Ofb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"]],
     ["AES-CFB",                       "CRYPTO_HW_AES_CFB_MENU",    "Crypto_Hw_Aes_Cfb_Menu",   "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    None,     None],
+    ["AES-CFB1",                      "CRYPTO_HW_AES_CFB1",        "Crypto_Hw_Aes_Cfb1",       "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
     ["AES-CFB8",                      "CRYPTO_HW_AES_CFB8",        "Crypto_Hw_Aes_Cfb8",       "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
     ["AES-CFB16",                     "CRYPTO_HW_AES_CFB16",       "Crypto_Hw_Aes_Cfb16",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
     ["AES-CFB32",                     "CRYPTO_HW_AES_CFB32",       "Crypto_Hw_Aes_Cfb32",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
@@ -154,3 +155,4 @@ def Refresh_Files():
     # Enable or disable file symbols based on the combined list
     for file_name in Crypto_HW_Files:
         Crypto_HW_Files[file_name][1].setEnabled(file_name in all_enabled_files)
+        Crypto_HW_Files[file_name][2].setValue(file_name in all_enabled_files)

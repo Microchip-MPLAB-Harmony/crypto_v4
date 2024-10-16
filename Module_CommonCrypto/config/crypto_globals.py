@@ -1,7 +1,26 @@
-# Crypto_HW_Files = {}                      # currently in crypto_handle_files.py
+#################################################################################
+# Dictionary to store file data: maps file names to a tuple containing 
+# the directory, file symbol, and a flag indicating file status.
 
-Crypto_Attached_Category_Reqs = {}          # Insert items from handleMessage into here
+Crypto_HW_Files = {}
 
-# Crypto_HW_AllSupportedDriver = []         # currently in Crypto_HW_Driver.py
-# Crypto_HW_CommonCryptoFilesDict = {}      # currently in Crypto_HW_Driver.py
-# Crypto_HW_DriverAndWrapperFilesDict = {}  # currently in Crypto_HW_Driver.py
+#################################################################################
+# Dictionary to store attached categories from external components.
+# Populated by inserting key-value pairs received from handleMessage.
+
+Crypto_Attached_Category_Reqs = {}
+
+#################################################################################
+# TODO: currently in Crypto_HW_Driver.py
+
+# Crypto_HW_AllSupportedDriver = []
+
+#################################################################################
+# TODO: currently in Crypto_HW_Driver.py
+
+# Crypto_HW_CommonCryptoFilesDict = {}
+
+#################################################################################
+# TODO: currently in Crypto_HW_Driver.py
+
+# Crypto_HW_DriverAndWrapperFilesDict = {}

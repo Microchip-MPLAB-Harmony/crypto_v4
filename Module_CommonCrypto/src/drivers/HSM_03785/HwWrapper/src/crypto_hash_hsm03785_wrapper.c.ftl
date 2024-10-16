@@ -340,36 +340,31 @@ hsm_Hash_Types_E Crypto_Hash_Hw_GetShaAlgoType(crypto_Hash_Algo_E hashAlgo_en, u
             algoType_en = HSM_CMD_HASH_SHA1;
             *blockSize = 64U;
             break;
-</#if> <#-- CRYPTO_HW_SHA1 -->
-
+</#if><#-- CRYPTO_HW_SHA1 -->
 <#if (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true))>
         case CRYPTO_HASH_SHA2_224:
             algoType_en = HSM_CMD_HASH_SHA224;
             *blockSize = 64U;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_224 -->
-
+</#if><#-- CRYPTO_HW_SHA2_224 -->
 <#if (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true))>
         case CRYPTO_HASH_SHA2_256:
             algoType_en = HSM_CMD_HASH_SHA256;
             *blockSize = 64U;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_256 -->
-
+</#if><#-- CRYPTO_HW_SHA2_256 -->
 <#if (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>
         case CRYPTO_HASH_SHA2_384:
             algoType_en = HSM_CMD_HASH_SHA384;
             *blockSize = 128U;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_384 -->
-
+</#if><#-- CRYPTO_HW_SHA2_384 -->
 <#if (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>
         case CRYPTO_HASH_SHA2_512:
             algoType_en = HSM_CMD_HASH_SHA512;
             *blockSize = 128U;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_512 -->
-        
+</#if><#-- CRYPTO_HW_SHA2_512 -->
         default:
             algoType_en = HSM_CMD_HASH_INVALID;
             *blockSize = 0x00U;

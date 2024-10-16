@@ -68,9 +68,8 @@ typedef enum
     CRYPTO_SYM_OPMODE_XTS = 11,        
     CRYPTO_SYM_OPMODE_MAX
 }crypto_Sym_OpModes_E;
-
-
 <#if (lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))>
+
 typedef struct 
 {
     uint32_t cryptoSessionID;
@@ -79,8 +78,7 @@ typedef struct
     uint8_t *ptr_initVect;
     uint8_t arr_symDataCtx[70];
 }st_Crypto_Sym_StreamCtx;
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_CHACHA20  -->
-
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_CHACHA20  -->
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
@@ -89,7 +87,8 @@ typedef struct
     || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
     || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
     || (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true)) 
-    || (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true)) >
+    || (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>
+	
 typedef struct 
 {
     uint32_t cryptoSessionID;
@@ -111,7 +110,6 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
 
 crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);                                                
-
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
     || (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
@@ -120,16 +118,16 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
     || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
     || (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>
+	
 crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
 </#if>
-
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true)) >
+
 crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_tweak);
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
-
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
 </#if>
-
 <#if  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) || (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true)) >
+
 //Camellia
 crypto_Sym_Status_E Crypto_Sym_Camellia_Init(st_Crypto_Sym_BlockCtx *ptr_camCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
@@ -138,12 +136,12 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB || lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC -->
-
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB || lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC -->
 <#if    (lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)) 
     ||  (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
     ||  (lib_wolfcrypt.CRYPTO_WC_TDES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC == true)) 
     ||  (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
+	
 //DES3 or Triple-DES
 crypto_Sym_Status_E Crypto_Sym_Tdes_Init(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
@@ -152,9 +150,9 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_EncryptDirect(crypto_HandlerType_E handlerTy
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_Tdes_DecryptDirect(crypto_HandlerType_E handlerType_en, crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_inputData, 
                                                         uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB ||  lib_wolfcrypt.CRYPTO_WC_TDES_CBC || CRYPTO_HW_TDES_CBC-->
-
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_TDES_ECB || CRYPTO_HW_TDES_ECB ||  lib_wolfcrypt.CRYPTO_WC_TDES_CBC || CRYPTO_HW_TDES_CBC-->
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_KW?? &&(lib_wolfcrypt.CRYPTO_WC_AES_KW == true))>
+
 //AES-KEYWRAP
 crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                                                       uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
@@ -163,9 +161,9 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrapDirect(crypto_HandlerType_E handlerType
                                                     uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
 crypto_Sym_Status_E Crypto_Sym_AesKeyUnWrapDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t inputLen, 
                                                     uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID);
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_AES_KW  -->
-
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_AES_KW  -->
 <#if (lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))>
+
 //CHACHA-20
 crypto_Sym_Status_E Crypto_Sym_ChaCha20_Init(st_Crypto_Sym_StreamCtx *ptr_chaChaCtx_st, crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
 
@@ -173,6 +171,6 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20_Cipher(st_Crypto_Sym_StreamCtx *ptr_chaC
 
 crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                                 uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_initVect, uint32_t sessionID);
-</#if> <#-- lib_wolfcrypt.CRYPTO_WC_CHACHA20  -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_CHACHA20  -->
 
 #endif //MCHP_CRYPTO_SYM_CIPHER_H

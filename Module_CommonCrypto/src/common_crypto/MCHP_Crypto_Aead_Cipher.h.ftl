@@ -48,7 +48,6 @@ typedef enum
     CRYPTO_AEAD_CIPHER_SUCCESS = 0,        
 }crypto_Aead_Status_E;
 
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Type Definitions
@@ -63,9 +62,9 @@ typedef struct
     uint32_t aeadKeySize;
     uint8_t arr_aeadDataCtx[512]__attribute__((aligned (4)));
 }st_Crypto_Aead_AesCcm_ctx;
-</#if>  <#-- CRYPTO_WC_AES_CCM --> 
-
+</#if><#-- CRYPTO_WC_AES_CCM --> 
 <#if ((lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))  || (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
+
 typedef struct
 {
     uint32_t cryptoSessionID;
@@ -77,9 +76,9 @@ typedef struct
     uint32_t initVectLen;    
     uint8_t arr_aeadDataCtx[512]__attribute__((aligned (4)));
 }st_Crypto_Aead_AesGcm_ctx;
-</#if> <#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
-
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true))> 
+</#if><#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
+<#if (lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true))>
+ 
 typedef struct
 {
     uint32_t cryptoSessionID;
@@ -91,18 +90,19 @@ typedef struct
     uint32_t aeadNonceLen;
     uint8_t arr_aeadDataCtx[512]__attribute__((aligned (4)));
 }st_Crypto_Aead_AesEax_ctx;
-</#if>  <#-- CRYPTO_WC_AES_EAX -->
+</#if><#-- CRYPTO_WC_AES_EAX -->
 // *****************************************************************************
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true))>
+
 crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesCcmCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
 
 crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_aesCcmCtx_st, crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                     uint8_t *ptr_outData, uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_authTag,
                                                     uint32_t authTagLen, uint8_t *ptr_aad, uint32_t aadLen);
-</#if>  <#-- CRYPTO_WC_AES_CCM --> 
-
+</#if><#-- CRYPTO_WC_AES_CCM --> 
 <#if (lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true))> 
+
 crypto_Aead_Status_E Crypto_Aead_AesEax_Init(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en, 
                                                 uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID);
 
@@ -120,9 +120,9 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_EncryptAuthDirect(crypto_HandlerType_E h
 crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_nonce, 
                                                             uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen, uint32_t sessionID);
-</#if>  <#-- CRYPTO_WC_AES_EAX -->
-
+</#if><#-- CRYPTO_WC_AES_EAX -->
 <#if ((lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)) || (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
+
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")) || (lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))>
 crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en, 
                                                               uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, uint32_t sessionID);
@@ -132,8 +132,9 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
 crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
 
 crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, uint8_t *ptr_authTag, uint8_t authTagLen);
-</#if> <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER || lib_wolfcrypt.CRYPTO_WC_AES_GCM  -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER || lib_wolfcrypt.CRYPTO_WC_AES_GCM  -->
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")) || (lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))>
+
 crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, 
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID);
@@ -141,7 +142,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
 crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, 
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID);
-</#if> <#-- HAVE_CRYPTO_HW_AES_6149_DRIVER || HAVE_CRYPTO_HW_HSM_03785_DRIVER ||CRYPTO_WC_AES_GCM  -->
-</#if> <#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER || HAVE_CRYPTO_HW_HSM_03785_DRIVER ||CRYPTO_WC_AES_GCM  -->
+</#if><#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
 
 #endif //MCHP_CRYPTO_AEAD_CIPHER_H

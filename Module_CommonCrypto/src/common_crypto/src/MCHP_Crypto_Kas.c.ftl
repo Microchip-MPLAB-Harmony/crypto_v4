@@ -30,7 +30,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
-<#if (lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))> 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true)))> 
 #include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
 </#if><#-- CRYPTO_WC_ECDH -->  
 <#if (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))> 
@@ -40,7 +40,7 @@
 #include "crypto/drivers/HwWrapper/crypto_kas_hsm03785_wrapper.h"
 </#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
 </#if><#-- CRYPTO_HW_ECDH -->
-<#if (lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true)) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
 
 crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandlerType_en, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
                                                     uint8_t *ptr_sharedSecret, uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en, uint32_t ecdhSessionId)
@@ -67,7 +67,7 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
     {
         switch(ecdhHandlerType_en)
         {            
-<#if (lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))>          
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true)))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ecdhStat_en = Crypto_Kas_Wc_Ecdh_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
                                                                     sharedSecretLen, eccCurveType_en);
@@ -89,7 +89,6 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
                 break;
         }
     }
-    
     return ret_ecdhStat_en;
 }
 </#if><#-- CRYPTO_WC_ECDH || CRYPTO_HW_ECDH -->

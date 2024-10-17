@@ -141,25 +141,35 @@ Crypto_HW_DriverAndWrapperFilesDict = {
     "CPKCC_44163":{ 
         "DigisignAlgo":{
             "WrapperFiles":["crypto_digisign_cpkcc44163_wrapper.h.ftl", "crypto_digisign_cpkcc44163_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c"],
-            "LibraryFiles":["CPKCL_Lib"],
+            "DriverFiles":["drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"],
+            "LibraryFiles":["CryptoLib_typedef_pb.h.ftl", "CryptoLib_Headers_pb.h.ftl", "CryptoLib_mapping_pb.h", "CryptoLib_JumpTable_Addr_pb.h.ftl", "CryptoLib_cf.h", "CryptoLib_Rc_pb.h", 
+                            "CryptoLib_ClearFlags_pb.h", "CryptoLib_Comp_pb.h", "CryptoLib_CondCopy_pb.h", "CryptoLib_CRT_pb.h", "CryptoLib_Div_pb.h", "CryptoLib_ExpMod_pb.h", "CryptoLib_FastCopy_pb.h", 
+                            "CryptoLib_Fill_pb.h", "CryptoLib_Fmult_pb.h", "CryptoLib_GCD_pb.h", "CryptoLib_NOP_pb.h", "CryptoLib_PrimeGen_pb.h", "CryptoLib_RedMod_pb.h", "CryptoLib_Rng_pb.h", 
+                            "CryptoLib_SelfTest_pb.h", "CryptoLib_Hash_pb.h", "CryptoLib_Smult_pb.h", "CryptoLib_Square_pb.h", "CryptoLib_Swap_pb.h", "CryptoLib_ZpEccAdd_pb.h", "CryptoLib_ZpEccDbl_pb.h",
+                            "CryptoLib_ZpEccMul_pb.h", "CryptoLib_ZpEccConv_pb.h", "CryptoLib_ZpEcDsa_pb.h", "CryptoLib_GF2NEccAdd_pb.h", "CryptoLib_GF2NEccDbl_pb.h", "CryptoLib_GF2NEccMul_pb.h", 
+                            "CryptoLib_GF2NEccConv_pb.h", "CryptoLib_GF2NEcDsa_pb.h", "CryptoLib_JumpTable_pb.h", "CryptoLib_Services_pb.h"]
         },
         "KasAlgo":{
             "WrapperFiles":["crypto_kas_cpkcc44163_wrapper.h.ftl", "crypto_kas_cpkcc44163_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c"],
-            "LibraryFiles":["CPKCL_Lib"],
+            "DriverFiles":["drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"],
+            "LibraryFiles":["CryptoLib_typedef_pb.h.ftl", "CryptoLib_Headers_pb.h.ftl", "CryptoLib_mapping_pb.h", "CryptoLib_JumpTable_Addr_pb.h.ftl", "CryptoLib_cf.h", "CryptoLib_Rc_pb.h", 
+                            "CryptoLib_ClearFlags_pb.h", "CryptoLib_Comp_pb.h", "CryptoLib_CondCopy_pb.h", "CryptoLib_CRT_pb.h", "CryptoLib_Div_pb.h", "CryptoLib_ExpMod_pb.h", "CryptoLib_FastCopy_pb.h", 
+                            "CryptoLib_Fill_pb.h", "CryptoLib_Fmult_pb.h", "CryptoLib_GCD_pb.h", "CryptoLib_NOP_pb.h", "CryptoLib_PrimeGen_pb.h", "CryptoLib_RedMod_pb.h", "CryptoLib_Rng_pb.h", 
+                            "CryptoLib_SelfTest_pb.h", "CryptoLib_Hash_pb.h", "CryptoLib_Smult_pb.h", "CryptoLib_Square_pb.h", "CryptoLib_Swap_pb.h", "CryptoLib_ZpEccAdd_pb.h", "CryptoLib_ZpEccDbl_pb.h",
+                            "CryptoLib_ZpEccMul_pb.h", "CryptoLib_ZpEccConv_pb.h", "CryptoLib_ZpEcDsa_pb.h", "CryptoLib_GF2NEccAdd_pb.h", "CryptoLib_GF2NEccDbl_pb.h", "CryptoLib_GF2NEccMul_pb.h", 
+                            "CryptoLib_GF2NEccConv_pb.h", "CryptoLib_GF2NEcDsa_pb.h", "CryptoLib_JumpTable_pb.h", "CryptoLib_Services_pb.h"]
         }        
     }, 
     
     "SHA_6156":{ 
         "HashAlgo":{
-            "WrapperFiles":["crypto_hash_sha6156_wrapper.h.ftl", "crypto_hash_sha6156_wrapper.c.ftl"],
+            "WrapperFiles": ["crypto_hash_sha6156_wrapper.h.ftl", "crypto_hash_sha6156_wrapper.c.ftl"],
             "DriverFiles":["drv_crypto_sha_hw_6156.h.ftl", "drv_crypto_sha_hw_6156.c.ftl"],
         }
     },
     
     "TRNG_6334":{ 
-        "HashAlgo":{
+        "RngAlgo":{
             "WrapperFiles": ["crypto_rng_trng6334_wrapper.h.ftl", "crypto_rng_trng6334_wrapper.c.ftl"],
             "DriverFiles":["drv_crypto_trng_hw_6334.h", "drv_crypto_trng_hw_6334.c"],
         }

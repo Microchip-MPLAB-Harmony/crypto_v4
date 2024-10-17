@@ -50,7 +50,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "definitions.h"
-#include "drv_crypto_trng_hw_6334.h"
+#include "../drv_crypto_trng_hw_6334.h"
 
 // *****************************************************************************
 // *****************************************************************************

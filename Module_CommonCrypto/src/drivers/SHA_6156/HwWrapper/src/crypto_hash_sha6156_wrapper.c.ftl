@@ -49,8 +49,8 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "device.h"
-#include "crypto/common_crypto/crypto_hash_sha6156_wrapper.h"
-#include "crypto/drivers/drv_crypto_sha_hw_6156.h"
+#include "crypto/drivers/HwWrapper/crypto_hash_sha6156_wrapper.h"
+#include "crypto/drivers/Driver/drv_crypto_sha_hw_6156.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -94,55 +94,47 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
             *shaAlgo = CRYPTO_SHA_ALGO_SHA1;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-</#if> <#-- CRYPTO_HW_SHA1 -->
-         
+</#if><#-- CRYPTO_HW_SHA1 -->         
 <#if (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true))>
         case CRYPTO_HASH_SHA2_224:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA224;
             ret_status = CRYPTO_HASH_SUCCESS;
             break; 
-</#if> <#-- CRYPTO_HW_SHA2_224 -->
-            
+</#if><#-- CRYPTO_HW_SHA2_224 -->            
 <#if (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true))>
         case CRYPTO_HASH_SHA2_256:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA256;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_256 -->
-       
+</#if><#-- CRYPTO_HW_SHA2_256 -->     
 <#if (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>
         case CRYPTO_HASH_SHA2_384:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA384;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_384 -->
-           
+</#if><#-- CRYPTO_HW_SHA2_384 -->           
 <#if (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>  
         case CRYPTO_HASH_SHA2_512:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA512;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;
-</#if> <#-- CRYPTO_HW_SHA2_512 -->
-
+</#if><#-- CRYPTO_HW_SHA2_512 -->
 <#if (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>  
         case CRYPTO_HASH_SHA2_512_224:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA512_224;
             ret_status = CRYPTO_HASH_SUCCESS;
             break;        
-</#if> <#-- CRYPTO_HW_SHA2_512_224 -->
-        
+</#if><#-- CRYPTO_HW_SHA2_512_224 -->        
 <#if (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))> 
         case CRYPTO_HASH_SHA2_512_256:
             *shaAlgo = CRYPTO_SHA_ALGO_SHA512_256;
             ret_status = CRYPTO_HASH_SUCCESS;
             break; 
-</#if> <#-- CRYPTO_HW_SHA2_512_256 -->
-
+</#if><#-- CRYPTO_HW_SHA2_512_256 -->
         default:
             ret_status = CRYPTO_HASH_ERROR_ALGO;
             break;
-    }
-    
+    }    
    return ret_status;
 }
 
@@ -250,9 +242,6 @@ static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
     crypto_Hash_Algo_E shaAlgorithm_en)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
-    return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
     CRYPTO_SHA_ALGO shaAlgo;
     crypto_Hash_Status_E result;
     uint8_t *retAdr = NULL;
@@ -279,15 +268,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     DRV_CRYPTO_SHA_Init(shaAlgo);
     
     return CRYPTO_HASH_SUCCESS;
-</#if>
 }
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
-    return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
     uint32_t *localBuffer = NULL;
     uint32_t fill;
     uint32_t left;
@@ -367,15 +352,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     }
 
     return CRYPTO_HASH_SUCCESS;
-</#if>
 }
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
-    return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
     uint32_t blockSizeBytes;
     uint32_t last;
     uint8_t lenMsg[16] = {0};
@@ -452,15 +433,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     DRV_CRYPTO_SHA_GetOutputData(ptr_digest, digestLen);
 
     return retVal;
-</#if>
 }
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>
-    return CRYPTO_HASH_ERROR_NOTSUPPTED;
-<#else>
     CRYPTO_HASH_HW_CONTEXT shaCtx;
     crypto_Hash_Status_E result = CRYPTO_HASH_SUCCESS;
 
@@ -474,8 +451,6 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     if (result != CRYPTO_HASH_SUCCESS)
     {
         return result;
-    }
-    
+    }    
     return Crypto_Hash_Hw_Sha_Final(&shaCtx, digest);
-</#if>
 }

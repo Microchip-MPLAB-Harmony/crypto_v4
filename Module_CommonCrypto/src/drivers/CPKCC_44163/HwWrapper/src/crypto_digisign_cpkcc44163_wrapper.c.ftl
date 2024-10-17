@@ -48,9 +48,9 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/crypto_digisign_cpkcc44163_wrapper.h"
-#include "crypto/drivers/drv_crypto_ecc_hw_cpkcl.h"
-#include "crypto/drivers/drv_crypto_ecdsa_hw_cpkcl.h"
+#include "crypto/drivers/HwWrapper/crypto_digisign_cpkcc44163_wrapper.h"
+#include "crypto/drivers/Driver/drv_crypto_ecc_hw_cpkcl.h"
+#include "crypto/drivers/Driver/drv_crypto_ecdsa_hw_cpkcl.h"
 
 // *****************************************************************************
 // *****************************************************************************

@@ -77,7 +77,7 @@ typedef struct
     uint32_t H[4];
     uint32_t invokeCtr[2];
 } CRYPTO_GCM_HW_CONTEXT;
-</#if> <#-- CRYPTO_HW_AES_GCM -->
+</#if><#-- CRYPTO_HW_AES_GCM -->
 
 // *****************************************************************************
 // *****************************************************************************
@@ -103,7 +103,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
     uint32_t dataLen, uint8_t *outData, uint8_t *key, uint32_t keyLen, 
     uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
     uint8_t *authTag, uint32_t authTagLen);
-</#if> <#-- CRYPTO_HW_AES_GCM -->
+</#if><#-- CRYPTO_HW_AES_GCM -->
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

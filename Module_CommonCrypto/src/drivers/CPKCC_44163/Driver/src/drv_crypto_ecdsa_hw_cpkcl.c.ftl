@@ -46,12 +46,13 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <string.h>
-#include "drv_crypto_ecc_hw_cpkcl.h"
-#include "drv_crypto_ecdsa_hw_cpkcl.h"
-#include "CryptoLib_CPKCL/CryptoLib_typedef_pb.h"
-#include "CryptoLib_CPKCL/CryptoLib_mapping_pb.h"
-#include "CryptoLib_CPKCL/CryptoLib_Headers_pb.h"
-#include "CryptoLib_CPKCL/CryptoLib_JumpTable_Addr_pb.h"
+#include "crypto/drivers/Driver/drv_crypto_ecc_hw_cpkcl.h"
+#include "crypto/drivers/Driver/drv_crypto_ecdsa_hw_cpkcl.h"
+#include "crypto/drivers/CPKCL_Lib/CryptoLib_typedef_pb.h"
+#include "crypto/drivers/CPKCL_Lib/CryptoLib_typedef_pb.h"
+#include "crypto/drivers/CPKCL_Lib/CryptoLib_mapping_pb.h"
+#include "crypto/drivers/CPKCL_Lib/CryptoLib_Headers_pb.h"
+#include "crypto/drivers/CPKCL_Lib/CryptoLib_JumpTable_Addr_pb.h"
 
 // *****************************************************************************
 // *****************************************************************************

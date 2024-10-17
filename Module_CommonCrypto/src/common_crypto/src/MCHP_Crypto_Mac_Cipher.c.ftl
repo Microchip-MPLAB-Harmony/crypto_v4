@@ -30,8 +30,8 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
-<#if   (lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)) 
-    || (lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true))>
+<#if   (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)) 
+    || (lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
 #include "crypto/wolfcrypt/crypto_mac_wc_wrapper.h"
 </#if><#-- CRYPTO_WC_AES_CMAC || CRYPTO_WC_AES_GMAC --> 
 // *****************************************************************************
@@ -39,7 +39,7 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
 {
@@ -66,7 +66,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCt
         
         switch(ptr_aesCmacCtx_st->macHandlerType_en)
         {
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true))>          
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                     ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Init((void*)ptr_aesCmacCtx_st->arr_macDataCtx, ptr_aesCmacCtx_st->ptr_key, ptr_aesCmacCtx_st->mackeyLen);     
                 break;
@@ -99,7 +99,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesCmac
     {
         switch(ptr_aesCmacCtx_st->macHandlerType_en)
         {
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true))>         
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>         
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Cipher((void*)ptr_aesCmacCtx_st->arr_macDataCtx, ptr_inputData, dataLen);
 				break; 
@@ -130,7 +130,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Final(st_Crypto_Mac_Aes_ctx *ptr_aesCmacC
     {
         switch(ptr_aesCmacCtx_st->macHandlerType_en)
         {
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true))>          
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Final((void*)ptr_aesCmacCtx_st->arr_macDataCtx, ptr_outMac, macLen);
 				break; 
@@ -170,7 +170,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
     {
         switch(macHandlerType_en)
         {
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true))>           
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>           
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Direct(ptr_inputData, dataLen, ptr_outMac, macLen, ptr_key, keyLen);
 				break; 
@@ -186,7 +186,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
     return ret_aesCmacStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_CMAC -->
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
 
 crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
@@ -214,7 +214,7 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCt
         
         switch(ptr_aesGmacCtx_st->macHandlerType_en)
         {
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true))>             
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>             
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                     ret_aesGmacStat_en = Crypto_Mac_Wc_AesGmac_Init((void*)ptr_aesGmacCtx_st->arr_macDataCtx, ptr_aesGmacCtx_st->ptr_key, ptr_aesGmacCtx_st->mackeyLen);     
                 break;
@@ -259,7 +259,7 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
     {
         switch(macHandlerType_en)
         {
-<#if (lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true))>        
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>        
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_aesGmacStat_en = Crypto_Mac_Wc_AesGmac_Direct(ptr_initVect, initVectLen, ptr_outMac, macLen, ptr_key, keyLen, ptr_aad, aadLen);
 				break; 

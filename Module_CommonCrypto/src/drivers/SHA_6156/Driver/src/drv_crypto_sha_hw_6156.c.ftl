@@ -49,7 +49,7 @@ Microchip or any third party.
 
 #include "definitions.h"
 #include "device.h"
-#include "drv_crypto_sha_hw_6156.h"
+#include "../drv_crypto_sha_hw_6156.h"
 
 // *****************************************************************************
 // *****************************************************************************

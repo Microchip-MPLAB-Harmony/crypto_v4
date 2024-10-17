@@ -49,7 +49,7 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include "definitions.h"
-#include "drv_crypto_aes_hw_6149.h"
+#include "../drv_crypto_aes_hw_6149.h"
 
 // *****************************************************************************
 // *****************************************************************************

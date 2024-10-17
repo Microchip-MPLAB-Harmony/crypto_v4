@@ -48,8 +48,8 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/common_crypto/crypto_aead_aes6149_wrapper.h"
-#include "crypto/drivers/drv_crypto_aes_hw_6149.h"
+#include "crypto/drivers/HwWrapper/crypto_aead_aes6149_wrapper.h"
+#include "crypto/drivers/Driver/drv_crypto_aes_hw_6149.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -570,21 +570,17 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
    
     (void) memcpy(tag, (uint8_t*)gcmTag, tagLen);
 }
-</#if> <#-- CRYPTO_HW_AES_GCM -->
-
+</#if><#-- CRYPTO_HW_AES_GCM -->
 // *****************************************************************************
 // *****************************************************************************
 // Section: AEAD Algorithms Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
-
 <#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
+
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-<#else>
     CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmInitCtx;
     
     /* Initialize the context */
@@ -623,7 +619,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     }
     
     return CRYPTO_AEAD_CIPHER_SUCCESS;
-</#if>
 }
 
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
@@ -631,9 +626,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
     uint32_t dataLen, uint8_t *outData, uint8_t *aad, uint32_t aadLen,
     uint8_t *authTag, uint32_t authTagLen)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-<#else> 
     CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmCipherCtx;
     
     if (dataLen != 0U || aadLen != 0U)
@@ -673,7 +665,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
     }
     
     return CRYPTO_AEAD_CIPHER_SUCCESS;
-</#if> 
 }
  
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *inputData, 
@@ -681,9 +672,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *inputData,
     uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
     uint8_t *authTag, uint32_t authTagLen)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-<#else> 
     CRYPTO_GCM_HW_CONTEXT gcmCtx;
     crypto_Aead_Status_E result;
     
@@ -695,7 +683,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *inputData,
     
     return Crypto_Aead_Hw_AesGcm_Cipher(&gcmCtx, initVect, initVectLen, inputData, 
             dataLen, outData, aad, aadLen, authTag, authTagLen);
-</#if> 
 }
  
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData, 
@@ -703,9 +690,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
     uint8_t *initVect, uint32_t initVectLen, uint8_t *aad, uint32_t aadLen, 
     uint8_t *authTag, uint32_t authTagLen)
 {
-<#if !driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")>
-    return CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-<#else> 
     CRYPTO_GCM_HW_CONTEXT gcmCtx;
     crypto_Aead_Status_E result;
     
@@ -717,6 +701,5 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
     
     return Crypto_Aead_Hw_AesGcm_Cipher(&gcmCtx, initVect, initVectLen, inputData, 
             dataLen, outData, aad, aadLen, authTag, authTagLen);
-</#if> 
 }
-</#if> <#-- CRYPTO_HW_AES_GCM -->
+</#if><#-- CRYPTO_HW_AES_GCM -->

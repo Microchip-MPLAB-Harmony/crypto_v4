@@ -47,15 +47,15 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/crypto_sym_aes6149_wrapper.h"
-#include "crypto/drivers/drv_crypto_aes_hw_6149.h"
+#include "crypto/drivers/HwWrapper/crypto_sym_aes6149_wrapper.h"
+#include "crypto/drivers/Driver/drv_crypto_aes_hw_6149.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-   
+
 static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperationMode
     (crypto_Sym_OpModes_E opMode, CRYPTO_AES_OPERATION_MODE* aesMode, 
      CRYPTO_AES_CFB_SIZE* cfbSize)
@@ -68,71 +68,60 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperationMode
         case CRYPTO_SYM_OPMODE_ECB:
             *aesMode = CRYPTO_AES_MODE_ECB;
             break;
-</#if>  <#-- CRYPTO_HW_AES_ECB -->
-        
+</#if><#-- CRYPTO_HW_AES_ECB -->   
 <#if (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true))>
         case CRYPTO_SYM_OPMODE_CBC:
             *aesMode = CRYPTO_AES_MODE_CBC;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CBC -->
-        
+</#if><#-- CRYPTO_HW_AES_CBC -->        
 <#if (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true))>
         case CRYPTO_SYM_OPMODE_OFB:
             *aesMode = CRYPTO_AES_MODE_OFB;
             break;
-</#if>  <#-- CRYPTO_HW_AES_OFB -->
-            
+</#if><#-- CRYPTO_HW_AES_OFB -->           
 <#if (CRYPTO_HW_AES_CFB1?? &&(CRYPTO_HW_AES_CFB1 == true))>
         case CRYPTO_SYM_OPMODE_CFB1:
             retStat = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CFB1 -->
-            
+</#if><#-- CRYPTO_HW_AES_CFB1 -->            
 <#if (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))>
         case CRYPTO_SYM_OPMODE_CFB8:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_8BIT;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CFB8 -->
-            
+</#if><#-- CRYPTO_HW_AES_CFB8 -->            
 <#if (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true))>
         case CRYPTO_SYM_OPMODE_CFB16:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_16BIT;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CFB16 -->
-        
+</#if><#-- CRYPTO_HW_AES_CFB16 -->        
 <#if (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))>
         case CRYPTO_SYM_OPMODE_CFB32:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_32BIT;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CFB32 -->
-           
+</#if><#-- CRYPTO_HW_AES_CFB32 -->          
 <#if (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))>
         case CRYPTO_SYM_OPMODE_CFB64:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_64BIT;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CFB64 -->
-            
+</#if><#-- CRYPTO_HW_AES_CFB64 -->           
 <#if (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>
         case CRYPTO_SYM_OPMODE_CFB128:
             *aesMode = CRYPTO_AES_MODE_CFB;
             *cfbSize = CRYPTO_AES_CFB_SIZE_128BIT;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CFB128 -->
-        
+</#if><#-- CRYPTO_HW_AES_CFB128 -->      
 <#if (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))>
         case CRYPTO_SYM_OPMODE_CTR:
             *aesMode = CRYPTO_AES_MODE_CTR;
             break;
-</#if>  <#-- CRYPTO_HW_AES_CTR -->
-            
+</#if><#-- CRYPTO_HW_AES_CTR -->       
         case CRYPTO_SYM_OPMODE_INVALID:
             retStat = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-            break;
-        
+            break;        
         default:
             retStat = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
             break;

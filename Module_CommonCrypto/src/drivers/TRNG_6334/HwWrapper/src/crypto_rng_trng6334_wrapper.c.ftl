@@ -47,9 +47,9 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/crypto_rng_trng6334_wrapper.h"
+#include "crypto/drivers/HwWrapper/crypto_rng_trng6334_wrapper.h"
 <#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_6334_DRIVER")>
-#include "crypto/drivers/drv_crypto_trng_hw_6334.h"
+#include "crypto/drivers/Driver/drv_crypto_trng_hw_6334.h"
 </#if>
 
 // *****************************************************************************

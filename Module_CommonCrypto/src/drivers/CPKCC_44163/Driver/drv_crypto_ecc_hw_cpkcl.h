@@ -51,8 +51,8 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "CryptoLib_CPKCL/CryptoLib_typedef_pb.h"
-#include "CryptoLib_CPKCL/CryptoLib_Headers_pb.h"
+#include "../CPKCL_Lib/CryptoLib_typedef_pb.h"
+#include "../CPKCL_Lib/CryptoLib_Headers_pb.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

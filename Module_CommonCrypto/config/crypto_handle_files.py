@@ -49,6 +49,7 @@ def make_file_symbol_flag(component, file_name, prefix, enabled):
 
     file_symbol_flag = component.createBooleanSymbol(file_id, None)
     file_symbol_flag.setDefaultValue(enabled)
+    file_symbol_flag.setVisible(False)
 
     return file_symbol_flag
 

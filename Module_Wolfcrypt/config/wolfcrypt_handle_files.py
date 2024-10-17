@@ -41,6 +41,7 @@ def make_file_symbol_flag(component, file_name, prefix, enabled):
 
     file_symbol_flag = component.createBooleanSymbol(file_id, None)
     file_symbol_flag.setDefaultValue(enabled)
+    file_symbol_flag.setVisible(False)
 
     return file_symbol_flag
 
@@ -116,7 +117,7 @@ def setup_templates(component):
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)
 
-                add_file_to_dict(component, file_name, file_path, "")
+                add_file_to_dict(component, file_name, file_path, "wolfcrypt")
         print("/templates file symbols created.")
     else:
         Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
@@ -142,7 +143,7 @@ def setup_wolfssl_dir(component):
     for file in wolfcrypt_files:
 
         relative_path = os.path.join(relative_wolfcrypt, "src", file)
-        dest_path = os.path.join("third_party", "wolfssl", "wolfcrypt", "src")
+        dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfcrypt", "src")
         project_path = os.path.join("third_party", "wolfssl", "wolfcrypt", "src")
         make_file_symbol(component, file, relative_path, prefix, dest_path, project_path, markup, True)
 
@@ -151,7 +152,7 @@ def setup_wolfssl_dir(component):
     for file in wolfssl_wolfcrypt_files:
 
         relative_path = os.path.join(relative_wolfssl_wolfcrypt, file)
-        dest_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt")
+        dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfssl", "wolfcrypt")
         project_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt")
         make_file_symbol(component, file, relative_path, prefix, dest_path, project_path, markup, True)
 
@@ -160,7 +161,7 @@ def setup_wolfssl_dir(component):
     for file in wolfcrypt_port_files:
 
         relative_path = os.path.join(relative_wolfcrypt, "src", "port", "pic32", file)
-        dest_path = os.path.join("third_party", "wolfssl", "wolfcrypt", "src", "port", "pic32")
+        dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfcrypt", "src", "port", "pic32")
         project_path = os.path.join("third_party", "wolfssl", "wolfcrypt", "port", "pic32")
         make_file_symbol(component, file, relative_path, prefix, dest_path, project_path, markup, True)
 
@@ -169,28 +170,28 @@ def setup_wolfssl_dir(component):
     for file in wolfssl_wolfcrypt_port_files:
 
         relative_path = os.path.join(relative_wolfssl_wolfcrypt, "port", "pic32", file)
-        dest_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt", "port", "pic32")
+        dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfssl", "wolfcrypt", "port", "pic32")
         project_path = os.path.join("third_party", "wolfssl", "wolfcrypt", "port", "pic32")
         make_file_symbol(component, file, relative_path, prefix, dest_path, project_path, markup, True)
 
     # Get special files (certs_test.h)
     certs_test = "certs_test.h"
     certs_test_path = os.path.join(os.pardir, os.pardir, "wolfssl", "wolfssl", certs_test)
-    certs_test_dest_path = os.path.join("third_party", "wolfssl", "wolfssl")
+    certs_test_dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfssl")
     certs_test_proj_path = os.path.join("third_party", "wolfssl", "wolfssl")
     make_file_symbol(component, certs_test, certs_test_path, prefix, certs_test_dest_path, certs_test_proj_path, markup, True)
 
     # Get special files (misc.c)
     misc = "misc.c"
     misc_path = os.path.join(relative_wolfcrypt, "src", misc)
-    misc_dest_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt", "src")
+    misc_dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfssl", "wolfcrypt", "src")
     misc_proj_path = os.path.join("third_party", "wolfssl", "wolfssl", "src", "wolfcrypt")
     make_file_symbol(component, misc, misc_path, prefix, misc_dest_path, misc_proj_path, markup, True)
 
     # Get special files (evp.c)
     evp = "evp.c"
     evp_path = os.path.join(relative_wolfcrypt, "src", evp)
-    evp_dest_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt", "src")
+    evp_dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfssl", "wolfcrypt", "src")
     evp_proj_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt")
     make_file_symbol(component, evp, evp_path, prefix, evp_dest_path, evp_proj_path, markup, True)
 

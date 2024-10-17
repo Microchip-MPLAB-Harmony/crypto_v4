@@ -113,41 +113,10 @@ def setup_templates(component):
     if os.path.exists(templates_path):
         for root, dirs, files in os.walk(templates_path):
             for file in files:
-                
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)
 
-                # Settings for file being added
-                prefix = ""                                    # set important 
-                markup = file_name.endswith(".ftl")            # check if markup
-                
-                # Remove auto appended portion (e.g. ~\crypto_v4\Module_CommonCrypto\) to account for relative src API 
-                relative_path = file_path.replace(module_path, '')
-
-                # Configure destination (/)
-                dest_path = os.path.join("")
-
-                # Configure MPLABX proj tree (config/default/)
-                project_path = os.path.join("config", config_name)
-                
-                # Create symbol
-                file_symbol = make_file_symbol(component,
-                                        file_name, 
-                                        relative_path,              # Source 
-                                        prefix, 
-                                        dest_path,                  # Destination
-                                        project_path,               # MPLABX proj tree
-                                        markup,
-                                        False                       # Disabled initial state 
-                                        )
-                            
-                file_symbol_flag = make_file_symbol_flag(component, 
-                                                        file_name,
-                                                        prefix, 
-                                                        False       # Disabled initial state 
-                                                        )
-                
-            wolfCrypt_Files[file_name] = ("", file_symbol, file_symbol_flag)
+                add_file_to_dict(component, file_name, file_path, "")
         print("/templates file symbols created.")
     else:
         Log.writeWarningMessage("/templates directory damaged. Check that it exists.")

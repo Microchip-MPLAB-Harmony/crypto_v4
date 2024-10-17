@@ -1,10 +1,10 @@
 //This file is used by WolfSSL to configure the build of the library
-//NOTE:  Enabled by preprocessor directive HAVE_CONFIG_H
+//NOTE:  Enabled by preprocessor directive WOLFCRYPT_USER_SETTINGS 
 //       Otherwise, default build (Which will not work)
-#ifndef WOLFCRYPT_REQUIRED_CONFIG_H_
-#define WOLFCRYPT_REQUIRED_CONFIG_H_
+#ifndef WOLFCRYPT_USER_SETTINGS_H
+#define WOLFCRYPT_USER_SETTINGS_H
 
 //Include the WolfSSL configuration defines
-#include "crypto_config.h"
+#include "wolfcrypt_config.h"
 
 #endif

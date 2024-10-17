@@ -34,7 +34,7 @@ def instantiateComponent(WolfcryptComponent):
     setup_wc_files(WolfcryptComponent)
 
 #----------------------------------------------------------------------------------------- 
-# Figure out how to remove Component Symbols so that re-adding the module works
+# TODO: Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(WolfcryptComponent):
     idList = Database.getActiveComponentIDs()
     symIDList = Database.getComponentSymbolIDs("lib_wolfcrypt")
@@ -48,3 +48,26 @@ def destroyComponent(WolfcryptComponent):
     
     return
 #-----------------------------------------------------------------------------------------     
+def setup_wc_settings(component):
+    #Global Preprocessor define - HAVE_CONFIG_H
+    #NOTE:  Used by WolfSSL library to use config.h
+    wolfcryptConfigH = component.createSettingSymbol("wolfsslConfigH", None)
+    wolfcryptConfigH.setCategory("C32")
+    wolfcryptConfigH.setKey("preprocessor-macros")
+    wolfcryptConfigH.setValue("HAVE_CONFIG_H")
+    wolfcryptConfigH.setAppend(True, ";")
+
+    #Global Preprocessor define - WOLFSSL_USER_SETTINGS
+    #NOTE:  Used by WolfSSL library to use user_settings.h
+    wolfcryptUserSettingsH = component.createSettingSymbol("wolfsslUserSettingsH", None)
+    wolfcryptUserSettingsH.setCategory("C32")
+    wolfcryptUserSettingsH.setKey("preprocessor-macros")
+    wolfcryptUserSettingsH.setValue("WOLFSSL_USER_SETTINGS")
+    wolfcryptUserSettingsH.setAppend(True, ";")
+
+    #Global Preprocessor define - WOLFSSL_IGNORE_FILE_WARN
+    wolfcryptIgnoreFileWarn = component.createSettingSymbol("wolfsslIgnoreFileWarn", None)
+    wolfcryptIgnoreFileWarn.setCategory("C32")
+    wolfcryptIgnoreFileWarn.setKey("preprocessor-macros")
+    wolfcryptIgnoreFileWarn.setValue("WOLFSSL_IGNORE_FILE_WARN")
+    wolfcryptIgnoreFileWarn.setAppend(True, ";")

@@ -63,18 +63,21 @@ static hsm_Sym_Aes_ModeTypes_E Crypto_Sym_Hw_Aes_GetOpMode(crypto_Sym_OpModes_E 
     
     switch(opMode_en)
     {
+<#if (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>	
         case CRYPTO_SYM_OPMODE_ECB:
             ret_modeType_en = HSM_SYM_AES_OPMODE_ECB;
         break;
-        
+</#if>  
+<#if (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true))>       
         case CRYPTO_SYM_OPMODE_CBC:
             ret_modeType_en = HSM_SYM_AES_OPMODE_CBC;
         break;
-        
+</#if> 
+<#if (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) >        
         case CRYPTO_SYM_OPMODE_CTR:
             ret_modeType_en = HSM_SYM_AES_OPMODE_CTR;
         break;
-         
+</#if>          
         default:
             ret_modeType_en = HSM_SYM_AES_OPMODE_INVALID;
         break;      

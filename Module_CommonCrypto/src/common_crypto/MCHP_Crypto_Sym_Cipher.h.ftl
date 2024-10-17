@@ -55,10 +55,12 @@ typedef enum
 typedef enum
 {
     CRYPTO_SYM_OPMODE_INVALID = 0,
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))> 	
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true))) 
+		|| (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)))> 	
     CRYPTO_SYM_OPMODE_ECB = 1,
 </#if>
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true))) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true))> 	
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true))) 
+		|| (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC == true)))> 	
     CRYPTO_SYM_OPMODE_CBC = 2, 
 </#if>
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB == true))) || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true))>	

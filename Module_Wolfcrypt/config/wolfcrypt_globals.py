@@ -19,6 +19,8 @@ wolfCrypt_CommonFilesDict = {
     "AeadAlgo": [
         "crypto_aead_wc_wrapper.h.ftl",
         "crypto_aead_wc_wrapper.c.ftl",
+        "crypto_wc_common_wrapper.h.ftl",
+        "crypto_wc_common_wrapper.c.ftl",
         "wolfcrypt_config.h.ftl",
     ],
     "DigisignAlgo": [

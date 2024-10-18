@@ -33,6 +33,25 @@
 #include "wolfssl/wolfcrypt/error-crypt.h"
 
 <#if (CRYPTO_WC_PRNG?? &&(CRYPTO_WC_PRNG == true))>
+
+__attribute__(( weak )) int Crypto_Rng_Wc_Prng_EntropySource(void)
+{
+  return time(NULL);
+}
+
+__attribute__(( weak )) int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz)
+{
+  srand(Crypto_Rng_Wc_Prng_EntropySource());
+
+  int i;
+  for (i = 0; i < sz; i++)
+  {
+    output[i] = rand() % 256;
+  }
+
+  return 0;
+}
+
 crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen)
 {
     crypto_Rng_Status_E ret_rngStat_en = CRYPTO_RNG_ERROR_FAIL;

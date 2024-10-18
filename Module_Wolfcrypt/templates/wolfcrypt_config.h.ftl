@@ -2,7 +2,7 @@
   Secure Project System Configuration Header
 
   File Name:
-    configuration.h
+    wolfcrypt_config.h
 
   Summary:
     Build-time configuration header for the TrustZone secure system defined by 
@@ -195,7 +195,12 @@ extern "C" {
 <#lt>#define WOLFSSL_AESGCM_STREAM
 <#lt>//*********************************************************
 
+<#lt>int Crypto_Rng_Wc_Prng_EntropySource(void); //User-modifiable entropy for PRNG 
+
+<#lt>int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz);
+
 <#lt>//*********************************************************
+<#lt>#define CUSTOM_RAND_GENERATE_SEED Crypto_Rng_Wc_Prng_Srand
 <#lt>//#define WC_NO_RNG //when using RNG
 <#lt>//#define WC_NO_HASHDRBG
 <#lt>//#define HAVE_ECC_ENCRYPT

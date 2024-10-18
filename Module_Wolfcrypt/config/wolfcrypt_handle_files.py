@@ -36,12 +36,15 @@ def make_file_symbol(component, file_name, relative_src_path, prefix, dest_path,
 
 def create_setting_symbol(component, symbol_name, category, key, value, append=True, separator=";"):
     
-    symbol = component.createSettingSymbol(symbol_name, None)
-    symbol.setCategory(category)
-    symbol.setKey(key)
-    symbol.setValue(value)
-    symbol.setAppend(append, separator)
-    return symbol
+    setting_symbol = component.createSettingSymbol(symbol_name, None)
+    setting_symbol.setCategory(category)
+    setting_symbol.setKey(key)
+    setting_symbol.setValue(value)
+    setting_symbol.setAppend(append, separator)
+
+    setting_symbol.setSecurity("SECURE" if Variables.get("__TRUSTZONE_ENABLED") else "NON_SECURE")
+
+    return setting_symbol
 
 # Create a MCC bool symbol with a unique identifier with _flag appended
 def make_file_symbol_flag(component, file_name, prefix, enabled):

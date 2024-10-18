@@ -34,6 +34,15 @@ def make_file_symbol(component, file_name, relative_src_path, prefix, dest_path,
 
     return file_symbol
 
+def create_setting_symbol(component, symbol_name, category, key, value, append=True, separator=";"):
+    
+    symbol = component.createSettingSymbol(symbol_name, None)
+    symbol.setCategory(category)
+    symbol.setKey(key)
+    symbol.setValue(value)
+    symbol.setAppend(append, separator)
+    return symbol
+
 # Create a MCC bool symbol with a unique identifier with _flag appended
 def make_file_symbol_flag(component, file_name, prefix, enabled):
 
@@ -46,7 +55,7 @@ def make_file_symbol_flag(component, file_name, prefix, enabled):
     return file_symbol_flag
 
 # Insert row into wolfCrypt_Files dict and place files inside config/crypto
-def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
+def add_file_to_dict(component, file_name, file_path, lowest_level_dir, enabled):
     
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
@@ -73,17 +82,18 @@ def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
                               dest_path,                # Destination
                               project_path,             # MPLABX proj tree
                               markup,
-                              False                     # Disabled initial state 
+                              enabled                   # Initial state 
                               )
 
     file_symbol_flag = make_file_symbol_flag(component, 
                                              file_name,
                                              prefix, 
-                                             False      # Disabled initial state 
+                                             enabled      # Initial state 
                                              )
     
-    # Add the file as key and tuple (relative_path, file_symbol) as the value
-    wolfCrypt_Files[file_name] = (lowest_level_dir, file_symbol, file_symbol_flag)
+    # Track the file (relative_path, file_symbol) if not enabled on startup 
+    if not enabled:
+        wolfCrypt_Files[file_name] = (lowest_level_dir, file_symbol, file_symbol_flag)
 
 # Make symbols for files in src/WolfCryptWrapper and add to global dict
 def setup_wolfcrypt_wrappers(component):
@@ -97,7 +107,7 @@ def setup_wolfcrypt_wrappers(component):
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)
 
-                add_file_to_dict(component, file_name, file_path, "wolfcrypt")
+                add_file_to_dict(component, file_name, file_path, "wolfcrypt", False)
         print("src/wolfcryptwrapper directory file symbols created.")
     else:
         Log.writeWarningMessage("src/common_crypto directory damaged. Check that it exists.")
@@ -117,7 +127,7 @@ def setup_templates(component):
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)
 
-                add_file_to_dict(component, file_name, file_path, "wolfcrypt")
+                add_file_to_dict(component, file_name, file_path, "wolfcrypt", True)
         print("/templates file symbols created.")
     else:
         Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
@@ -194,6 +204,44 @@ def setup_wolfssl_dir(component):
     evp_dest_path = os.path.join(os.pardir, os.pardir, "third_party", "wolfssl", "wolfssl", "wolfcrypt", "src")
     evp_proj_path = os.path.join("third_party", "wolfssl", "wolfssl", "wolfcrypt")
     make_file_symbol(component, evp, evp_path, prefix, evp_dest_path, evp_proj_path, markup, True)
+
+def setup_wc_settings(component):
+
+    config_name = Variables.get("__CONFIGURATION_NAME")
+
+    # Include directories paths
+    include_dirs = [
+        "../src/third_party/wolfssl/wolfssl/wolfcrypt",
+        "../src/third_party/wolfssl",
+        "../src/third_party/wolfcrypt",
+        "../src/config/" + config_name + "/crypto/wolfcrypt",
+        "../src/config/" + config_name + "/crypto/drivers"
+    ]
+
+    # Create include path symbol
+    create_setting_symbol(
+        component,
+        "XC32_CRYPTO_INCLUDE_DIRS",
+        "C32",
+        "extra-include-directories",
+        ";".join(include_dirs)
+    )
+
+    # Create preprocessor macro symbols
+    preprocessor_macros = {
+        "wolfsslConfigH": "HAVE_CONFIG_H",  # WolfSSL config.h
+        "wolfsslUserSettingsH": "WOLFSSL_USER_SETTINGS",  # WolfSSL user_settings.h
+        "wolfsslIgnoreFileWarn": "WOLFSSL_IGNORE_FILE_WARN"  # Ignore file warnings
+    }
+
+    for symbol_name, macro_value in preprocessor_macros.items():
+        create_setting_symbol(
+            component,
+            symbol_name,
+            "C32",
+            "preprocessor-macros",
+            macro_value
+        )
 
 def setup_wc_files(component):
     

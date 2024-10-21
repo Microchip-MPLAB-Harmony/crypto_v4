@@ -33,7 +33,7 @@
 // Section: Type Definitions
 // *****************************************************************************
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
-    ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true)) 
+    ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))
     ||  (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) 
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 

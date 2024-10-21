@@ -57,8 +57,20 @@
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
-	
-crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
+crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)	
+<#elseif (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) ||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>
+static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
+</#if>
+<#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
+    ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))
+	||	(CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))
+    ||  (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) 
+    ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
+    ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
+    ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))
+	||  (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) 
+	||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true)) 
+	||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>	
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
     int wcAesStatus = BAD_FUNC_ARG;

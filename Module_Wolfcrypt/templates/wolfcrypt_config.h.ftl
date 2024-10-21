@@ -198,7 +198,7 @@ extern "C" {
 <#if (CRYPTO_WC_PRNG?? &&(CRYPTO_WC_PRNG == true))>
 <#lt>int Crypto_Rng_Wc_Prng_EntropySource(void); //User-modifiable entropy for PRNG 
 
-<#lt>int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz);
+<#lt>int Crypto_Rng_Wc_Prng_Srand(uint8_t* output, unsigned int sz);
 
 <#lt>//*********************************************************
 <#lt>#define CUSTOM_RAND_GENERATE_SEED Crypto_Rng_Wc_Prng_Srand

@@ -55,15 +55,16 @@ __attribute__((weak)) int Crypto_Rng_Wc_Prng_EntropySource(void)
     /* MISRA C-2012 deviation block end */
 }
 
-__attribute__((weak)) int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz)
+__attribute__((weak)) int Crypto_Rng_Wc_Prng_Srand(uint8_t* output, unsigned int sz)
 {
+    // Seed the random number generator
     srand((unsigned int)Crypto_Rng_Wc_Prng_EntropySource());
     
     unsigned int i;
     for (i = 0; i < sz; i++)
     {
         // Ensure result is 0-255
-        output[i] = (char)(rand() % 256);
+        output[i] = (uint8_t)(rand() % 256);
     }
     
     return 0;

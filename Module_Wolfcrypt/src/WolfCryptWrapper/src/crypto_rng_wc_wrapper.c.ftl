@@ -34,22 +34,22 @@
 
 <#if (CRYPTO_WC_PRNG?? &&(CRYPTO_WC_PRNG == true))>
 
-__attribute__(( weak )) int Crypto_Rng_Wc_Prng_EntropySource(void)
+__attribute__((weak)) int Crypto_Rng_Wc_Prng_EntropySource(void)
 {
-  return time(NULL);
+  return (int) time(NULL);
 }
 
-__attribute__(( weak )) int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz)
+__attribute__((weak)) int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz)
 {
-  srand(Crypto_Rng_Wc_Prng_EntropySource());
+    srand((unsigned int)Crypto_Rng_Wc_Prng_EntropySource());
 
-  int i;
-  for (i = 0; i < sz; i++)
-  {
-    output[i] = rand() % 256;
-  }
+    unsigned int i;
+    for (i = 0; i < sz; i++)
+    {
+        output[i] = (unsigned char)(rand() % 256);
+    }
 
-  return 0;
+    return 0;
 }
 
 crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen)

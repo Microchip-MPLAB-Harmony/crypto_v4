@@ -42,13 +42,14 @@ __attribute__((weak)) int Crypto_Rng_Wc_Prng_EntropySource(void)
 __attribute__((weak)) int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsigned int sz)
 {
     srand((unsigned int)Crypto_Rng_Wc_Prng_EntropySource());
-
+    
     unsigned int i;
     for (i = 0; i < sz; i++)
     {
-        output[i] = (unsigned char)(rand() % 256);
+        // Ensure result is 0-255
+        output[i] = (unsigned char)(rand() & 0xFF);
     }
-
+    
     return 0;
 }
 

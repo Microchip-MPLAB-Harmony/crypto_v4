@@ -63,7 +63,7 @@ __attribute__((weak)) int Crypto_Rng_Wc_Prng_Srand(unsigned char* output, unsign
     for (i = 0; i < sz; i++)
     {
         // Ensure result is 0-255
-        output[i] = (unsigned char)(rand() & 0xFF);
+        output[i] = (char)(rand() % 256);
     }
     
     return 0;

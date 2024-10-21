@@ -17,7 +17,7 @@
 #define HSM_CMD_H
 
 #include "hsm_common.h"
-#include "pic32cz8110ca90208.h"
+#include "device.h"
 #define MBRXSTATUS_RXINT_MASK     (0x00100000UL)
 
 #define HSM_CMD_STATUS_BUSY  ((HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) >> HSM_STATUS_BUSY_Pos)

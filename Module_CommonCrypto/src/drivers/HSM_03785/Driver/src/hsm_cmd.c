@@ -21,7 +21,7 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include "pic32cz8110ca90208.h"
+#include "device.h"
 #include "crypto/drivers/Driver/hsm_common.h"
 #include "crypto/drivers/Driver/hsm_cmd.h"
 #ifdef HSM_PRINT 

@@ -56,7 +56,9 @@ Microchip or any third party.
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-
+<#if    (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
+    ||  (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
+    ||  (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))>
 static hsm_Sym_Aes_ModeTypes_E Crypto_Sym_Hw_Aes_GetOpMode(crypto_Sym_OpModes_E opMode_en)
 {
     hsm_Sym_Aes_ModeTypes_E ret_modeType_en = HSM_SYM_AES_OPMODE_INVALID;
@@ -85,7 +87,10 @@ static hsm_Sym_Aes_ModeTypes_E Crypto_Sym_Hw_Aes_GetOpMode(crypto_Sym_OpModes_E 
 
     return ret_modeType_en;
 }
-
+</#if>
+<#if 	(CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
+    ||  (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
+	
 //static hsm_Sym_Tdes_ModeTypes_E Crypto_Sym_Hw_Tdes_GetOpMode(crypto_Sym_OpModes_E opMode_en)
 //{
 //    hsm_Sym_Tdes_ModeTypes_E ret_modeType_en = HSM_SYM_DES_OPMODE_ECB;
@@ -107,11 +112,15 @@ static hsm_Sym_Aes_ModeTypes_E Crypto_Sym_Hw_Aes_GetOpMode(crypto_Sym_OpModes_E 
 //
 //    return ret_modeType_en;
 //}
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Symmetric Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
+<#if    (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
+    ||  (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
+    ||  (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))>
 crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E cipherOpType_en, crypto_Sym_OpModes_E opMode_en, 
                                                                             uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
@@ -182,7 +191,9 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_CipherDirect(crypto_CipherOper_E cipherOpT
     }
     return ret_aesStatus_en; 
 }
-
+</#if>
+<#if 	(CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
+    ||  (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
 //crypto_Sym_Status_E Crypto_Sym_Hw_Tdes_Init(void *ptr_tdesCtx, crypto_CipherOper_E cipherOpType_en, 
 //                                            crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint8_t *ptr_initVect)
 //{
@@ -279,3 +290,4 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_CipherDirect(crypto_CipherOper_E cipherOpT
 //    
 //    return ret_tdesStatus_en;
 //}
+</#if>

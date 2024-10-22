@@ -53,7 +53,10 @@ Microchip or any third party.
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-
+<#if   (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
+    || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
+    || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))
+	|| (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
 hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen)
 {
     hsm_Aes_KeySize_E ret_keySize_en = HSM_SYM_AES_KEY_128;
@@ -76,6 +79,8 @@ hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen)
     }
     return ret_keySize_en;
 }
+</#if>
+<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
 
 hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurveType_en)
 {
@@ -105,3 +110,4 @@ hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurve
     };
     return hsmCurveType_en;
 }
+</#if>

@@ -137,7 +137,7 @@ wolfcrypt_AllMenuList = [
     ["AES-EAX",                         "CRYPTO_WC_AES_EAX",            "Crypto_Wc_Aes_Eax",               "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo"],
 
     ["Digital Signature Algorithms",    "CRYPTO_WC_DIGISIGN_MENU",      "Crypto_Wc_Digisign_Menu",         None,                          True,   None,     "DigisignAlgo"],
-    ["ECDSA",                           "CRYPTO_WC_ECDSA",              "Crypto_Wc_Ecdsa",                 "Crypto_Wc_Digisign_Menu",     True,   False,    "DigisignAlgo"],
+    ["ECDSA",                           "CRYPTO_WC_ECDSA",              "Crypto_Wc_Ecdsa",                 "Crypto_Wc_Digisign_Menu",     True,   False,    ["HashAlgo", "DigisignAlgo"]],
     
     ["Key Agreement Algorithms(KAS)",   "CRYPTO_WC_KAS_MENU",           "Crypto_Wc_Kas_Menu",              None,                          True,   None,     "KasAlgo"],
     ["ECDH",                            "CRYPTO_WC_ECDH",               "Crypto_Wc_Ecdh",                  "Crypto_Wc_Kas_Menu",          True,   False,    "KasAlgo"],
@@ -171,9 +171,14 @@ def Refresh_Files():
     # Gather selected categories based on user input
     wolfcrypt_selected_categories = set()
     for menu in wolfcrypt_AllMenuList:
-        if(menu[5] != None):
+        if menu[5] is not None:
             if globals()[menu[2]].getValue():
-                wolfcrypt_selected_categories.add(menu[6])
+                # Check if the last item is a list or a string to make request
+                categories = menu[6]
+                if isinstance(categories, list):
+                    wolfcrypt_selected_categories.update(categories)
+                else:
+                    wolfcrypt_selected_categories.add(categories)
 
     # Collect files based on selected categories
     wolfcrypt_reqs = set()

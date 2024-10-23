@@ -31,16 +31,14 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Rng.h"
 #include "crypto/common_crypto/MCHP_Crypto_Rng_Config.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG == true)))>  
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_rng_wc_wrapper.h"
-</#if><#-- CRYPTO_WC_PRNG --> 
-<#if (CRYPTO_HW_RNG_TRNG?? &&(CRYPTO_HW_RNG_TRNG == true))>
-<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_6334_DRIVER")>  
+</#if>
+<#if (crypto_rng_trng6334_wrapper_h_ftl_flag?? &&(crypto_rng_trng6334_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/HwWrapper/crypto_rng_trng6334_wrapper.h"
-</#if><#-- HAVE_CRYPTO_HW_TRNG_6334_DRIVER -->   
-</#if><#-- CRYPTO_HW_RNG_TRNG --> 
+</#if>
+
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG == true))) || (CRYPTO_HW_RNG_TRNG?? &&(CRYPTO_HW_RNG_TRNG == true))> 
- 
 crypto_Rng_Status_E Crypto_Rng_Prng_Generate(crypto_HandlerType_E rngHandlerType_en, uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen, uint32_t sessionID)
 {
     crypto_Rng_Status_E ret_rngStat_en = CRYPTO_RNG_ERROR_NOTSUPPTED;

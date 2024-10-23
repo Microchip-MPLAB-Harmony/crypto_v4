@@ -30,18 +30,17 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true)))> 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
-</#if><#-- CRYPTO_WC_ECDH -->  
-<#if (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))> 
-<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER")>
+</#if>
+<#if (crypto_kas_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_kas_cpkcc44163_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/HwWrapper/crypto_kas_cpkcc44163_wrapper.h"
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
+</#if>
+<#if (crypto_kas_hsm03785_wrapper_h_ftl_flag?? &&(crypto_kas_hsm03785_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/HwWrapper/crypto_kas_hsm03785_wrapper.h"
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
-</#if><#-- CRYPTO_HW_ECDH -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
+</#if>
 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
 crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandlerType_en, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
                                                     uint8_t *ptr_sharedSecret, uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en, uint32_t ecdhSessionId)
 {

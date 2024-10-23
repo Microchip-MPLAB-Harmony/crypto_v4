@@ -30,19 +30,18 @@
 #include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_DigSign_Config.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))> 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag == true)))> 
 #include "crypto/wolfcrypt/crypto_digisign_wc_wrapper.h"
-</#if><#-- CRYPTO_WC_ECDSA --> 
-<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER"))>
+</#if> 
+<#if crypto_digisign_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_digisign_cpkcc44163_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/HwWrapper/crypto_digisign_cpkcc44163_wrapper.h"
-<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+</#if>
+<#if crypto_digisign_hsm03785_wrapper_h_ftl_flag?? &&(crypto_digisign_hsm03785_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/HwWrapper/crypto_digisign_hsm03785_wrapper.h"
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->  
-</#if><#-- CRYPTO_HW_ECDSA --> 
+</#if>
+
 <#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER"))) 
 					|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))))>
-
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_outSig, 
                                                     uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId)
 {

@@ -30,18 +30,16 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
-<#if    (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true))) 
-    ||  (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true)))
-    ||  (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)))>
+<#if lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_aead_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_aead_wc_wrapper_h_ftl_flag == true))>
 #include "crypto/wolfcrypt/crypto_aead_wc_wrapper.h"
-</#if><#-- CRYPTO_WC_AES_CCM || CRYPTO_WC_AES_EAX || CRYPTO_WC_AES_GCM --> 
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
+</#if>
+<#if crypto_aead_aes6149_wrapper_h_ftl_flag?? &&(crypto_aead_aes6149_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/HwWrapper/crypto_aead_aes6149_wrapper.h"
-<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+</#if>
+<#if crypto_aead_hsm03785_wrapper_h_ftl_flag?? &&(crypto_aead_hsm03785_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/HwWrapper/crypto_aead_hsm03785_wrapper.h"
-</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
-</#if><#-- CRYPTO_HW_AES_GCM --> 
+</#if>
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions

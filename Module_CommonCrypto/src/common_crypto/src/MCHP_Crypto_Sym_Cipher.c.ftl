@@ -29,43 +29,16 @@
 // *****************************************************************************
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
-<#if    (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_OFB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_CFB1?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB1 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_CFB8?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB8 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_TDES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_AES_KW?? &&(lib_wolfcrypt.CRYPTO_WC_AES_KW == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"
 </#if>
-<#if    (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
-    ||  (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
-    ||  (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
-    ||  (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) 
-    ||  (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true)) 
-    ||  (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
-    ||  (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) 
-    ||  (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) 
-    ||  (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
-    ||  (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))
-    ||  (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
-    ||  (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
+<#if (crypto_sym_aes6149_wrapper_h_ftl_flag?? &&(crypto_sym_aes6149_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/HwWrapper/crypto_sym_aes6149_wrapper.h"
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-#include "crypto/drivers/HwWrapper/crypto_sym_hsm03785_wrapper.h"
-</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_TDES_6150_DRIVER"))>
-<#--  #include "crypto/drivers/HwWrapper/crypto_sym_des6150_wrapper.h" -->
-</#if><#-- HAVE_CRYPTO_HW_TDES_6150_DRIVER -->
 </#if>
+<#if (crypto_sym_hsm03785_wrapper_h_ftl_flag?? &&(crypto_sym_hsm03785_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/HwWrapper/crypto_sym_hsm03785_wrapper.h"
+</#if>
+
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)))) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)))) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true)) 
@@ -75,7 +48,6 @@
     || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)))) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true)) 
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>
-	
 crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOpType_en, 
                                                 crypto_Sym_OpModes_E opMode_en, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t sessionID)
 {

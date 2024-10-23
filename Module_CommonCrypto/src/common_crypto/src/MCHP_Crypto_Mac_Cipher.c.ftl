@@ -30,10 +30,10 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
-<#if   (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)) 
-    || (lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_mac_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_mac_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_mac_wc_wrapper.h"
-</#if><#-- CRYPTO_WC_AES_CMAC || CRYPTO_WC_AES_GMAC --> 
+</#if>
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions

@@ -30,38 +30,16 @@
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash_Config.h"
 #include "crypto/common_crypto/MCHP_Crypto_Hash.h"
-<#if    (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))
-    ||  (lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) 
-    ||  (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
 </#if>
-<#if    (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true)) 
-    ||  (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) 
-    ||  (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true))
-    ||  (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))
-    ||  (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true)) 
-    ||  (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true)) 
-    ||  (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))> 
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER"))>
+<#if (crypto_hash_sha6156_wrapper_h_ftl_flag?? &&(crypto_hash_sha6156_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/HwWrapper/crypto_hash_sha6156_wrapper.h"
-<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+</#if>
+<#if (crypto_hash_hsm03785_wrapper_h_ftl_flag?? &&(crypto_hash_hsm03785_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/HwWrapper/crypto_hash_hsm03785_wrapper.h"
-</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER,  HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
 </#if> 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions

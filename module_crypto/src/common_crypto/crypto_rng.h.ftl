@@ -21,7 +21,6 @@
 #define CRYPTO_RNG_H
 
 #include "crypto_common.h"
-#include "MCHP_Crypto_Rng_Config.h"
 
 typedef enum
 {

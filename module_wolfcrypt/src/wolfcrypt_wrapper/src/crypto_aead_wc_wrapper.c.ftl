@@ -28,7 +28,6 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/crypto_aead_cipher.h"
 #include "crypto/wolfcrypt/crypto_aead_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"

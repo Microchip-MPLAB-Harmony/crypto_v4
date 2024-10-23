@@ -29,15 +29,29 @@
 // *****************************************************************************
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_sym_cipher.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag == true)))>
-#include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"
-</#if>
 <#if (crypto_sym_aes6149_wrapper_h_ftl_flag?? &&(crypto_sym_aes6149_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_sym_aes6149_wrapper.h"
 </#if>
 <#if (crypto_sym_hsm03785_wrapper_h_ftl_flag?? &&(crypto_sym_hsm03785_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_sym_hsm03785_wrapper.h"
 </#if>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag == true)))>
+#include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"
+</#if>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data Definitions
+// *****************************************************************************
+// *****************************************************************************
+
+<#lt>#define CRYPTO_SYM_SESSION_MAX (1) 
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)))) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 

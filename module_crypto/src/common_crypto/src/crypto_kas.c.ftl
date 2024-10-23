@@ -26,19 +26,33 @@
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
+// *****************************************************************************
 
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_kas.h"
-#include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag == true)))>
-#include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
-</#if>
 <#if (crypto_kas_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_kas_cpkcc44163_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_kas_cpkcc44163_wrapper.h"
 </#if>
 <#if (crypto_kas_hsm03785_wrapper_h_ftl_flag?? &&(crypto_kas_hsm03785_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_kas_hsm03785_wrapper.h"
 </#if>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag == true)))>
+#include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
+</#if>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data Definitions
+// *****************************************************************************
+// *****************************************************************************
+
+<#lt>#define CRYPTO_KAS_SESSION_MAX (1) 
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
 crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandlerType_en, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,

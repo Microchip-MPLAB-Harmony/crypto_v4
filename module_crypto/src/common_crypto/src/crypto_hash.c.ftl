@@ -27,18 +27,18 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash_Config.h"
 #include "crypto/common_crypto/crypto_hash.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag == true)))>
-#include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
-</#if>
 <#if (crypto_hash_sha6156_wrapper_h_ftl_flag?? &&(crypto_hash_sha6156_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_sha6156_wrapper.h"
 </#if>
 <#if (crypto_hash_hsm03785_wrapper_h_ftl_flag?? &&(crypto_hash_hsm03785_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_hsm03785_wrapper.h"
 </#if> 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag == true)))>
+#include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -46,8 +46,14 @@
 // *****************************************************************************
 // *****************************************************************************
 
+<#lt>#define CRYPTO_HASH_SESSION_MAX (1) 
 
 // *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
+
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))) || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
 //MD5 Algorithm
 crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t md5SessionId)

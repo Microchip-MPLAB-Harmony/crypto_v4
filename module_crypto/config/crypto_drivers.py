@@ -53,49 +53,42 @@ Crypto_HW_CommonCryptoFilesDict = {
     "HashAlgo": [
         "crypto_hash.h.ftl",
         "crypto_hash.c.ftl",
-        "MCHP_Crypto_Hash_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "SymAlgo": [
         "crypto_sym_cipher.h.ftl",
         "crypto_sym_cipher.c.ftl",
-        "MCHP_Crypto_Sym_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "MacAlgo": [
         "crypto_mac_cipher.h.ftl",
         "crypto_mac_cipher.c.ftl",
-        "MCHP_Crypto_Mac_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "AeadAlgo": [
         "crypto_aead_cipher.h.ftl",
         "crypto_aead_cipher.c.ftl",
-        "MCHP_Crypto_Aead_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "DigisignAlgo": [
         "crypto_digsign.h.ftl",
         "crypto_digsign.c.ftl",
-        "MCHP_Crypto_DigSign_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "KasAlgo": [
         "crypto_kas.h.ftl",
         "crypto_kas.c.ftl",
-        "MCHP_Crypto_Kas_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
     "RngAlgo": [
         "crypto_rng.h.ftl",
         "crypto_rng.c.ftl",
-        "MCHP_Crypto_Rng_Config.h.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ]

@@ -21,23 +21,23 @@
     files.
 *******************************************************************************/
 
- 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/crypto_aead_cipher.h"
-<#if lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_aead_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_aead_wc_wrapper_h_ftl_flag == true))>
-#include "crypto/wolfcrypt/crypto_aead_wc_wrapper.h"
-</#if>
 <#if crypto_aead_aes6149_wrapper_h_ftl_flag?? &&(crypto_aead_aes6149_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_aead_aes6149_wrapper.h"
 </#if>
 <#if crypto_aead_hsm03785_wrapper_h_ftl_flag?? &&(crypto_aead_hsm03785_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_aead_hsm03785_wrapper.h"
+</#if>
+<#if lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_aead_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_aead_wc_wrapper_h_ftl_flag == true))>
+#include "crypto/wolfcrypt/crypto_aead_wc_wrapper.h"
 </#if>
 
 // *****************************************************************************
@@ -45,6 +45,15 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // ***************************************************************************** 
+
+<#lt>#define CRYPTO_AEAD_SESSION_MAX (1)
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
+
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesCcmCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)

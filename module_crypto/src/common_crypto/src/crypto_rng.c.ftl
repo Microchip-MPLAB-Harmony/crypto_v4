@@ -30,13 +30,26 @@
 
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_rng.h"
-#include "crypto/common_crypto/MCHP_Crypto_Rng_Config.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag == true)))>
-#include "crypto/wolfcrypt/crypto_rng_wc_wrapper.h"
-</#if>
 <#if (crypto_rng_trng6334_wrapper_h_ftl_flag?? &&(crypto_rng_trng6334_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_rng_trng6334_wrapper.h"
 </#if>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag == true)))>
+#include "crypto/wolfcrypt/crypto_rng_wc_wrapper.h"
+</#if>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data Definitions
+// *****************************************************************************
+// *****************************************************************************
+
+<#lt>#define CRYPTO_RNG_SESSION_MAX (1)
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG == true))) || (CRYPTO_HW_RNG_TRNG?? &&(CRYPTO_HW_RNG_TRNG == true))> 
 crypto_Rng_Status_E Crypto_Rng_Prng_Generate(crypto_HandlerType_E rngHandlerType_en, uint8_t* ptr_rngData, uint32_t rngLen, uint8_t* ptr_nonce, uint32_t nonceLen, uint32_t sessionID)

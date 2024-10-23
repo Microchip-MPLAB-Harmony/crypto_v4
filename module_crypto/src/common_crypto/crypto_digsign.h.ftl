@@ -27,7 +27,6 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "crypto_common.h"
-#include "MCHP_Crypto_DigSign_Config.h"
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
 #include "crypto/common_crypto/crypto_hash.h"
 </#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER || CRYPTO_WC_ECDSA -->  

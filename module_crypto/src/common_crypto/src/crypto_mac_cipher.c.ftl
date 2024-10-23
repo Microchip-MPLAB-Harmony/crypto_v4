@@ -27,8 +27,8 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Mac_Config.h"
 #include "crypto/common_crypto/crypto_mac_cipher.h"
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_mac_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_mac_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_mac_wc_wrapper.h"
@@ -39,6 +39,15 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
+
+<#lt>#define CRYPTO_MAC_SESSION_MAX (1)
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
+
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)

@@ -27,18 +27,32 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
 #include "crypto/common_crypto/crypto_digsign.h"
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_DigSign_Config.h"
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag == true)))> 
-#include "crypto/wolfcrypt/crypto_digisign_wc_wrapper.h"
-</#if> 
 <#if crypto_digisign_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_digisign_cpkcc44163_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_cpkcc44163_wrapper.h"
 </#if>
 <#if crypto_digisign_hsm03785_wrapper_h_ftl_flag?? &&(crypto_digisign_hsm03785_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_hsm03785_wrapper.h"
 </#if>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag == true)))> 
+#include "crypto/wolfcrypt/crypto_digisign_wc_wrapper.h"
+</#if> 
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data Definitions
+// *****************************************************************************
+// ***************************************************************************** 
+
+<#lt>#define CRYPTO_DIGISIGN_SESSION_MAX (1) 
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 <#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER"))) 
 					|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))))>

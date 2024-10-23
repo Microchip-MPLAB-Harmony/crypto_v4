@@ -51,7 +51,6 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
 #include "crypto/common_crypto/crypto_aead_cipher.h"
 
 // DOM-IGNORE-BEGIN

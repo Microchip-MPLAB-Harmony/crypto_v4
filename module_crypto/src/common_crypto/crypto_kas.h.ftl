@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_wc_wrapper.h
+    crypto_kas.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,23 +18,36 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef CRYPTO_KAS_WC_WRAPPER_H
-#define CRYPTO_KAS_WC_WRAPPER_H
+#ifndef CRYPTO_KAS_H
+#define CRYPTO_KAS_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
+#include "crypto_common.h"
+#include "MCHP_Crypto_Kas_Config.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Type Definitions
 // *****************************************************************************
-<#if (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
-crypto_Kas_Status_E Crypto_Kas_Wc_Ecdh_SharedSecret(uint8_t *ptr_wcPrivKey, uint32_t wcPrivKeyLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, uint8_t *ptr_wcSharedSecret,
-                                                    uint32_t wcSharedSecretLen, crypto_EccCurveType_E wcEccCurveType_en);
-</#if><#-- CRYPTO_WC_ECDH -->
+typedef enum
+{
+    CRYPTO_KAS_ERROR_ALGONOTSUPPTD = -127,
+    CRYPTO_KAS_ERROR_PUBKEY = -126,
+    CRYPTO_KAS_ERROR_PRIVKEY = -125,
+    CRYPTO_KAS_ERROR_HDLR = -124,
+    CRYPTO_KAS_ERROR_SID = -123,  ////session ID Error
+    CRYPTO_KAS_ERROR_CURVE = -122,
+    CRYPTO_KAS_ERROR_ARG = -121,
+    CRYPTO_KAS_ERROR_FAIL = -120,
+    CRYPTO_KAS_SUCCESS = 0,        
+}crypto_Kas_Status_E;
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH?? &&(lib_wolfcrypt.CRYPTO_WC_ECDH == true))) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
 
-#endif /* CRYPTO_KAS_WC_WRAPPER_H */
+crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandlerType_en, uint8_t *ptr_privKey, uint32_t privKeyLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
+                                                    uint8_t *ptr_sharedSecret, uint32_t sharedSecretLen, crypto_EccCurveType_E eccCurveType_en, uint32_t ecdhSessionId);
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_ECDH || CRYPTO_HW_ECDH -->
+
+#endif /* CRYPTO_KAS_H */

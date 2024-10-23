@@ -27,9 +27,9 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Config.h"
-#include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
+#include "crypto/common_crypto/crypto_mac_cipher.h"
 #include "crypto/wolfcrypt/crypto_mac_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 <#if (CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))>

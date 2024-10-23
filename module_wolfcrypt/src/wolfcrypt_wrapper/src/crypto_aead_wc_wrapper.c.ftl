@@ -27,9 +27,9 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Config.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
+#include "crypto/common_crypto/crypto_aead_cipher.h"
 #include "crypto/wolfcrypt/crypto_aead_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 <#if 	(CRYPTO_WC_AES_CCM?? &&(CRYPTO_WC_AES_CCM == true))

@@ -27,8 +27,8 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash.h"
+#include "crypto/common_crypto/crypto_common.h"
+#include "crypto/common_crypto/crypto_hash.h"
 #include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 <#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>

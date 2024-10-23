@@ -21,7 +21,7 @@
 #ifndef CRYPTO_COMMON_WC_WRAPPER_H
 #define CRYPTO_COMMON_WC_WRAPPER_H
 
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/crypto_common.h"
 
 #define CRYPTO_WC_ECC_TOTAL_CURVES (5)
 

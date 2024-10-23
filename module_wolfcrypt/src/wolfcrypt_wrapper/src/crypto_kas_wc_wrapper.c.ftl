@@ -26,8 +26,8 @@
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Kas.h"
+#include "crypto/common_crypto/crypto_common.h"
+#include "crypto/common_crypto/crypto_kas.h"
 #include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
 #include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
 #include "crypto/wolfcrypt/crypto_common_wc_wrapper.h"

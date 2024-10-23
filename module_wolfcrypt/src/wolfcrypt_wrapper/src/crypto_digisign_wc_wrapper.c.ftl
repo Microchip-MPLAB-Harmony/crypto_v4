@@ -27,15 +27,15 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
-#include "crypto/common_crypto/MCHP_Crypto_Common.h"
+#include "crypto/common_crypto/crypto_digsign.h"
+#include "crypto/common_crypto/crypto_common.h"
 #include "crypto/wolfcrypt/crypto_digisign_wc_wrapper.h"
 #include "crypto/wolfcrypt/crypto_common_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
 #include "wolfssl/wolfcrypt/random.h"
 #include "wolfssl/wolfcrypt/ecc.h"
-#include "crypto/common_crypto/MCHP_Crypto_Hash.h"
+#include "crypto/common_crypto/crypto_hash.h"
 </#if><#-- CRYPTO_WC_ECDSA -->
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
 

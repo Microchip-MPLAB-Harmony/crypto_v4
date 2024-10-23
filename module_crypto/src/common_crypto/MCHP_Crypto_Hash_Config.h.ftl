@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_wc_wrapper.h
+    crypto_hash.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,23 +18,26 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef CRYPTO_KAS_WC_WRAPPER_H
-#define CRYPTO_KAS_WC_WRAPPER_H
+#ifndef MCHP_CRYPTO_HASH_CONFIG_H
+#define MCHP_CRYPTO_HASH_CONFIG_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Type Definitions
 // *****************************************************************************
-<#if (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
-crypto_Kas_Status_E Crypto_Kas_Wc_Ecdh_SharedSecret(uint8_t *ptr_wcPrivKey, uint32_t wcPrivKeyLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, uint8_t *ptr_wcSharedSecret,
-                                                    uint32_t wcSharedSecretLen, crypto_EccCurveType_E wcEccCurveType_en);
-</#if><#-- CRYPTO_WC_ECDH -->
+// *****************************************************************************
 
-#endif /* CRYPTO_KAS_WC_WRAPPER_H */
+//Max session allowed for Hash Algorithm
+#define CRYPTO_HASH_SESSION_MAX (1) 
+#define CRYPTO_HASH_WC_ALGO_EN
+
+// *****************************************************************************
+// *****************************************************************************
+
+#endif //MCHP_CRYPTO_HASH_CONFIG_H

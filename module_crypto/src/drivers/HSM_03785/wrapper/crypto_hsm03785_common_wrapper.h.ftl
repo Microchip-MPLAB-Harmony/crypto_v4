@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_wc_wrapper.h
+    crypto_hsm03785_common_wrapper.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -18,23 +18,25 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef CRYPTO_KAS_WC_WRAPPER_H
-#define CRYPTO_KAS_WC_WRAPPER_H
+#ifndef CRYPTO_HSM03785_COMMON_WRAPPER_H
+#define CRYPTO_HSM03785_COMMON_WRAPPER_H
+
+#include "crypto/drivers/driver/hsm_common.h"
+#include "crypto/common_crypto/crypto_common.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/MCHP_Crypto_Kas_Config.h"
-// *****************************************************************************
-// *****************************************************************************
-// Section: Type Definitions
-// *****************************************************************************
-<#if (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
-crypto_Kas_Status_E Crypto_Kas_Wc_Ecdh_SharedSecret(uint8_t *ptr_wcPrivKey, uint32_t wcPrivKeyLen, uint8_t *ptr_wcPubKey, uint32_t wcPubKeyLen, uint8_t *ptr_wcSharedSecret,
-                                                    uint32_t wcSharedSecretLen, crypto_EccCurveType_E wcEccCurveType_en);
-</#if><#-- CRYPTO_WC_ECDH -->
+<#if   (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
+    || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true)) 
+    || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))
+	|| (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
+hsm_Aes_KeySize_E Crypto_Hw_Aes_GetKeySize(uint32_t keyLen);
+</#if>
+<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) || (CRYPTO_HW_ECDH?? &&(CRYPTO_HW_ECDH == true))>
+hsm_Ecc_CurveType_E Crypto_Hw_ECC_GetEccCurveType(crypto_EccCurveType_E eccCurveType_en);
+</#if>
 
-#endif /* CRYPTO_KAS_WC_WRAPPER_H */
+#endif /* CRYPTO_HSM03785_COMMON_WRAPPER_H */

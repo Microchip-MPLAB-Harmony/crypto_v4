@@ -103,76 +103,132 @@ Crypto_HW_CommonCryptoFilesDict = {
 
 #---------------------------------------------------------------------------------------
 Crypto_HW_DriverAndWrapperFilesDict = {
-    "HSM_03785":{ 
-        "HashAlgo":{
-            "WrapperFiles": ["crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"],
-            "DriverFiles":["hsm_hash.h", "hsm_hash.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"],
+    "HSM_03785": {
+        "HashAlgo": {
+            "WrapperFiles": [
+                "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "hsm_hash.h", "hsm_hash.c", 
+                "hsm_common.h", 
+                "hsm_cmd.h", "hsm_cmd.c", 
+                "hsm_boot.h", "hsm_boot.c"
+            ],
         },
-        "SymAlgo":{
-            "WrapperFiles":["crypto_sym_hsm03785_wrapper.h.ftl", "crypto_sym_hsm03785_wrapper.c.ftl", "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"],    
-            "DriverFiles":["hsm_sym.h", "hsm_sym.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"],
+        "SymAlgo": {
+            "WrapperFiles": [
+                "crypto_sym_hsm03785_wrapper.h.ftl", "crypto_sym_hsm03785_wrapper.c.ftl", 
+                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "hsm_sym.h", "hsm_sym.c",
+                "hsm_common.h",
+                "hsm_cmd.h", "hsm_cmd.c",
+                "hsm_boot.h", "hsm_boot.c"
+            ],
         },
-        "AeadAlgo":{
-            "WrapperFiles":["crypto_aead_hsm03785_wrapper.h.ftl", "crypto_aead_hsm03785_wrapper.c.ftl", "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"],    
-            "DriverFiles":["hsm_aead.h", "hsm_aead.c", "hsm_common.h", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c"]
+        "AeadAlgo": {
+            "WrapperFiles": [
+                "crypto_aead_hsm03785_wrapper.h.ftl", "crypto_aead_hsm03785_wrapper.c.ftl", 
+                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "hsm_aead.h", "hsm_aead.c",
+                "hsm_common.h", 
+                "hsm_cmd.h", "hsm_cmd.c",
+                "hsm_boot.h", "hsm_boot.c"
+            ],
         },
-        "DigisignAlgo":{
-            "WrapperFiles":["crypto_digisign_hsm03785_wrapper.h.ftl", "crypto_digisign_hsm03785_wrapper.c.ftl", "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl", 
-                            "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"],    
-            "DriverFiles":["hsm_sign.h", "hsm_sign.c", "hsm_common.h", "hsm_common.c", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c", "hsm_hash.h", "hsm_hash.c"]
+        "DigisignAlgo": {
+            "WrapperFiles": [
+                "crypto_digisign_hsm03785_wrapper.h.ftl", "crypto_digisign_hsm03785_wrapper.c.ftl", 
+                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl", 
+                "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "hsm_sign.h", "hsm_sign.c",
+                "hsm_common.h", "hsm_common.c",
+                "hsm_cmd.h", "hsm_cmd.c", 
+                "hsm_boot.h", "hsm_boot.c",
+                "hsm_hash.h", "hsm_hash.c"
+            ],
         },
-        "KasAlgo":{
-            "WrapperFiles":["crypto_kas_hsm03785_wrapper.h.ftl", "crypto_kas_hsm03785_wrapper.c.ftl", "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"],    
-            "DriverFiles":["hsm_kas.h", "hsm_kas.c", "hsm_common.h", "hsm_common.c", "hsm_cmd.h", "hsm_cmd.c", "hsm_boot.h", "hsm_boot.c", "hsm_hash.h", "hsm_hash.c"]
-        }
+        "KasAlgo": {
+            "WrapperFiles": [
+                "crypto_kas_hsm03785_wrapper.h.ftl", "crypto_kas_hsm03785_wrapper.c.ftl", 
+                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "hsm_kas.h", "hsm_kas.c",
+                "hsm_common.h", "hsm_common.c",
+                "hsm_cmd.h", "hsm_cmd.c", 
+                "hsm_boot.h", "hsm_boot.c",
+                "hsm_hash.h", "hsm_hash.c"
+            ],
+        },
     },
-    
-    "AES_6149":{ 
-        "SymAlgo":{
-            "WrapperFiles": ["crypto_sym_aes6149_wrapper.h.ftl", "crypto_sym_aes6149_wrapper.c.ftl"],
-            "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
+
+    "AES_6149": {
+        "SymAlgo": {
+            "WrapperFiles": [
+                "crypto_sym_aes6149_wrapper.h.ftl", "crypto_sym_aes6149_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_aes_hw_6149.h.ftl", "drv_crypto_aes_hw_6149.c.ftl"
+            ],
         },
-        "AeadAlgo":{
-            "WrapperFiles":["crypto_aead_aes6149_wrapper.h.ftl", "crypto_aead_aes6149_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_aes_hw_6149.h.ftl","drv_crypto_aes_hw_6149.c.ftl"],
-        }
-    },
-    
-    "CPKCC_44163":{ 
-        "DigisignAlgo":{
-            "WrapperFiles":["crypto_digisign_cpkcc44163_wrapper.h.ftl", "crypto_digisign_cpkcc44163_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"],
-            "LibraryFiles":["CryptoLib_typedef_pb.h.ftl", "CryptoLib_Headers_pb.h.ftl", "CryptoLib_mapping_pb.h", "CryptoLib_JumpTable_Addr_pb.h.ftl", "CryptoLib_cf.h", "CryptoLib_Rc_pb.h", 
-                            "CryptoLib_ClearFlags_pb.h", "CryptoLib_Comp_pb.h", "CryptoLib_CondCopy_pb.h", "CryptoLib_CRT_pb.h", "CryptoLib_Div_pb.h", "CryptoLib_ExpMod_pb.h", "CryptoLib_FastCopy_pb.h", 
-                            "CryptoLib_Fill_pb.h", "CryptoLib_Fmult_pb.h", "CryptoLib_GCD_pb.h", "CryptoLib_NOP_pb.h", "CryptoLib_PrimeGen_pb.h", "CryptoLib_RedMod_pb.h", "CryptoLib_Rng_pb.h", 
-                            "CryptoLib_SelfTest_pb.h", "CryptoLib_Hash_pb.h", "CryptoLib_Smult_pb.h", "CryptoLib_Square_pb.h", "CryptoLib_Swap_pb.h", "CryptoLib_ZpEccAdd_pb.h", "CryptoLib_ZpEccDbl_pb.h",
-                            "CryptoLib_ZpEccMul_pb.h", "CryptoLib_ZpEccConv_pb.h", "CryptoLib_ZpEcDsa_pb.h", "CryptoLib_GF2NEccAdd_pb.h", "CryptoLib_GF2NEccDbl_pb.h", "CryptoLib_GF2NEccMul_pb.h", 
-                            "CryptoLib_GF2NEccConv_pb.h", "CryptoLib_GF2NEcDsa_pb.h", "CryptoLib_JumpTable_pb.h", "CryptoLib_Services_pb.h"]
+        "AeadAlgo": {
+            "WrapperFiles": [
+                "crypto_aead_aes6149_wrapper.h.ftl", "crypto_aead_aes6149_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_aes_hw_6149.h.ftl", "drv_crypto_aes_hw_6149.c.ftl"
+            ],
         },
-        "KasAlgo":{
-            "WrapperFiles":["crypto_kas_cpkcc44163_wrapper.h.ftl", "crypto_kas_cpkcc44163_wrapper.c.ftl"],    
-            "DriverFiles":["drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl", "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"],
-            "LibraryFiles":["CryptoLib_typedef_pb.h.ftl", "CryptoLib_Headers_pb.h.ftl", "CryptoLib_mapping_pb.h", "CryptoLib_JumpTable_Addr_pb.h.ftl", "CryptoLib_cf.h", "CryptoLib_Rc_pb.h", 
-                            "CryptoLib_ClearFlags_pb.h", "CryptoLib_Comp_pb.h", "CryptoLib_CondCopy_pb.h", "CryptoLib_CRT_pb.h", "CryptoLib_Div_pb.h", "CryptoLib_ExpMod_pb.h", "CryptoLib_FastCopy_pb.h", 
-                            "CryptoLib_Fill_pb.h", "CryptoLib_Fmult_pb.h", "CryptoLib_GCD_pb.h", "CryptoLib_NOP_pb.h", "CryptoLib_PrimeGen_pb.h", "CryptoLib_RedMod_pb.h", "CryptoLib_Rng_pb.h", 
-                            "CryptoLib_SelfTest_pb.h", "CryptoLib_Hash_pb.h", "CryptoLib_Smult_pb.h", "CryptoLib_Square_pb.h", "CryptoLib_Swap_pb.h", "CryptoLib_ZpEccAdd_pb.h", "CryptoLib_ZpEccDbl_pb.h",
-                            "CryptoLib_ZpEccMul_pb.h", "CryptoLib_ZpEccConv_pb.h", "CryptoLib_ZpEcDsa_pb.h", "CryptoLib_GF2NEccAdd_pb.h", "CryptoLib_GF2NEccDbl_pb.h", "CryptoLib_GF2NEccMul_pb.h", 
-                            "CryptoLib_GF2NEccConv_pb.h", "CryptoLib_GF2NEcDsa_pb.h", "CryptoLib_JumpTable_pb.h", "CryptoLib_Services_pb.h"]
-        }        
-    }, 
-    
-    "SHA_6156":{ 
-        "HashAlgo":{
-            "WrapperFiles": ["crypto_hash_sha6156_wrapper.h.ftl", "crypto_hash_sha6156_wrapper.c.ftl"],
-            "DriverFiles":["drv_crypto_sha_hw_6156.h.ftl", "drv_crypto_sha_hw_6156.c.ftl"],
-        }
     },
-    
-    "TRNG_6334":{ 
-        "RngAlgo":{
-            "WrapperFiles": ["crypto_rng_trng6334_wrapper.h.ftl", "crypto_rng_trng6334_wrapper.c.ftl"],
-            "DriverFiles":["drv_crypto_trng_hw_6334.h", "drv_crypto_trng_hw_6334.c"],
-        }
+
+    "CPKCC_44163": {
+        "DigisignAlgo": {
+            "WrapperFiles": [
+                "crypto_digisign_cpkcc44163_wrapper.h.ftl", "crypto_digisign_cpkcc44163_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl", 
+                "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
+            ],
+            "LibraryFiles": ["CPKCL_Lib"]
+        },
+        "KasAlgo": {
+            "WrapperFiles": [
+                "crypto_kas_cpkcc44163_wrapper.h.ftl", "crypto_kas_cpkcc44163_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl", 
+                "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
+            ],
+            "LibraryFiles": ["CPKCL_Lib"]
+        },
+    },
+    "SHA_6156": {
+        "HashAlgo": {
+            "WrapperFiles": [
+                "crypto_hash_sha6156_wrapper.h.ftl", "crypto_hash_sha6156_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_sha_hw_6156.h.ftl", "drv_crypto_sha_hw_6156.c.ftl"
+            ],
+        },
+    },
+
+    "TRNG_6334": {
+        "RngAlgo": {
+            "WrapperFiles": [
+                "crypto_rng_trng6334_wrapper.h.ftl", "crypto_rng_trng6334_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_trng_hw_6334.h", "drv_crypto_trng_hw_6334.c"
+            ],
+        },
     },
 }
    

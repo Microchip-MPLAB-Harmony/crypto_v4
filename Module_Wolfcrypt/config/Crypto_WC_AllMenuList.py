@@ -143,7 +143,6 @@ wolfcrypt_AllMenuList = [
     ["ECDH",                            "CRYPTO_WC_ECDH",               "Crypto_Wc_Ecdh",                  "Crypto_Wc_Kas_Menu",          True,   False,    "KasAlgo"],
     
     ["Random Number Algorithms(RNG)",   "CRYPTO_WC_RNG_MENU",           "Crypto_Wc_Rng_Menu",              None,                          True,   None,     "RngAlgo"],
-    ["TRNG",                            "CRYPTO_WC_TRNG",               "Crypto_Wc_Trng",                  "Crypto_Wc_Rng_Menu",          True,   False,    "RngAlgo"],
     ["PRNG",                            "CRYPTO_WC_PRNG",               "Crypto_Wc_Prng",                  "Crypto_Wc_Rng_Menu",          True,   False,    "RngAlgo"],
 ]
 #----------------------------------------------------------------------------------------- 

@@ -132,14 +132,7 @@ typedef enum
             
     CRYPTO_ECC_CURVE_P521 = 5,
     CRYPTO_ECC_CURVE_SECP521R1 = 5,        
-
-    /* Koblitz */
-    CRYPTO_ECC_CURVE_SECP256K1 = 6,
-            
-    /* Brainpool Curves */
-    CRYPTO_ECC_CURVE_BRAINPOOLP256R1 = 7,
-    CRYPTO_ECC_CURVE_BRAINPOOLP384R1 = 8,
-            
+          
     /* Twisted Edwards Curves */
 
     CRYPTO_ECC_CURVE_MAX

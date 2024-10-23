@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_wc_common_wrapper.c
+    crypto_common_wc_wrapper.c
 
   Summary:
     This file contains the Common code for the Wolfcrypt Library application.
@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "crypto/wolfcrypt/crypto_wc_common_wrapper.h"
+#include "crypto/wolfcrypt/crypto_common_wc_wrapper.h"
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true)) || (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 #include "wolfssl/wolfcrypt/ecc.h"
 

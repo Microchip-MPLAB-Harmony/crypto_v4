@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_wc_common_wrapper.h
+    crypto_common_wc_wrapper.h
 
   Summary:
     This header file provides Common Prototypes and definitions for the Wolfcrypt Library.
@@ -18,8 +18,8 @@
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef CRYPTO_WC_COMMON_WRAPPER_H
-#define CRYPTO_WC_COMMON_WRAPPER_H
+#ifndef CRYPTO_COMMON_WC_WRAPPER_H
+#define CRYPTO_COMMON_WC_WRAPPER_H
 
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 
@@ -29,4 +29,4 @@
 int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en);
 </#if><#-- CRYPTO_WC_ECDSA || CRYPTO_WC_ECDH -->
 
-#endif /* CRYPTO_WC_COMMON_WRAPPER_H */
+#endif /* CRYPTO_COMMON_WC_WRAPPER_H */

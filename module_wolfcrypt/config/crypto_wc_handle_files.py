@@ -98,10 +98,10 @@ def add_file_to_dict(component, file_name, file_path, lowest_level_dir, enabled)
     if not enabled:
         wolfCrypt_Files[file_name] = (lowest_level_dir, file_symbol, file_symbol_flag)
 
-# Make symbols for files in src/WolfCryptWrapper and add to global dict
+# Make symbols for files in src/wolfcrypt_wrapper and add to global dict
 def setup_wolfcrypt_wrappers(component):
     module_path = Module.getPath()
-    wolfcrypt_wrapper_path = os.path.join(module_path, "src", "WolfCryptWrapper")
+    wolfcrypt_wrapper_path = os.path.join(module_path, "src", "wolfcrypt_wrapper")
 
     # Recursively go through the common_crypto directory and collect all file paths
     if os.path.exists(wolfcrypt_wrapper_path):
@@ -111,7 +111,7 @@ def setup_wolfcrypt_wrappers(component):
                 file_name = os.path.basename(file_path)
 
                 add_file_to_dict(component, file_name, file_path, "wolfcrypt", False)
-        print("src/wolfcryptwrapper directory file symbols created.")
+        print("src/wolfcrypt_wrapper directory file symbols created.")
     else:
         Log.writeWarningMessage("src/common_crypto directory damaged. Check that it exists.")
 

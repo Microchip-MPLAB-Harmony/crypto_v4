@@ -30,7 +30,7 @@
 #include "crypto/common_crypto/MCHP_Crypto_DigSign.h"
 #include "crypto/common_crypto/MCHP_Crypto_Common.h"
 #include "crypto/wolfcrypt/crypto_digisign_wc_wrapper.h"
-#include "crypto/wolfcrypt/crypto_wc_common_wrapper.h"
+#include "crypto/wolfcrypt/crypto_common_wc_wrapper.h"
 #include "wolfssl/wolfcrypt/error-crypt.h"
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
 #include "wolfssl/wolfcrypt/random.h"

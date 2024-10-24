@@ -100,7 +100,7 @@ Crypto_HW_AllMenusList = [
     ["ECDH",                          "CRYPTO_HW_ECDH",            "Crypto_Hw_Ecdh",           "Crypto_Hw_Kas_Menu",      "Key Agreement Algorithms(KAS)", True,    False,    "KasAlgo",        ["CPKCC_44163", "HSM_03785"]],
     
     ["Random Number Algortihms(RNG)", "CRYPTO_HW_RNG_MENU",        "Crypto_Hw_Rng_Menu",       None,                      None,                            True,    None,     None],
-    ["TRNG",                          "CRYPTO_HW_RNG_TRNG",        "Crypto_Hw_Rng_Trng",       "Crypto_Hw_Rng_Menu",      "Random Number Algortihms(RNG)", True,    False,    "RngAlgo",        ["TRNG_6334"]],
+    ["TRNG",                          "CRYPTO_HW_RNG_TRNG",        "Crypto_Hw_Rng_Trng",       "Crypto_Hw_Rng_Menu",      "Random Number Algortihms(RNG)", True,    False,    "RngAlgo",        ["TRNG_6334", "TRNG_03597"]],
 ]
 
 def Crypto_CallBack(symbol, event):

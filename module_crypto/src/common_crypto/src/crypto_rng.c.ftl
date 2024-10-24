@@ -30,6 +30,9 @@
 
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_rng.h"
+<#if (crypto_rng_trng03597_wrapper_h_ftl_flag?? &&(crypto_rng_trng03597_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_rng_trng03597_wrapper.h"
+</#if>
 <#if (crypto_rng_trng6334_wrapper_h_ftl_flag?? &&(crypto_rng_trng6334_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_rng_trng6334_wrapper.h"
 </#if>
@@ -82,7 +85,10 @@ crypto_Rng_Status_E Crypto_Rng_Prng_Generate(crypto_HandlerType_E rngHandlerType
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_6334_DRIVER")>              
                 ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
-</#if><#-- HAVE_CRYPTO_HW_TRNG_6334_DRIVER -->                
+</#if><#-- HAVE_CRYPTO_HW_TRNG_6334_DRIVER -->
+<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_03597_DRIVER")>              
+                ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
+</#if><#-- HAVE_CRYPTO_HW_TRNG_03597_DRIVER -->
 				break;
 </#if><#-- CRYPTO_HW_RNG_TRNG -->       
             default:

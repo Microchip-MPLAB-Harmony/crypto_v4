@@ -45,7 +45,8 @@ Crypto_HW_AllDriversList = [
         ["CPKCC", "44163", "", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
         ["HSM", "03785", "", "HSM_03785", "HAVE_CRYPTO_HW_HSM_03785_DRIVER", "Crypto_Hw_HSM_03785_DriverSymbol", "HSM_03785 Driver Supported"],    #HSM_03785
         ["ICM", "11105", "", "ICM_11105", "HAVE_CRYPTO_HW_ICM_11105_DRIVER", "Crypto_Hw_ICM_11105_DriverSymbol", "ICM_11105 Driver Supported"],    #ICM_11105
-        ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"]     #TDES_6150
+        ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"],     #TDES_6150
+        ["TRNG", "03597", "", "TRNG_03597", "HAVE_CRYPTO_HW_TRNG_03597_DRIVER", "Crypto_Hw_TRNG_03597_DriverSymbol", "TRNG_03597 Driver Supported"],    #TRNG_03597
 ]
 
 #---------------------------------------------------------------------------------------        
@@ -220,6 +221,17 @@ Crypto_HW_DriverAndWrapperFilesDict = {
             ],
             "DriverFiles": [
                 "drv_crypto_trng_hw_6334.h", "drv_crypto_trng_hw_6334.c"
+            ],
+        },
+    },
+
+    "TRNG_03597": {
+        "RngAlgo": {
+            "WrapperFiles": [
+                "crypto_rng_trng03597_wrapper.h.ftl", "crypto_rng_trng03597_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_trng_hw_03597.h", "drv_crypto_trng_hw_03597.c"
             ],
         },
     },

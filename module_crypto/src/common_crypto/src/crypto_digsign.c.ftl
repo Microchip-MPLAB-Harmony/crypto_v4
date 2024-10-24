@@ -203,7 +203,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecd
                                                                                                                     hashType_en, eccCurveType_En);
             break; 
 </#if><#-- CRYPTO_WC_ECDSA -->
-<#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>            
+<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>	
                 ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_SignData(ptr_inputData, dataLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, hashType_en, eccCurveType_En);

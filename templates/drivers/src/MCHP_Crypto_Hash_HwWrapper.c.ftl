@@ -396,16 +396,58 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 
     return CRYPTO_HASH_SUCCESS;
 <#elseif HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>
-    uint32_t numOfPaddingBytes = 0;
+    uint8_t *inputData = data;
+    uint32_t inputDataLen = dataLen;
+    uint32_t numOfInvalidBytes = 0;
+    
+    #ifdef ENABLE_SW_PADDING
+
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;    
+    
+    switch(shaCtx->algo)
+    {
+        case CRYPTO_HASH_SHA2_256:
+            inputDataLen = 64;
+            break;
+        case CRYPTO_HASH_SHA2_384:
+            inputDataLen = 128;
+            break;
+        default:
+            return CRYPTO_HASH_ERROR_ALGO;
+    }
+    
+    uint8_t inputDataPadded[inputDataLen];
+        
+    memcpy(inputDataPadded, inputData, dataLen);
+    
+    for(int index = dataLen; index < inputDataLen - 1; index++)
+    {
+        inputDataPadded[index] = (uint8_t) 0x00;
+    }
+
+    inputDataPadded[dataLen] = 0x80;
+    
+    inputDataPadded[inputDataLen - 5] = dataLen >> 29;
+    inputDataPadded[inputDataLen - 4] = dataLen >> 21;
+    inputDataPadded[inputDataLen - 3] = dataLen >> 13;
+    inputDataPadded[inputDataLen - 2] = dataLen >> 5;
+    inputDataPadded[inputDataLen - 1] = dataLen << 3;
+
+    inputData = &inputDataPadded[0];
+    
+    #else
+
     uint32_t bytesOverHashBlock = dataLen % (uint32_t) HASH_BLOCK_SIZE;
 
     if (bytesOverHashBlock != (uint32_t) 0)
     {
-        numOfPaddingBytes = (uint32_t) HASH_BLOCK_SIZE - bytesOverHashBlock;
+        numOfInvalidBytes = (uint32_t) HASH_BLOCK_SIZE - bytesOverHashBlock;
     }
     
+    #endif
+
     /* Write the data to be ciphered to the input data registers */
-    DRV_CRYPTO_SHA_Update((uint32_t *) data, dataLen, numOfPaddingBytes);
+    DRV_CRYPTO_SHA_Update(inputData, inputDataLen, numOfInvalidBytes);
     
     return CRYPTO_HASH_SUCCESS;
 </#if>
@@ -493,9 +535,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     DRV_CRYPTO_SHA_GetOutputData(ptr_digest, digestLen);
 
     return retVal;
-<#elseif HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>
-    uint32_t *ptr_digest = (uint32_t*) digest;
-    
+<#elseif HAVE_MCHP_CRYPTO_SHA_HW_05346 == true>    
     DRV_CRYPTO_SHA_GetOutputData(ptr_digest);
 
     return CRYPTO_HASH_SUCCESS;

@@ -60,6 +60,11 @@ void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo)
 {
     uint32_t hashConfig = 0;
     HASHCON_MODE mode = 0;
+    HASHCON_PADDING paddingConfig = HW_PADDING;
+    
+    #ifdef ENABLE_SW_PADDING
+    paddingConfig = SW_PADDING;
+    #endif
     
     DRV_CRYPTO_DMA_Configure();
     DRV_CRYPTO_CAM_InterruptSetup();
@@ -88,26 +93,25 @@ void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo)
             break;
     }
     
-    (void) DRV_CRYPTO_DMA_SHA_SetupEngine(&hashConfig, mode, DIGEST, HW_PADDING, HMAC_OFF);
+    (void) DRV_CRYPTO_DMA_SHA_SetupEngine(&hashConfig, mode, DIGEST, paddingConfig, HMAC_OFF);
     (void) DRV_CRYPTO_DMA_SetTagConfig(TAG_ENGINE_HASH, TAG_IS_LAST, ZERO);
-     DRV_CRYPTO_DMA_SetFetchAddress((uint32_t) & hashConfig);  
+     DRV_CRYPTO_DMA_SetFetchAddress((uint32_t) & hashConfig);
     (void) DRV_CRYPTO_DMA_SetFetchLength(CAM_INIT_FETCH_LENGTH);
     (void) DRV_CRYPTO_DMA_StartFetch();
 }
 
-void DRV_CRYPTO_SHA_Update(uint32_t *data, uint32_t size, uint8_t numOfPaddingBytes)
+void DRV_CRYPTO_SHA_Update(uint8_t *data, uint32_t size, uint8_t numOfInvalidBytes)
 {
     (void) DRV_CRYPTO_DMA_SetTagData(TAG_ENGINE_HASH, TAG_IS_LAST, 
-            TAG_HASH_MESSAGE, numOfPaddingBytes);
+            TAG_HASH_MESSAGE, numOfInvalidBytes);
     DRV_CRYPTO_DMA_SetFetchAddress((uint32_t) data);
     (void) DRV_CRYPTO_DMA_SetFetchLength(size);
     (void) DRV_CRYPTO_DMA_StartFetch();
 }
 
-void DRV_CRYPTO_SHA_GetOutputData(uint32_t *digest)
+void DRV_CRYPTO_SHA_GetOutputData(uint8_t *digest)
 {
     uint16_t timeout = (uint16_t) DMA_TIMEOUT_LIMIT;
-    uint8_t* outputData = (uint8_t*) digest;
     
     while (!DRV_CRYPTO_DMA_DataIsReady() && (timeout > (uint16_t) 0))
     {
@@ -118,10 +122,10 @@ void DRV_CRYPTO_SHA_GetOutputData(uint32_t *digest)
     {
         uint16_t sizeOfAvailableData = DRV_CRYPTO_DMA_GetAvailableDataSize();
         
-        DRV_CRYPTO_DMA_SetPushAddress((uint32_t) outputData);
+        DRV_CRYPTO_DMA_SetPushAddress((uint32_t) digest);
         (void) DRV_CRYPTO_DMA_SetPushLength((uint32_t) sizeOfAvailableData);
         (void) DRV_CRYPTO_DMA_StartPush();
         
-        outputData += (uint8_t) sizeOfAvailableData;
+        digest += (uint8_t) sizeOfAvailableData;
     }
 }

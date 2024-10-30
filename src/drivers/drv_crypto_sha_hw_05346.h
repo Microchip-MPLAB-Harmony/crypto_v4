@@ -59,6 +59,14 @@ Microchip or any third party.
 
 #endif
 // DOM-IGNORE-END
+        
+// *****************************************************************************
+// *****************************************************************************
+// Configuration Options
+// *****************************************************************************
+// *****************************************************************************
+
+// #define ENABLE_SW_PADDING
 
 // *****************************************************************************
 // *****************************************************************************
@@ -91,9 +99,9 @@ typedef enum
 
 void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo);
 
-void DRV_CRYPTO_SHA_Update(uint32_t *data, uint32_t size, uint8_t numOfPaddingBytes);
+void DRV_CRYPTO_SHA_Update(uint8_t *data, uint32_t size, uint8_t numOfInvalidBytes);
 
-void DRV_CRYPTO_SHA_GetOutputData(uint32_t *digest);
+void DRV_CRYPTO_SHA_GetOutputData(uint8_t *digest);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

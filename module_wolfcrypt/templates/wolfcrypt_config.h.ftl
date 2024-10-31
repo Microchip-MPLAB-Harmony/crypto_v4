@@ -149,6 +149,7 @@ extern "C" {
 <#lt>#define WOLFSSL_AES_XTS
 <#lt>#define HAVE_AESCCM
 <#lt>#define WOLFSSL_CMAC
+<#lt>#define WOLFSSL_DES_ECB
 <#lt>#define HAVE_CAMELLIA
 <#lt>#define HAVE_IDEA
 <#lt>#define HAVE_HC128

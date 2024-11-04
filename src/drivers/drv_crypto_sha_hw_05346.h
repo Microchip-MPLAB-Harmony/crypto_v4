@@ -76,8 +76,11 @@ Microchip or any third party.
 
 typedef enum 
 {
-  CRYPTO_SHA_ALGO_SHA256 = 1,
-  CRYPTO_SHA_ALGO_SHA384 = 2,
+  CRYPTO_SHA_ALGO_SHA1 = 1,
+  CRYPTO_SHA_ALGO_SHA224 = 2,
+  CRYPTO_SHA_ALGO_SHA256 = 3,
+  CRYPTO_SHA_ALGO_SHA384 = 4,
+  CRYPTO_SHA_ALGO_SHA512 = 5
 } CRYPTO_SHA_ALGO;
 
 // *****************************************************************************

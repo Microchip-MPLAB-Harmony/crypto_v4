@@ -68,11 +68,20 @@ void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo)
     
     switch(shaAlgo)
     {
+        case CRYPTO_SHA_ALGO_SHA1:
+            mode = MODE_SHA1;
+            break;
+        case CRYPTO_SHA_ALGO_SHA224:
+            mode = MODE_SHA224;
+            break;
         case CRYPTO_SHA_ALGO_SHA256:
             mode = MODE_SHA256;
             break;
         case CRYPTO_SHA_ALGO_SHA384:
             mode = MODE_SHA384;
+            break;
+        case CRYPTO_SHA_ALGO_SHA512:
+            mode = MODE_SHA512;
             break;
         default:
             mode = MODE_SHA256;

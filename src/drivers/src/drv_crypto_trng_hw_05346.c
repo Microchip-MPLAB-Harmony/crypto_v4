@@ -51,7 +51,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <stdbool.h>
 #include <xc.h>
-#include "cam_hal.h"
+#include "cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -67,7 +67,7 @@ Microchip or any third party.
 
 TRNG_ERROR DRV_CRYPTO_TRNG_ReadData(uint32_t* data, uint32_t size){
     TRNG_ERROR error_code = DRV_CRYPTO_HAL_ReadData(data, size);
-    if (eTRNG_NO_ERROR != error_code)
+    if (TRNG_NO_ERROR != error_code)
         return error_code;
     return DRV_CRYPTO_HAL_CheckError();
 }
@@ -75,12 +75,12 @@ TRNG_ERROR DRV_CRYPTO_TRNG_ReadData(uint32_t* data, uint32_t size){
 TRNG_ERROR DRV_CRYPTO_TRNG_SetupKey(trng_struct* trng_data){
     uint32_t key_data[128/4] = {0};
     TRNG_ERROR error_code = DRV_CRYPTO_HAL_ReadData(key_data, 128);
-    if (eTRNG_NO_ERROR != error_code)
-        return eTRNG_KEY_SETUP_FAIL;
+    if (TRNG_NO_ERROR != error_code)
+        return TRNG_KEY_SETUP_FAIL;
     trng_data->key.data = key_data;
     trng_data->key.size = 128;
     DRV_CRYPTO_HAL_SetupKey(trng_data->key.data, trng_data->key.size);
-    return eTRNG_NO_ERROR;
+    return TRNG_NO_ERROR;
 }
 
 TRNG_ERROR DRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
@@ -90,9 +90,9 @@ TRNG_ERROR DRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
     DRV_CRYPTO_HAL_SetInitialWait(trng_data->initial_wait);
     DRV_CRYPTO_HAL_SetFifoThreshold( trng_data->fifo_threshold);
     error_code = DRV_CRYPTO_TRNG_SetupKey(trng_data);
-    if (eTRNG_NO_ERROR != error_code)
+    if (TRNG_NO_ERROR != error_code)
         return error_code;
-    return eTRNG_NO_ERROR;
+    return TRNG_NO_ERROR;
 }
 
 // *****************************************************************************

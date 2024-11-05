@@ -5,14 +5,15 @@
     Microchip Technology Inc.
 
   File Name:
-    MCHP_Crypto_Rng_HwWrapper.c
+    drv_crypto_trng_hw_05346.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware TRNG.
+    Crypto Framework Library interface file for hardware TRNG.
 
   Description:
-    This source file contains the wrapper interface to access the TRNG 
-    hardware driver for Microchip microcontrollers.
+    This header file contains the interface that make up the TRNG hardware 
+    driver for the following families of Microchip microcontrollers:
+    dsPIC33CK512MPS512.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,38 +41,45 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
+#ifndef DRV_CRYPTO_TRNG_HW_05346_H
+#define	DRV_CRYPTO_TRNG_HW_05346_H
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include "crypto/common_crypto/MCHP_Crypto_Rng_HwWrapper.h"
-<#if HAVE_MCHP_CRYPTO_TRNG_HW_6334 == true>
-#include "crypto/drivers/drv_crypto_trng_hw_6334.h"
-</#if>
-<#if HAVE_MCHP_CRYPTO_TRNG_HW_05346 == true>
-#include "crypto/drivers/drv_crypto_trng_hw_05346.h"
-</#if>
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
+#include <stdint.h>   
+#include <stdbool.h>
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: TRNG Common Interface Implementation
+// Section: CAM-Lite Data Types
+// *****************************************************************************
+// *****************************************************************************
+    
+// *****************************************************************************
+// *****************************************************************************
+// Section: TRNG Common Data Types
+// *****************************************************************************
+// *****************************************************************************
+    
+// *****************************************************************************
+// *****************************************************************************
+// Section: TRNG Common Interface 
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Rng_Status_E Crypto_Rng_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
-{
-<#if HAVE_MCHP_CRYPTO_TRNG_HW_6334 == true>
-    DRV_CRYPTO_TRNG_Generate(rngData, rngLen);
+void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen);
     
-    return CRYPTO_RNG_SUCCESS;
-<elseif HAVE_MCHP_CRYPTO_TRNG_HW_05346 == true>
-    DRV_CRYPTO_TRNG_Generate(rngData, rngLen);
-    
-    return CRYPTO_RNG_SUCCESS;
-<#else>
-    return CRYPTO_RNG_ERROR_NOTSUPPTED;
-</#if>
-}    
+#ifdef	__cplusplus
+}
+#endif
+
+#endif	/* DRV_CRYPTO_TRNG_HW_05346_H */
+

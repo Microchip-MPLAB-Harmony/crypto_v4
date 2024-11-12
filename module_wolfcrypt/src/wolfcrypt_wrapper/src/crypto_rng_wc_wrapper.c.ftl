@@ -37,8 +37,8 @@ crypto_Rng_Status_E Crypto_Rng_Wc_Prng_GenerateBlock(uint8_t* ptr_rngData, uint3
 {
     crypto_Rng_Status_E ret_rngStat_en = CRYPTO_RNG_ERROR_FAIL;
     int wcStat = -1, wcFreeStat = -1;
-    WC_RNG rng_st;
-    
+    WC_RNG rng_st = {0};
+        
     wcStat = wc_InitRngNonce(&rng_st, ptr_nonce, nonceLen);
     
     if (wcStat == 0)

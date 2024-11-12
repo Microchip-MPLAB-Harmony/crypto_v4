@@ -47,11 +47,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include "drv_crypto_trng_hw_05346.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <xc.h>
-#include "cam_trng.h"
+#include "../drv_crypto_trng_hw_05346.h"
+#include "../../../../../libraries/cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -65,31 +62,31 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-TRNG_ERROR DRV_CRYPTO_TRNG_ReadData(uint32_t* data, uint32_t size){
-    TRNG_ERROR error_code = DRV_CRYPTO_HAL_ReadData(data, size);
+TRNG_ERROR DRV_CRYPTO_TRNG_ReadDrvData(uint32_t* data, uint32_t size){
+    TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadData(data, size);
     if (TRNG_NO_ERROR != error_code)
         return error_code;
-    return DRV_CRYPTO_HAL_CheckError();
+    return DRV_CRYPTO_TRNG_CheckError();
 }
 
-TRNG_ERROR DRV_CRYPTO_TRNG_SetupKey(trng_struct* trng_data){
+TRNG_ERROR DRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data){
     uint32_t key_data[128/4] = {0};
-    TRNG_ERROR error_code = DRV_CRYPTO_HAL_ReadData(key_data, 128);
+    TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadDrvData(key_data, 128);
     if (TRNG_NO_ERROR != error_code)
         return TRNG_KEY_SETUP_FAIL;
     trng_data->key.data = key_data;
     trng_data->key.size = 128;
-    DRV_CRYPTO_HAL_SetupKey(trng_data->key.data, trng_data->key.size);
+    DRV_CRYPTO_TRNG_SetupKey(trng_data->key.data, trng_data->key.size);
     return TRNG_NO_ERROR;
 }
 
 TRNG_ERROR DRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
     TRNG_ERROR error_code;
-    DRV_CRYPTO_HAL_Reset();
-    DRV_CRYPTO_HAL_SetupEngine(trng_data->fifo_write_startup, trng_data->htest_after_cond, trng_data->conditioning_bypass, trng_data->nb128block);
-    DRV_CRYPTO_HAL_SetInitialWait(trng_data->initial_wait);
-    DRV_CRYPTO_HAL_SetFifoThreshold( trng_data->fifo_threshold);
-    error_code = DRV_CRYPTO_TRNG_SetupKey(trng_data);
+    DRV_CRYPTO_TRNG_Reset();
+    DRV_CRYPTO_TRNG_SetupEngine(trng_data->fifo_write_startup, trng_data->htest_after_cond, trng_data->conditioning_bypass, trng_data->nb128block);
+    DRV_CRYPTO_TRNG_SetInitialWait(trng_data->initial_wait);
+    DRV_CRYPTO_TRNG_SetFifoThreshold( trng_data->fifo_threshold);
+    error_code = DRV_CRYPTO_TRNG_SetKey(trng_data);
     if (TRNG_NO_ERROR != error_code)
         return error_code;
     return TRNG_NO_ERROR;

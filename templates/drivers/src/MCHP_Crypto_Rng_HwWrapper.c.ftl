@@ -63,11 +63,7 @@ Microchip or any third party.
 
 crypto_Rng_Status_E Crypto_Rng_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
 {
-<#if HAVE_MCHP_CRYPTO_TRNG_HW_6334 == true>
-    DRV_CRYPTO_TRNG_Generate(rngData, rngLen);
-    
-    return CRYPTO_RNG_SUCCESS;
-<elseif HAVE_MCHP_CRYPTO_TRNG_HW_05346 == true>
+<#if HAVE_MCHP_CRYPTO_TRNG_HW_6334 == true || HAVE_MCHP_CRYPTO_TRNG_HW_05346 == true>
     DRV_CRYPTO_TRNG_Generate(rngData, rngLen);
     
     return CRYPTO_RNG_SUCCESS;

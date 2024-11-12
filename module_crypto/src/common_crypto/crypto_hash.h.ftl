@@ -121,7 +121,7 @@ typedef enum {
 typedef struct{
     uint32_t md5SessionId;
     crypto_HandlerType_E md5Handler_en;
-    uint8_t arr_md5DataCtx[110];// __attribute__((aligned (8)));
+    uint8_t arr_md5DataCtx[110] __attribute__((aligned (4)));
 }st_Crypto_Hash_Md5_Ctx;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true)))>

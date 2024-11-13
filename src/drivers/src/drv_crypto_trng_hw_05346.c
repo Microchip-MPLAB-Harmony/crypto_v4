@@ -62,14 +62,14 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-TRNG_ERROR DRV_CRYPTO_TRNG_ReadDrvData(uint32_t* data, uint32_t size){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDrvData(uint32_t* data, uint32_t size){
     TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadData(data, size);
     if (TRNG_NO_ERROR != error_code)
         return error_code;
     return DRV_CRYPTO_TRNG_CheckError();
 }
 
-TRNG_ERROR DRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data){
     uint32_t key_data[128/4] = {0};
     TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadDrvData(key_data, 128);
     if (TRNG_NO_ERROR != error_code)
@@ -80,13 +80,13 @@ TRNG_ERROR DRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data){
     return TRNG_NO_ERROR;
 }
 
-TRNG_ERROR DRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
     TRNG_ERROR error_code;
     DRV_CRYPTO_TRNG_Reset();
     DRV_CRYPTO_TRNG_SetupEngine(trng_data->fifo_write_startup, trng_data->htest_after_cond, trng_data->conditioning_bypass, trng_data->nb128block);
     DRV_CRYPTO_TRNG_SetInitialWait(trng_data->initial_wait);
     DRV_CRYPTO_TRNG_SetFifoThreshold( trng_data->fifo_threshold);
-    error_code = DRV_CRYPTO_TRNG_SetKey(trng_data);
+    error_code = lDRV_CRYPTO_TRNG_SetKey(trng_data);
     if (TRNG_NO_ERROR != error_code)
         return error_code;
     return TRNG_NO_ERROR;
@@ -111,6 +111,6 @@ void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen) {
     trngData.nb128block = 4;                        // Number of 128-bit blocks used in AES-CBCMAC post-processing bits
     trngData.off_tmr = 0xFFF; 
     
-    DRV_CRYPTO_TRNG_Setup(&trngData);
-    errorCode = DRV_CRYPTO_TRNG_ReadData((uint32_t*) rngData, rngLen);
+    lDRV_CRYPTO_TRNG_Setup(&trngData);
+    errorCode = lDRV_CRYPTO_TRNG_ReadDrvData((uint32_t*) rngData, rngLen);
 }

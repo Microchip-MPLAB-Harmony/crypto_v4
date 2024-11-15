@@ -63,44 +63,44 @@ Crypto_Hw_Rng_Menu = None
 Crypto_Hw_Rng_Trng = None
 
 Crypto_HW_AllMenusList = [    
-    #Menu Label[0]                    #Menu Symbol ID [1]          #Menu Symbols [2]           #Parent Symbol [3]         #Parent Label [4]              #Visible  #Default  #Category [7]     #Drivers [8]
-    ["Hash Algorithms",               "CRYPTO_HW_HASH_MENU",       "Crypto_Hw_Hash_Menu",      None,                      None,                            True,    None,     None,],
-    ["SHA1",                          "CRYPTO_HW_SHA1",            "Crypto_Hw_Sha1",           "Crypto_Hw_Hash_Menu",     "Hash Algorithms",               True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"]],
+    #Menu Label[0]                    #Menu Symbol ID [1]          #Menu Symbols [2]           #Parent Symbol [3]         #Parent Label [4]              #Visible  #Default  #Category [7]     #Drivers [8]                     #onlinedocs [9]
+    ["Hash Algorithms",               "CRYPTO_HW_HASH_MENU",       "Crypto_Hw_Hash_Menu",      None,                      None,                            True,    None,     None],
+    ["SHA1",                          "CRYPTO_HW_SHA1",            "Crypto_Hw_Sha1",           "Crypto_Hw_Hash_Menu",     "Hash Algorithms",               True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "MD5_Algorithm"],
     ["SHA2 Algorithm",                "CRYPTO_HW_SHA2_MENU",       "Crypto_Hw_Sha2_Menu",      "Crypto_Hw_Hash_Menu",     "Hash Algorithms",               True,    None,     None],
-    ["SHA2-224",                      "CRYPTO_HW_SHA2_224",        "Crypto_Hw_Sha2_224",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"]],
-    ["SHA2-256",                      "CRYPTO_HW_SHA2_256",        "Crypto_Hw_Sha2_256",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"]],
-    ["SHA2-384",                      "CRYPTO_HW_SHA2_384",        "Crypto_Hw_Sha2_384",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"]],
-    ["SHA2-512",                      "CRYPTO_HW_SHA2_512",        "Crypto_Hw_Sha2_512",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"]],
+    ["SHA2-224",                      "CRYPTO_HW_SHA2_224",        "Crypto_Hw_Sha2_224",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
+    ["SHA2-256",                      "CRYPTO_HW_SHA2_256",        "Crypto_Hw_Sha2_256",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
+    ["SHA2-384",                      "CRYPTO_HW_SHA2_384",        "Crypto_Hw_Sha2_384",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
+    ["SHA2-512",                      "CRYPTO_HW_SHA2_512",        "Crypto_Hw_Sha2_512",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
     ["SHA2-512/224",                  "CRYPTO_HW_SHA2_512_224",    "Crypto_Hw_Sha2_512_224",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"]],
     ["SHA2-512/256",                  "CRYPTO_HW_SHA2_512_256",    "Crypto_Hw_Sha2_512_256",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"]],
     
     ["Symmetric Algorithms",          "CRYPTO_HW_SYM_MENU",        "Crypto_Hw_Sym_Menu",       None,                      None,                            True,    None,     None],
     ["AES Algorithm",                 "CRYPTO_HW_AES_MENU",        "Crypto_Hw_Aes_Menu",       "Crypto_Hw_Sym_Menu",      "Symmetric Algorithms",          True,    None,     None],
-    ["AES-ECB",                       "CRYPTO_HW_AES_ECB",         "Crypto_Hw_Aes_Ecb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"]],
-    ["AES-CBC",                       "CRYPTO_HW_AES_CBC",         "Crypto_Hw_Aes_Cbc",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"]],
-    ["AES-CTR",                       "CRYPTO_HW_AES_CTR",         "Crypto_Hw_Aes_Ctr",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"]],
-    ["AES-OFB",                       "CRYPTO_HW_AES_OFB",         "Crypto_Hw_Aes_Ofb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"]],
+    ["AES-ECB",                       "CRYPTO_HW_AES_ECB",         "Crypto_Hw_Aes_Ecb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"],      "AES_Algorithm"],
+    ["AES-CBC",                       "CRYPTO_HW_AES_CBC",         "Crypto_Hw_Aes_Cbc",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"],      "AES_Algorithm"],
+    ["AES-CTR",                       "CRYPTO_HW_AES_CTR",         "Crypto_Hw_Aes_Ctr",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"],      "AES_Algorithm"],
+    ["AES-OFB",                       "CRYPTO_HW_AES_OFB",         "Crypto_Hw_Aes_Ofb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
     ["AES-CFB",                       "CRYPTO_HW_AES_CFB_MENU",    "Crypto_Hw_Aes_Cfb_Menu",   "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    None,     None],
-    ["AES-CFB8",                      "CRYPTO_HW_AES_CFB8",        "Crypto_Hw_Aes_Cfb8",       "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
-    ["AES-CFB16",                     "CRYPTO_HW_AES_CFB16",       "Crypto_Hw_Aes_Cfb16",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
-    ["AES-CFB32",                     "CRYPTO_HW_AES_CFB32",       "Crypto_Hw_Aes_Cfb32",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
-    ["AES-CFB64",                     "CRYPTO_HW_AES_CFB64",       "Crypto_Hw_Aes_Cfb64",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
-    ["AES-CFB128",                    "CRYPTO_HW_AES_CFB128",      "Crypto_Hw_Aes_Cfb128",     "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"]],
+    ["AES-CFB8",                      "CRYPTO_HW_AES_CFB8",        "Crypto_Hw_Aes_Cfb8",       "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
+    ["AES-CFB16",                     "CRYPTO_HW_AES_CFB16",       "Crypto_Hw_Aes_Cfb16",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
+    ["AES-CFB32",                     "CRYPTO_HW_AES_CFB32",       "Crypto_Hw_Aes_Cfb32",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
+    ["AES-CFB64",                     "CRYPTO_HW_AES_CFB64",       "Crypto_Hw_Aes_Cfb64",      "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
+    ["AES-CFB128",                    "CRYPTO_HW_AES_CFB128",      "Crypto_Hw_Aes_Cfb128",     "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
     ["TDES/3DES Algorithm",           "CRYPTO_HW_TDES_MENU",       "Crypto_Hw_Tdes_Menu",      "Crypto_Hw_Sym_Menu",      "Symmetric Algorithms",          True,    None,     None],
-    ["TDES-ECB",                      "CRYPTO_HW_TDES_ECB",        "Crypto_Hw_Tdes_Ecb",       "Crypto_Hw_Tdes_Menu",     "TDES/3DES Algorithm",           True,    False,    "SymAlgo",        ["TDES_6150"]],
-    ["TDES-CBC",                      "CRYPTO_HW_TDES_CBC",        "Crypto_Hw_Tdes_Cbc",       "Crypto_Hw_Tdes_Menu",     "TDES/3DES Algorithm",           True,    False,    "SymAlgo",        ["TDES_6150"]],
+    ["TDES-ECB",                      "CRYPTO_HW_TDES_ECB",        "Crypto_Hw_Tdes_Ecb",       "Crypto_Hw_Tdes_Menu",     "TDES/3DES Algorithm",           True,    False,    "SymAlgo",        ["TDES_6150"],                  "TDES_Algorithm"],
+    ["TDES-CBC",                      "CRYPTO_HW_TDES_CBC",        "Crypto_Hw_Tdes_Cbc",       "Crypto_Hw_Tdes_Menu",     "TDES/3DES Algorithm",           True,    False,    "SymAlgo",        ["TDES_6150"],                  "TDES_Algorithm"],
     
     ["AEAD Algorithms",               "CRYPTO_HW_AEAD_MENU",       "Crypto_Hw_Aead_Menu",      None,                      None,                            True,    None,     None],
-    ["AES-GCM",                       "CRYPTO_HW_AES_GCM",         "Crypto_Hw_Aes_Gcm",        "Crypto_Hw_Aead_Menu",     "AEAD Algorithms",               True,    False,    "AeadAlgo",       ["AES_6149", "HSM_03785"]],
+    ["AES-GCM",                       "CRYPTO_HW_AES_GCM",         "Crypto_Hw_Aes_Gcm",        "Crypto_Hw_Aead_Menu",     "AEAD Algorithms",               True,    False,    "AeadAlgo",       ["AES_6149", "HSM_03785"],      "AES-GCM_Algorithm"],
     
     ["Digital Signature Algorithms",  "CRYPTO_HW_DIGISIGN_MENU",   "Crypto_Hw_DigiSign_Menu",  None,                      None,                            True,    None,     None],
-    ["ECDSA",                         "CRYPTO_HW_ECDSA",           "Crypto_Hw_Ecdsa",          "Crypto_Hw_DigiSign_Menu", "Digital Signature Algorithms",  True,    False,    "DigisignAlgo",   ["CPKCC_44163", "HSM_03785"]],
+    ["ECDSA",                         "CRYPTO_HW_ECDSA",           "Crypto_Hw_Ecdsa",          "Crypto_Hw_DigiSign_Menu", "Digital Signature Algorithms",  True,    False,    "DigisignAlgo",   ["CPKCC_44163", "HSM_03785"],   "ECDSA_Algorithm"],
     
     ["Key Agreement Algorithms(KAS)", "CRYPTO_HW_KAS_MENU",        "Crypto_Hw_Kas_Menu",       None,                      None,                            True,    None,     None],
-    ["ECDH",                          "CRYPTO_HW_ECDH",            "Crypto_Hw_Ecdh",           "Crypto_Hw_Kas_Menu",      "Key Agreement Algorithms(KAS)", True,    False,    "KasAlgo",        ["CPKCC_44163", "HSM_03785"]],
+    ["ECDH",                          "CRYPTO_HW_ECDH",            "Crypto_Hw_Ecdh",           "Crypto_Hw_Kas_Menu",      "Key Agreement Algorithms(KAS)", True,    False,    "KasAlgo",        ["CPKCC_44163", "HSM_03785"],   "ECDH_Algorithm"],
     
     ["Random Number Algortihms(RNG)", "CRYPTO_HW_RNG_MENU",        "Crypto_Hw_Rng_Menu",       None,                      None,                            True,    None,     None],
-    ["TRNG",                          "CRYPTO_HW_RNG_TRNG",        "Crypto_Hw_Rng_Trng",       "Crypto_Hw_Rng_Menu",      "Random Number Algortihms(RNG)", True,    False,    "RngAlgo",        ["TRNG_6334", "TRNG_03597"]],
+    ["TRNG",                          "CRYPTO_HW_RNG_TRNG",        "Crypto_Hw_Rng_Trng",       "Crypto_Hw_Rng_Menu",      "Random Number Algortihms(RNG)", True,    False,    "RngAlgo",        ["TRNG_6334", "TRNG_03597"],    "PRNG_Algorithm"],
 ]
 
 def Crypto_CallBack(symbol, event):

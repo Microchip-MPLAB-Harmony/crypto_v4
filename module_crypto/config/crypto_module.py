@@ -40,3 +40,5 @@ def loadModule():
         "LIB_WOLFCRYPT", 
         False
     )
+
+    CommonCryptoComponent.setHelpKeyword("MH3_crypto")

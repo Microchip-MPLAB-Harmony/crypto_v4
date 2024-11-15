@@ -41,3 +41,5 @@ def loadModule():
         False,
         True
     )
+
+    WolfCryptComponent.setHelpKeyword("MH3_crypto")

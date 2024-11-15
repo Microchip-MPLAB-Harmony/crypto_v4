@@ -75,6 +75,7 @@ def Crypto_HW_CreateMenuInGUI(CommonCryptoComponent):
             # Algorithms
             globals()[menu[2]] = CommonCryptoComponent.createBooleanSymbol(menu[1], globals()[menu[3]])
             globals()[menu[2]].setDefaultValue(menu[6])
+            globals()[menu[2]].setHelp(menu[9])
             globals()[menu[2]].setDependencies(Crypto_CallBack, [menu[1]])
                 
         globals()[menu[2]].setLabel(menu[0])

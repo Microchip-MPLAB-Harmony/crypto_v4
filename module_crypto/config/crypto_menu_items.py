@@ -71,8 +71,8 @@ Crypto_HW_AllMenusList = [
     ["SHA2-256",                      "CRYPTO_HW_SHA2_256",        "Crypto_Hw_Sha2_256",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
     ["SHA2-384",                      "CRYPTO_HW_SHA2_384",        "Crypto_Hw_Sha2_384",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
     ["SHA2-512",                      "CRYPTO_HW_SHA2_512",        "Crypto_Hw_Sha2_512",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
-    ["SHA2-512/224",                  "CRYPTO_HW_SHA2_512_224",    "Crypto_Hw_Sha2_512_224",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"]],
-    ["SHA2-512/256",                  "CRYPTO_HW_SHA2_512_256",    "Crypto_Hw_Sha2_512_256",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"]],
+    ["SHA2-512/224",                  "CRYPTO_HW_SHA2_512_224",    "Crypto_Hw_Sha2_512_224",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],                   "SHA_Algorithm"],
+    ["SHA2-512/256",                  "CRYPTO_HW_SHA2_512_256",    "Crypto_Hw_Sha2_512_256",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],                   "SHA_Algorithm"],
     
     ["Symmetric Algorithms",          "CRYPTO_HW_SYM_MENU",        "Crypto_Hw_Sym_Menu",       None,                      None,                            True,    None,     None],
     ["AES Algorithm",                 "CRYPTO_HW_AES_MENU",        "Crypto_Hw_Aes_Menu",       "Crypto_Hw_Sym_Menu",      "Symmetric Algorithms",          True,    None,     None],

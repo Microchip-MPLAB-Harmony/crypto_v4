@@ -268,7 +268,7 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(ECDSA_CONFIG *eccData, 
 
         eccData->p1.x = pubKey + 1U;
         eccData->p1.y = pubKey + 1U + (sizeof (uint8_t) * (pubKeyLen - 1U) / 2U);
-        eccData->p1.size = pubKeyLen - 1U;
+        eccData->p1.size = (pubKeyLen - 1U) / 2U;
         eccData->op_size = ((uint8_t) size - 1U);
 
         DRV_CRYPTO_ECDSA_SetupEngine();

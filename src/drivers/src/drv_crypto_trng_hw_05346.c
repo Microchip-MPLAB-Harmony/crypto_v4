@@ -62,7 +62,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDrvData(uint32_t* data, uint32_t size){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size){
     TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadData(data, size);
     if (TRNG_NO_ERROR != error_code)
         return error_code;
@@ -112,5 +112,5 @@ void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen) {
     trngData.off_tmr = 0xFFF; 
     
     lDRV_CRYPTO_TRNG_Setup(&trngData);
-    errorCode = lDRV_CRYPTO_TRNG_ReadDrvData((uint32_t*) rngData, rngLen);
+    errorCode = lDRV_CRYPTO_TRNG_ReadDriverData((uint32_t*) rngData, rngLen);
 }

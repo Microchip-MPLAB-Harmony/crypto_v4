@@ -62,25 +62,31 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size)
+{
     TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadData(data, size);
-    if (TRNG_NO_ERROR != error_code)
+    if (TRNG_NO_ERROR != error_code) {
         return error_code;
+    }
     return DRV_CRYPTO_TRNG_CheckError();
 }
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data)
+{
     uint32_t key_data[128/4] = {0};
     TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadDrvData(key_data, 128);
     if (TRNG_NO_ERROR != error_code)
+    {
         return TRNG_KEY_SETUP_FAIL;
+    }
     trng_data->key.data = key_data;
     trng_data->key.size = 128;
     DRV_CRYPTO_TRNG_SetupKey(trng_data->key.data, trng_data->key.size);
     return TRNG_NO_ERROR;
 }
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
+static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data)
+{
     TRNG_ERROR error_code;
     DRV_CRYPTO_TRNG_Reset();
     DRV_CRYPTO_TRNG_SetupEngine(trng_data->fifo_write_startup, trng_data->htest_after_cond, trng_data->conditioning_bypass, trng_data->nb128block);
@@ -88,7 +94,9 @@ static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
     DRV_CRYPTO_TRNG_SetFifoThreshold( trng_data->fifo_threshold);
     error_code = lDRV_CRYPTO_TRNG_SetKey(trng_data);
     if (TRNG_NO_ERROR != error_code)
+    {
         return error_code;
+    }
     return TRNG_NO_ERROR;
 }
 
@@ -98,7 +106,8 @@ static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data){
 // *****************************************************************************
 // *****************************************************************************
 
-void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen) {
+void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen) 
+{
     TRNG_ERROR errorCode = 0x99;
     trng_struct trngData;
     trngData.clk_div = 0;                           // Set the frequency div at which the outputs of the rings are sampled is given by

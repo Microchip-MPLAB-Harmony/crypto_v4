@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Module name="lib_crypto" id="B1073D56-43AB-4C5A-A90A-798D31D90D98" version="4.0.0">
+    <ConfigRoot path="config/crypto_module.py"/>
+</Module>

@@ -3,6 +3,23 @@
 
 # Microchip MPLAB® Harmony 3 Crypto v4 Release Notes
 
+# Crypto Release v4.0.0-E3
+
+### New Features
+- **Added Beta Hardware Acceleration for PIC32CZ_CA9x** Includes hardware acceleration drivers to speed up cryptographic operations as an alternative to wolfSSL on supported algorithms.
+- **Added Support for PIC32CM_SG** Enables SW support for wolfSSL on supported algorithms
+- **Enable Beta Software support on supported algorithms for the following device families**
+  - PIC32CX SGxx
+  - PIC32CM LSxx
+  - SAME5x
+  - SAMV7x
+  - SAML11
+  - PIC32MZ EF
+  - SAMA7D65
+
+### Notes
+- This is an engineering release which has not been fully validated
+
 ## Crypto Release v4.0.0-E2
 
 ### New Features

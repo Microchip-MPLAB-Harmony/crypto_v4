@@ -517,7 +517,8 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     st_Hsm_SendCmdLayout aesGcmSendCmd_st;
     hsm_Cmd_Status_E ret_aesGcmStat_en;
     st_Hsm_Aead_AesGcm_Cmd aesGcmCmd_st = {0};
-    
+    uint8_t arr_lastByte[4] = {0};
+    uint32_t nonAlignByteLen = 0;
     //Mailbox Header
     aesGcmCmd_st.aesMailBoxHdr_st.msgSize =  0x1c;
     aesGcmCmd_st.aesMailBoxHdr_st.unProtection = 0x1;
@@ -598,7 +599,36 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
 	aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    nonAlignByteLen = (inputDataLen % 4UL);
+    
+    if(nonAlignByteLen != 0U)
+    {
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.stop = 0x00; //do not Stop
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr = ((uint32_t)(&aesGcmCmd_st.arr_aesInSgDmaDes_st[4])>>2);
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)(inputDataLen - nonAlignByteLen);
+    
+        for(int i = 0; i < nonAlignByteLen; i++)
+        {
+            arr_lastByte[i] = ptr_dataIn[inputDataLen - nonAlignByteLen + i];
+        }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"     
+        // Input SG-DMA Descriptor 4 for the Plain Text
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].ptr_dataAddr = (uint32_t*)arr_lastByte;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop      
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.stop = 0x01; //Stop
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.nextDescriptorAddr = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.dataLen = (uint32_t)4UL;  //here Plain Text length is entered
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.cstAddr = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.reAlign = 0x01;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.discard = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.intEn = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.reserved1 = 0x00; 
+    }
+//////////////////////////////////////////////////////////////////////////////////////////         
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
@@ -683,6 +713,8 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     st_Hsm_SendCmdLayout aesGcmSendCmd_st;
     hsm_Cmd_Status_E ret_aesGcmStat_en;
     st_Hsm_Aead_AesGcm_Cmd aesGcmCmd_st = {0};
+    uint8_t arr_lastByte[4] = {0};
+    uint32_t nonAlignByteLen = 0;
     
     //Mailbox Header
     aesGcmCmd_st.aesMailBoxHdr_st.msgSize =  0x1c;
@@ -765,22 +797,68 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
 	aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    nonAlignByteLen = (inputDataLen % 4UL);
+    
+    if(nonAlignByteLen != 0U)
+    {
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)(inputDataLen - nonAlignByteLen);
+    
+        for(int i = 0; i < nonAlignByteLen; i++)
+        {
+            arr_lastByte[i] = ptr_dataIn[inputDataLen - nonAlignByteLen + i];
+        }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"     
+        // Input SG-DMA Descriptor 4 for the Plain Text
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].ptr_dataAddr = (uint32_t*)arr_lastByte;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop      
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.stop = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.nextDescriptorAddr = ((uint32_t)(&aesGcmCmd_st.arr_aesInSgDmaDes_st[5])>>2);
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.dataLen = (uint32_t)4UL;  //here Plain Text length is entered
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.cstAddr = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.reAlign = 0x01;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.discard = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.intEn = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.reserved1 = 0x00; 
+        
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
-    //So Input SG-DMA Descriptor 5 for the MAC/Tag
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].ptr_dataAddr = (uint32_t*)ptr_inputTagMac;
+        //So Input SG-DMA Descriptor 5 for the MAC/Tag
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].ptr_dataAddr = (uint32_t*)ptr_inputTagMac;
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 #pragma GCC diagnostic pop     
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.stop = 0x01; //Stop
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.nextDescriptorAddr = 0x0000;
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.dataLen = (uint32_t)tagLen;  //here Plain Text length is entered
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.cstAddr = 0x00;
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.reAlign = 0x01;
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.intEn = 0x00;
-    aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.reserved1 = 0x00; 
-
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].nextDes_st.stop = 0x01; //Stop
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].nextDes_st.nextDescriptorAddr = 0x0000;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].flagAndLength_st.dataLen = (uint32_t)tagLen;  //here Plain Text length is entered
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].flagAndLength_st.cstAddr = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].flagAndLength_st.reAlign = 0x01;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].flagAndLength_st.discard = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].flagAndLength_st.intEn = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[5].nextDes_st.reserved1 = 0x00; 
+    }
+    else
+    {
+//////////////////////////////////////////////////////////////////////////////////////////  
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
+        //So Input SG-DMA Descriptor 5 for the MAC/Tag
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].ptr_dataAddr = (uint32_t*)ptr_inputTagMac;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop     
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.stop = 0x01; //Stop
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.nextDescriptorAddr = 0x0000;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.dataLen = (uint32_t)tagLen;  //here Plain Text length is entered
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.cstAddr = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.reAlign = 0x01;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.discard = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].flagAndLength_st.intEn = 0x00;
+        aesGcmCmd_st.arr_aesInSgDmaDes_st[4].nextDes_st.reserved1 = 0x00; 
+    }
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    

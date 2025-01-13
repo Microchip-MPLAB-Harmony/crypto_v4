@@ -78,8 +78,8 @@ typedef struct
 {
 	st_Hsm_MailBoxHeader            aesMailBoxHdr_st;
 	st_Hsm_Aead_AesGcm_CmdHeader	aesCmdHeader_st;
-	st_Hsm_SgDmaDescriptor          arr_aesInSgDmaDes_st[5] __attribute__((aligned(4)));
-	st_Hsm_SgDmaDescriptor          arr_aesOutSgDmaDes_st[2]  __attribute__((aligned(4)));
+	st_Hsm_SgDmaDescriptor          arr_aesInSgDmaDes_st[6] __attribute__((aligned(4)));
+	st_Hsm_SgDmaDescriptor          arr_aesOutSgDmaDes_st[3]  __attribute__((aligned(4)));
 	uint32_t                        inputDataLenParm1;
 	st_Hsm_Aead_AesGcm_Param2       aesGcmCmdParm2_st;
     uint32_t                        aadLengthParm3;

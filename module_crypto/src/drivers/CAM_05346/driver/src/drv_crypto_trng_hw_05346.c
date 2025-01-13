@@ -47,6 +47,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#include <xc.h>
 #include "../drv_crypto_trng_hw_05346.h"
 #include "../../../../../libraries/cam_trng.h"
 
@@ -65,24 +66,28 @@ Microchip or any third party.
 static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size)
 {
     TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadData(data, size);
-    if (TRNG_NO_ERROR != error_code) {
-        return error_code;
+    if (TRNG_NO_ERROR == error_code) {
+        error_code = DRV_CRYPTO_TRNG_CheckError();
     }
-    return DRV_CRYPTO_TRNG_CheckError();
+    return error_code;
 }
 
 static inline TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(trng_struct* trng_data)
 {
     uint32_t key_data[128/4] = {0};
-    TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadDrvData(key_data, 128);
+    TRNG_ERROR error_code = DRV_CRYPTO_TRNG_ReadData(key_data, 128);
     if (TRNG_NO_ERROR != error_code)
     {
-        return TRNG_KEY_SETUP_FAIL;
+        error_code = TRNG_KEY_SETUP_FAIL;
     }
-    trng_data->key.data = key_data;
-    trng_data->key.size = 128;
-    DRV_CRYPTO_TRNG_SetupKey(trng_data->key.data, trng_data->key.size);
-    return TRNG_NO_ERROR;
+    else 
+    {
+        trng_data->key.data = key_data;
+        trng_data->key.size = 128;
+        DRV_CRYPTO_TRNG_SetupKey(trng_data->key.data, trng_data->key.size);
+    }
+    
+    return error_code;
 }
 
 static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data)
@@ -93,11 +98,7 @@ static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data)
     DRV_CRYPTO_TRNG_SetInitialWait(trng_data->initial_wait);
     DRV_CRYPTO_TRNG_SetFifoThreshold( trng_data->fifo_threshold);
     error_code = lDRV_CRYPTO_TRNG_SetKey(trng_data);
-    if (TRNG_NO_ERROR != error_code)
-    {
-        return error_code;
-    }
-    return TRNG_NO_ERROR;
+    return error_code;
 }
 
 // *****************************************************************************
@@ -108,7 +109,6 @@ static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(trng_struct* trng_data)
 
 void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen) 
 {
-    TRNG_ERROR errorCode = 0x99;
     trng_struct trngData;
     trngData.clk_div = 0;                           // Set the frequency div at which the outputs of the rings are sampled is given by
     trngData.conditioning_bypass = false;           // Conditioning function bypass bit
@@ -120,6 +120,8 @@ void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen)
     trngData.nb128block = 4;                        // Number of 128-bit blocks used in AES-CBCMAC post-processing bits
     trngData.off_tmr = 0xFFF; 
     
-    lDRV_CRYPTO_TRNG_Setup(&trngData);
-    errorCode = lDRV_CRYPTO_TRNG_ReadDriverData((uint32_t*) rngData, rngLen);
+    CAMCON |= 0x8000U;
+    
+    (void) lDRV_CRYPTO_TRNG_Setup(&trngData);
+    (void) lDRV_CRYPTO_TRNG_ReadDriverData((uint32_t*) rngData, rngLen);
 }

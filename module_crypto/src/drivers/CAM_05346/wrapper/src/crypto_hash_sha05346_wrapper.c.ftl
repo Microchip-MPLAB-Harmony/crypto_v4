@@ -186,11 +186,19 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     
     #else
 
-    uint32_t bytesOverHashBlock = dataLen % (uint32_t) HASH_BLOCK_SIZE;
-
-    if (bytesOverHashBlock != (uint32_t) 0)
+    if(inputDataLen == 0)
     {
-        numOfInvalidBytes = (uint32_t) HASH_BLOCK_SIZE - bytesOverHashBlock;
+        inputDataLen = 4;
+        numOfInvalidBytes = 4;
+    }
+    else
+    {
+        uint32_t bytesOverHashBlock = inputDataLen % (uint32_t) HASH_BLOCK_SIZE;
+
+        if (bytesOverHashBlock != (uint32_t) 0)
+        {
+            numOfInvalidBytes = (uint32_t) HASH_BLOCK_SIZE - bytesOverHashBlock;
+        }
     }
     
     #endif

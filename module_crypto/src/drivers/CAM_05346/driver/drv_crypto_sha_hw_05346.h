@@ -51,6 +51,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
+#include "MCHP_Crypto_Hash_HwWrapper.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -101,7 +102,7 @@ void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo);
 
 void DRV_CRYPTO_SHA_Update(uint8_t *data, uint32_t size, uint8_t numOfInvalidBytes);
 
-void DRV_CRYPTO_SHA_GetOutputData(uint8_t *digest);
+void DRV_CRYPTO_SHA_GetOutputData(CRYPTO_HASH_HW_CONTEXT *shaFinalCtx, uint8_t *digest);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -112,4 +113,3 @@ void DRV_CRYPTO_SHA_GetOutputData(uint8_t *digest);
 // DOM-IGNORE-END
 
 #endif	// DRV_CRYPTO_SHA_HW_05346_H
-

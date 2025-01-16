@@ -204,7 +204,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
-    DRV_CRYPTO_SHA_GetOutputData(ptr_digest);
+    DRV_CRYPTO_SHA_GetOutputData((CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx, ptr_digest);
 
     return CRYPTO_HASH_SUCCESS;
 }

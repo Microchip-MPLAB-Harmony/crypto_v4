@@ -109,23 +109,33 @@ void DRV_CRYPTO_SHA_Update(uint8_t *data, uint32_t size, uint8_t numOfInvalidByt
     (void) DRV_CRYPTO_DMA_StartFetch();
 }
 
-void DRV_CRYPTO_SHA_GetOutputData(uint8_t *digest)
+void DRV_CRYPTO_SHA_GetOutputData(CRYPTO_HASH_HW_CONTEXT *shaFinalCtx, uint8_t *digest)
 {
-    uint16_t timeout = (uint16_t) DMA_TIMEOUT_LIMIT;
+    uint32_t sizeOfAvailableData;
     
-    while (!DRV_CRYPTO_DMA_DataIsReady() && (timeout > (uint16_t) 0))
+    switch(shaFinalCtx->algo)
     {
-        timeout--;
+        case CRYPTO_HASH_SHA1:
+            sizeOfAvailableData = 20;
+            break;
+        case CRYPTO_HASH_SHA2_224:
+            sizeOfAvailableData = 28;
+            break;
+        case CRYPTO_HASH_SHA2_256:
+            sizeOfAvailableData = 32;
+            break;
+        case CRYPTO_HASH_SHA2_384:
+            sizeOfAvailableData = 48;
+            break;
+        case CRYPTO_HASH_SHA2_512:
+            sizeOfAvailableData = 64;
+            break;
+        default:
+            sizeOfAvailableData = 0;
+            break;
     }
     
-    while(DRV_CRYPTO_DMA_DataIsReady())
-    {
-        uint16_t sizeOfAvailableData = DRV_CRYPTO_DMA_GetAvailableDataSize();
-        
-        DRV_CRYPTO_DMA_SetPushAddress((uint32_t) digest);
-        (void) DRV_CRYPTO_DMA_SetPushLength((uint32_t) sizeOfAvailableData);
-        (void) DRV_CRYPTO_DMA_StartPush();
-        
-        digest += (uint8_t) sizeOfAvailableData;
-    }
+    DRV_CRYPTO_DMA_SetPushAddress((uint32_t) digest);
+    (void) DRV_CRYPTO_DMA_SetPushLength(sizeOfAvailableData);
+    (void) DRV_CRYPTO_DMA_StartPush();
 }

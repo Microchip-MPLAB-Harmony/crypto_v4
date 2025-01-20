@@ -44,6 +44,8 @@ Microchip or any third party.
 #ifndef DRV_CRYPTO_TRNG_HW_05346_H
 #define	DRV_CRYPTO_TRNG_HW_05346_H
 
+#define KEY_SIZE 128
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -70,4 +72,3 @@ void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen);
 #endif
 
 #endif	/* DRV_CRYPTO_TRNG_HW_05346_H */
-

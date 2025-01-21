@@ -57,7 +57,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
-    crypto_EccCurveType_E eccCurveType, ECDSA_CMD_CURVE *hwEccCurve, ECDSA_ECC_SIZE *eccSize)
+    crypto_EccCurveType_E eccCurveType, ECDSA_CMD_CURVE *hwEccCurve)
 {
     crypto_DigiSign_Status_E digiSigntatus = CRYPTO_DIGISIGN_SUCCESS;
 
@@ -65,22 +65,18 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
     {
         case CRYPTO_ECC_CURVE_P192:
             *hwEccCurve = P192;
-            *eccSize = P192_sz;
             break;
         
         case CRYPTO_ECC_CURVE_P256:
             *hwEccCurve = P256;
-            *eccSize = P256_sz;
             break;
         
         case CRYPTO_ECC_CURVE_P384:
             *hwEccCurve = P384;
-            *eccSize = P384_sz;
             break;
         
         case CRYPTO_ECC_CURVE_P521:
             *hwEccCurve = P521;
-            *eccSize = P521_sz;
             break;
             
         default:
@@ -139,7 +135,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
     crypto_DigiSign_Status_E result;
     CRYPTO_ECDSA_RESULT hwResult;
     ECDSA_CMD_CURVE hwEccCurve;
-    ECDSA_ECC_SIZE eccSize;
     ECDSA_CONFIG eccData = {
         .p1.size = 0, 
         .result_location = 0x99, 
@@ -149,17 +144,13 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
         .edwards = EDWARDS_OFF, 
         .field = FIELD_PRIME,
     };
+    
     /* Get curve */
-    result = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve, &eccSize);
+    result = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);
     if (result != CRYPTO_DIGISIGN_SUCCESS)
     {
         return result;
     } 
-    
-    if(hashLen > eccSize)
-    {
-        return CRYPTO_DIGISIGN_ERROR_INPUTHASH;
-    }
     
     /* Initialize the hardware library for ECDSA signature */
     hwResult = DRV_CRYPTO_ECDSA_InitEccParamsSign(&eccData, inputHash, hashLen, privKey, privKeyLen, hwEccCurve);
@@ -176,7 +167,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     crypto_DigiSign_Status_E result;
     CRYPTO_ECDSA_RESULT hwResult;
     ECDSA_CMD_CURVE hwEccCurve;
-    ECDSA_ECC_SIZE eccSize = 0;
     ECDSA_CONFIG eccData = {
         .p1.size = 0, 
         .result_location = 0x99, 
@@ -188,15 +178,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     };
     
     /* Get curve */
-    result = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve, &eccSize);
+    result = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);
     if (result != CRYPTO_DIGISIGN_SUCCESS)
     {
         return result;
-    }
-    
-    if(hashLen > eccSize)
-    {
-        return CRYPTO_DIGISIGN_ERROR_INPUTHASH;
     }
     
     /* Initialize the hardware library for ECDSA signature verification */

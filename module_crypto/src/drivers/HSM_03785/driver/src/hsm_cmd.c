@@ -34,7 +34,7 @@ void HSM_Cmd_Send(st_Hsm_SendCmdLayout sendCmd_st)
     printf("-------------Cmd Send Started----------\r\n");
 #endif    
 
-    SYS_CACHE_CleanInvalidateDCache();
+    SCB_CleanInvalidateDCache();
 
     // Make sure the HSM is not busy
     while ((uint32_t)(HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) == 1UL)
@@ -88,7 +88,7 @@ void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st)
     printf("-------------Cmd Response Reading Started----------\r\n");
 #endif
 
-    SYS_CACHE_CleanInvalidateDCache();
+    SCB_CleanInvalidateDCache();
 
     // Check for response received by reading RXINT
     mbrxstatus = HSM_REGS->HSM_MBRXSTATUS;

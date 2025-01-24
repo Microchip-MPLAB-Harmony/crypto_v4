@@ -17,8 +17,12 @@
 
 #include "hsm_common.h"
 
-#define HSM_BOOT_FIRMWARE_INIT_ADDR (0x0c7df800)
-#define HSM_BOOT_FIRMWARE_ADDR      (0x0c7e0000)
+<#if HSM_BOOT_FIRMWARE_INIT_ADDR?has_content>
+  <#lt>#define HSM_BOOT_FIRMWARE_INIT_ADDR  (${HSM_BOOT_FIRMWARE_INIT_ADDR})
+</#if>
+<#if HSM_BOOT_FIRMWARE_ADDR?has_content>
+  <#lt>#define HSM_BOOT_FIRMWARE_ADDR       (${HSM_BOOT_FIRMWARE_ADDR})
+</#if>
 
 typedef enum
 {

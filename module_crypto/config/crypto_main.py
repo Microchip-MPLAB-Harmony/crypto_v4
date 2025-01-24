@@ -53,6 +53,10 @@ def instantiateComponent(CommonCryptoComponent):
     # Check against ATDF for supported hardware and create necessary symbols
     supported_drivers = Crypto_HW_GetSupportedDriverList(CommonCryptoComponent)
 
+    # Extract ATDF device memory segment for HSM address
+    if supported_drivers:
+        Crypto_HW_GetMemorySegments(CommonCryptoComponent)
+
     # Use supported drivers list to assemble list of sets containing relevant file symbols 
     setup_hw_files(CommonCryptoComponent, supported_drivers)
 

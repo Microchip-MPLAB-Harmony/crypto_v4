@@ -88,8 +88,6 @@ void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st)
     printf("-------------Cmd Response Reading Started----------\r\n");
 #endif
 
-    SCB_CleanInvalidateDCache();
-
     // Check for response received by reading RXINT
     mbrxstatus = HSM_REGS->HSM_MBRXSTATUS;
 
@@ -98,6 +96,8 @@ void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st)
     while ((mbrxstatus & MBRXSTATUS_RXINT_MASK) != MBRXSTATUS_RXINT_MASK) 
         { mbrxstatus = HSM_REGS->HSM_MBRXSTATUS; }
     
+    SCB_CleanInvalidateDCache();
+
     // Check Mailbox Header
     response_st->respMailBoxHdr = HSM_REGS->HSM_MBRXHEAD;          
     

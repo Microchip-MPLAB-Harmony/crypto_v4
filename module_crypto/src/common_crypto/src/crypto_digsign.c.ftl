@@ -261,14 +261,14 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>             
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ecdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_VerifyData(ptr_inputData, dataLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, hashType_en,
-                                                                            ptr_hashVerifyStat, eccCurveType_En);
+                                                                            ptr_sigVerifyStat, eccCurveType_En);
             break; 
 </#if><#-- CRYPTO_WC_ECDSA -->    
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
             	ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_VerifyData(ptr_inputData, dataLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
-                                                                            hashType_en, ptr_hashVerifyStat, eccCurveType_En);
+                                                                            hashType_en, ptr_sigVerifyStat, eccCurveType_En);
 </#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->               
             break;
 </#if><#-- CRYPTO_HW_ECDSA -->            

@@ -272,16 +272,20 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
     return supported_drivers
 
 #--------------------------------------------------------------------------------------- 
-def Crypto_HW_GetMemorySegments(CommonCryptoComponent):
+def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     ''' Pulls size of flash from ATDF to determine HSM firmware location
     
     Args:
-        CommonCryptoComponent: Harmony component
+        CommonCryptoComponent:  Harmony component
+        supported_drivers:      set() of drivers supported by this board
 
     Returns:
         No direct return. String symbols created and used if hsm_boot.h.ftl
         is relevant to the project.
     '''
+
+    if "HSM_03785" not in supported_drivers:
+        return
 
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 

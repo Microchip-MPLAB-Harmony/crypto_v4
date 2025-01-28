@@ -284,9 +284,18 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
         is relevant to the project.
     '''
 
+    # Return early if HSM is not used
     if "HSM_03785" not in supported_drivers:
         return
+    
+    # Check if TrustZone is enabled
+    sec_enabled_node = ATDF.getNode('/avr-tools-device-file/devices/device/parameters/param@[name="__SEC_ENABLED"]')
+    trustzone_enabled = False
 
+    if sec_enabled_node is not None:
+        trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
+
+    # Maintain set of ways to refer to flash size in .atdf 
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 
     HSM_BOOT_FIRMWARE_INIT_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_INIT_ADDR", None)
@@ -294,26 +303,27 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_ADDR", None)
     HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
     
-    # Get flash size from ATDF
     for pfm in pfm_names:
-        flashPfmNode = ATDF.getNode(
+        flash_pfm_node = ATDF.getNode(
             '/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name="{}"]'.format(pfm)
         )
 
-        if flashPfmNode is not None:
+        if flash_pfm_node is not None:
             found_node = True
 
             print("Node found           | %s" % (pfm))
-            flash_start = int(flashPfmNode.getAttribute("start"), 16)
-            flash_end = int(flashPfmNode.getAttribute("size"), 16)
-
-            if Variables.get("__TRUSTZONE_ENABLED"):
+            flash_start = int(flash_pfm_node.getAttribute("start"), 16)
+            flash_end = int(flash_pfm_node.getAttribute("size"), 16)
+            
+            # HSM placed from midpoint of flash address space if TZ
+            if trustzone_enabled:
                 flash_end = flash_end // 2
+            
             flash_size = flash_start + flash_end
             
             # Save to string obj
-            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(flash_size - 0x20800))
-            HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(flash_size - 0x20000))
+            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(flash_size - 0x20800))  # 130kB
+            HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(flash_size - 0x20000))       # 128kB
     
     if not found_node:
         HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue("/* Unable to automatically fill address */")

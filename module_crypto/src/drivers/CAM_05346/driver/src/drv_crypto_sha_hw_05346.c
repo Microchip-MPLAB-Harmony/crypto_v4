@@ -49,6 +49,31 @@ Microchip or any third party.
 
 #include "../drv_crypto_sha_hw_05346.h"
 #include "../../../../../libraries/cam_dma.h"
+#include <xc.h>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Functions
+// *****************************************************************************
+// *****************************************************************************
+
+void __attribute__((interrupt)) _CRYPTO1Interrupt(void) 
+{
+    DRV_CRYPTO_DMA_IsrHelper();
+    _CRYPT1IF = 0;
+}
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File scope functions
+// *****************************************************************************
+// *****************************************************************************
+
+static void lDRV_CRYPTO_SHA_InterruptSetup(void) 
+{
+    _CRYPT1IF = 0;
+    _CRYPT1IE = 1;
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -67,7 +92,7 @@ void DRV_CRYPTO_SHA_Init(CRYPTO_SHA_ALGO shaAlgo)
     #endif
     
     DRV_CRYPTO_DMA_Configure();
-    DRV_CRYPTO_CAM_InterruptSetup();
+    lDRV_CRYPTO_SHA_InterruptSetup();
     DRV_CRYPTO_CAM_SYM_InterruptEnable();
     (void) DRV_CRYPTO_DMA_Reset();
     

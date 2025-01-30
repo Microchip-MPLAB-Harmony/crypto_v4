@@ -62,8 +62,11 @@ extern "C" {
 // *****************************************************************************
     
 CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(ECDSA_CONFIG *eccData, uint8_t *hash, uint32_t hashLen, uint8_t * privKey, uint32_t privKeyLen, ECDSA_CMD_CURVE hwEccCurve);
+
 CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(ECDSA_CONFIG *eccData, uint8_t * pfulSignature, uint32_t signatureLen);
+
 CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(ECDSA_CONFIG *eccData, uint8_t *inputHash, uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, ECDSA_CMD_CURVE hwEccCurve);
+
 CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Verify(ECDSA_CONFIG *eccData);
 
 #ifdef	__cplusplus

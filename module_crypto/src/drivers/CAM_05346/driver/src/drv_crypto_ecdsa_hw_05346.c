@@ -47,6 +47,19 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include "../drv_crypto_ecdsa_hw_05346.h"
+#include <xc.h>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Functions
+// *****************************************************************************
+// *****************************************************************************
+
+void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
+{
+    DRV_CRYPTO_ECDSA_IsrHelper();
+    _CRYPT3IF = 0;
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -54,7 +67,13 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
+static void lDRV_CRYPTO_ECDSA_InterruptSetup(void)
+{
+    _CRYPT3IF = 0;
+    _CRYPT3IE = 1;
+}
+
+static ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
 {
     ECDSA_ERROR error_code = ECDSA_NO_ERROR;
 
@@ -103,7 +122,7 @@ static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* e
     return error_code;
 }
 
-static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
+static ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
 {
     ECDSA_CONFIG eccData = {
         .operation = ECDSA_CLEAR_MEMORY,
@@ -123,7 +142,7 @@ static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_ClearMemory(void)
 }
 
 //TODO: placeholder until TRNG implementation is available
-static inline void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size)
+static void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t size)
 {
     for (uint32_t i = 0; i < size; i++)
     {
@@ -131,7 +150,7 @@ static inline void lDRV_CRYPTO_ECDSA_GetRandomNumber(uint8_t* data, uint32_t siz
     }
 }
 
-static inline CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size)
+static CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccCurve, ECDSA_ECC_SIZE *size)
 {
     CRYPTO_ECDSA_RESULT result = CRYPTO_ECDSA_RESULT_SUCCESS;
     switch (hwEccCurve)
@@ -155,7 +174,7 @@ static inline CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE
     return result;
 }
 
-static inline ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data)
+static ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data)
 {
     ECDSA_ERROR error_code;
 
@@ -213,7 +232,7 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(ECDSA_CONFIG *eccData, ui
         eccData->op_size = (uint32_t) size - 1U;
 
         DRV_CRYPTO_ECDSA_SetupEngine();
-        DRV_CRYPTO_ECDSA_InterruptSetup();
+        lDRV_CRYPTO_ECDSA_InterruptSetup();
     }
 
     return result;
@@ -272,7 +291,7 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsVerify(ECDSA_CONFIG *eccData, 
         eccData->op_size = ((uint8_t) size - 1U);
 
         DRV_CRYPTO_ECDSA_SetupEngine();
-        DRV_CRYPTO_ECDSA_InterruptSetup();
+        lDRV_CRYPTO_ECDSA_InterruptSetup();
     }
 
     return result;

@@ -62,7 +62,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size)
+static TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size)
 {
     TRNG_ERROR errorCode = DRV_CRYPTO_TRNG_ReadData(data, size);
     if (TRNG_NO_ERROR == errorCode) {
@@ -71,7 +71,7 @@ static inline TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_
     return errorCode;
 }
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(TRNG_CTX* trngData)
+static TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(TRNG_CTX* trngData)
 {
     uint32_t keyData[32] = {0};
     TRNG_ERROR errorCode = DRV_CRYPTO_TRNG_ReadData(keyData, KEY_SIZE);
@@ -89,7 +89,7 @@ static inline TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(TRNG_CTX* trngData)
     return errorCode;
 }
 
-static inline TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(TRNG_CTX* trngData)
+static TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(TRNG_CTX* trngData)
 {
     DRV_CRYPTO_TRNG_Reset();
     DRV_CRYPTO_TRNG_SetupEngine(trngData->fifo_write_startup, trngData->htest_after_cond, trngData->conditioning_bypass, trngData->nb128block);

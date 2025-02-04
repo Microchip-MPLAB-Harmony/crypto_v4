@@ -48,7 +48,6 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "device.h"
 #include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
 #include "crypto/drivers/driver/drv_crypto_sha_hw_05346.h"
 

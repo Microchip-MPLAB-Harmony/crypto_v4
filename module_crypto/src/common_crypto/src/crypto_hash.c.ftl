@@ -30,6 +30,9 @@
 
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_hash.h"
+<#if (crypto_hash_sha05346_wrapper_h_ftl_flag?? &&(crypto_hash_sha05346_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
+</#if>
 <#if (crypto_hash_sha6156_wrapper_h_ftl_flag?? &&(crypto_hash_sha6156_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_sha6156_wrapper.h"
 </#if>

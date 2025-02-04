@@ -51,7 +51,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "MCHP_Crypto_Hash_HwWrapper.h"
+#include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

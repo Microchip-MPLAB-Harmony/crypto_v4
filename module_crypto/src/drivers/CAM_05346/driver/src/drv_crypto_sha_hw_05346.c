@@ -47,8 +47,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include "../drv_crypto_sha_hw_05346.h"
-#include "../../../../../libraries/cam_dma.h"
+#include "crypto/drivers/driver/drv_crypto_sha_hw_05346.h"
+#include "crypto/drivers/library/cam_dma.h"
 #include <xc.h>
 
 // *****************************************************************************

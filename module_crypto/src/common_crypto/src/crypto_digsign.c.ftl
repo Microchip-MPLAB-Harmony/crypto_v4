@@ -30,6 +30,9 @@
 
 #include "crypto/common_crypto/crypto_digsign.h"
 #include "crypto/common_crypto/crypto_common.h"
+<#if crypto_digisign_cam05346_wrapper_h_ftl_flag?? &&(crypto_digisign_cam05346_wrapper_wrapper_h_ftl_flag == true)>
+#include "crypto/drivers/wrapper/crypto_digisign_cam05346_wrapper.h"
+</#if>
 <#if crypto_digisign_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_digisign_cpkcc44163_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_cpkcc44163_wrapper.h"
 </#if>

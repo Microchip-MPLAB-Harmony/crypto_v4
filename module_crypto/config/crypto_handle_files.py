@@ -4,6 +4,18 @@ execfile( Module.getPath() + os.path.join("config", "crypto_globals.py"))
 
 #################################################################################
 
+def make_setting_symbol(component, symbol_name, category, key, value, append=True, separator=";"):
+    
+    setting_symbol = component.createSettingSymbol(symbol_name, None)
+    setting_symbol.setCategory(category)
+    setting_symbol.setKey(key)
+    setting_symbol.setValue(value)
+    setting_symbol.setAppend(append, separator)
+
+    setting_symbol.setSecurity("SECURE" if Variables.get("__TRUSTZONE_ENABLED") else "NON_SECURE")
+
+    return setting_symbol
+
 def make_file_symbol(component, file_name, relative_path, prefix, dest_path, project_path, markup, enabled):
     """ 
     Create an MCC file symbol with a unique identifier and an identical 
@@ -99,6 +111,31 @@ def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
 
 #################################################################################
 
+def setup_crypto_settings(component):
+    """
+    Add paths to preprocessor include directories
+    """
+
+    config_name = Variables.get("__CONFIGURATION_NAME")
+
+    # Include directories paths
+    include_dirs = [
+        "../src/config/" + config_name + "/crypto/wolfcrypt",
+        "../src/config/" + config_name + "/crypto/common_crypto",
+        "../src/config/" + config_name + "/crypto/drivers"
+    ]
+
+    # Create include path symbol
+    make_setting_symbol(
+        component,
+        "XC32_CRYPTO_INCLUDE_DIRS",
+        "C32",
+        "extra-include-directories",
+        ";".join(include_dirs)
+    )
+
+    return True
+
 def setup_common_crypto(component):
     """
     Make symbols for files in src/common_crypto and add to global dict
@@ -186,7 +223,7 @@ def setup_hw_files(component, supported_drivers):
     """
     Make symbols for crypto_v4
     """
-
+    setup_crypto_settings(component)
     setup_common_crypto(component)
     setup_drivers(component, supported_drivers)
     setup_templates(component)

@@ -216,9 +216,7 @@ def setup_wc_settings(component):
     include_dirs = [
         "../src/third_party/wolfssl/wolfssl/wolfcrypt",
         "../src/third_party/wolfssl",
-        "../src/third_party/wolfcrypt",
-        "../src/config/" + config_name + "/crypto/wolfcrypt",
-        "../src/config/" + config_name + "/crypto/drivers"
+        "../src/third_party/wolfcrypt"
     ]
 
     # Create include path symbol

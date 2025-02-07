@@ -56,7 +56,7 @@ typedef struct
     crypto_HandlerType_E macHandlerType_en;
     uint8_t *ptr_key;
     uint32_t mackeyLen;
-    uint8_t arr_macDataCtx[70];
+    uint8_t arr_macDataCtx[512]__attribute__((aligned (4)));
 }st_Crypto_Mac_Aes_ctx;
 // *****************************************************************************
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>

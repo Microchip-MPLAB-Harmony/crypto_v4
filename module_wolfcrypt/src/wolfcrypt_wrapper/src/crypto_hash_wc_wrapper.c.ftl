@@ -692,7 +692,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeUpdate(void *ptr_shakeCtx_st, uint8_t *
         {
 <#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true))>      
             case CRYPTO_HASH_SHA3_SHAKE128:
-                //wcShakeStatus = wc_Shake128_Update((wc_Shake*)ptr_shakeCtx_st, (const byte*)ptr_data, (word32)dataLen);
+                wcShakeStatus = wc_Shake128_Update((wc_Shake*)ptr_shakeCtx_st, (const byte*)ptr_data, (word32)dataLen);
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_128 --> 
 <#if (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>           
@@ -701,7 +701,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeUpdate(void *ptr_shakeCtx_st, uint8_t *
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_256 --> 
             default:
-                //ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
                 break; 
         }
 
@@ -735,7 +735,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeFinal(void *ptr_shakeCtx_st, uint8_t *p
         {
 <#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true))>    
             case CRYPTO_HASH_SHA3_SHAKE128:
-                //wcShakeStatus = wc_Shake128_Final((wc_Shake*)ptr_shakeCtx_st, ptr_digest, digestLen);
+                wcShakeStatus = wc_Shake128_Final((wc_Shake*)ptr_shakeCtx_st, ptr_digest, digestLen);
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_128 --> 
 <#if (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>           

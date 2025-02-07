@@ -639,7 +639,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
 <#if  (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) 
 							|| (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, (keyLen/8u), ptr_initVect);
+                ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
 </#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
@@ -693,7 +693,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handl
 <#if  (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) 
 				|| (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, (keyLen/8u), ptr_initVect);
+                ret_camStatus_en = Crypto_Sym_Wc_Camellia_DecryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
 </#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:

@@ -354,10 +354,13 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
     }
-    else if( (ptr_initVect == NULL) 
-<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) >           
-            && (opMode_en != CRYPTO_SYM_OPMODE_ECB) 
-</#if><#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->             
+    else if( (ptr_initVect == NULL)
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>           
+            && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->             
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>            
+            && (opMode_en != CRYPTO_SYM_OPMODE_XTS)
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->            
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -436,9 +439,12 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
     }
     else if( (ptr_initVect == NULL)
-<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) >            
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if><#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->            
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->             
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>            
+            && (opMode_en != CRYPTO_SYM_OPMODE_XTS)
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->            
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;

@@ -87,7 +87,7 @@ typedef struct
     uint32_t aeadKeySize;
     uint8_t *ptr_aeadNonce;
     uint32_t aeadNonceLen;
-    uint8_t arr_aeadDataCtx[512]__attribute__((aligned (4)));
+    uint8_t arr_aeadDataCtx[1920]__attribute__((aligned (4)));
 }st_Crypto_Aead_AesEax_ctx;
 </#if><#-- CRYPTO_WC_AES_EAX -->
 // *****************************************************************************

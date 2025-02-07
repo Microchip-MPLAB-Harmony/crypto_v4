@@ -32,7 +32,7 @@
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define CRYPTO_HASH_SHA512CTX_SIZE (320)
+#define CRYPTO_HASH_SHA512CTX_SIZE (512)
 
 typedef enum {
     CRYPTO_HASH_INVALID = 0,
@@ -171,7 +171,7 @@ typedef struct{
     uint32_t digestLen;
     crypto_Hash_Algo_E shakeAlgo_en;
     crypto_HandlerType_E shakeHandler_en;
-    uint8_t arr_shakeDataCtx[CRYPTO_HASH_SHA512CTX_SIZE];// __attribute__((aligned (8)));
+    uint8_t arr_shakeDataCtx[CRYPTO_HASH_SHA512CTX_SIZE] __attribute__((aligned (4)));
 }st_Crypto_Hash_Shake_Ctx;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))))>

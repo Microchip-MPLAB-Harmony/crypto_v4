@@ -66,7 +66,11 @@ typedef enum {
 		|| (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true))     || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
 		|| (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true))   || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true))   
 		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true))) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true)) 
-		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>
+		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))
+		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))
+		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))
+		|| (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))))
+		|| (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true))))>
 //This needs to be taken care when no using any AES algorithm variant
 typedef enum
 {

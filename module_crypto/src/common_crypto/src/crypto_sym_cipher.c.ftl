@@ -1185,7 +1185,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20_Cipher(st_Crypto_Sym_StreamCtx *ptr_chaC
         {
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))))>         
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaChaUpdate(ptr_chaChaCtx_st, ptr_inputData, dataLen, ptr_outData);
+                ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaChaUpdate(ptr_chaChaCtx_st->arr_symDataCtx, ptr_inputData, dataLen, ptr_outData);
                 break;
 </#if><#-- CRYPTO_WC_CHACHA20  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:

@@ -128,7 +128,7 @@ typedef struct
     uint8_t *ptr_key;
     uint32_t symKeySize;
     uint8_t *ptr_initVect;
-    uint8_t arr_symDataCtx[512];
+    uint8_t arr_symDataCtx[1920]__attribute__((aligned (4)));
 }st_Crypto_Sym_BlockCtx;
 
 //AES

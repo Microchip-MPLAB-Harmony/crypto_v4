@@ -168,6 +168,7 @@ def setup_drivers(component, supported_drivers):
     
     # Recursively go through the driver's directory and collect all relevant file paths
     for driver in supported_drivers:
+        driver = driver.lower()
         driver_path = os.path.join(module_path, "src", "drivers", driver)
         
         if os.path.exists(driver_path):

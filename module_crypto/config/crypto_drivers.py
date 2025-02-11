@@ -190,7 +190,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl", 
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
-            "LibraryFiles": ["CPKCL_Lib"]
+            "LibraryFiles": ["cpkcl_lib"]
         },
         "KasAlgo": {
             "WrapperFiles": [
@@ -200,7 +200,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl", 
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
-            "LibraryFiles": ["CPKCL_Lib"]
+            "LibraryFiles": ["cpkcl_lib"]
         },
     },
     "SHA_6156": {

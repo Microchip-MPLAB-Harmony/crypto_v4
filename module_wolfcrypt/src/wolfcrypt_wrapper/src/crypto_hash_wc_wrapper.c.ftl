@@ -52,7 +52,9 @@
 <#if    (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))
     ||  (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
     ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))
-    ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))> 
+    ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))
+    ||  (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true))
+    ||  (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))> 
 #include "wolfssl/wolfcrypt/sha3.h"
 </#if><#-- CRYPTO_WC_SHA3_224 || CRYPTO_WC_SHA3_256 || CRYPTO_WC_SHA3_384 || CRYPTO_WC_SHA3_512 -->
 <#if (CRYPTO_WC_BLAKE2S?? &&(CRYPTO_WC_BLAKE2S == true)) || (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>

@@ -42,9 +42,9 @@ Microchip or any third party.
 #ifndef CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
 #define CRYPTOLIB_JUMPTABLE_ADDR_PB_INCLUDED_
 
-#include "CryptoLib_typedef_pb.h"
-#include "CryptoLib_mapping_pb.h"
-#include "CryptoLib_Headers_pb.h"
+#include "cryptolib_typedef_pb.h"
+#include "cryptolib_mapping_pb.h"
+#include "cryptolib_headers_pb.h"
 
 /* MISRA C-2012 deviation block start */
 /* MISRA C-2012 Rule 8.2 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_8_2_DR_1 */

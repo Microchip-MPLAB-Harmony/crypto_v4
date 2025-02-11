@@ -42,7 +42,7 @@ Microchip or any third party.
 #ifndef CRYPTOLIB_GCD_PB_INCLUDED
 #define CRYPTOLIB_GCD_PB_INCLUDED
 
-#include "CryptoLib_typedef_pb.h"
+#include "cryptolib_typedef_pb.h"
 
 // Structure definition
 typedef struct struct_CPKCL_gcd {

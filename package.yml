@@ -7,12 +7,6 @@ package:
   version: "v4.0.0-E3"
 
   dependencies:
-    - name: "core"
-      type: "package"
-      version: "v3.13.1"
     - name: "wolfssl"
       type: "package"
       version: "v5.7.0"
-    - name: "zlib"
-      type: "package"
-      version: "v1.2.11"

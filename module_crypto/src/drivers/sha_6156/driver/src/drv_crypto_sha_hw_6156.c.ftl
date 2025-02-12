@@ -8,7 +8,7 @@
     drv_crypto_sha_hw_6156.c
 
   Summary:
-    Crypto Framework Libarary interface file for hardware SHA.
+    Crypto Framework Library interface file for hardware SHA.
 
   Description:
     This source file contains the interface that make up the SHA hardware 

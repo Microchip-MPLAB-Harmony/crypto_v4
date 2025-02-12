@@ -34,7 +34,7 @@ void HSM_Cmd_Send(st_Hsm_SendCmdLayout sendCmd_st)
     printf("-------------Cmd Send Started----------\r\n");
 #endif    
 
-    SCB_CleanInvalidateDCache();
+    DCACHE_CLEAN_INVALIDATE();
 
     // Make sure the HSM is not busy
     while ((uint32_t)(HSM_REGS->HSM_STATUS & HSM_STATUS_BUSY_Msk) == 1UL)
@@ -96,7 +96,7 @@ void Hsm_Cmd_ReadCmdResponse(st_Hsm_ResponseCmd *response_st)
     while ((mbrxstatus & MBRXSTATUS_RXINT_MASK) != MBRXSTATUS_RXINT_MASK) 
         { mbrxstatus = HSM_REGS->HSM_MBRXSTATUS; }
     
-    SCB_CleanInvalidateDCache();
+    DCACHE_CLEAN_INVALIDATE();
 
     // Check Mailbox Header
     response_st->respMailBoxHdr = HSM_REGS->HSM_MBRXHEAD;          

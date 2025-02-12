@@ -3,7 +3,26 @@
 
 # Microchip MPLAB® Harmony 3 Crypto v4 Release Notes
 
-# Crypto Release v4.0.0-E3
+## Crypto Release v4.0.0-E4
+
+### New Features
+* **Fill HSM addresses** with correct values for pre-made ```.hex``` in ```hsm_boot.h```
+
+### Bug fixes
+* D-cache can be enabled when using the HSM
+* Changed parameter ```ptr_hashVerifyStat to ptr_sigVerifyStat``` to accurately describe ECDSA operation
+* Fixed memory alignment and buffer sizes for many SW-only algorithms 
+* Added correct copyright headings 
+
+### Known issues
+* AES-GCM streaming mode not supported in this engineering release
+* GMAC streaming mode not supported in this engineering release 
+
+### Notes
+* This is an engineering release which has not been fully validated
+
+
+## Crypto Release v4.0.0-E3
 
 ### New Features
 - **Added Beta Hardware Acceleration for PIC32CZ_CA9x** Includes hardware acceleration drivers to speed up cryptographic operations as an alternative to wolfSSL on supported algorithms.
@@ -19,6 +38,7 @@
 
 ### Notes
 - This is an engineering release which has not been fully validated
+
 
 ## Crypto Release v4.0.0-E2
 
@@ -69,6 +89,7 @@
 ### Notes
 - This is an engineering release which has not been fully validated
 
+
 ## Crypto Release v4.0.0-E1
 
 ### New Features
@@ -113,7 +134,6 @@
     7.  RNG (Random Number Generator) - Requires SYSTICK to be enabled
 
             Pseudo RNG
-
 
 ### Bug fixes
 - N/A

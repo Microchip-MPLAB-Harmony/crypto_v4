@@ -15,8 +15,8 @@
 * Added correct copyright headings 
 
 ### Known issues
-* AES-GCM streaming mode not supported in this engineering release
-* GMAC streaming mode not supported in this engineering release 
+* AES-GCM multi-step not supported in this engineering release
+* GMAC multi-step not supported in this engineering release 
 
 ### Notes
 * This is an engineering release which has not been fully validated

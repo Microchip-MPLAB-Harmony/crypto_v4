@@ -74,46 +74,46 @@ static void lDRV_CRYPTO_ECDSA_InterruptSetup(void)
     _CRYPT3IE = 1;
 }
 
-static ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* ecc_data)
+static ECDSA_ERROR lDRV_CRYPTO_ECDSA_SetVariableLocations(ECDSA_CONFIG* eccData)
 {
     ECDSA_ERROR errorCode = ECDSA_NO_ERROR;
 
-    switch (ecc_data->operation)
+    switch (eccData->operation)
     {
     case ECDSA_SIGNATURE_GENERATION:
-        errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_D, ecc_data->op1.data, ecc_data->op1.size);
+        errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_D, eccData->op1.data, eccData->op1.size);
         
         if (errorCode == ECDSA_NO_ERROR)
         {
-            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_K, ecc_data->op2.data, ecc_data->op2.size);
+            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_K, eccData->op2.data, eccData->op2.size);
         }
         
         if (errorCode == ECDSA_NO_ERROR)
         {
-            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_H, ecc_data->op3.data, ecc_data->op3.size);
+            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_H, eccData->op3.data, eccData->op3.size);
         }
         break;
     case ECDSA_SIGNATURE_VERIFICATION:
-        errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_R, ecc_data->op1.data, ecc_data->op1.size);
+        errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_R, eccData->op1.data, eccData->op1.size);
         
         if (errorCode == ECDSA_NO_ERROR)
         {
-            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_S, ecc_data->op2.data, ecc_data->op2.size);
+            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_S, eccData->op2.data, eccData->op2.size);
         }
         
         if (errorCode == ECDSA_NO_ERROR)
         {
-            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_H, ecc_data->op3.data, ecc_data->op3.size);
+            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_H, eccData->op3.data, eccData->op3.size);
         }
         
         if (errorCode == ECDSA_NO_ERROR)
         {
-            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_QX, ecc_data->p1.x, ecc_data->p1.size);
+            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_QX, eccData->p1.x, eccData->p1.size);
         }
         
         if (errorCode == ECDSA_NO_ERROR)
         {
-            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_QX + 1, ecc_data->p1.y, ecc_data->p1.size);
+            errorCode = DRV_CRYPTO_ECDSA_WriteLocation(ECDSA_QX + 1, eccData->p1.y, eccData->p1.size);
         }
         break;
     default:
@@ -174,27 +174,27 @@ static CRYPTO_ECDSA_RESULT lDRV_CRYPTO_ECDSA_GetCurveSize(ECDSA_CMD_CURVE hwEccC
     return result;
 }
 
-static ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* ecc_data)
+static ECDSA_ERROR lDRV_CRYPTO_ECDSA_ExecuteCommand(ECDSA_CONFIG* eccData)
 {
     ECDSA_ERROR errorCode;
 
     errorCode = lDRV_CRYPTO_ECDSA_ClearMemory();
     if (errorCode == ECDSA_NO_ERROR)
     {
-        errorCode = lDRV_CRYPTO_ECDSA_SetVariableLocations(ecc_data);
+        errorCode = lDRV_CRYPTO_ECDSA_SetVariableLocations(eccData);
     }
     
     if (errorCode == ECDSA_NO_ERROR)
     {
-        DRV_CRYPTO_ECDSA_SetCommand(ecc_data);
+        DRV_CRYPTO_ECDSA_SetCommand(eccData);
 
         DRV_CRYPTO_ECDSA_StartEngine();
     }
 
-    if (0x99U != ecc_data->result_location)
+    if (0x99U != eccData->result_location)
     {
-        errorCode = DRV_CRYPTO_ECDSA_ReadLocation(ecc_data->result_location, ecc_data->r1.data, ecc_data->r1.size);
-        ecc_data->result_location = 0x99;
+        errorCode = DRV_CRYPTO_ECDSA_ReadLocation(eccData->result_location, eccData->r1.data, eccData->r1.size);
+        eccData->result_location = 0x99;
     }
     
     if (errorCode == ECDSA_NO_ERROR)

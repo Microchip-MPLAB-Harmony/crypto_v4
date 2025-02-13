@@ -49,6 +49,7 @@ Microchip or any third party.
 
 #include "crypto/drivers/driver/drv_crypto_trng_hw_05346.h"
 #include "crypto/drivers/library/cam_trng.h"
+#include <xc.h>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -56,28 +57,34 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+void __attribute__((interrupt)) _CRYPTO2Interrupt(void);
+
+void __attribute__((interrupt)) _CRYPTO2Interrupt(void) 
+{
+    DRV_CRYPTO_TRNG_IsrHelper();
+    _CRYPT2IF = 0;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: File Scope Functions
 // *****************************************************************************
 // *****************************************************************************
 
-static TRNG_ERROR lDRV_CRYPTO_TRNG_ReadDriverData(uint32_t* data, uint32_t size)
+static void lDRV_CRYPTO_TRNG_InterruptSetup(void) 
 {
-    TRNG_ERROR errorCode = DRV_CRYPTO_TRNG_ReadData(data, size);
-    if (TRNG_NO_ERROR == errorCode) {
-        errorCode = DRV_CRYPTO_TRNG_CheckError();
-    }
-    return errorCode;
+    _CRYPT2IF = 0;
+    _CRYPT2IE = 1;
 }
 
 static TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(TRNG_CTX* trngData)
 {
-    uint32_t keyData[32] = {0};
+    uint8_t keyData[KEY_SIZE] = {0};
     TRNG_ERROR errorCode = DRV_CRYPTO_TRNG_ReadData(keyData, KEY_SIZE);
+
     if (TRNG_NO_ERROR != errorCode)
     {
-        errorCode = TRNG_KEY_SETUP_FAIL;
+        errorCode = TRNG_KEY_SETUP;
     }
     else 
     {
@@ -85,16 +92,20 @@ static TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(TRNG_CTX* trngData)
         trngData->key.size = KEY_SIZE;
         DRV_CRYPTO_TRNG_SetupKey(trngData->key.data, trngData->key.size);
     }
+
+    DRV_CRYPTO_TRNG_Reset();
     
     return errorCode;
 }
 
 static TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(TRNG_CTX* trngData)
 {
-    DRV_CRYPTO_TRNG_Reset();
-    DRV_CRYPTO_TRNG_SetupEngine(trngData->fifo_write_startup, trngData->htest_after_cond, trngData->conditioning_bypass, trngData->nb128block);
-    DRV_CRYPTO_TRNG_SetInitialWait(trngData->initial_wait);
-    DRV_CRYPTO_TRNG_SetFifoThreshold( trngData->fifo_threshold);
+    DRV_CRYPTO_TRNG_SetupEngine(trngData->fifoWriteStartup, 
+            trngData->htestAfterCond, trngData->conditioningBypass, 
+            trngData->nb128Block);
+    DRV_CRYPTO_TRNG_SetInitialWait(trngData->initialWait);
+    DRV_CRYPTO_TRNG_SetFifoThreshold( trngData->fifoThreshold);
+    lDRV_CRYPTO_TRNG_InterruptSetup();
     return lDRV_CRYPTO_TRNG_SetKey(trngData);
 }
 
@@ -106,17 +117,19 @@ static TRNG_ERROR lDRV_CRYPTO_TRNG_Setup(TRNG_CTX* trngData)
 
 void DRV_CRYPTO_TRNG_Generate(uint8_t *rngData, uint32_t rngLen) 
 {
-    TRNG_CTX trngData;
-    trngData.clk_div = 0;                           // Set the frequency div at which the outputs of the rings are sampled is given by
-    trngData.conditioning_bypass = false;           // Conditioning function bypass bit
-    trngData.fifo_threshold = 3;                    // FIFO level below which the module leaves the idle state to refill the FIFO, expressed in number of
-                                                    // 128-bit blocks
-    trngData.fifo_write_startup = false;            // Enable/Disable write of the samples in the FIFO during start-up 
-    trngData.htest_after_cond = false;              // Output Before/After conditioning as input to Health test module
-    trngData.initial_wait = 0x100;                  // Set the number of clock cycles to wait before sampling data from the noise          
-    trngData.nb128block = 4;                        // Number of 128-bit blocks used in AES-CBCMAC post-processing bits
-    trngData.off_tmr = 0xFFF; 
+    TRNG_CTX trngData = {
+        .clkDiv = 0,                     
+        .conditioningBypass = false,       
+        .fifoThreshold = 3,         
+        .fifoWriteStartup = false,          
+        .htestAfterCond = false,           
+        .initialWait = 256,                     
+        .nb128Block = 4        
+    };
     
     (void) lDRV_CRYPTO_TRNG_Setup(&trngData);
-    (void) lDRV_CRYPTO_TRNG_ReadDriverData((uint32_t*) rngData, rngLen);
+
+    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+
+    DRV_CRYPTO_TRNG_Reset();
 }

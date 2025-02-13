@@ -36,6 +36,9 @@
 <#if (crypto_rng_trng6334_wrapper_h_ftl_flag?? &&(crypto_rng_trng6334_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_rng_trng6334_wrapper.h"
 </#if>
+<#if (crypto_rng_trng05346_wrapper_h_ftl_flag?? &&(crypto_rng_trng05346_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_rng_trng05346_wrapper.h"
+</#if>
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_rng_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_rng_wc_wrapper.h"
 </#if>
@@ -89,6 +92,9 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en, 
 <#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_03597_DRIVER")>              
                 ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
 </#if><#-- HAVE_CRYPTO_HW_TRNG_03597_DRIVER -->
+<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_05346_DRIVER")>              
+                ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
+</#if><#-- HAVE_CRYPTO_HW_TRNG_05346_DRIVER -->
 				break;
 </#if><#-- CRYPTO_HW_RNG_TRNG -->       
             default:
@@ -100,4 +106,3 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en, 
     return ret_rngStat_en;
 }
 </#if><#-- CRYPTO_WC_PRNG || CRYPTO_HW_RNG_TRNG -->  
-

@@ -7,6 +7,9 @@ package:
   version: "v4.0.0-E3"
 
   dependencies:
+    - name: "csp"
+      type: "package"
+      version: "v3.21.0"
     - name: "wolfssl"
       type: "package"
       version: "v5.7.0"

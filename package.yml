@@ -7,6 +7,9 @@ package:
   version: "v4.0.0-E3"
 
   dependencies:
+    - name: "crypto_hsm"
+      type: "package"
+      version: "v1.1.0"
     - name: "csp"
       type: "package"
       version: "v3.21.0"

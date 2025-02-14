@@ -9,7 +9,7 @@ package:
   dependencies:
     - name: "crypto_hsm"
       type: "package"
-      version: "v1.1.0"
+      version: "v1.1.1"
     - name: "csp"
       type: "package"
       version: "v3.21.0"

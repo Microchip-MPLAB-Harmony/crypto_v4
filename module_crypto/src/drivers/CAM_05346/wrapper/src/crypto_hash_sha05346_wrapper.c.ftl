@@ -150,7 +150,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     
     #ifdef ENABLE_SW_PADDING
 
-    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;    
+    const CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
     
     switch(shaCtx->algo)
     {
@@ -164,28 +164,36 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
             return CRYPTO_HASH_ERROR_ALGO;
     }
     
+    /**
+    *  cppcheck-suppress misra-c2012-18.8
+    * 
+    *  (Rule 18.8) REQUIRED: Variable-length array types shall not be used
+    * 
+    *  Reasoning: Software padding requires an array to be created according to 
+    *   passed in data length plus padding size
+    */
     uint8_t inputDataPadded[inputDataLen];
-        
-    memcpy(inputDataPadded, inputData, dataLen);
     
-    for(int index = dataLen; index < inputDataLen - 1; index++)
+    (void) memcpy(inputDataPadded, inputData, dataLen);
+    
+    for(uint32_t index = dataLen; index < (inputDataLen - 1U); index++)
     {
         inputDataPadded[index] = (uint8_t) 0x00;
     }
 
     inputDataPadded[dataLen] = 0x80;
     
-    inputDataPadded[inputDataLen - 5] = dataLen >> 29;
-    inputDataPadded[inputDataLen - 4] = dataLen >> 21;
-    inputDataPadded[inputDataLen - 3] = dataLen >> 13;
-    inputDataPadded[inputDataLen - 2] = dataLen >> 5;
-    inputDataPadded[inputDataLen - 1] = dataLen << 3;
+    inputDataPadded[inputDataLen - 5U] = dataLen >> 29U;
+    inputDataPadded[inputDataLen - 4U] = dataLen >> 21U;
+    inputDataPadded[inputDataLen - 3U] = dataLen >> 13U;
+    inputDataPadded[inputDataLen - 2U] = dataLen >> 5U;
+    inputDataPadded[inputDataLen - 1U] = dataLen << 3U;
 
     inputData = &inputDataPadded[0];
     
     #else
 
-    if(inputDataLen == 0)
+    if(inputDataLen == 0U)
     {
         inputDataLen = 4;
         numOfInvalidBytes = 4;

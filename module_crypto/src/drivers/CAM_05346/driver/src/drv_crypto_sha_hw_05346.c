@@ -57,6 +57,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+void __attribute__((interrupt)) _CRYPTO1Interrupt(void);
+
 void __attribute__((interrupt)) _CRYPTO1Interrupt(void) 
 {
     DRV_CRYPTO_DMA_IsrHelper();
@@ -134,7 +136,7 @@ void DRV_CRYPTO_SHA_Update(uint8_t *data, uint32_t size, uint8_t numOfInvalidByt
     (void) DRV_CRYPTO_DMA_StartFetch();
 }
 
-void DRV_CRYPTO_SHA_GetOutputData(CRYPTO_HASH_HW_CONTEXT *shaFinalCtx, uint8_t *digest)
+void DRV_CRYPTO_SHA_GetOutputData(const CRYPTO_HASH_HW_CONTEXT *shaFinalCtx, uint8_t *digest)
 {
     uint32_t sizeOfAvailableData;
     

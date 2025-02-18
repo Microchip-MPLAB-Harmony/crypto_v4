@@ -84,5 +84,4 @@ typedef struct
 
 int Hsm_Boot_Initialization(void);
 int Hsm_Boot_GetStatus(void);
-void Hsm_Initialsation(void);
 #endif /* HSM_BOOT_H */

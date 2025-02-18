@@ -136,7 +136,7 @@ static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
     return ret_cmdStat_en;
 }
 
-int Hsm_Boot_Intialisation(void)
+int Hsm_Boot_Initialization(void)
 {
     int ret_status = 0x00;
     hsm_Cmd_Status_E initStat_en = HSM_CMD_ERROR_FAILED;

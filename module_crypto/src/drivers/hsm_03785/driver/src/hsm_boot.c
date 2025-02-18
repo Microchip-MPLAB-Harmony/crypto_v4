@@ -140,17 +140,10 @@ int Hsm_Boot_Initialization(void)
 {
     int ret_status = 0x00;
     hsm_Cmd_Status_E initStat_en = HSM_CMD_ERROR_FAILED;
-    uint8_t hsmFirmware[1024];
+    
     //HSM Firmware image is loaded via .hex project to flash
-    uint8_t *hsmFirmwareLoc = (uint8_t *) HSM_BOOT_FIRMWARE_INIT_ADDR; //0x0c7df800;
-    if(memcpy(hsmFirmware, hsmFirmwareLoc, sizeof(hsmFirmware)) == hsmFirmware)
-    {
-        hsmFirmwareLoc = (uint8_t *) HSM_BOOT_FIRMWARE_ADDR; //0x0c7e0000;
-        if(memcpy(hsmFirmware, hsmFirmwareLoc, sizeof(hsmFirmware)) == hsmFirmware)
-        {
-           initStat_en = Hsm_Boot_LoadBootFirmware(); 
-        }
-    }
+    initStat_en = Hsm_Boot_LoadBootFirmware(); 
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 10.4" "H3_MISRAC_2012_R_10_4_DR_1"    
@@ -160,7 +153,7 @@ int Hsm_Boot_Initialization(void)
 #pragma GCC diagnostic pop        
         ret_status = 0x01;
         #ifdef HSM_PRINT 
-        printf("\r\nHSM is Operation\n");
+        printf("\r\nHSM is Operational\n");
         #endif 
     }
     else
@@ -170,6 +163,7 @@ int Hsm_Boot_Initialization(void)
         printf("\r\nHSM waiting for Operational State");
         #endif
     }
+
     return ret_status;
 }
    

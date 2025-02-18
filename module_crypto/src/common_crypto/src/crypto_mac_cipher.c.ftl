@@ -262,6 +262,40 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCt
     return ret_aesGmacStat_en;
 }
 
+crypto_Mac_Status_E Crypto_Mac_AesGmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, 
+                                                                                                                uint8_t *ptr_outMac, uint32_t macLen)
+{
+    crypto_Mac_Status_E ret_aesGmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
+    
+    if(ptr_aesGmacCtx_st == NULL)
+    {
+        ret_aesGmacStat_en = CRYPTO_MAC_ERROR_CTX;
+    }
+    else if( (ptr_aad == NULL) && (aadLen > 0u) )
+    {
+        ret_aesGmacStat_en = CRYPTO_MAC_ERROR_AAD;
+    }
+    else
+    {
+        switch(ptr_aesGmacCtx_st->macHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>  		
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_aesGmacStat_en = Crypto_Mac_Wc_AesGmac_Cipher((void*)ptr_aesGmacCtx_st->arr_macDataCtx, ptr_initVect, initVectLen, ptr_aad, aadLen,
+                                                                                                                                    ptr_outMac, macLen);
+				break;
+</#if><#-- CRYPTO_WC_AES_GMAC -->				
+            case CRYPTO_HANDLER_HW_INTERNAL:
+
+				break;
+            default:
+                ret_aesGmacStat_en = CRYPTO_MAC_ERROR_HDLR;
+				break;
+        }
+    }
+    return ret_aesGmacStat_en;
+}
+
 crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, 
                                                                                                   uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID)
 {

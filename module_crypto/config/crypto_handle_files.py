@@ -222,18 +222,44 @@ def setup_drivers(component, supported_drivers):
 
 def setup_templates(component):
     """
-    # Will make file symbols for anything in Module_CommonCrypto/templates
-    # which can then be toggled on and off by including the file in any of the file dicts
+    Will make the supported harmony template files. These are hardcoded.
+    Update set<string>harmony_templates_supported if adding to this function. 
+
+    Will make file symbols for anything in Module_CommonCrypto/templates
+    which can then be toggled on and off by including the file in any of the file dicts.
     """
 
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
     templates_path = os.path.join(module_path, "templates")
 
+    harmony_templates_supported = {
+        "system_definitions.h.ftl",
+        "system_initialize.c.ftl"
+    }
+
+    print("Inserting crypto setup code into files: %s\n" % harmony_templates_supported)
+
+    # Insert into initialization.c
+    crypto_init_insert = component.createFileSymbol("DRV_CC_SYS_INIT", None)
+    crypto_init_insert.setType("STRING")
+    crypto_init_insert.setOutputName("core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_PERIPHERALS")
+    crypto_init_insert.setSourcePath("templates/system_initialize.c.ftl")
+    crypto_init_insert.setMarkup(True)
+
+    # Insert into definitions.h
+    crypto_def_insert = component.createFileSymbol("DRV_CC_SYSTEM_DEF", None)
+    crypto_def_insert.setType("STRING")
+    crypto_def_insert.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
+    crypto_def_insert.setSourcePath("templates/system_definitions.h.ftl")
+    crypto_def_insert.setMarkup(True)
+
     # Recursively go through the common_crypto directory and collect all file paths
     if os.path.exists(templates_path):
         for root, dirs, files in os.walk(templates_path):
             for file in files:
+                if file in harmony_templates_supported:
+                    continue  # Skip harmony template files
                 
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)

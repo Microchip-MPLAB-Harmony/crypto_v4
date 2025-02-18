@@ -164,8 +164,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
             return CRYPTO_HASH_ERROR_ALGO;
     }
     
-    /**
-    *  cppcheck-suppress misra-c2012-18.8
+    /* cppcheck-suppress misra-c2012-18.8
     * 
     *  (Rule 18.8) REQUIRED: Variable-length array types shall not be used
     * 

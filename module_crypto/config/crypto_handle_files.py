@@ -240,17 +240,32 @@ def setup_templates(component):
 
     print("Inserting crypto setup code into files: %s\n" % harmony_templates_supported)
 
+    # Check if TrustZone is enabled
+    sec_enabled_node = ATDF.getNode('/avr-tools-device-file/devices/device/parameters/param@[name="__SEC_ENABLED"]')
+    trustzone_enabled = False
+
+    if sec_enabled_node is not None:
+        trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
+
     # Insert into initialization.c
     crypto_init_insert = component.createFileSymbol("DRV_CC_SYS_INIT", None)
     crypto_init_insert.setType("STRING")
-    crypto_init_insert.setOutputName("core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_PERIPHERALS")
+    crypto_init_insert.setOutputName(
+        "core.LIST_SYSTEM_SECURE_INIT_C_SYS_INITIALIZE_PERIPHERALS"
+        if trustzone_enabled
+        else "core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_PERIPHERALS"
+    )
     crypto_init_insert.setSourcePath("templates/system_initialize.c.ftl")
     crypto_init_insert.setMarkup(True)
 
     # Insert into definitions.h
     crypto_def_insert = component.createFileSymbol("DRV_CC_SYSTEM_DEF", None)
     crypto_def_insert.setType("STRING")
-    crypto_def_insert.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
+    crypto_def_insert.setOutputName(
+        "core.LIST_SYSTEM_DEFINITIONS_SECURE_H_INCLUDES"
+        if trustzone_enabled
+        else "core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES"
+    )
     crypto_def_insert.setSourcePath("templates/system_definitions.h.ftl")
     crypto_def_insert.setMarkup(True)
 

@@ -12,7 +12,8 @@
 * HSM initialization moved to ```initialization.c```
 * D-cache can be enabled when using the HSM
 * Changed parameter ```ptr_hashVerifyStat to ptr_sigVerifyStat``` to accurately describe ECDSA operation
-* Fixed memory alignment and buffer sizes for many SW-only algorithms 
+* Fixed memory alignment and buffer sizes for many SW-only algorithms
+* Added missing ```Crypto_Mac_AesGmac_Cipher``` call for GMAC multi-step  
 * Added correct copyright headings 
 
 ### Known issues

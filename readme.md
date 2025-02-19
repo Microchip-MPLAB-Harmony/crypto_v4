@@ -11,10 +11,13 @@ and microprocessor devices. Refer to the following links for more information.
 - [Microchip 32-bit MPUs](https://www.microchip.com/design-centers/32-bit-mpus)
 - [Microchip MPLAB X IDE](https://www.microchip.com/mplab/mplab-x-ide)
 - [Microchip MPLAB Harmony](https://www.microchip.com/mplab/mplab-harmony)
-- [Microchip MPLAB Harmony Pages](https://microchip-mplab-harmony.github.io/)
 
-This repository contains the crypto v4 module for the MPLAB® Harmony 3 Embedded
-Software Development Framework. The crypto v4 module components provide drivers
+This repository contains the Crypto v4 module for the MPLAB® Harmony 3 Embedded
+Software Development Framework. The new Harmony Crypto v4 Library offers significant 
+improvements over Crypto v3.8. These improvements include a new API, optimized code base, 
+and support for some of the latest devices from Microchip.
+
+The Crypto v4 module components provide drivers
 and services with simple to use abstractions of peripherals and shared
 resources on Microchip 32-bit SAM and PIC devices on which MPLAB® Harmony
 applications and middleware are based. Drivers and services may also provide
@@ -28,11 +31,10 @@ reference information.
 
 # Contents Summary
 
-| Folder    | Description                                                |
-|-----------|----------------------------------------------------------  |
-| config    | Crypto v4 module configuration scripts                     |
-| src       | Crypto v4 API Library source                               |
-| templates | Application and system file templates                      |
+| Folder            | Description                                                                                           |
+|-------------------|-------------------------------------------------------------------------------------------------------|
+| module_crypto     | Crypto v4 library implementation, including the API, hardware drivers, and wrappers for those drivers.|
+| module_wolfcrypt  | Crypto v4 wrappers to the wolfCrypt crypto engine, enabling software support.                         |
 
 ____
 

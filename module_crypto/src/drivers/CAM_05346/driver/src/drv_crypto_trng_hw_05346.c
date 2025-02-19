@@ -79,7 +79,7 @@ static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
 
 static TRNG_ERROR lDRV_CRYPTO_TRNG_SetKey(TRNG_CTX* trngData)
 {
-    uint8_t keyData[KEY_SIZE] = {0};
+    uint8_t keyData[128] = {0};
     TRNG_ERROR errorCode = DRV_CRYPTO_TRNG_ReadData(keyData, KEY_SIZE);
 
     if (TRNG_NO_ERROR != errorCode)

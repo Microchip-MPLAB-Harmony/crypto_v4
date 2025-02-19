@@ -9,6 +9,7 @@
 * **Fill HSM addresses** with correct values for pre-made ```.hex``` in ```hsm_boot.h```
 
 ### Bug fixes
+* HSM initialization moved to ```initialization.c```
 * D-cache can be enabled when using the HSM
 * Changed parameter ```ptr_hashVerifyStat to ptr_sigVerifyStat``` to accurately describe ECDSA operation
 * Fixed memory alignment and buffer sizes for many SW-only algorithms 
@@ -16,7 +17,6 @@
 
 ### Known issues
 * AES-GCM multi-step not supported in this engineering release
-* GMAC multi-step not supported in this engineering release 
 
 ### Notes
 * This is an engineering release which has not been fully validated

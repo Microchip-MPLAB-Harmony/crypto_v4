@@ -21,6 +21,29 @@
     files.
 *******************************************************************************/
 
+/*******************************************************************************
+* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+*
+* Subject to your compliance with these terms, you may use Microchip software
+* and any derivatives exclusively with Microchip products. It is your
+* responsibility to comply with third party license terms applicable to your
+* use of third party software (including open source software) that may
+* accompany Microchip software.
+*
+* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
+* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
+* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
+* PARTICULAR PURPOSE.
+*
+* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
+* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
+* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
+* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
+* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+*******************************************************************************/
+
  
 // *****************************************************************************
 // *****************************************************************************
@@ -354,10 +377,13 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
     }
-    else if( (ptr_initVect == NULL) 
-<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) >           
-            && (opMode_en != CRYPTO_SYM_OPMODE_ECB) 
-</#if><#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->             
+    else if( (ptr_initVect == NULL)
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>           
+            && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->             
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>            
+            && (opMode_en != CRYPTO_SYM_OPMODE_XTS)
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->            
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -436,9 +462,12 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID; 
     }
     else if( (ptr_initVect == NULL)
-<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) >            
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>           
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if><#-- CRYPTO_WC_AES_ECB|| CRYPTO_HW_AES_ECB -->            
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->             
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_XTS?? &&(lib_wolfcrypt.CRYPTO_WC_AES_XTS == true)))) || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>            
+            && (opMode_en != CRYPTO_SYM_OPMODE_XTS)
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->            
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -633,7 +662,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
 <#if  (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) 
 							|| (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, (keyLen/8u), ptr_initVect);
+                ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
 </#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
@@ -687,7 +716,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_DecryptDirect(crypto_HandlerType_E handl
 <#if  (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_ECB == true)) 
 				|| (lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_CAMELLIA_CBC == true))))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_camStatus_en = Crypto_Sym_Wc_Camellia_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, (keyLen/8u), ptr_initVect);
+                ret_camStatus_en = Crypto_Sym_Wc_Camellia_DecryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
                 break;
 </#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
@@ -1179,7 +1208,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20_Cipher(st_Crypto_Sym_StreamCtx *ptr_chaC
         {
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_CHACHA20?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20 == true))))>         
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaChaUpdate(ptr_chaChaCtx_st, ptr_inputData, dataLen, ptr_outData);
+                ret_chaCha20Stat_en = Crypto_Sym_Wc_ChaChaUpdate(ptr_chaChaCtx_st->arr_symDataCtx, ptr_inputData, dataLen, ptr_outData);
                 break;
 </#if><#-- CRYPTO_WC_CHACHA20  -->                
             case CRYPTO_HANDLER_HW_INTERNAL:

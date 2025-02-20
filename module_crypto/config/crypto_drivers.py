@@ -1,28 +1,27 @@
 # coding: utf-8
-'''#*******************************************************************************
-# Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
+#/*****************************************************************************
+# Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
 #
-# Microchip Technology Inc. and its subsidiaries.
-#
-# Subject to your compliance with these terms, you may use Microchip software
-# and any derivatives exclusively with Microchip products. It is your
-# responsibility to comply with third party license terms applicable to your
-# use of third party software (including open source software) that may
+# Subject to your compliance with these terms, you may use Microchip software 
+# and any derivatives exclusively with Microchip products. It is your 
+# responsibility to comply with third party license terms applicable to your 
+# use of third party software (including open source software) that may 
 # accompany Microchip software.
-#
-# THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-# EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-# WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR
+# 
+# THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
+# EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
+# WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR 
 # PURPOSE.
-#
-# IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-# INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-# WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-# BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-# FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-# ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+# 
+# IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
+# INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
+# WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
+# BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE 
+# FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN 
+# ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY, 
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-# ***************************************************************************'''
+# *****************************************************************************/
+
 import os
 
 Crypto_HW_AllSupportedDriver = []
@@ -141,7 +140,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "hsm_hash.h", "hsm_hash.c", 
                 "hsm_common.h", 
                 "hsm_cmd.h", "hsm_cmd.c", 
-                "hsm_boot.h", "hsm_boot.c"
+                "hsm_boot.h.ftl", "hsm_boot.c"
             ],
         },
         "SymAlgo": {
@@ -153,7 +152,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "hsm_sym.h", "hsm_sym.c",
                 "hsm_common.h",
                 "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h", "hsm_boot.c"
+                "hsm_boot.h.ftl", "hsm_boot.c"
             ],
         },
         "AeadAlgo": {
@@ -165,7 +164,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "hsm_aead.h", "hsm_aead.c",
                 "hsm_common.h", 
                 "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h", "hsm_boot.c"
+                "hsm_boot.h.ftl", "hsm_boot.c"
             ],
         },
         "DigisignAlgo": {
@@ -178,7 +177,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "hsm_sign.h", "hsm_sign.c",
                 "hsm_common.h", "hsm_common.c",
                 "hsm_cmd.h", "hsm_cmd.c", 
-                "hsm_boot.h", "hsm_boot.c",
+                "hsm_boot.h.ftl", "hsm_boot.c",
                 "hsm_hash.h", "hsm_hash.c"
             ],
         },
@@ -191,7 +190,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "hsm_kas.h", "hsm_kas.c",
                 "hsm_common.h", "hsm_common.c",
                 "hsm_cmd.h", "hsm_cmd.c", 
-                "hsm_boot.h", "hsm_boot.c",
+                "hsm_boot.h.ftl", "hsm_boot.c",
                 "hsm_hash.h", "hsm_hash.c"
             ],
         },
@@ -225,7 +224,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl", 
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
-            "LibraryFiles": ["CPKCL_Lib"]
+            "LibraryFiles": ["cpkcl_lib"]
         },
         "KasAlgo": {
             "WrapperFiles": [
@@ -235,7 +234,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl", 
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
-            "LibraryFiles": ["CPKCL_Lib"]
+            "LibraryFiles": ["cpkcl_lib"]
         },
     },
 
@@ -307,6 +306,64 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
 
     return supported_drivers
 
+#--------------------------------------------------------------------------------------- 
+def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
+    ''' Pulls size of flash from ATDF to determine HSM firmware location
+    
+    Args:
+        CommonCryptoComponent:  Harmony component
+        supported_drivers:      set() of drivers supported by this board
+
+    Returns:
+        No direct return. String symbols created and used if hsm_boot.h.ftl
+        is relevant to the project.
+    '''
+
+    # Return early if HSM is not used
+    if "HSM_03785" not in supported_drivers:
+        return
+    
+    # Check if TrustZone is enabled
+    sec_enabled_node = ATDF.getNode('/avr-tools-device-file/devices/device/parameters/param@[name="__SEC_ENABLED"]')
+    trustzone_enabled = False
+
+    if sec_enabled_node is not None:
+        trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
+
+    # Maintain set of ways to refer to flash size in .atdf 
+    pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
+
+    HSM_BOOT_FIRMWARE_INIT_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_INIT_ADDR", None)
+    HSM_BOOT_FIRMWARE_INIT_ADDR.setVisible(False)
+    HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_ADDR", None)
+    HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
+    
+    for pfm in pfm_names:
+        flash_pfm_node = ATDF.getNode(
+            '/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name="{}"]'.format(pfm)
+        )
+
+        if flash_pfm_node is not None:
+            found_node = True
+
+            print("Node found           | %s" % (pfm))
+            flash_start = int(flash_pfm_node.getAttribute("start"), 16)
+            flash_end = int(flash_pfm_node.getAttribute("size"), 16)
+            
+            # HSM placed from midpoint of flash address space if TZ
+            if trustzone_enabled:
+                flash_end = flash_end // 2
+            
+            flash_size = flash_start + flash_end
+            
+            # Save to string obj
+            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(flash_size - 0x20800))  # 130kB
+            HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(flash_size - 0x20000))       # 128kB
+    
+    if not found_node:
+        HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue("/* Unable to automatically fill address */")
+        HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("/* Unable to automatically fill address */")
+        
 #--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
 

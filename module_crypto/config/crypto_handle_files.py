@@ -1,8 +1,44 @@
+# coding: utf-8
+#/*****************************************************************************
+# Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+#
+# Subject to your compliance with these terms, you may use Microchip software 
+# and any derivatives exclusively with Microchip products. It is your 
+# responsibility to comply with third party license terms applicable to your 
+# use of third party software (including open source software) that may 
+# accompany Microchip software.
+# 
+# THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
+# EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
+# WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR 
+# PURPOSE.
+# 
+# IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
+# INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
+# WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
+# BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE 
+# FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN 
+# ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY, 
+# THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+# *****************************************************************************/
+
 import os
 
 execfile( Module.getPath() + os.path.join("config", "crypto_globals.py"))
 
 #################################################################################
+
+def make_setting_symbol(component, symbol_name, category, key, value, append=True, separator=";"):
+    
+    setting_symbol = component.createSettingSymbol(symbol_name, None)
+    setting_symbol.setCategory(category)
+    setting_symbol.setKey(key)
+    setting_symbol.setValue(value)
+    setting_symbol.setAppend(append, separator)
+
+    setting_symbol.setSecurity("SECURE" if Variables.get("__TRUSTZONE_ENABLED") else "NON_SECURE")
+
+    return setting_symbol
 
 def make_file_symbol(component, file_name, relative_path, prefix, dest_path, project_path, markup, enabled):
     """ 
@@ -99,6 +135,31 @@ def add_file_to_dict(component, file_name, file_path, lowest_level_dir):
 
 #################################################################################
 
+def setup_crypto_settings(component):
+    """
+    Add paths to preprocessor include directories
+    """
+
+    config_name = Variables.get("__CONFIGURATION_NAME")
+
+    # Include directories paths
+    include_dirs = [
+        "../src/config/" + config_name + "/crypto/wolfcrypt",
+        "../src/config/" + config_name + "/crypto/common_crypto",
+        "../src/config/" + config_name + "/crypto/drivers"
+    ]
+
+    # Create include path symbol
+    make_setting_symbol(
+        component,
+        "XC32_CRYPTO_INCLUDE_DIRS",
+        "C32",
+        "extra-include-directories",
+        ";".join(include_dirs)
+    )
+
+    return True
+
 def setup_common_crypto(component):
     """
     Make symbols for files in src/common_crypto and add to global dict
@@ -131,6 +192,7 @@ def setup_drivers(component, supported_drivers):
     
     # Recursively go through the driver's directory and collect all relevant file paths
     for driver in supported_drivers:
+        driver = driver.lower()
         driver_path = os.path.join(module_path, "src", "drivers", driver)
         
         if os.path.exists(driver_path):
@@ -160,18 +222,59 @@ def setup_drivers(component, supported_drivers):
 
 def setup_templates(component):
     """
-    # Will make file symbols for anything in Module_CommonCrypto/templates
-    # which can then be toggled on and off by including the file in any of the file dicts
+    Will make the supported harmony template files. These are hardcoded.
+    Update set<string>harmony_templates_supported if adding to this function. 
+
+    Will make file symbols for anything in Module_CommonCrypto/templates
+    which can then be toggled on and off by including the file in any of the file dicts.
     """
 
     config_name = Variables.get("__CONFIGURATION_NAME")
     module_path = Module.getPath()
     templates_path = os.path.join(module_path, "templates")
 
+    harmony_templates_supported = {
+        "system_definitions.h.ftl",
+        "system_initialize.c.ftl"
+    }
+
+    print("Inserting crypto setup code into files: %s\n" % harmony_templates_supported)
+
+    # Check if TrustZone is enabled
+    sec_enabled_node = ATDF.getNode('/avr-tools-device-file/devices/device/parameters/param@[name="__SEC_ENABLED"]')
+    trustzone_enabled = False
+
+    if sec_enabled_node is not None:
+        trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
+
+    # Insert into initialization.c
+    crypto_init_insert = component.createFileSymbol("DRV_CC_SYS_INIT", None)
+    crypto_init_insert.setType("STRING")
+    crypto_init_insert.setOutputName(
+        "core.LIST_SYSTEM_SECURE_INIT_C_SYS_INITIALIZE_PERIPHERALS"
+        if trustzone_enabled
+        else "core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_PERIPHERALS"
+    )
+    crypto_init_insert.setSourcePath("templates/system_initialize.c.ftl")
+    crypto_init_insert.setMarkup(True)
+
+    # Insert into definitions.h
+    crypto_def_insert = component.createFileSymbol("DRV_CC_SYSTEM_DEF", None)
+    crypto_def_insert.setType("STRING")
+    crypto_def_insert.setOutputName(
+        "core.LIST_SYSTEM_DEFINITIONS_SECURE_H_INCLUDES"
+        if trustzone_enabled
+        else "core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES"
+    )
+    crypto_def_insert.setSourcePath("templates/system_definitions.h.ftl")
+    crypto_def_insert.setMarkup(True)
+
     # Recursively go through the common_crypto directory and collect all file paths
     if os.path.exists(templates_path):
         for root, dirs, files in os.walk(templates_path):
             for file in files:
+                if file in harmony_templates_supported:
+                    continue  # Skip harmony template files
                 
                 file_path = os.path.join(root, file)
                 file_name = os.path.basename(file_path)
@@ -186,7 +289,7 @@ def setup_hw_files(component, supported_drivers):
     """
     Make symbols for crypto_v4
     """
-
+    setup_crypto_settings(component)
     setup_common_crypto(component)
     setup_drivers(component, supported_drivers)
     setup_templates(component)

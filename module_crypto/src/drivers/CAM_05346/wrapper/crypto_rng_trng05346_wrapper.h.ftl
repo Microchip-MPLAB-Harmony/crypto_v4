@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_rng_trng05346_wrapper..h
+    crypto_rng_trng05346_wrapper.h
 
   Summary:
     Crypto Framework Library wrapper file for hardware TRNG.

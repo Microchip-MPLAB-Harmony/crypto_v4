@@ -173,13 +173,8 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
             	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
-<<<<<<< HEAD
-                                        ptr_hashVerifyStat, eccCurveType_En);
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER --> 
-=======
                                         ptr_sigVerifyStat, eccCurveType_En);
 </#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER --> 
->>>>>>> v4.0.0-E4
             	break;
 </#if><#-- CRYPTO_HW_ECDSA -->            
             default:

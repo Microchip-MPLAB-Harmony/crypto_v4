@@ -48,15 +48,34 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
+#include <xc.h>
 #include "crypto/drivers/wrapper/crypto_digisign_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_ecdsa.h"
-#include "crypto/drivers/driver/drv_crypto_ecdsa_hw_05346.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: File scope functions
+// Section: Global Functions
 // *****************************************************************************
 // *****************************************************************************
+void __attribute__((interrupt)) _CRYPTO3Interrupt(void);
+
+void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
+{
+    DRV_CRYPTO_ECDSA_IsrHelper();
+    _CRYPT3IF = 0;
+}
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File Scope Function implementations
+// *****************************************************************************
+// *****************************************************************************
+
+static void lDRV_CRYPTO_ECDSA_InterruptSetup(void)
+{
+    _CRYPT3IF = 0;
+    _CRYPT3IE = 1;
+}
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
     crypto_EccCurveType_E eccCurveType, ECDSA_CMD_CURVE *hwEccCurve)

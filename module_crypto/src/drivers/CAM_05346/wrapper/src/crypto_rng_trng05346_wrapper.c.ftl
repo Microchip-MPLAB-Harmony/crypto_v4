@@ -48,7 +48,33 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include "crypto/drivers/wrapper/crypto_rng_trng05346_wrapper.h"
-#include "crypto/drivers/driver/drv_crypto_trng_hw_05346.h"
+#include "crypto/drivers/library/cam_trng.h"
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Functions
+// *****************************************************************************
+// *****************************************************************************
+
+void __attribute__((interrupt)) _CRYPTO2Interrupt(void);
+
+void __attribute__((interrupt)) _CRYPTO2Interrupt(void) 
+{
+    DRV_CRYPTO_TRNG_IsrHelper();
+    _CRYPT2IF = 0;
+}
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File Scope Functions
+// *****************************************************************************
+// *****************************************************************************
+
+static void lDRV_CRYPTO_TRNG_InterruptSetup(void) 
+{
+    _CRYPT2IF = 0;
+    _CRYPT2IE = 1;
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,6 +85,8 @@ Microchip or any third party.
 crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
 {
 <#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+
+    lDRV_CRYPTO_TRNG_InterruptSetup();
     DRV_CRYPTO_TRNG_Generate(rngData, rngLen);
     
     return CRYPTO_RNG_SUCCESS;

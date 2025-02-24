@@ -129,7 +129,8 @@ wolfcrypt_AllMenuList = [
     ["MAC Algorithms",                  "CRYPTO_WC_MAC_MENU",           "Crypto_Wc_Mac_Menu",              None,                          True,   None,     None],
     ["AES-CMAC",                        "CRYPTO_WC_AES_CMAC",           "Crypto_Wc_Aes_Cmac",              "Crypto_Wc_Mac_Menu",          True,   False,    "MacAlgo",      "AES-CMAC_Algorithm"],
     ["AES-GMAC",                        "CRYPTO_WC_AES_GMAC",           "Crypto_Wc_Aes_Gmac",              "Crypto_Wc_Mac_Menu",          True,   False,    "MacAlgo",      "AES-GMAC_Algorithm"],
-
+    ["HMAC",                            "CRYPTO_WC_HMAC",               "Crypto_Wc_Hmac",                  "Crypto_Wc_Mac_Menu",          True,   False,    ["HashAlgo","MacAlgo"],      "HMAC_Algorithm"],
+    
     ["AEAD Algorithms",                 "CRYPTO_WC_AEAD_MENU",          "Crypto_Wc_Aead_Menu",             None,                          True,   None,     None],
     ["AES-CCM",                         "CRYPTO_WC_AES_CCM",            "Crypto_Wc_Aes_Ccm",               "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo",      "CCM_Algorithm"],
     ["AES-EAX",                         "CRYPTO_WC_AES_EAX",            "Crypto_Wc_Aes_Eax",               "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo",      "EAX_Algorithm"],

@@ -60,6 +60,10 @@
 	|| 	(CRYPTO_WC_AES_GMAC?? &&(CRYPTO_WC_AES_GMAC == true))>
 #include "wolfssl/wolfcrypt/aes.h"
 </#if>
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))>
+#include "wolfssl/wolfcrypt/hmac.h"
+#include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -286,4 +290,136 @@ crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Direct(uint8_t *ptr_initVect, uint32_t
     return ret_aesStat_en;  
 }
 </#if><#-- CRYPTO_WC_AES_GMAC -->
+
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))>
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Init(void *ptr_hmacCtx, uint8_t *ptr_key, uint32_t keySize, crypto_Hash_Algo_E hashType_en)
+{
+	crypto_Mac_Status_E ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
+	int wcHmacStatus = BAD_FUNC_ARG;
+	int wcHashType = WC_HASH_TYPE_NONE;
+	if(ptr_hmacCtx != NULL)
+	{
+	
+		wcHmacStatus = wc_HmacInit((Hmac*)ptr_hmacCtx, NULL, 1);
+		if(wcHmacStatus == 0)
+		{
+			wcHashType = Crypto_Hash_Wc_GetWcHashType(hashType_en);
+			wcHmacStatus = wc_HmacSetKey((Hmac*)ptr_hmacCtx, wcHashType, (const byte*)ptr_key, (word32)keySize);
+		}
+		
+		if(wcHmacStatus == 0)
+        {
+            ret_wcHmacStat_en = CRYPTO_MAC_CIPHER_SUCCESS;
+        }
+        else if(wcHmacStatus == BAD_FUNC_ARG)
+        {
+            ret_wcHmacStat_en = CRYPTO_MAC_ERROR_ARG;
+        }
+        else
+        {
+            ret_wcHmacStat_en  = CRYPTO_MAC_ERROR_CIPFAIL;
+        }
+	}
+	else
+	{
+		ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CTX;
+	}
+	return ret_wcHmacStat_en;
+}
+
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Cipher(void *ptr_hmacCtx, uint8_t *ptr_inputData, uint32_t dataLen)
+{
+	crypto_Mac_Status_E ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
+	int wcHmacStatus = BAD_FUNC_ARG;
+	
+	if(ptr_hmacCtx != NULL)
+	{
+		wcHmacStatus = wc_HmacUpdate((Hmac*)ptr_hmacCtx, ptr_inputData, dataLen);
+		if(wcHmacStatus == 0)
+        {
+            ret_wcHmacStat_en = CRYPTO_MAC_CIPHER_SUCCESS;
+        }
+        else if(wcHmacStatus == BAD_FUNC_ARG)
+        {
+            ret_wcHmacStat_en = CRYPTO_MAC_ERROR_ARG;
+        }
+        else
+        {
+            ret_wcHmacStat_en  = CRYPTO_MAC_ERROR_CIPFAIL;
+        }
+	}
+	else
+	{
+		ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CTX;
+	}
+	return ret_wcHmacStat_en;
+}
+
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Final(void *ptr_hmacCtx, uint8_t *ptr_outMac)
+{
+	crypto_Mac_Status_E ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
+	int wcHmacStatus = BAD_FUNC_ARG;
+	
+	if(ptr_hmacCtx != NULL)
+	{
+		wcHmacStatus = wc_HmacFinal((Hmac*)ptr_hmacCtx, ptr_outMac);
+		
+		if(wcHmacStatus == 0)
+        {
+            ret_wcHmacStat_en = CRYPTO_MAC_CIPHER_SUCCESS;
+        }
+        else if(wcHmacStatus == BAD_FUNC_ARG)
+        {
+            ret_wcHmacStat_en = CRYPTO_MAC_ERROR_ARG;
+        }
+        else
+        {
+            ret_wcHmacStat_en  = CRYPTO_MAC_ERROR_CIPFAIL;
+        }
+	}
+	else
+	{
+		ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CTX;
+	}
+	return ret_wcHmacStat_en;
+}
+
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Direct(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, uint32_t keySize, crypto_Hash_Algo_E hashType_en)
+{
+	crypto_Mac_Status_E ret_wcHmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
+	int wcHmacStatus = BAD_FUNC_ARG;
+	Hmac hmacCtx_st[1];
+	int wcHashType = WC_HASH_TYPE_NONE;
+
+	wcHmacStatus = wc_HmacInit(hmacCtx_st, NULL, 1);
+	if(wcHmacStatus == 0)
+	{
+		wcHashType = Crypto_Hash_Wc_GetWcHashType(hashType_en);
+		wcHmacStatus = wc_HmacSetKey(hmacCtx_st, wcHashType, ptr_key, keySize);
+	}
+	if(wcHmacStatus == 0)
+	{
+		wcHmacStatus = wc_HmacUpdate(hmacCtx_st, ptr_inputData, dataLen);
+	}
+	if(wcHmacStatus == 0)
+	{
+		wcHmacStatus = wc_HmacFinal(hmacCtx_st, ptr_outMac);
+	}
+	
+	if(wcHmacStatus == 0)
+	{
+		ret_wcHmacStat_en = CRYPTO_MAC_CIPHER_SUCCESS;
+	}
+	else if(wcHmacStatus == BAD_FUNC_ARG)
+	{
+		ret_wcHmacStat_en = CRYPTO_MAC_ERROR_ARG;
+	}
+	else
+	{
+		ret_wcHmacStat_en  = CRYPTO_MAC_ERROR_CIPFAIL;
+	}
+
+	return ret_wcHmacStat_en;
+}
+</#if><#-- CRYPTO_WC_HMAC -->
 // *****************************************************************************

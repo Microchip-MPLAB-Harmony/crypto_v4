@@ -69,5 +69,12 @@ crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Cipher(void *ptr_aesGmacCtx, uint8_t *
 crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Direct(uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, 
                                                                                                   uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen);
 </#if><#-- CRYPTO_WC_AES_GMAC -->
-        
+
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))>
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Init(void *ptr_hmacCtx, uint8_t *ptr_key, uint32_t keySize, crypto_Hash_Algo_E hashType_en);
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Cipher(void *ptr_hmacCtx, uint8_t *ptr_inputData, uint32_t dataLen); 
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Final(void *ptr_hmacCtx, uint8_t *ptr_outMac);
+crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Direct(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, uint32_t keySize, crypto_Hash_Algo_E hashType_en);
+</#if><#-- CRYPTO_WC_HMAC -->
+
 #endif //CRYPTO_MAC_WC_WRAPPER_H

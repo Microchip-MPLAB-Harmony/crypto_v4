@@ -1018,3 +1018,78 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeFinal(void *ptr_blakeCtx_st, uint8_t *p
     return ret_blakeStat_en;       
 }
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
+
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true)) || (CRYPTO_WC_ASYM_RSA?? &&(CRYPTO_WC_ASYM_RSA == true)) || (CRYPTO_WC_DIGISIGN_RSA?? &&(CRYPTO_WC_DIGISIGN_RSA == true))>
+int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en)
+{
+    int wcHashType = WC_HASH_TYPE_NONE;
+       
+    switch(hashType_en)
+    {
+<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true))>          
+        case CRYPTO_HASH_SHA1:
+            wcHashType = WC_SHA;
+            break;
+</#if><#-- CRYPTO_WC_SHA1 -->             
+<#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true))>            
+        case CRYPTO_HASH_SHA2_224:
+            wcHashType = WC_SHA224;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_224 --> 
+<#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))>            
+        case CRYPTO_HASH_SHA2_256:
+            wcHashType = WC_SHA256;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_256 -->             
+<#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true))>             
+        case CRYPTO_HASH_SHA2_384:
+            wcHashType = WC_SHA384;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_384 -->             
+<#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true))>            
+        case CRYPTO_HASH_SHA2_512:
+            wcHashType = WC_SHA512;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_512 -->  
+<#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))>           
+        case CRYPTO_HASH_SHA2_512_224:
+			wcHashType = WC_SHA512_224;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_512_224 -->  
+<#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true))>            
+        case CRYPTO_HASH_SHA2_512_256:
+            wcHashType = WC_SHA512_256;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_512_256 -->             
+<#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>            
+        case CRYPTO_HASH_SHA3_224:
+                wcHashType = WC_SHA3_224;
+                break;
+</#if><#-- CRYPTO_WC_SHA3_224 -->
+<#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>             
+        case CRYPTO_HASH_SHA3_256:
+            wcHashType = WC_SHA3_256;
+            break;
+</#if><#-- CRYPTO_WC_SHA3_256 -->
+<#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>            
+        case CRYPTO_HASH_SHA3_384:
+            wcHashType = WC_SHA3_384;
+            break;
+</#if><#-- CRYPTO_WC_SHA3_384 -->
+<#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>                    
+        case CRYPTO_HASH_SHA3_512:
+            wcHashType = WC_SHA3_512;
+            break;
+</#if><#-- CRYPTO_WC_SHA3_512 -->
+<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>            
+        case CRYPTO_HASH_MD5:
+            wcHashType = WC_MD5;
+            break;
+</#if><#-- CRYPTO_WC_MD5 -->
+        default:
+            wcHashType = WC_HASH_TYPE_NONE;
+            break;    
+    }; 
+    return wcHashType;
+}
+</#if><#-- CRYPTO_WC_HMAC || CRYPTO_WC_ASYM_RSA || CRYPTO_WC_DIGISIGN_RSA -->

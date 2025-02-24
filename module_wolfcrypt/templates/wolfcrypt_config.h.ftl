@@ -205,7 +205,7 @@ extern "C" {
 <#lt>#define NO_DH                  //JK
 <#lt>//#define NO_SIG_WRAPPER
 <#lt>//**********************************************************
-
+<#lt>#define HAVE_POLY1305
 <#lt>// ---------- WOLFCRYPT CONFIGURATION END ----------
 
 //DOM-IGNORE-BEGIN

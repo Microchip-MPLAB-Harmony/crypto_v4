@@ -808,3 +808,217 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
 }
 </#if><#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
 // *****************************************************************************
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))>
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Init(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, crypto_HandlerType_E handlerType_en, 
+																							uint8_t *ptr_key, uint8_t *ptr_nonce, uint32_t sessionID)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+	if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+	else if(ptr_key == NULL) 
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+    }
+	else if(ptr_nonce == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
+    }
+	else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_SID; 
+    }
+	else
+	{
+		ptr_chaChaPolyCtx->cryptoSessionID =  sessionID;
+        ptr_chaChaPolyCtx->aeadHandlerType_en = handlerType_en;
+                
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_Init((void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_key, ptr_nonce);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+	}
+	return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_AddAadData(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_aad, uint32_t aadLen)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+	if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+	else if((ptr_aad == NULL) && (aadLen > 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+	else
+	{                
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_AddAadData((void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_aad, aadLen);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+	}
+	
+	return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Cipher(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_inData, uint32_t dataLen, 
+																								uint8_t *ptr_outData, crypto_CipherOper_E cipherOper_en)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+	if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+	else if((ptr_inData == NULL) || (dataLen == 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+	else if(ptr_outData == NULL)
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+    }
+    else if((cipherOper_en != CRYPTO_CIOP_ENCRYPT) && (cipherOper_en != CRYPTO_CIOP_DECRYPT))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
+    }	
+	else
+	{   
+		ptr_chaChaPolyCtx->aeadCipherOper_en = cipherOper_en;
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(cipherOper_en, (void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_inData, dataLen, ptr_outData);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+	}
+	
+	return ret_chaChaPolyStat_en;	
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Final(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_authTag)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+	if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+	else if(ptr_authTag == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+    }
+	else
+	{                
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_Final((void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_authTag);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+	}
+	return ret_chaChaPolyStat_en;
+}
+
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+																												uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+	
+	if((ptr_inData == NULL) || (dataLen == 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+	else if(ptr_outData == NULL)
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+    }
+	else if(ptr_key == NULL) 
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+    }
+	else if(ptr_nonce == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
+    }
+	else if(ptr_authTag == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+    }
+	else if((ptr_aad == NULL) && (aadLen > 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+	else
+	{
+		ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
+																										                        ptr_aad, aadLen, ptr_authTag);
+	}
+	
+	return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+																												uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+	
+	if((ptr_inData == NULL) || (dataLen == 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+	else if(ptr_outData == NULL)
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+    }
+	else if(ptr_key == NULL) 
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+    }
+	else if(ptr_nonce == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
+    }
+	else if(ptr_authTag == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+    }
+	else if((ptr_aad == NULL) && (aadLen > 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+	else
+	{
+		ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
+																										                        ptr_aad, aadLen, ptr_authTag);
+	}
+	
+	return ret_chaChaPolyStat_en;
+}
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->

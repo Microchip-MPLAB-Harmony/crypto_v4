@@ -121,7 +121,8 @@ typedef enum
 		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_ECB == true))) 
 		|| (CRYPTO_HW_TDES_ECB?? &&(CRYPTO_HW_TDES_ECB == true)) 
 		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_TDES_CBC == true))) 
-		|| (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))>
+		|| (CRYPTO_HW_TDES_CBC?? &&(CRYPTO_HW_TDES_CBC == true))
+		|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))>
 
 //This needs to be taken care when no using any Sym or Asym algorithm variant
 typedef enum

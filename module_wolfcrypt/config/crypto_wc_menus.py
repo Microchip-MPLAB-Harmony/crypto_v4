@@ -135,6 +135,7 @@ wolfcrypt_AllMenuList = [
     ["AES-CCM",                         "CRYPTO_WC_AES_CCM",            "Crypto_Wc_Aes_Ccm",               "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo",      "CCM_Algorithm"],
     ["AES-EAX",                         "CRYPTO_WC_AES_EAX",            "Crypto_Wc_Aes_Eax",               "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo",      "EAX_Algorithm"],
     ["AES-GCM",                         "CRYPTO_WC_AES_GCM",            "Crypto_Wc_Aes_Gcm",               "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo",      "GCM_Algorithm"],
+    ["ChaCha20-Poly1305",               "CRYPTO_WC_CHACHA20_POLY1305",  "Crypto_Wc_ChaCha20_poly1305",     "Crypto_Wc_Aead_Menu",         True,   False,    "AeadAlgo",      "ChaCha20-Poly1305_Algorithm"],
 
     ["Digital Signature Algorithms",    "CRYPTO_WC_DIGISIGN_MENU",      "Crypto_Wc_Digisign_Menu",         None,                          True,   None,     None],
     ["ECDSA",                           "CRYPTO_WC_ECDSA",              "Crypto_Wc_Ecdsa",                 "Crypto_Wc_Digisign_Menu",     True,   False,    ["HashAlgo", "DigisignAlgo"],   "ECDSA_Algorithm"],

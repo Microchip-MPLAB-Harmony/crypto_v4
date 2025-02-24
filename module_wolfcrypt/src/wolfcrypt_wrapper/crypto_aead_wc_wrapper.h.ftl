@@ -85,4 +85,13 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
                                                 uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen);
 </#if><#--CRYPTO_WC_AES_GCM-->
 
+<#if (CRYPTO_WC_CHACHA20_POLY1305?? &&(CRYPTO_WC_CHACHA20_POLY1305 == true))>
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Init(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_key, uint8_t *ptr_nonce);
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_AddAadData(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_aad, uint32_t aadLen);
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(crypto_CipherOper_E cipherOper_en, void *ptr_chaChaPolyWcCtx, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData);
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Final(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_authTag);
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, 
+																		uint8_t *ptr_key, uint8_t *ptr_nonce, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag);
+</#if><#--CRYPTO_WC_CHACHA20_POLY1305-->
+
 #endif //CRYPTO_AEAD_WC_WRAPPER_H

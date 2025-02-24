@@ -58,6 +58,9 @@
 	||	(CRYPTO_WC_AES_GCM?? &&(CRYPTO_WC_AES_GCM == true))>
 #include "wolfssl/wolfcrypt/aes.h"
 </#if>
+<#if (CRYPTO_WC_CHACHA20_POLY1305?? &&(CRYPTO_WC_CHACHA20_POLY1305 == true))>
+#include "wolfssl/wolfcrypt/chacha20_poly1305.h"
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -585,4 +588,179 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
     return ret_aesGcmStat_en;
 }
 </#if><#--CRYPTO_WC_AES_GCM-->
+<#if (CRYPTO_WC_CHACHA20_POLY1305?? &&(CRYPTO_WC_CHACHA20_POLY1305 == true))>
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Init(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_key, uint8_t *ptr_nonce)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    int wcChaChaPolyStatus = BAD_FUNC_ARG;
+	if(ptr_chaChaPolyWcCtx != NULL)
+    {
+		//Here It is always define as encryption then later changed in Crypto_Aead_Wc_ChaCha20Poly1305_Cipher function
+		wcChaChaPolyStatus = wc_ChaCha20Poly1305_Init((ChaChaPoly_Aead*)ptr_chaChaPolyWcCtx, ptr_key, ptr_nonce, 1); 
+		
+		if(wcChaChaPolyStatus == 0)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_CIPHER_SUCCESS;
+		}
+		else if(wcChaChaPolyStatus == BAD_FUNC_ARG)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+		}
+		else
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPFAIL;
+		}
+	}
+	else
+	{
+		ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+	}
+
+	return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_AddAadData(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_aad, uint32_t aadLen)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    int wcChaChaPolyStatus = BAD_FUNC_ARG;
+	if(ptr_chaChaPolyWcCtx != NULL)
+    {
+		wcChaChaPolyStatus = wc_ChaCha20Poly1305_UpdateAad((ChaChaPoly_Aead*)ptr_chaChaPolyWcCtx, ptr_aad, aadLen);
+		if(wcChaChaPolyStatus == 0)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_CIPHER_SUCCESS;
+		}
+		else if(wcChaChaPolyStatus == BAD_FUNC_ARG)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+		}
+		else
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPFAIL;
+		}
+	}
+	else
+	{
+		ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+	}
+
+	return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(crypto_CipherOper_E cipherOper_en, void *ptr_chaChaPolyWcCtx, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    int wcChaChaPolyStatus = BAD_FUNC_ARG;
+    ChaChaPoly_Aead *ptr_chaChaPoly_Ctx = ptr_chaChaPolyWcCtx;
+	
+    if( (ptr_chaChaPolyWcCtx != NULL ) && (ptr_inData != NULL) && (ptr_outData != NULL) && (dataLen > 0u) )
+    {
+        if( cipherOper_en == CRYPTO_CIOP_ENCRYPT)
+        {
+			ptr_chaChaPoly_Ctx->isEncrypt = 1;
+        }
+        else if(cipherOper_en == CRYPTO_CIOP_DECRYPT)
+        {
+			ptr_chaChaPoly_Ctx->isEncrypt = 0;
+		}
+		
+		wcChaChaPolyStatus = wc_ChaCha20Poly1305_UpdateData(ptr_chaChaPoly_Ctx, ptr_inData, ptr_outData, dataLen);
+		
+		if(wcChaChaPolyStatus == 0)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_CIPHER_SUCCESS;
+		}
+		else if(wcChaChaPolyStatus == BAD_FUNC_ARG)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+		}
+		else
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPFAIL;
+		}
+	}
+	else
+	{
+		ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+	}
+
+	return ret_chaChaPolyStat_en;	
+}
+
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Final(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_authTag)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    int wcChaChaPolyStatus = BAD_FUNC_ARG;
+
+	if( (ptr_chaChaPolyWcCtx != NULL) && (ptr_authTag != NULL) )
+	{
+		wcChaChaPolyStatus = wc_ChaCha20Poly1305_Final((ChaChaPoly_Aead*)ptr_chaChaPolyWcCtx, ptr_authTag);
+		
+		if(wcChaChaPolyStatus == 0)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_CIPHER_SUCCESS;
+		}
+		else if(wcChaChaPolyStatus == BAD_FUNC_ARG)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+		}
+		else
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPFAIL;
+		}
+	}
+	else
+	{
+		ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+	}
+	
+	return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, 
+																		uint8_t *ptr_key, uint8_t *ptr_nonce, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+{
+	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    int wcChaChaPolyStatus = BAD_FUNC_ARG;
+	
+	if(cipherOper_en == CRYPTO_CIOP_ENCRYPT)
+	{
+		wcChaChaPolyStatus = wc_ChaCha20Poly1305_Encrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inData, dataLen, ptr_outData, ptr_authTag);
+	}
+	else if(cipherOper_en == CRYPTO_CIOP_DECRYPT)
+    {
+		wcChaChaPolyStatus = wc_ChaCha20Poly1305_Decrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inData, dataLen, ptr_outData, ptr_authTag);
+	}
+	else
+	{
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
+    }
+	
+	if(wcChaChaPolyStatus == 0)
+	{
+		ret_chaChaPolyStat_en = CRYPTO_AEAD_CIPHER_SUCCESS;
+	}
+	else if(ret_chaChaPolyStat_en == CRYPTO_AEAD_ERROR_CIPOPER)
+	{
+		//do nothing
+	}
+	else 
+	{
+		if(wcChaChaPolyStatus == BAD_FUNC_ARG)
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_ARG;
+		}
+		else if(wcChaChaPolyStatus == MAC_CMP_FAILED_E)
+        {
+            ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+        }
+		else
+		{
+			ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPFAIL;
+		}
+	}
+	
+	return ret_chaChaPolyStat_en;
+}
+</#if><#--CRYPTO_WC_CHACHA20_POLY1305-->
 // *****************************************************************************

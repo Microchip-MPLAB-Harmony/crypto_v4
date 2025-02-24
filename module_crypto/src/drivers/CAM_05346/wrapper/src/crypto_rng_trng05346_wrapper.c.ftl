@@ -87,9 +87,9 @@ crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLe
 {
 <#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
 
-    void DRV_CRYPTO_TRNG_Setup();
+    (void) DRV_CRYPTO_TRNG_Setup();
     lDRV_CRYPTO_TRNG_InterruptSetup();
-    void DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
     
     return CRYPTO_RNG_SUCCESS;
 <#else>

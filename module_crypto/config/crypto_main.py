@@ -115,20 +115,14 @@ def onAttachmentDisconnected(source, target):
 # Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(CommonCryptoComponent):
 
-    print("goodbye :)")
-    
-    print("wijd")
-    print("module.getID():", Module.getID())
-    print("module.getName():", Module.getName())
+    print("Module removed: getID(%s) getName(%s) " % ((Module.getID(), Module.getName())))
 
-    remoteComponent = Database.getComponentByID("lib_crypto")
-    print(remoteComponent.getID())
-
-
+    RemovedComponent = Database.getComponentByID("lib_crypto")
+    removedID = (RemovedComponent.getID())
     idList = Database.getActiveComponentIDs()
     symIDList = Database.getComponentSymbolIDs(CommonCryptoComponent.getID())
-    symIDList_str = [str(item) for item in symIDList]
-    print(idList)
-    print(symIDList)
+    
+    print("Active components: %s" %(idList))
+    # print("Active symbols from %s: %s" % (removedID, symIDList))
     
     return

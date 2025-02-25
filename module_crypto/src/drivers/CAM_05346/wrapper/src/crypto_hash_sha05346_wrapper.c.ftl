@@ -49,7 +49,22 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
-#include "crypto/drivers/driver/drv_crypto_sha_hw_05346.h"
+#include "crypto/drivers/library/cam_hash.h"
+#include <xc.h>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Functions
+// *****************************************************************************
+// *****************************************************************************
+
+void __attribute__((interrupt)) _CRYPTO1Interrupt(void);
+
+void __attribute__((interrupt)) _CRYPTO1Interrupt(void) 
+{
+    DRV_CRYPTO_Hash_IsrHelper();
+    _CRYPT1IF = 0;
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -57,59 +72,45 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
-    (crypto_Hash_Algo_E shaAlgorithm, CRYPTO_SHA_ALGO *shaAlgo)
+static void lDRV_CRYPTO_Hash_InterruptSetup(void)
 {
-    crypto_Hash_Status_E ret_status = CRYPTO_HASH_ERROR_FAIL;
+    _CRYPT1IF = 0;
+    _CRYPT1IE = 1;
+}
+
+static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, 
+        HASHCON_MODE* mode)
+{
+    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    
     switch(shaAlgorithm)
     {  
-<#if (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true))>
         case CRYPTO_HASH_SHA1:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA1;
-            ret_status = CRYPTO_HASH_SUCCESS;
+            *mode = MODE_SHA1;
+            status = CRYPTO_HASH_SUCCESS;
             break;
-</#if><#-- CRYPTO_HW_SHA1 -->         
-<#if (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true))>
         case CRYPTO_HASH_SHA2_224:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA224;
-            ret_status = CRYPTO_HASH_SUCCESS;
-            break; 
-</#if><#-- CRYPTO_HW_SHA2_224 -->            
-<#if (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true))>
+            *mode = MODE_SHA224;
+            status = CRYPTO_HASH_SUCCESS;
+            break;
         case CRYPTO_HASH_SHA2_256:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA256;
-            ret_status = CRYPTO_HASH_SUCCESS;
+            *mode = MODE_SHA256;
+            status = CRYPTO_HASH_SUCCESS;
             break;
-</#if><#-- CRYPTO_HW_SHA2_256 -->     
-<#if (CRYPTO_HW_SHA2_384?? &&(CRYPTO_HW_SHA2_384 == true))>
         case CRYPTO_HASH_SHA2_384:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA384;
-            ret_status = CRYPTO_HASH_SUCCESS;
+            *mode = MODE_SHA384;
+            status = CRYPTO_HASH_SUCCESS;
             break;
-</#if><#-- CRYPTO_HW_SHA2_384 -->           
-<#if (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>  
         case CRYPTO_HASH_SHA2_512:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA512;
-            ret_status = CRYPTO_HASH_SUCCESS;
+            *mode = MODE_SHA512;
+            status = CRYPTO_HASH_SUCCESS;
             break;
-</#if><#-- CRYPTO_HW_SHA2_512 -->
-<#if (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>  
-        case CRYPTO_HASH_SHA2_512_224:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA512_224;
-            ret_status = CRYPTO_HASH_SUCCESS;
-            break;        
-</#if><#-- CRYPTO_HW_SHA2_512_224 -->        
-<#if (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))> 
-        case CRYPTO_HASH_SHA2_512_256:
-            *shaAlgo = CRYPTO_SHA_ALGO_SHA512_256;
-            ret_status = CRYPTO_HASH_SUCCESS;
-            break; 
-</#if><#-- CRYPTO_HW_SHA2_512_256 -->
         default:
-            ret_status = CRYPTO_HASH_ERROR_ALGO;
+            status = CRYPTO_HASH_ERROR_ALGO;
             break;
-    }    
-   return ret_status;
+    }
+    
+    return status;
 }
  
 // *****************************************************************************
@@ -119,26 +120,21 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
 // *****************************************************************************
     
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
-    crypto_Hash_Algo_E shaAlgorithm_en)
+        crypto_Hash_Algo_E shaAlgorithm)
 {
-    CRYPTO_SHA_ALGO shaAlgo;
-    crypto_Hash_Status_E result;
-    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*)shaInitCtx;
+    HASHCON_MODE mode;
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
             
-    /* Set algorithm for driver */
-    result = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &shaAlgo);
-    if (result != CRYPTO_HASH_SUCCESS)
+    crypto_Hash_Status_E status = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &mode);
+    if (status == CRYPTO_HASH_SUCCESS)
     {
-        return result;
+        shaCtx->algorithm = shaAlgorithm;
+    
+        DRV_CRYPTO_Hash_Init(mode);
+        lDRV_CRYPTO_Hash_InterruptSetup();
     }
     
-    /* Initialize context */
-    shaCtx->algo = shaAlgorithm_en;
-    
-    /* Configure the driver */
-    DRV_CRYPTO_SHA_Init(shaAlgo);
-    
-    return CRYPTO_HASH_SUCCESS;
+    return status;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
@@ -209,8 +205,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     
     #endif
 
-    /* Write the data to be ciphered to the input data registers */
-    DRV_CRYPTO_SHA_Update(inputData, inputDataLen, numOfInvalidBytes);
+    DRV_CRYPTO_Hash_Update(inputData, inputDataLen, numOfInvalidBytes);
     
     return CRYPTO_HASH_SUCCESS;
 }
@@ -218,7 +213,32 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
-    DRV_CRYPTO_SHA_GetOutputData((CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx, digest);
+    const CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;
+    uint32_t digestLen;
+    
+    switch(shaCtx->algorithm)
+    {
+        case CRYPTO_HASH_SHA1:
+            digestLen = 20;
+            break;
+        case CRYPTO_HASH_SHA2_224:
+            digestLen = 28;
+            break;
+        case CRYPTO_HASH_SHA2_256:
+            digestLen = 32;
+            break;
+        case CRYPTO_HASH_SHA2_384:
+            digestLen = 48;
+            break;
+        case CRYPTO_HASH_SHA2_512:
+            digestLen = 64;
+            break;
+        default:
+            digestLen = 0;
+            break;
+    }
+    
+    DRV_CRYPTO_Hash_GetOutputData(digest, digestLen);
 
     return CRYPTO_HASH_SUCCESS;
 }
@@ -227,18 +247,18 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
 {
     CRYPTO_HASH_HW_CONTEXT shaCtx;
-    crypto_Hash_Status_E result = CRYPTO_HASH_SUCCESS;
 
-    result = Crypto_Hash_Hw_Sha_Init(&shaCtx, shaAlgorithm_en);
-    if (result != CRYPTO_HASH_SUCCESS)
+    crypto_Hash_Status_E status = Crypto_Hash_Hw_Sha_Init(&shaCtx, shaAlgorithm_en);
+    
+    if (status == CRYPTO_HASH_SUCCESS)
     {
-        return result;
+        status = Crypto_Hash_Hw_Sha_Update(&shaCtx, data, dataLen);
     }
     
-    result = Crypto_Hash_Hw_Sha_Update(&shaCtx, data, dataLen);
-    if (result != CRYPTO_HASH_SUCCESS)
+    if (status == CRYPTO_HASH_SUCCESS)
     {
-        return result;
-    }    
-    return Crypto_Hash_Hw_Sha_Final(&shaCtx, digest);
+        status = Crypto_Hash_Hw_Sha_Final(&shaCtx, digest);
+    }
+    
+    return status;
 }

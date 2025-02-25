@@ -67,11 +67,9 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-typedef struct 
+typedef struct
 {
-    uint64_t totalLen;   /* Number of bytes to be processed  */
-    crypto_Hash_Algo_E algo;
-    uint8_t buffer[128]; /* Maximum size for all */
+  crypto_Hash_Algo_E algorithm;
 } CRYPTO_HASH_HW_CONTEXT;
 
 // *****************************************************************************

@@ -44,9 +44,6 @@
 <#if HSM_BOOT_FIRMWARE_INIT_ADDR?has_content>
   <#lt>#define HSM_BOOT_FIRMWARE_INIT_ADDR  (${HSM_BOOT_FIRMWARE_INIT_ADDR})
 </#if>
-<#if HSM_BOOT_FIRMWARE_ADDR?has_content>
-  <#lt>#define HSM_BOOT_FIRMWARE_ADDR       (${HSM_BOOT_FIRMWARE_ADDR})
-</#if>
 
 typedef enum
 {

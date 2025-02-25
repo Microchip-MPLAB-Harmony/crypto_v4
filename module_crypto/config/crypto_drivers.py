@@ -299,8 +299,6 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
 
     HSM_BOOT_FIRMWARE_INIT_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_INIT_ADDR", None)
     HSM_BOOT_FIRMWARE_INIT_ADDR.setVisible(False)
-    HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_ADDR", None)
-    HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
     
     for pfm in pfm_names:
         flash_pfm_node = ATDF.getNode(
@@ -310,23 +308,27 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
         if flash_pfm_node is not None:
             found_node = True
 
-            print("Node found           | %s" % (pfm))
+            print("Flash information found (%s)" % (pfm))
             flash_start = int(flash_pfm_node.getAttribute("start"), 16)
             flash_end = int(flash_pfm_node.getAttribute("size"), 16)
             
-            # HSM placed from midpoint of flash address space if TZ
+            # if TZ, HSM placed in AS  
             if trustzone_enabled:
-                flash_end = flash_end // 2
-            
-            flash_size = flash_start + flash_end
-            
+                CoreComponent = Database.getComponentByID("core")
+                idau_as_size = CoreComponent.getSymbolValue("IDAU_AS_SIZE")
+                idau_as_location = idau_as_size * 0x1000                    # 4kB per 
+                flash_end = idau_as_location
+
+            hsm_end_addr = flash_start + flash_end
+            hsm_start_addr = hsm_end_addr - 0x20800                         # 130kB
+
             # Save to string obj
-            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(flash_size - 0x20800))  # 130kB
-            HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(flash_size - 0x20000))       # 128kB
+            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(hsm_start_addr))  
+
+            print("Reserved space for HSM: 0x{:X} - 0x{:X}".format(hsm_start_addr, hsm_end_addr))
     
     if not found_node:
         HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue("/* Unable to automatically fill address */")
-        HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("/* Unable to automatically fill address */")
         
 #--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):

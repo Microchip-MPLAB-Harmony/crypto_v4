@@ -46,7 +46,10 @@
 
 #include "crypto/common_crypto/crypto_common.h"
 
+
+<#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true)) || (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 #define CRYPTO_WC_ECC_TOTAL_CURVES (5)
+</#if><#-- CRYPTO_WC_ECDSA || CRYPTO_WC_ECDH -->
 
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true)) || (CRYPTO_WC_ECDH?? &&(CRYPTO_WC_ECDH == true))>
 int Crypto_Common_Wc_Ecc_GetWcCurveId(crypto_EccCurveType_E curveType_en);

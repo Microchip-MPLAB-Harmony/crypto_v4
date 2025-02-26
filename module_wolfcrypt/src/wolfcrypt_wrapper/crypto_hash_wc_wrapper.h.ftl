@@ -103,8 +103,10 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeUpdate(void *ptr_blakeCtx_st, uint8_t *
 crypto_Hash_Status_E Crypto_Hash_Wc_BlakeFinal(void *ptr_blakeCtx_st, uint8_t *ptr_digest, uint32_t digestLen, crypto_Hash_Algo_E hashAlgo_en);
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
 
-<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))|| (CRYPTO_WC_ASYM_RSA?? &&(CRYPTO_WC_ASYM_RSA == true)) || (CRYPTO_WC_DIGISIGN_RSA?? &&(CRYPTO_WC_DIGISIGN_RSA == true)) >
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))  || (CRYPTO_WC_ASYM_RSA_OAEP?? &&(CRYPTO_WC_ASYM_RSA_OAEP == true)) 
+													|| (CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(CRYPTO_WC_DIGISIGN_RSA_PSS == true)) 
+													|| (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
 int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en);
-</#if><#-- CRYPTO_WC_HMAC || CRYPTO_WC_ASYM_RSA || CRYPTO_WC_DIGISIGN_RSA-->
+</#if><#-- CRYPTO_WC_HMAC || CRYPTO_WC_ASYM_RSA_OAEP || CRYPTO_WC_DIGISIGN_RSA_PSS || CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->
 
 #endif //CRYPTO_HASH_WC_WRAPPER_H

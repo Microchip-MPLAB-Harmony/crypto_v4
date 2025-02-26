@@ -1010,6 +1010,7 @@ static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_
     return ret_val_en;
 }
 
+
 uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, crypto_Hash_Algo_E hashType_en, uint8_t *ptr_wcInputData, 
                                                                                                         uint32_t wcDataLen, uint8_t *ptr_outHash)
 {
@@ -1103,4 +1104,6 @@ uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, cryp
     }
     return hashSize;
 }
+</#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->
+
 </#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->

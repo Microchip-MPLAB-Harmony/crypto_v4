@@ -62,6 +62,12 @@ Crypto_HW_CommonCryptoFilesDict = {
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
+    "AsymAlgo": [
+        "crypto_asym_cipher.h.ftl",
+        "crypto_asym_cipher.c.ftl",
+        "crypto_common.h.ftl",
+        "crypto_config.h.ftl"
+    ],
     "MacAlgo": [
         "crypto_mac_cipher.h.ftl",
         "crypto_mac_cipher.c.ftl",

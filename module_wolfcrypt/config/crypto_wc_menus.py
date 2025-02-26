@@ -81,6 +81,17 @@ Crypto_Wc_Ecdh = None,
 Crypto_Wc_Rng_Menu = None,
 Crypto_Wc_Trng = None,
 Crypto_Wc_Prng = None,
+Crypto_Wc_Hmac = None,
+Crypto_Wc_ChaCha20_poly1305 = None,
+Crypto_wc_Asym_Rsa_Menu = None,
+Crypto_Wc_Asym_Rsa_Oaep = None,
+Crypto_Wc_Asym_Rsa_Pkcs1v15 = None,
+Crypto_Wc_Asym_Rsa_NoPadding = None, 
+Crypto_Wc_Digisign_Rsa_Menu = None,
+Crypto_Wc_Digisign_Rsa_Pss = None,
+Crypto_Wc_Digisign_Rsa_Pkcs1v15 = None,
+Crypto_Wc_Digisign_Rsa_NoPadding = None,
+
 #----------------------------------------------------------------------------------------- 
 wolfcrypt_AllMenuList = [
     # Menu Label                        # Menu Symbol ID                # Menu Symbols                    # Menu Parent              # Visible  # Default  #Category [6]    #onlinedocs [7]
@@ -126,6 +137,12 @@ wolfcrypt_AllMenuList = [
     ["Camellia-CBC",                    "CRYPTO_WC_CAMELLIA_CBC",       "Crypto_Wc_Camellia_Cbc",          "Crypto_Wc_Camellia_Menu",     True,   False,    "SymAlgo",      "Camellia_Algorithm"],
     ["ChaCha20",                        "CRYPTO_WC_CHACHA20",           "Crypto_Wc_Chacha20",              "Crypto_Wc_Sym_Menu",          True,   False,    "SymAlgo",      "ChaCha20_Algorithm"],
     
+    ["Asymmetric Algorithms",           "CRYPTO_WC_ASYM_MENU",          "Crypto_Wc_Asym_Menu",              None,                          True,   None,     None],
+    ["RSA Encrypt/Decrypt",             "CRYPTO_WC_ASYM_RSA_MENU",           "Crypto_Wc_Asym_Rsa_Menu",       "Crypto_Wc_Asym_Menu",         True,   None,     None],
+    ["OAEP",                             "CRYPTO_WC_ASYM_RSA_OAEP",       "Crypto_Wc_Asym_Rsa_Oaep",           "Crypto_Wc_Asym_Rsa_Menu",     True,   False,    ["HashAlgo","AsymAlgo"], "RSA_OAEP_PADDING"],
+    ["PKCS1_V15",                        "CRYPTO_WC_ASYM_RSA_PKCS1_V15",  "Crypto_Wc_Asym_Rsa_Pkcs1v15",       "Crypto_Wc_Asym_Rsa_Menu",      True,   False,    "AsymAlgo", "RSA_PKCS1_V15_PADDING"],
+    ["NoPadding",                        "CRYPTO_WC_ASYM_RSA_NO_PADDING", "Crypto_Wc_Asym_Rsa_NoPadding",      "Crypto_Wc_Asym_Rsa_Menu",      True,   False,    "AsymAlgo", "RSA_NO_PADDING"],
+    
     ["MAC Algorithms",                  "CRYPTO_WC_MAC_MENU",           "Crypto_Wc_Mac_Menu",              None,                          True,   None,     None],
     ["AES-CMAC",                        "CRYPTO_WC_AES_CMAC",           "Crypto_Wc_Aes_Cmac",              "Crypto_Wc_Mac_Menu",          True,   False,    "MacAlgo",      "AES-CMAC_Algorithm"],
     ["AES-GMAC",                        "CRYPTO_WC_AES_GMAC",           "Crypto_Wc_Aes_Gmac",              "Crypto_Wc_Mac_Menu",          True,   False,    "MacAlgo",      "AES-GMAC_Algorithm"],
@@ -139,6 +156,10 @@ wolfcrypt_AllMenuList = [
 
     ["Digital Signature Algorithms",    "CRYPTO_WC_DIGISIGN_MENU",      "Crypto_Wc_Digisign_Menu",         None,                          True,   None,     None],
     ["ECDSA",                           "CRYPTO_WC_ECDSA",              "Crypto_Wc_Ecdsa",                 "Crypto_Wc_Digisign_Menu",     True,   False,    ["HashAlgo", "DigisignAlgo"],   "ECDSA_Algorithm"],
+    ["RSA Sign/Verify",                 "CRYPTO_WC_DIGISIGN_RSA_MENU",       "Crypto_Wc_Digisign_Rsa_Menu",          "Crypto_Wc_Digisign_Menu",     True,   None,    None],
+    ["PSS",                             "CRYPTO_WC_DIGISIGN_RSA_PSS",       "Crypto_Wc_Digisign_Rsa_Pss",         "Crypto_Wc_Digisign_Rsa_Menu",      True,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_PSS_PADDING"],
+    ["PKCS1_V15",                        "CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15",  "Crypto_Wc_Digisign_Rsa_Pkcs1v15",    "Crypto_Wc_Digisign_Rsa_Menu",      True,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_PKCS1_V15_PADDING"],
+    ["NoPadding",                        "CRYPTO_WC_DIGISIGN_RSA_NO_PADDING", "Crypto_Wc_Digisign_Rsa_NoPadding",   "Crypto_Wc_Digisign_Rsa_Menu",      True,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_NO_PADDING"],
     
     ["Key Agreement Algorithms(KAS)",   "CRYPTO_WC_KAS_MENU",           "Crypto_Wc_Kas_Menu",              None,                          True,   None,     None],
     ["ECDH",                            "CRYPTO_WC_ECDH",               "Crypto_Wc_Ecdh",                  "Crypto_Wc_Kas_Menu",          True,   False,    "KasAlgo",      "ECDH_Algorithm"],

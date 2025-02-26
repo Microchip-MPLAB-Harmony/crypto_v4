@@ -201,11 +201,14 @@ extern "C" {
 <#lt>//#define WC_NO_RNG //when using RNG
 <#lt>//#define WC_NO_HASHDRBG
 <#lt>//#define HAVE_ECC_ENCRYPT
-<#lt>#define NO_RSA                 //JK
+<#lt>//#define NO_RSA                 //JK
 <#lt>#define NO_DH                  //JK
 <#lt>//#define NO_SIG_WRAPPER
 <#lt>//**********************************************************
-<#lt>#define HAVE_POLY1305
+<#lt>#define WC_ASYNC_ENABLE_RSA
+<#lt>#define WC_RSA_PSS 
+<#lt>#define WOLFSSL_HAVE_SP_RSA 
+<#lt>#define WC_RSA_NO_PADDING
 <#lt>// ---------- WOLFCRYPT CONFIGURATION END ----------
 
 //DOM-IGNORE-BEGIN

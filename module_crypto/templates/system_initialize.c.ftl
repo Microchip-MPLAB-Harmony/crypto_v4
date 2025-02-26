@@ -1,4 +1,4 @@
-<#if hsm_boot_h_ftl_flag == true>
+<#if hsm_boot_h_ftl_flag?? &&(hsm_boot_h_ftl_flag == true)>
     /* Initialize HSM */
     while (true)
     {

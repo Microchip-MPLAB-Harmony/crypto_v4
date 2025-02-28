@@ -34,8 +34,19 @@ def instantiateComponent(WolfcryptComponent):
 
     setup_wc_settings(WolfcryptComponent)
 
+#-----------------------------------------------------------------------------------------
+def onAttachmentConnected(source, target):
+    sourceComponent = source["component"]
+    id = sourceComponent.getID()
+
+    targetComponent = target["component"]
+    id = targetComponent.getID()
+
+    print("(WC) source component: %s, target component: %s" % (sourceComponent, targetComponent))
+
+    Refresh_Files()
+
 #----------------------------------------------------------------------------------------- 
-# TODO: Figure out how to remove Component Symbols so that re-adding the module works
 def destroyComponent(WolfcryptComponent):
     idList = Database.getActiveComponentIDs()
     symIDList = Database.getComponentSymbolIDs("lib_wolfcrypt")

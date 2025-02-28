@@ -173,7 +173,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
   || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>              
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>           
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>           
                 ret_aesStatus_en =  Crypto_Sym_Hw_Aes_Init(ptr_aesCtx_st->symCipherOper_en,  ptr_aesCtx_st->symAlgoMode_en, 
                                                             ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
 <#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
@@ -243,7 +243,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st,
   || (CRYPTO_HW_AES_OFB?? &&(CRYPTO_HW_AES_OFB == true)) || (CRYPTO_HW_AES_CFB8?? &&(CRYPTO_HW_AES_CFB8 == true)) || (CRYPTO_HW_AES_CFB16?? &&(CRYPTO_HW_AES_CFB16 == true)) 
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))>              
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))> 
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))> 
                 ret_aesStatus_en =  Crypto_Sym_Hw_Aes_Cipher(ptr_inputData, dataLen, ptr_outData);
 <#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_Cipher((void*)ptr_aesCtx_st->arr_symDataCtx, ptr_inputData, dataLen, ptr_outData);
@@ -381,7 +381,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
   || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>                
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_EncryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
 <#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_CipherDirect(CRYPTO_CIOP_ENCRYPT, opMode_en, ptr_inputData, dataLen, 
@@ -462,7 +462,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
   || (CRYPTO_HW_AES_CFB32?? &&(CRYPTO_HW_AES_CFB32 == true)) || (CRYPTO_HW_AES_CFB64?? &&(CRYPTO_HW_AES_CFB64 == true)) || (CRYPTO_HW_AES_CFB128?? &&(CRYPTO_HW_AES_CFB128 == true))
   || (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>                  
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_DecryptDirect(opMode_en, ptr_inputData, dataLen, ptr_outData, ptr_key, keyLen, ptr_initVect);
 <#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
                 ret_aesStatus_en = Crypto_Sym_Hw_Aes_CipherDirect(CRYPTO_CIOP_DECRYPT, opMode_en, ptr_inputData, dataLen, 

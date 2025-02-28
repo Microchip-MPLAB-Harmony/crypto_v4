@@ -5,10 +5,10 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_sym_aes05346_wrapper.h
+    crypto_sym_cam05346_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware AES.
+    Crypto Framework Library wrapper file for CAM hardware AES.
 
   Description:
     This header file contains the wrapper interface to access the symmetric 
@@ -49,8 +49,6 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_sym_cipher.h"
 
 // DOM-IGNORE-BEGIN

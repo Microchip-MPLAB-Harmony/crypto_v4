@@ -153,7 +153,7 @@ typedef struct{
 typedef struct{
     uint32_t ripemd160SessionId;
     crypto_HandlerType_E ripedmd160Handler_en;
-    uint8_t arr_ripemd160DataCtx[110];// __attribute__((aligned (8)));
+    uint8_t arr_ripemd160DataCtx[110] __attribute__((aligned (4)));
 }st_Crypto_Hash_Ripemd160_Ctx;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_RIPEMD160 -->
 <#if	(lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true)))

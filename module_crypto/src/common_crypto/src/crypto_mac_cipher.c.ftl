@@ -476,7 +476,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, 
     }
 	else
 	{
-		switch(hashType_en)
+		switch(handlerType_en)
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))> 			
             case CRYPTO_HANDLER_SW_WOLFCRYPT:

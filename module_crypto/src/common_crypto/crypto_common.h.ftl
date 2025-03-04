@@ -71,8 +71,6 @@ typedef enum {
 #ifdef CRYPTO_WOLFCRYPT_SUPPORT_ENABLE            
 	CRYPTO_HANDLER_SW_WOLFCRYPT = 2,    //Enum used when SW library Wolfssl is used
 #endif /* CRYPTO_WOLFCRYPT_SUPPORTED */            
-	CRYPTO_HANDLER_EXTERNAL_TA100 = 3,  //When external TA100 used for crypto
-	CRYPTO_HANDLER_EXTERNAL_ECC508 = 4, //When external ECC508 used for crypto
 	CRYPTO_HANDLER_MAX
 }crypto_HandlerType_E;
 

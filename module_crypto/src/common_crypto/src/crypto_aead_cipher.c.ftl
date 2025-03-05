@@ -115,7 +115,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesC
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
-				
+                
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -180,7 +180,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -245,7 +245,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Init(st_Crypto_Aead_AesEax_ctx *ptr_aesE
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -290,7 +290,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Cipher(st_Crypto_Aead_AesEax_ctx *ptr_ae
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -323,7 +323,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aes
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -355,7 +355,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_AddAadData(st_Crypto_Aead_AesEax_ctx *pt
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -415,7 +415,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_EncryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -475,7 +475,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -534,10 +534,10 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
 </#if><#-- CRYPTO_WC_AES_GCM-->                
 <#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && !(driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>             
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>			
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>            
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,cipherOper_en, ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize);    
 </#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER -->
-				break;	
+                break;    
 </#if><#-- CRYPTO_HW_AES_GCM && HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
@@ -810,28 +810,28 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
 // *****************************************************************************
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))>
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Init(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, crypto_HandlerType_E handlerType_en, 
-																							uint8_t *ptr_key, uint8_t *ptr_nonce, uint32_t sessionID)
+                                                                                            uint8_t *ptr_key, uint8_t *ptr_nonce, uint32_t sessionID)
 {
-	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-	if(ptr_chaChaPolyCtx == NULL)
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
     }
-	else if(ptr_key == NULL) 
+    else if(ptr_key == NULL) 
     {
        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-	else if(ptr_nonce == NULL)
+    else if(ptr_nonce == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-	else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_SID; 
     }
-	else
-	{
-		ptr_chaChaPolyCtx->cryptoSessionID =  sessionID;
+    else
+    {
+        ptr_chaChaPolyCtx->cryptoSessionID =  sessionID;
         ptr_chaChaPolyCtx->aeadHandlerType_en = handlerType_en;
                 
         switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
@@ -845,23 +845,23 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Init(st_Crypto_Aead_ChaCha20Po
                 ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
         }
-	}
-	return ret_chaChaPolyStat_en;
+    }
+    return ret_chaChaPolyStat_en;
 }
 
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_AddAadData(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_aad, uint32_t aadLen)
 {
-	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-	if(ptr_chaChaPolyCtx == NULL)
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
     }
-	else if((ptr_aad == NULL) && (aadLen > 0u))
+    else if((ptr_aad == NULL) && (aadLen > 0u))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
-	else
-	{                
+    else
+    {                
         switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
@@ -873,34 +873,34 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_AddAadData(st_Crypto_Aead_ChaC
                 ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
         }
-	}
-	
-	return ret_chaChaPolyStat_en;
+    }
+    
+    return ret_chaChaPolyStat_en;
 }
 
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Cipher(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_inData, uint32_t dataLen, 
-																								uint8_t *ptr_outData, crypto_CipherOper_E cipherOper_en)
+                                                                                                uint8_t *ptr_outData, crypto_CipherOper_E cipherOper_en)
 {
-	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-	if(ptr_chaChaPolyCtx == NULL)
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
     }
-	else if((ptr_inData == NULL) || (dataLen == 0u))
+    else if((ptr_inData == NULL) || (dataLen == 0u))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
-	else if(ptr_outData == NULL)
+    else if(ptr_outData == NULL)
     {
        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
     else if((cipherOper_en != CRYPTO_CIOP_ENCRYPT) && (cipherOper_en != CRYPTO_CIOP_DECRYPT))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
-    }	
-	else
-	{   
-		ptr_chaChaPolyCtx->aeadCipherOper_en = cipherOper_en;
+    }    
+    else
+    {   
+        ptr_chaChaPolyCtx->aeadCipherOper_en = cipherOper_en;
         switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
@@ -912,24 +912,24 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Cipher(st_Crypto_Aead_ChaCha20
                 ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
         }
-	}
-	
-	return ret_chaChaPolyStat_en;	
+    }
+    
+    return ret_chaChaPolyStat_en;    
 }
 
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Final(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_authTag)
 {
-	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-	if(ptr_chaChaPolyCtx == NULL)
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
     }
-	else if(ptr_authTag == NULL)
+    else if(ptr_authTag == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-	else
-	{                
+    else
+    {                
         switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
@@ -941,84 +941,84 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Final(st_Crypto_Aead_ChaCha20P
                 ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
         }
-	}
-	return ret_chaChaPolyStat_en;
+    }
+    return ret_chaChaPolyStat_en;
 }
 
 
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
-																												uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+                                                                                                                uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
 {
-	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-	
-	if((ptr_inData == NULL) || (dataLen == 0u))
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    
+    if((ptr_inData == NULL) || (dataLen == 0u))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
-	else if(ptr_outData == NULL)
+    else if(ptr_outData == NULL)
     {
-       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
-	else if(ptr_key == NULL) 
+    else if(ptr_key == NULL) 
     {
-       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-	else if(ptr_nonce == NULL)
+    else if(ptr_nonce == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-	else if(ptr_authTag == NULL)
+    else if(ptr_authTag == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-	else if((ptr_aad == NULL) && (aadLen > 0u))
+    else if((ptr_aad == NULL) && (aadLen > 0u))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
-	else
-	{
-		ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
-																										                        ptr_aad, aadLen, ptr_authTag);
-	}
-	
-	return ret_chaChaPolyStat_en;
+    else
+    {
+        ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
+                                                                                                                                ptr_aad, aadLen, ptr_authTag);
+    }
+    
+    return ret_chaChaPolyStat_en;
 }
 
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
-																												uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+                                                                                                                uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
 {
-	crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-	
-	if((ptr_inData == NULL) || (dataLen == 0u))
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    
+    if((ptr_inData == NULL) || (dataLen == 0u))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
-	else if(ptr_outData == NULL)
+    else if(ptr_outData == NULL)
     {
-       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
-	else if(ptr_key == NULL) 
+    else if(ptr_key == NULL) 
     {
-       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-	else if(ptr_nonce == NULL)
+    else if(ptr_nonce == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-	else if(ptr_authTag == NULL)
+    else if(ptr_authTag == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-	else if((ptr_aad == NULL) && (aadLen > 0u))
+    else if((ptr_aad == NULL) && (aadLen > 0u))
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
-	else
-	{
-		ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
-																										                        ptr_aad, aadLen, ptr_authTag);
-	}
-	
-	return ret_chaChaPolyStat_en;
+    else
+    {
+        ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
+                                                                                                                                ptr_aad, aadLen, ptr_authTag);
+    }
+    
+    return ret_chaChaPolyStat_en;
 }
 </#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->

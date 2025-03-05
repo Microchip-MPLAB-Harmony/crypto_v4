@@ -729,7 +729,7 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_Cip
     }
     else if(cipherOper_en == CRYPTO_CIOP_DECRYPT)
     {
-        wcChaChaPolyStatus = wc_ChaCha20Poly1305_Decrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inData, dataLen, ptr_outData, ptr_authTag);
+        wcChaChaPolyStatus = wc_ChaCha20Poly1305_Decrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inData, dataLen, ptr_authTag, ptr_outData);
     }
     else
     {

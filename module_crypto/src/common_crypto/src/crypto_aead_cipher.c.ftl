@@ -189,8 +189,8 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
     return ret_aesCcmStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_CCM --> 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true)))>
- 
+
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true)))> 
 crypto_Aead_Status_E Crypto_Aead_AesEax_Init(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en, 
                                                 uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID)
 {
@@ -298,6 +298,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Cipher(st_Crypto_Aead_AesEax_ctx *ptr_ae
     }
     return ret_aesEaxStat_en;
 }
+
 crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, uint8_t *ptr_authTag, uint32_t authTagLen)
 {
     crypto_Aead_Status_E ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -331,6 +332,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aes
     }
     return ret_aesEaxStat_en;
 }
+
 crypto_Aead_Status_E Crypto_Aead_AesEax_AddAadData(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, uint8_t *ptr_aad, uint32_t aadLen)
 {
     crypto_Aead_Status_E ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -942,12 +944,14 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Final(st_Crypto_Aead_ChaCha20P
                 break;
         }
     }
+
     return ret_chaChaPolyStat_en;
 }
 
 
-crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
-                                                                                                                uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inData, uint32_t dataLen, 
+                                                                                    uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+                                                                                        uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
 {
     crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     
@@ -977,15 +981,27 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(uint8_t *ptr
     }
     else
     {
-        ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
-                                                                                                                                ptr_aad, aadLen, ptr_authTag);
+        switch(handlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, ptr_inData, dataLen, 
+                                                                                                ptr_outData, ptr_key, ptr_nonce, 
+                                                                                                ptr_aad, aadLen, ptr_authTag);
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
     }
     
     return ret_chaChaPolyStat_en;
 }
 
-crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
-                                                                                                                uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inData, uint32_t dataLen, 
+                                                                                    uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+                                                                                    uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
 {
     crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     
@@ -1015,8 +1031,19 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(uint8_t *ptr
     }
     else
     {
-        ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inData, dataLen, ptr_outData, ptr_key, ptr_nonce, 
-                                                                                                                                ptr_aad, aadLen, ptr_authTag);
+        switch(handlerType_en)
+        {
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, ptr_inData, dataLen, 
+                                                                                                    ptr_outData, ptr_key, ptr_nonce, 
+                                                                                                    ptr_aad, aadLen, ptr_authTag);
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
     }
     
     return ret_chaChaPolyStat_en;

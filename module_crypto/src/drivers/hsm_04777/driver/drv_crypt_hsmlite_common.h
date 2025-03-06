@@ -75,12 +75,52 @@ extern "C" {
 
     enum // Status
     {
+        DRV_CRYPTO_HSMLITE_INVALID_KEYSIZE = -1005,
+        DRV_CRYPTO_HSMLITE_INVALID_IV_SIZE = -1004,
+        DRV_CRYPTO_HSMLITE_INVALID_HASH_TYPE  = -1002,
+        DRV_CRYPTO_HSMLITE_DIGEST_TOO_SMALL  = -1001,
         DRV_CRYPTO_HSMLITE_NOT_HASH_BLOCK_SIZE = -1000,
+        DRV_CRYPTO_HSMLITE_RESET_NEEDED = -82,
+        DRV_CRYPTO_HSMLITE_FEED_AFTER_DATA = -73,
+        DRV_CRYPTO_HSMLITE_CONTEXT_SAVING_NOT_SUPPORTED = -72,
+        DRV_CRYPTO_HSMLITE_HW_KEY_NOT_SUPPORTED = -71,
+        DRV_CRYPTO_HSMLITE_WRONG_SIZE_GRANULARITY = -70,
+        DRV_CRYPTO_HSMLITE_FEED_COUNT_EXCEEDED = -69,
+        DRV_CRYPTO_HSMLITE_INVALID_NONCE_SIZE = -68,
+        DRV_CRYPTO_HSMLITE_INVALID_TAG_SIZE = -67,
+        DRV_CRYPTO_HSMLITE_INVALID_KEY_SZ = -66,
+        DRV_CRYPTO_HSMLITE_TOO_SMALL = -65,
+        DRV_CRYPTO_HSMLITE_TOO_BIG = -64,
+        DRV_CRYPTO_HSMLITE_ALLOCATION_TOO_SMALL = -35,
+        DRV_CRYPTO_HSMLITE_INVALID_KEYREF = -34,
+        DRV_CRYPTO_HSMLITE_UNITIALIZED_OBJ = -33,
+        DRV_CRYPTO_HSMLITE_DMA_FAILED = -32,
+        DRV_CRYPTO_HSMLITE_INVALID_TAG = -16,
+        DRV_CRYPTO_HSMLITE_INCOMPATIBLE_HW = -3,
+        DRV_CRYPTO_HSMLITE_RETRY = -2,
         DRV_CRYPTO_HSMLITE_HW_PROCESSING  = -1,
         DRV_CRYPTO_HSMLITE_STATUS_OK,
-        
+        DRV_CRYPTO_HSMLITE_INVALID_PARAM,
+        DRV_CRYPTO_HSMLITE_UNKNOWN_ERROR,        
+        DRV_CRYPTO_HSMLITE_PK_BUSY = 3,
+        DRV_CRYPTO_HSMLITE_NOT_QUADRATIC_RESIDUE,
+        DRV_CRYPTO_HSMLITE_COMPOSITE_VALUE,
+        DRV_CRYPTO_HSMLITE_NOT_INVERTIBLE,
+        DRV_CRYPTO_HSMLITE_INVALID_SIGNATURE,
+        DRV_CRYPTO_HSMLITE_NOT_IMPLEMENTED,
+        DRV_CRYPTO_HSMLITE_INVALID_MICROCODE,
+        DRV_CRYPTO_HSMLITE_OUT_OF_RANGE,
+        DRV_CRYPTO_HSMLITE_INVALID_MODULUS,
+        DRV_CRYPTO_HSMLITE_POINT_NOT_ON_CURVE,
+        DRV_CRYPTO_HSMLITE_OPERAND_TOO_LARGE,
+        DRV_CRYPTO_HSMLITE_PLATFORM_ERROR,
+        DRV_CRYPTO_HSMLITE_EXPIRED,
+        DRV_CRYPTO_HSMLITE_IK_MODE,
+        DRV_CRYPTO_HSMLITE_INVALID_CURVE_PARAM,
+        DRV_CRYPTO_HSMLITE_IK_NOT_READY,
+        DRV_CRYPTO_HSMLITE_PK_RETRY,
+        DRV_CRYPTO_HSMLITE_BAD_ORDER
     };
-
 
     
 // *****************************************************************************
@@ -89,6 +129,8 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 
+
+    
 // *****************************************************************************
 // *****************************************************************************
 // Section: Device Layer System Interface Routines
@@ -100,6 +142,7 @@ extern "C" {
     void DRV_CRYPT_HSMLITE_Enable(void);
     void DRV_CRYPT_HSMLITE_Disable(void);
     uint8_t DRV_CRYPT_HSMLITE_Status(void); // Returns 0 on disable and non 0 on enable
+    
         
         
 // DOM-IGNORE-BEGIN

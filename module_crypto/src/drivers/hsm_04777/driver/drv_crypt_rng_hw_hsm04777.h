@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    drv_crypt_hsmlite_hash.h
+    drv_crypt_hsmlite_rng.h
 
   Summary:
     HSM Lite Crypto Driver definitions
 
   Description:
- This file includes the common hsmlite definitions that deal with hardware hashing
+ This file includes the common hsmlite definitions that deal with hardware RNG
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -39,8 +39,8 @@
  *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef DRV_CRYPT_HSMLITE_HASH_H
-#define DRV_CRYPT_HSMLITE_HASH_H
+#ifndef DRV_CRYPT_HSMLITE_RNG_H
+#define DRV_CRYPT_HSMLITE_RNG_H
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -73,8 +73,8 @@ extern "C" {
 // *****************************************************************************
 
     typedef struct {
-       uint8_t data[580];
-    }DRV_CRYPT_HSMLITE_HASH_CTX;
+       uint8_t data[20];
+    }DRV_CRYPT_HSMLITE_RNG_CTX;
     
 // *****************************************************************************
 // *****************************************************************************
@@ -82,13 +82,9 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
     
-int32_t DRV_CRYPTO_HSMLITE_Hash_DigestDirect(DRV_CRYPT_HSMLITE_HASH_CTX *ptr_hashCtx, uint32_t hashType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
-int32_t DRV_CRYPTO_HSMLITE_HSM_Hash_Init(DRV_CRYPT_HSMLITE_HASH_CTX *ptr_hashCtx, uint32_t hashType_en);
-int32_t DRV_CRYPTO_HSMLITE_HSM_Hash_Update(DRV_CRYPT_HSMLITE_HASH_CTX *ptr_hashCtx, uint8_t *ptr_inputData, uint32_t dataLen);
-int32_t DRV_CRYPTO_HSMLITE_HSM_Hash_Final(DRV_CRYPT_HSMLITE_HASH_CTX *ptr_hashCtx, uint8_t *ptr_leftoverInData, uint32_t dataLen, uint8_t *ptr_OutputData);
+int32_t DRV_CRYPTO_HSMLITE_RNG_Init(DRV_CRYPT_HSMLITE_RNG_CTX *ptr_rngCtx);
         
-int32_t DRV_CRYPTO_HSMLITE_HSM_Hash_Status(DRV_CRYPT_HSMLITE_HASH_CTX *ptr_hashCtx);
-
+int32_t DRV_CRYPTO_HSMLITE_RNG_GetData(DRV_CRYPT_HSMLITE_RNG_CTX *ptr_hmacCtx, uint8_t* output, uint32_t outputSize);
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -98,4 +94,4 @@ int32_t DRV_CRYPTO_HSMLITE_HSM_Hash_Status(DRV_CRYPT_HSMLITE_HASH_CTX *ptr_hashC
 // DOM-IGNORE-END  
 
 
-#endif //DRV_CRYPT_HSMLITE_HASH_H
+#endif //DRV_CRYPT_HSMLITE_HMAC_H

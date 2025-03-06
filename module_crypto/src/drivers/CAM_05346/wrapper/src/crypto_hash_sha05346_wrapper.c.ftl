@@ -124,14 +124,25 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 {
     HASHCON_MODE mode;
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
+    
+    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
             
-    crypto_Hash_Status_E status = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &mode);
+    status = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &mode);
+    
     if (status == CRYPTO_HASH_SUCCESS)
     {
         shaCtx->algorithm = shaAlgorithm;
+        hashStatus = DRV_CRYPTO_Hash_Initialize(mode);
+    }
     
-        DRV_CRYPTO_Hash_Init(mode);
+    if (hashStatus == HASH_NO_ERROR)
+    {
         lDRV_CRYPTO_Hash_InterruptSetup();
+    }
+    else 
+    {        
+        status = CRYPTO_HASH_ERROR_FAIL;
     }
     
     return status;
@@ -140,6 +151,9 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
+    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    HASH_ERROR hashStatus = HASH_UPDATE_ERROR;
+    
     uint8_t *inputData = data;
     uint32_t inputDataLen = dataLen;
     uint32_t numOfInvalidBytes = 0;
@@ -205,14 +219,26 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     
     #endif
 
-    DRV_CRYPTO_Hash_Update(inputData, inputDataLen, numOfInvalidBytes);
+    hashStatus = DRV_CRYPTO_Hash_Update(inputData, inputDataLen, numOfInvalidBytes);
     
-    return CRYPTO_HASH_SUCCESS;
+    if (hashStatus == HASH_NO_ERROR)
+    {
+        status = CRYPTO_HASH_SUCCESS;
+    }
+    else
+    {
+        status = CRYPTO_HASH_ERROR_FAIL;
+    }
+    
+    return status;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
     uint8_t *digest)
 {
+    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    HASH_ERROR hashStatus = HASH_READ_ERROR;
+    
     const CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;
     uint32_t digestLen;
     
@@ -238,9 +264,18 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
             break;
     }
     
-    DRV_CRYPTO_Hash_GetOutputData(digest, digestLen);
-
-    return CRYPTO_HASH_SUCCESS;
+    hashStatus = DRV_CRYPTO_Hash_GetOutputData(digest, digestLen);
+    
+    if (hashStatus == HASH_NO_ERROR)
+    {
+        status = CRYPTO_HASH_SUCCESS;
+    }
+    else
+    {
+        status = CRYPTO_HASH_ERROR_FAIL;
+    }
+    
+    return status;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 

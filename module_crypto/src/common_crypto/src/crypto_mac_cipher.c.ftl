@@ -387,14 +387,14 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st,
 }
 																										
 
-crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_inData, uint32_t dataLen)
+crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_inputData, uint32_t dataLen)
 {
 	crypto_Mac_Status_E ret_hmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
 	if(ptr_hmacCtx_st == NULL)
     {
         ret_hmacStat_en = CRYPTO_MAC_ERROR_CTX;
     }
-    else if(ptr_inData == NULL) 
+    else if(ptr_inputData == NULL) 
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_INPUTDATA;
     }
@@ -404,7 +404,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_s
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))> 			
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_hmacStat_en = Crypto_Mac_Wc_Hmac_Cipher((void*)ptr_hmacCtx_st->arr_macDataCtx, ptr_inData, dataLen);     
+                    ret_hmacStat_en = Crypto_Mac_Wc_Hmac_Cipher((void*)ptr_hmacCtx_st->arr_macDataCtx, ptr_inputData, dataLen);     
                 break;
 </#if><#-- CRYPTO_WC_HMAC --> 				
             case CRYPTO_HANDLER_HW_INTERNAL:
@@ -449,12 +449,12 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Final(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st
 	return ret_hmacStat_en;	
 }
 
-crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, 
+crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, 
                                                                                                   uint32_t keyLen, crypto_Hash_Algo_E hashType_en, uint32_t sessionID)
 {
 	crypto_Mac_Status_E ret_hmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
 	
-	if(ptr_inData == NULL) 
+	if(ptr_inputData == NULL) 
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_INPUTDATA;
     }
@@ -480,7 +480,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, 
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))> 			
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_hmacStat_en = Crypto_Mac_Wc_Hmac_Direct(ptr_inData, dataLen, ptr_outMac, ptr_key, keyLen, hashType_en);     
+                    ret_hmacStat_en = Crypto_Mac_Wc_Hmac_Direct(ptr_inputData, dataLen, ptr_outMac, ptr_key, keyLen, hashType_en);     
                 break;
 </#if><#-- CRYPTO_WC_HMAC --> 				
             case CRYPTO_HANDLER_HW_INTERNAL:

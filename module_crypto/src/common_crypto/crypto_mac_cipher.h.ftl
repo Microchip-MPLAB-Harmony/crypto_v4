@@ -120,9 +120,9 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))>
 crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint32_t keyLen, 
 																									crypto_Hash_Algo_E hashType_en, uint32_t sessionID);
-crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_inData, uint32_t dataLen);
+crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_inputData, uint32_t dataLen);
 crypto_Mac_Status_E Crypto_Mac_Hmac_Final(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_outMac);
-crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, 
+crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, 
                                                                                                   uint32_t keyLen, crypto_Hash_Algo_E hashType_en, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->																								  
 #endif /* CRYPTO_MAC_CIPHER_H */

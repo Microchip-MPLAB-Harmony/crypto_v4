@@ -647,13 +647,13 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_AddAadData(void *ptr_chaCha
     return ret_chaChaPolyStat_en;
 }
 
-crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(crypto_CipherOper_E cipherOper_en, void *ptr_chaChaPolyWcCtx, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData)
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(crypto_CipherOper_E cipherOper_en, void *ptr_chaChaPolyWcCtx, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
 {
     crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
     int wcChaChaPolyStatus = BAD_FUNC_ARG;
     ChaChaPoly_Aead *ptr_chaChaPoly_Ctx = ptr_chaChaPolyWcCtx;
     
-    if( (ptr_chaChaPolyWcCtx != NULL ) && (ptr_inData != NULL) && (ptr_outData != NULL) && (dataLen > 0u) )
+    if( (ptr_chaChaPolyWcCtx != NULL ) && (ptr_inputData != NULL) && (ptr_outData != NULL) && (dataLen > 0u) )
     {
         if( cipherOper_en == CRYPTO_CIOP_ENCRYPT)
         {
@@ -664,7 +664,7 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(crypto_CipherOper_E 
             ptr_chaChaPoly_Ctx->isEncrypt = 0;
         }
         
-        wcChaChaPolyStatus = wc_ChaCha20Poly1305_UpdateData(ptr_chaChaPoly_Ctx, ptr_inData, ptr_outData, dataLen);
+        wcChaChaPolyStatus = wc_ChaCha20Poly1305_UpdateData(ptr_chaChaPoly_Ctx, ptr_inputData, ptr_outData, dataLen);
         
         if(wcChaChaPolyStatus == 0)
         {
@@ -717,7 +717,7 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Final(void *ptr_chaChaPolyW
     return ret_chaChaPolyStat_en;
 }
 
-crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, 
+crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_CipherOper_E cipherOper_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, 
                                                                         uint8_t *ptr_key, uint8_t *ptr_nonce, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag)
 {
     crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -725,11 +725,11 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_Cip
     
     if(cipherOper_en == CRYPTO_CIOP_ENCRYPT)
     {
-        wcChaChaPolyStatus = wc_ChaCha20Poly1305_Encrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inData, dataLen, ptr_outData, ptr_authTag);
+        wcChaChaPolyStatus = wc_ChaCha20Poly1305_Encrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inputData, dataLen, ptr_outData, ptr_authTag);
     }
     else if(cipherOper_en == CRYPTO_CIOP_DECRYPT)
     {
-        wcChaChaPolyStatus = wc_ChaCha20Poly1305_Decrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inData, dataLen, ptr_authTag, ptr_outData);
+        wcChaChaPolyStatus = wc_ChaCha20Poly1305_Decrypt(ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_inputData, dataLen, ptr_authTag, ptr_outData);
     }
     else
     {

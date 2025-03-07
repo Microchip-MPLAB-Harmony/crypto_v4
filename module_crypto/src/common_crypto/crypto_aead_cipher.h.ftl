@@ -149,7 +149,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_EncryptAuthDirect(crypto_HandlerType_E h
                                                             uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen, uint32_t sessionID);
 
 crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
-                                                            *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_nonce, 
+                                                            uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_nonce, 
                                                             uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t authTagLen, uint32_t sessionID);
 </#if><#-- CRYPTO_WC_AES_EAX -->
 <#if ( (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))) || (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
@@ -181,12 +181,12 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Init(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, crypto_HandlerType_E handlerType_en, 
                                                         uint8_t *ptr_key, uint8_t *ptr_nonce, uint32_t sessionID);
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_AddAadData(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_aad, uint32_t aadLen);
-crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Cipher(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_inData, uint32_t dataLen, 
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Cipher(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                           uint8_t *ptr_outData, crypto_CipherOper_E cipherOper_en);
 crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Final(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, uint8_t *ptr_authTag);
-crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
-                                                                      uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag);
-crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
-                                                                      uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag);
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+                                                                      uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t sessionID);
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+                                                                      uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t sessionID);
 </#if><#-- CRYPTO_WC_CHACHA20_POLY1305 -->                                                         
 #endif //CRYPTO_AEAD_CIPHER_H

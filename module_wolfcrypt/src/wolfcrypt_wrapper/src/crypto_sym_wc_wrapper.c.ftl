@@ -80,20 +80,20 @@
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
-crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)	
+crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)    
 <#elseif (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) ||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>
 static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 </#if>
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))
-	||	(CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))
+    ||    (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))
     ||  (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true)) 
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))
-	||  (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) 
-	||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true)) 
-	||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>	
+    ||  (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) 
+    ||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true)) 
+    ||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>    
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
     int wcAesStatus = BAD_FUNC_ARG;
@@ -145,10 +145,10 @@ static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_Ciphe
    
 crypto_Sym_Status_E Crypto_Sym_Wc_AesCTR_Init(void *ptr_aesCtx, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
-	crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
+    crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
     
     ret_aesStatus_en = Crypto_Sym_Wc_Aes_Init(ptr_aesCtx, CRYPTO_CIOP_ENCRYPT, ptr_key, keySize, ptr_initVect);
-	
+    
     return ret_aesStatus_en;
 }
 </#if><#-- CRYPTO_WC_AES_CTR --> 
@@ -159,7 +159,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesCTR_Init(void *ptr_aesCtx, uint8_t *ptr_key
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
-	
+    
 crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Encrypt(void *ptr_aesCtx, crypto_Sym_OpModes_E symAlgoMode_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData)
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
@@ -428,7 +428,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesXts_Decrypt(void *ptr_aesXtsCtx, uint8_t *p
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true)) 
     ||  (CRYPTO_WC_AES_XTS?? &&(CRYPTO_WC_AES_XTS == true))>
-	
+    
 crypto_Sym_Status_E Crypto_Sym_Wc_Aes_EncryptDirect(crypto_Sym_OpModes_E symAlgoMode_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData,
                                                         uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
@@ -540,17 +540,17 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
 </#if><#-- CRYPTO_WC_AES_XTS -->            
         {
             Aes aesCtx[1];
-<#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>  			
-			if(symAlgoMode_en == CRYPTO_SYM_OPMODE_CTR)
-			{
-            	wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_ENCRYPTION);
-			}
-			else
-</#if><#-- CRYPTO_WC_AES_CTR -->			
-			{
-				wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_DECRYPTION);
-			}
-			
+<#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>
+            if(symAlgoMode_en == CRYPTO_SYM_OPMODE_CTR)
+            {
+                wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_ENCRYPTION);
+            }
+            else
+</#if><#-- CRYPTO_WC_AES_CTR -->            
+            {
+                wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_DECRYPTION);
+            }
+            
             if(wcAesStatus == 0)
             {
                 switch(symAlgoMode_en)
@@ -917,7 +917,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Camellia_DecryptDirect(crypto_Sym_OpModes_E sy
 </#if><#-- CRYPTO_WC_CAMELLIA_ECB || CRYPTO_WC_CAMELLIA_CBC -->
 <#if    (CRYPTO_WC_TDES_ECB?? &&(CRYPTO_WC_TDES_ECB == true)) 
     ||  (CRYPTO_WC_TDES_CBC?? &&(CRYPTO_WC_TDES_CBC == true))>
-	
+    
 //Triple DES or 3-DES
 crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_Init(void *ptr_tdesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint8_t *ptr_initVect)
 {

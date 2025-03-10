@@ -663,7 +663,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeDigest(uint8_t *ptr_data, uint32_t data
 crypto_Hash_Status_E Crypto_Hash_Wc_ShakeInit(void *ptr_shakeCtx_st, crypto_Hash_Algo_E hashAlgo_en)
 {
     crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;    
-     int wcShakeStatus = BAD_FUNC_ARG;
+    int wcShakeStatus = BAD_FUNC_ARG;
     if(ptr_shakeCtx_st != NULL)
     {
         switch(hashAlgo_en)
@@ -703,6 +703,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeInit(void *ptr_shakeCtx_st, crypto_Hash
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
     }   
+
     return ret_shakeStat_en;
 }          
 
@@ -725,27 +726,31 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeUpdate(void *ptr_shakeCtx_st, uint8_t *
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_256 --> 
             default:
-                ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_ALGO;
                 break; 
         }
 
-        if(wcShakeStatus == 0)
+        if(ret_shakeStat_en != CRYPTO_HASH_ERROR_ALGO)
         {
-            ret_shakeStat_en = CRYPTO_HASH_SUCCESS;
-        }
-        else if (wcShakeStatus == BAD_FUNC_ARG)
-        {
-            ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
-        }
-        else
-        {
-            ret_shakeStat_en = CRYPTO_HASH_ERROR_FAIL;
+            if(wcShakeStatus == 0)
+            {
+                ret_shakeStat_en = CRYPTO_HASH_SUCCESS;
+            }
+            else if (wcShakeStatus == BAD_FUNC_ARG)
+            {
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
+            }
+            else
+            {
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_FAIL;
+            }
         }
     }
     else
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
-    }  
+    }
+
     return ret_shakeStat_en;
 } 
 

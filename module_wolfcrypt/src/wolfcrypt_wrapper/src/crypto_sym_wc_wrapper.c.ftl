@@ -455,6 +455,9 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_EncryptDirect(crypto_Sym_OpModes_E symAlgo
         {
             switch(symAlgoMode_en)
             {
+                case CRYPTO_SYM_OPMODE_INVALID:
+                    ret_aesStat_en = CRYPTO_SYM_ERROR_OPMODE;
+                    break;
 <#if (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true))>        
                 case CRYPTO_SYM_OPMODE_ECB:
                     wcAesStatus = wc_AesEcbEncrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);
@@ -555,6 +558,9 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
             {
                 switch(symAlgoMode_en)
                 {
+                    case CRYPTO_SYM_OPMODE_INVALID:
+                        ret_aesStat_en = CRYPTO_SYM_ERROR_OPMODE;
+                        break;
 <#if (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true))>     
                     case CRYPTO_SYM_OPMODE_ECB:
                         wcAesStatus = wc_AesEcbDecrypt(aesCtx, (byte*)ptr_outData, (const byte*)ptr_inputData, (word32)dataLen);

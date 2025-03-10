@@ -71,11 +71,11 @@
 // *****************************************************************************
 // *****************************************************************************
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15 == true)))>
-crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
 															                                          crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inData == NULL) || (dataLen == 0) )
+    if( (ptr_inputData == NULL) || (dataLen == 0) )
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -97,7 +97,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_inData, uint3
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15 == true)))> 		
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_Pkcs1v15_Encrypt(ptr_inData, dataLen, ptr_outData, ptr_pubKeyDer, pubKeyBufLen);     
+                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_Pkcs1v15_Encrypt(ptr_inputData, dataLen, ptr_outData, ptr_pubKeyDer, pubKeyBufLen);     
                 break;
 </#if><#-- CRYPTO_WC_ASYM_RSA_PKCS1_V15 --> 
  
@@ -159,12 +159,12 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_inputData, ui
 </#if><#-- CRYPTO_WC_ASYM_RSA_PKCS1_V15 --> 
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP == true)))>
-crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
                                                                                     crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
                                                                                     uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inData == NULL) || (dataLen == 0) )
+    if( (ptr_inputData == NULL) || (dataLen == 0) )
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -186,7 +186,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inData, uint32_t 
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP == true)))>		
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_Oaep_Encrypt(ptr_inData, dataLen, ptr_outData, ptr_pubKeyDer, pubKeyBufLen, hashType_en, ptr_label, labelLen);     
+                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_Oaep_Encrypt(ptr_inputData, dataLen, ptr_outData, ptr_pubKeyDer, pubKeyBufLen, hashType_en, ptr_label, labelLen);     
                 break;
 </#if><#-- CRYPTO_WC_ASYM_RSA_OAEP -->                
             case CRYPTO_HANDLER_HW_INTERNAL:
@@ -202,12 +202,12 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inData, uint32_t 
     return ret_rsaStat_en;
 }
 
-crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData,  uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData,  uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
 															crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
 															uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inData == NULL) || (dataLen == 0) )
+    if( (ptr_inputData == NULL) || (dataLen == 0) )
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -229,7 +229,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inData, uint32_t 
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP == true)))>		
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_Oaep_Decrypt(ptr_inData, dataLen, ptr_outData, ptr_privKeyDer, privKeyBufLen, hashType_en, ptr_label, labelLen);   
+                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_Oaep_Decrypt(ptr_inputData, dataLen, ptr_outData, ptr_privKeyDer, privKeyBufLen, hashType_en, ptr_label, labelLen);   
                 break;
 </#if><#-- CRYPTO_WC_ASYM_RSA_OAEP -->  
                
@@ -249,11 +249,11 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inData, uint32_t 
 </#if><#-- CRYPTO_WC_ASYM_RSA_OAEP -->
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING == true)))> 
-crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Encrypt(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
 															                                        crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inData == NULL) || (dataLen == 0) )
+    if( (ptr_inputData == NULL) || (dataLen == 0) )
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -275,7 +275,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Encrypt(uint8_t *ptr_inData, uint
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING == true)))>			
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(ptr_inData, dataLen, ptr_outData, ptr_pubKeyDer, pubKeyBufLen);     
+                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(ptr_inputData, dataLen, ptr_outData, ptr_pubKeyDer, pubKeyBufLen);     
                 break;
 </#if><#-- CRYPTO_WC_ASYM_RSA_NO_PADDING -->
                
@@ -292,11 +292,11 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Encrypt(uint8_t *ptr_inData, uint
     return ret_rsaStat_en;
 }
 
-crypto_Asym_Status_E Crypto_Asym_Rsa_Nopadding_Decrypt(uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
 															crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inData == NULL) || (dataLen == 0) )
+    if( (ptr_inputData == NULL) || (dataLen == 0) )
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -318,7 +318,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Nopadding_Decrypt(uint8_t *ptr_inData, uint
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING == true)))>			
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(ptr_inData, dataLen, ptr_outData, ptr_privKeyDer, privKeyBufLen);   
+                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(ptr_inputData, dataLen, ptr_outData, ptr_privKeyDer, privKeyBufLen);   
                 break;
 </#if><#-- CRYPTO_WC_ASYM_RSA_NO_PADDING -->               
             case CRYPTO_HANDLER_HW_INTERNAL:

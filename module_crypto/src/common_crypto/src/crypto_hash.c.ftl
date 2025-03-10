@@ -927,6 +927,11 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
 }
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
 
+<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))
+			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
+			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
+			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
+			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
 static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_en, uint32_t *hashSize)
 {
     crypto_Hash_Status_E ret_val_en = CRYPTO_HASH_SUCCESS;
@@ -970,8 +975,8 @@ static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_
 </#if><#-- CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256 -->             
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)))>            
         case CRYPTO_HASH_SHA3_224:
-                *hashSize = 0x1C;   //28 Bytes
-                break;
+            *hashSize = 0x1C;   //28 Bytes
+            break;
 </#if><#-- CRYPTO_WC_SHA3_224 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true)))>             
         case CRYPTO_HASH_SHA3_256:
@@ -995,12 +1000,12 @@ static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_
 </#if><#-- CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true)))>           
         case CRYPTO_HASH_RIPEMD160:
-                *hashSize = 0x14;   //20 Bytes
-                break;
+            *hashSize = 0x14;   //20 Bytes
+            break;
 </#if><#-- CRYPTO_WC_RIPEMD160 -->
         default:
             ret_val_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
-            break;    
+            break;
     }; 
     return ret_val_en;
 }
@@ -1098,3 +1103,4 @@ uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, cryp
     }
     return hashSize;
 }
+</#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->

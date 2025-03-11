@@ -55,6 +55,9 @@
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_mac_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_mac_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_mac_wc_wrapper.h"
 </#if>
+<#if crypto_digisign_cam05346_wrapper_h_ftl_flag?? &&(crypto_digisign_cam05346_wrapper_h_ftl_flag == true)>
+#include "crypto/drivers/wrapper/crypto_mac_cam05346_wrapper.h"
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -70,7 +73,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? && (lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))  || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, crypto_HandlerType_E handlerType_en, 
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
 {
@@ -102,9 +105,13 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCt
                     ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Init((void*)ptr_aesCmacCtx_st->arr_macDataCtx, ptr_aesCmacCtx_st->ptr_key, ptr_aesCmacCtx_st->mackeyLen);     
                 break;
 </#if><#-- CRYPTO_WC_AES_CMAC -->
+<#if (CRYPTO_HW_AES_CMAC?? &&(CRYPTO_HW_AES_CMAC == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-                
-                break;
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")> 
+            	ret_aesCmacStat_en = Crypto_Sym_Hw_Cmac_Init(CRYPTO_CIOP_ENCRYPT, ptr_aesCmacCtx_st->ptr_key, keyLen);                       	
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->  
+                break;             
+</#if><#-- CRYPTO_HW_AES_CMAC -->
             default:
                 ret_aesCmacStat_en = CRYPTO_MAC_ERROR_HDLR;
                 break;
@@ -135,9 +142,13 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesCmac
                 ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Cipher((void*)ptr_aesCmacCtx_st->arr_macDataCtx, ptr_inputData, dataLen);
 				break; 
 </#if><#-- CRYPTO_WC_AES_CMAC -->          
+<#if (CRYPTO_HW_AES_CMAC?? &&(CRYPTO_HW_AES_CMAC == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-
-				break;
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")> 
+                ret_aesCmacStat_en = Crypto_Sym_Hw_Cmac_Cipher(ptr_inputData, dataLen);                   	
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->  
+                break;             
+</#if><#-- CRYPTO_HW_AES_CMAC -->
             default:
                 ret_aesCmacStat_en = CRYPTO_MAC_ERROR_HDLR;
 				break;
@@ -166,9 +177,13 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Final(st_Crypto_Mac_Aes_ctx *ptr_aesCmacC
                 ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Final((void*)ptr_aesCmacCtx_st->arr_macDataCtx, ptr_outMac, macLen);
 				break; 
 </#if><#-- CRYPTO_WC_AES_CMAC -->          
+<#if (CRYPTO_HW_AES_CMAC?? &&(CRYPTO_HW_AES_CMAC == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-
-				break;
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")> 
+                ret_aesCmacStat_en = Crypto_Sym_Hw_Cmac_Final(ptr_outMac, macLen);                   	
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->  
+                break;             
+</#if><#-- CRYPTO_HW_AES_CMAC -->
             default:
                 ret_aesCmacStat_en = CRYPTO_MAC_ERROR_HDLR;
 				break;
@@ -206,9 +221,23 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
                 ret_aesCmacStat_en = Crypto_Mac_Wc_AesCmac_Direct(ptr_inputData, dataLen, ptr_outMac, macLen, ptr_key, keyLen);
 				break; 
 </#if><#-- CRYPTO_WC_AES_CMAC -->          
+<#if (CRYPTO_HW_AES_CMAC?? &&(CRYPTO_HW_AES_CMAC == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-
-				break;
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")> 
+                ret_aesCmacStat_en = Crypto_Mac_AesCmac_Init(&newstuff, CRYPTO_HANDLER_HW_INTERNAL, ptr_key, keyLen, sessionID);
+                
+                if(ret_aesCmacStat_en == CRYPTO_MAC_CIPHER_SUCCESS)
+                {
+                    ret_aesCmacStat_en = Crypto_Mac_AesCmac_Cipher(&newstuff, ptr_inputData, dataLen);
+                }
+                
+                if(ret_aesCmacStat_en == CRYPTO_MAC_CIPHER_SUCCESS)
+                {
+                    ret_aesCmacStat_en = Crypto_Mac_AesCmac_Final(&newstuff, ptr_outMac, macLen);
+                }                 	
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->  
+                break;             
+</#if><#-- CRYPTO_HW_AES_CMAC -->
             default:
                 ret_aesCmacStat_en = CRYPTO_MAC_ERROR_HDLR;
 				break;
@@ -216,7 +245,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
     }
     return ret_aesCmacStat_en;
 }
-</#if><#-- CRYPTO_WC_AES_CMAC -->
+</#if><#-- CRYPTO_WC_AES_CMAC, HAVE_CRYPTO_HW_CAM_05346_DRIVER-->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
 
 crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, crypto_HandlerType_E handlerType_en, 

@@ -62,19 +62,6 @@ static void lDRV_CRYPTO_AES_InterruptSetup(void)
     _CRYPT1IF = 0;
     _CRYPT1IE = 1;
 }
-
-static uint32_t lCrypto_Sym_Hw_Cmac_GetNumOfInvalidBytes(uint32_t dataLen)
-{
-    uint32_t numOfInvalidBytes = 0;
-    uint32_t bytesOverCmacBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
-
-    if (bytesOverCmacBlock != (uint32_t) 0)
-    {
-        numOfInvalidBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverCmacBlock;
-    }
-    
-    return numOfInvalidBytes;
-}
     
 // *****************************************************************************
 // *****************************************************************************

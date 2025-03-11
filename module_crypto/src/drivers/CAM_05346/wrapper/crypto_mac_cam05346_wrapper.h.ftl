@@ -39,6 +39,10 @@ implied, are granted under any patent or other intellectual property rights of
 Microchip or any third party.
 */
 //DOM-IGNORE-END
+
+#ifndef CRYPTO_MAC_CAM05346_WRAPPER_H
+#define	CRYPTO_MAC_CAM05346_WRAPPER_H
+
 #include "crypto/common_crypto/crypto_mac_cipher.h"
 
 #ifdef	__cplusplus

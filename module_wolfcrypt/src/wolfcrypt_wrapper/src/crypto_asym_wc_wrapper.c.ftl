@@ -108,7 +108,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_wcInData, 
         wcStatus = wc_FreeRsaKey(&wcRsaPubKey);
     }
 	
-	if(wcStatus == 0)
+    if(wcStatus == 0 || wcStatus == wcOutLen)
     {
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }
@@ -158,7 +158,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_wcInData, 
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }
 	
-	if(wcStatus == 0)
+    if(wcStatus == 0 || wcStatus > 0)
     {
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }

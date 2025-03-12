@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_sym_cam05346_wrapper.c
+    crypto_mac_cam05346_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for CAM hardware AES CMAC.
+    Crypto Framework Library wrapper file for CAM hardware AES MAC.
 
   Description:
-    This source file contains the wrapper interface to access the symmetric 
-    AES CMAC algorithm in the AES hardware driver for Microchip microcontrollers.
+    This source file contains the wrapper interface to access the 
+    AES MAC algorithms in the AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -63,13 +63,26 @@ static void lDRV_CRYPTO_AES_InterruptSetup(void)
     _CRYPT1IE = 1;
 }
     
+static uint32_t lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
+{
+    uint32_t numOfInvalidBytes = 0;
+    uint32_t bytesOverAesBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
+
+    if (bytesOverAesBlock != (uint32_t) 0)
+    {
+        numOfInvalidBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverAesBlock;
+    }
+    
+    return numOfInvalidBytes;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Symmetric Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(crypto_CipherOper_E cipherOpType_en, uint8_t *key, uint32_t keyLen)
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen)
 { 
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_INITIALIZE_ERROR;
@@ -96,8 +109,11 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(uint8_t *inputData, uint32_t dataL
 {
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_GENERAL_ERROR;
-   
-    aesStatus = DRV_CRYPTO_AES_WriteInputData(inputData, dataLen, 0);
+    
+    uint32_t numOfInvalidBytes = lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(dataLen);
+    uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
+    
+    aesStatus = DRV_CRYPTO_AES_WriteInputData(inputData, fullBlockLen, numOfInvalidBytes);
  
     if(aesStatus == AES_NO_ERROR)
     {

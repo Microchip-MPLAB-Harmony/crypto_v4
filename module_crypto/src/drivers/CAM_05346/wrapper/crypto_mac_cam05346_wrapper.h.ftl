@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_sym_cam05346_wrapper.h
+    crypto_mac_cam05346_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for CAM hardware AES CMAC.
+    Crypto Framework Library wrapper file for CAM hardware AES MAC.
 
   Description:
-    This header file contains the wrapper interface to access the symmetric 
-    AES CMAC algorithm in the AES hardware driver for Microchip microcontrollers.
+    This header file contains the wrapper interface to access the 
+    AES MAC algorithms in the AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -55,7 +55,7 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(crypto_CipherOper_E cipherOpType_en, uint8_t *key, uint32_t keyLen);
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen);
     
 crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(uint8_t *inputData, uint32_t dataLen);
 

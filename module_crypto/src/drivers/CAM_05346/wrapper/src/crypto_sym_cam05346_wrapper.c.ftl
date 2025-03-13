@@ -136,7 +136,7 @@ static uint32_t lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
     uint32_t numOfInvalidBytes = 0;
     uint32_t bytesOverAesBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
 
-    if (bytesOverAesBlock != (uint32_t) 0)
+    if (bytesOverAesBlock != 0U)
     {
         numOfInvalidBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverAesBlock;
     }

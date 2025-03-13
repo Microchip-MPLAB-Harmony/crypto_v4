@@ -66,19 +66,26 @@ static void lDRV_CRYPTO_AES_InterruptSetup(void)
 static uint32_t lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
 {
     uint32_t numOfInvalidBytes = 0;
-    uint32_t bytesOverAesBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
-
-    if (bytesOverAesBlock != (uint32_t) 0)
+    if(dataLen == 0U)
     {
-        numOfInvalidBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverAesBlock;
+        numOfInvalidBytes = AES_BLOCK_SIZE;
     }
-    
+    else
+    {
+        uint32_t bytesOverAesBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
+
+        if (bytesOverAesBlock != 0U)
+        {
+            numOfInvalidBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverAesBlock;
+        }
+    }
+
     return numOfInvalidBytes;
 }
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Symmetric Common Interface Implementation
+// Section: MAC Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 

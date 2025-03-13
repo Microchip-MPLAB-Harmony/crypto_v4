@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_rng_trng05346_wrapper.c
+    crypto_int_cam05346_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware TRNG.
+    Crypto Framework Library wrapper file for CAM hardware interrupt management.
 
   Description:
-    This source file contains the wrapper interface to access the TRNG
-    hardware driver for Microchip microcontrollers.
+    This header file contains the wrapper interface to manage CAM interrupts
+    for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,52 +40,62 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
+#ifndef MCHP_CRYPTO_INT_HWWRAPPER_H
+#define MCHP_CRYPTO_INT_HWWRAPPER_H
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include <xc.h>
-#include "crypto/drivers/wrapper/crypto_rng_trng05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_int_cam05346_wrapper.h"
-#include "crypto/drivers/library/cam_trng.h"
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+    extern "C" {
+
+#endif
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Global Functions
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
+typedef enum crypto_Int_Status_E {
+    CRYPTO_INT_SUCCESS = 0,
+    CRYPTO_INT_INVALID_ID = -1,
+    CRYPTO_INT_ALREADY_REGISTERED = -2,
+    CRYPTO_INT_GENERAL_FAIL = -127
+
+} crypto_Int_Status_E;
+
+typedef enum crypto_Int_Handler_Id {
+    CRYPTO1_INT = 0,
+    CRYPTO2_INT = 1,
+    CRYPTO3_INT = 2,
+} crypto_Int_Handler_Id;
+
+typedef void (*crypto_Int_Handler)(void);
+
 // *****************************************************************************
 // *****************************************************************************
-// Section: File Scope Functions
+// Section: Interrupts Common Interface
 // *****************************************************************************
 // *****************************************************************************
 
-static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
-{
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_TRNG_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO2_INT);
-}
+crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handlerID, crypto_Int_Handler handler);
+crypto_Int_Status_E Crypto_Int_Hw_Enable(crypto_Int_Handler_Id handlerID);
+crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID);
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: TRNG Common Interface Implementation
-// *****************************************************************************
-// *****************************************************************************
 
-crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
-{
-<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
 
-    (void) DRV_CRYPTO_TRNG_Setup();
-    lDRV_CRYPTO_TRNG_InterruptSetup();
-    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+    }
 
-    return CRYPTO_RNG_SUCCESS;
-<#else>
-    return CRYPTO_RNG_ERROR_NOTSUPPTED;
-</#if>
-}
+#endif
+// DOM-IGNORE-END
+
+#endif /* MCHP_CRYPTO_INT_HWWRAPPER_H */

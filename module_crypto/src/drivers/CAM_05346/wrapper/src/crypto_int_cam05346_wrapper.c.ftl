@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_rng_trng05346_wrapper.c
+    crypto_int_cam05346_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for hardware TRNG.
+    Crypto Framework Library wrapper file for CAM hardware interrupt management.
 
   Description:
-    This source file contains the wrapper interface to access the TRNG
-    hardware driver for Microchip microcontrollers.
+    This source file contains the wrapper interface to manage CAM interrupts
+    for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -47,10 +47,9 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
+#include <stddef.h>
 #include <xc.h>
-#include "crypto/drivers/wrapper/crypto_rng_trng05346_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_int_cam05346_wrapper.h"
-#include "crypto/drivers/library/cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -58,16 +57,51 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+#define CRYPTO_INT_HANDLER_COUNT (CRYPTO3_INT + 1)
+struct crypto_Int_Handlers {
+    crypto_Int_Handler handlers[CRYPTO_INT_HANDLER_COUNT];
+};
+static struct crypto_Int_Handlers cryptoIntHandlers = {{NULL}};
+
+void __attribute__((interrupt)) _CRYPTO1Interrupt(void);
+void __attribute__((interrupt)) _CRYPTO2Interrupt(void);
+void __attribute__((interrupt)) _CRYPTO3Interrupt(void);
+
+
 // *****************************************************************************
 // *****************************************************************************
-// Section: File Scope Functions
+// Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
 
-static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
+void __attribute__((interrupt)) _CRYPTO1Interrupt(void)
 {
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_TRNG_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO2_INT);
+    if (cryptoIntHandlers.handlers[CRYPTO1_INT] != NULL)
+    {
+        cryptoIntHandlers.handlers[CRYPTO1_INT]();
+    }
+
+    _CRYPT1IF = 0;
+}
+
+void __attribute__((interrupt)) _CRYPTO2Interrupt(void)
+{
+    if (cryptoIntHandlers.handlers[CRYPTO2_INT] != NULL)
+    {
+        cryptoIntHandlers.handlers[CRYPTO2_INT]();
+    }
+
+    _CRYPT2IF = 0;
+}
+
+void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
+{
+    if (cryptoIntHandlers.handlers[CRYPTO3_INT] != NULL)
+    {
+        cryptoIntHandlers.handlers[CRYPTO3_INT]();
+    }
+
+    _CRYPT3IF = 0;
 }
 
 // *****************************************************************************
@@ -76,16 +110,85 @@ static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
+crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handlerID, crypto_Int_Handler handler)
 {
-<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+    crypto_Int_Status_E status = CRYPTO_INT_SUCCESS;
 
-    (void) DRV_CRYPTO_TRNG_Setup();
-    lDRV_CRYPTO_TRNG_InterruptSetup();
-    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+    if ((handlerID < CRYPTO1_INT) || (handlerID > CRYPTO3_INT))
+    {
+        status = CRYPTO_INT_INVALID_ID;
+    }
 
-    return CRYPTO_RNG_SUCCESS;
-<#else>
-    return CRYPTO_RNG_ERROR_NOTSUPPTED;
-</#if>
+    if (status == CRYPTO_INT_SUCCESS)
+    {
+        if (cryptoIntHandlers.handlers[handlerID] != NULL)
+        {
+            status = CRYPTO_INT_ALREADY_REGISTERED;
+        }
+    }
+
+    if (status == CRYPTO_INT_SUCCESS)
+    {
+        cryptoIntHandlers.handlers[handlerID] = handler;
+    }
+
+    return status;
+}
+
+crypto_Int_Status_E Crypto_Int_Hw_Enable(crypto_Int_Handler_Id handlerID)
+{
+    crypto_Int_Status_E status = CRYPTO_INT_SUCCESS;
+
+    switch (handlerID)
+    {
+        case CRYPTO1_INT:
+            _CRYPT1IF = 0;
+            _CRYPT1IE = 1;
+            break;
+
+        case CRYPTO2_INT:
+            _CRYPT2IF = 0;
+            _CRYPT2IE = 1;
+            break;
+
+        case CRYPTO3_INT:
+            _CRYPT3IF = 0;
+            _CRYPT3IE = 1;
+            break;
+
+        default:
+            status = CRYPTO_INT_INVALID_ID;
+            break;
+    }
+
+    return status;
+}
+
+crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID)
+{
+    crypto_Int_Status_E status = CRYPTO_INT_SUCCESS;
+
+    switch (handlerID)
+    {
+        case CRYPTO1_INT:
+            _CRYPT1IF = 0;
+            _CRYPT1IE = 0;
+            break;
+
+        case CRYPTO2_INT:
+            _CRYPT2IF = 0;
+            _CRYPT2IE = 0;
+            break;
+
+        case CRYPTO3_INT:
+            _CRYPT3IF = 0;
+            _CRYPT3IE = 0;
+            break;
+
+        default:
+            status = CRYPTO_INT_INVALID_ID;
+            break;
+    }
+
+    return status;
 }

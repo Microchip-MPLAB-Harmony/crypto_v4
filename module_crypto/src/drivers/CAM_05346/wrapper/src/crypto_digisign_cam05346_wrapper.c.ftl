@@ -8,11 +8,11 @@
     crypto_digisign_cam05346_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for the digital signature in the 
+    Crypto Framework Library wrapper file for the digital signature in the
     hardware cryptographic library.
 
   Description:
-    This source file contains the wrapper interface to access the hardware 
+    This source file contains the wrapper interface to access the hardware
     cryptographic library in Microchip microcontrollers for digital signature.
 **************************************************************************/
 
@@ -50,6 +50,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <xc.h>
 #include "crypto/drivers/wrapper/crypto_digisign_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_int_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_ecdsa.h"
 
 // *****************************************************************************
@@ -57,13 +58,6 @@ Microchip or any third party.
 // Section: Global Functions
 // *****************************************************************************
 // *****************************************************************************
-void __attribute__((interrupt)) _CRYPTO3Interrupt(void);
-
-void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
-{
-    DRV_CRYPTO_ECDSA_IsrHelper();
-    _CRYPT3IF = 0;
-}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -73,8 +67,8 @@ void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
 
 static void lDRV_CRYPTO_ECDSA_InterruptSetup(void)
 {
-    _CRYPT3IF = 0;
-    _CRYPT3IE = 1;
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO3_INT, DRV_CRYPTO_ECDSA_IsrHelper);
+    Crypto_Int_Hw_Enable(CRYPTO3_INT);
 }
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
@@ -87,59 +81,59 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
         case CRYPTO_ECC_CURVE_P192:
             *hwEccCurve = P192;
             break;
-        
+
         case CRYPTO_ECC_CURVE_P256:
             *hwEccCurve = P256;
             break;
-        
+
         case CRYPTO_ECC_CURVE_P384:
             *hwEccCurve = P384;
             break;
-        
+
         case CRYPTO_ECC_CURVE_P521:
             *hwEccCurve = P521;
             break;
-            
+
         default:
             digiSigntatus = CRYPTO_DIGISIGN_ERROR_CURVE;
             break;
     }
-    
+
     return digiSigntatus;
-}   
+}
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(CRYPTO_ECDSA_RESULT result)
 {
     crypto_DigiSign_Status_E digiSigntatus;
-    
-    switch (result) 
+
+    switch (result)
     {
         case CRYPTO_ECDSA_RESULT_SUCCESS:
             digiSigntatus = CRYPTO_DIGISIGN_SUCCESS;
             break;
-            
+
         case CRYPTO_ECDSA_ERROR_PUBKEYCOMPRESS:
             digiSigntatus = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
             break;
-            
+
         case CRYPTO_ECDSA_RESULT_ERROR_CURVE:
             digiSigntatus = CRYPTO_DIGISIGN_ERROR_CURVE;
             break;
-            
-        case CRYPTO_ECDSA_RESULT_ERROR_RNG:   
+
+        case CRYPTO_ECDSA_RESULT_ERROR_RNG:
             digiSigntatus = CRYPTO_DIGISIGN_ERROR_RNG;
             break;
-        
+
         case CRYPTO_ECDSA_RESULT_INIT_FAIL:
         case CRYPTO_ECDSA_RESULT_ERROR_FAIL:
             digiSigntatus = CRYPTO_DIGISIGN_ERROR_FAIL;
             break;
-            
+
         default:
             digiSigntatus = CRYPTO_DIGISIGN_ERROR_FAIL;
             break;
     }
-    
+
     return digiSigntatus;
 }
 
@@ -149,30 +143,30 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(CRYPTO_ECDSA_
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash, 
-    uint32_t hashLen, uint8_t *outSig, uint32_t sigLen, uint8_t *privKey, 
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
+    uint32_t hashLen, uint8_t *outSig, uint32_t sigLen, uint8_t *privKey,
     uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En)
 {
     crypto_DigiSign_Status_E result;
     CRYPTO_ECDSA_RESULT hwResult;
     ECDSA_CMD_CURVE hwEccCurve;
     ECDSA_CONFIG eccData = {
-        .p1.size = 0, 
-        .result_location = 0x99, 
-        .op_size = 0x4, 
-        .flag_a = 0, 
-        .flag_b = 0, 
-        .edwards = EDWARDS_OFF, 
+        .p1.size = 0,
+        .result_location = 0x99,
+        .op_size = 0x4,
+        .flag_a = 0,
+        .flag_b = 0,
+        .edwards = EDWARDS_OFF,
         .field = FIELD_PRIME,
     };
-    
+
     /* Get curve */
     result = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);
     if (result != CRYPTO_DIGISIGN_SUCCESS)
     {
         return result;
-    } 
-    
+    }
+
     /* Initialize the hardware library for ECDSA signature */
     hwResult = DRV_CRYPTO_ECDSA_InitEccParamsSign(&eccData, inputHash, hashLen, privKey, privKeyLen, hwEccCurve);
     lDRV_CRYPTO_ECDSA_InterruptSetup();
@@ -181,52 +175,52 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
     return lCrypto_DigSign_Ecdsa_Hw_MapResult(hwResult);
 }
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash, 
-    uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, 
-    uint32_t pubKeyLen, int8_t *hashVerifyStatus, 
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
+    uint32_t hashLen, uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey,
+    uint32_t pubKeyLen, int8_t *hashVerifyStatus,
     crypto_EccCurveType_E eccCurveType_En)
 {
     crypto_DigiSign_Status_E result;
     CRYPTO_ECDSA_RESULT hwResult;
     ECDSA_CMD_CURVE hwEccCurve;
     ECDSA_CONFIG eccData = {
-        .p1.size = 0, 
-        .result_location = 0x99, 
-        .op_size = 0x4, 
-        .flag_a = 0, 
-        .flag_b = 0, 
-        .edwards = EDWARDS_OFF, 
+        .p1.size = 0,
+        .result_location = 0x99,
+        .op_size = 0x4,
+        .flag_a = 0,
+        .flag_b = 0,
+        .edwards = EDWARDS_OFF,
         .field = FIELD_PRIME,
     };
-    
+
     /* Get curve */
     result = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);
     if (result != CRYPTO_DIGISIGN_SUCCESS)
     {
         return result;
     }
-    
+
     /* Initialize the hardware library for ECDSA signature verification */
-    hwResult = DRV_CRYPTO_ECDSA_InitEccParamsVerify(&eccData, 
-                                                    inputHash,  
-                                                    hashLen, 
+    hwResult = DRV_CRYPTO_ECDSA_InitEccParamsVerify(&eccData,
+                                                    inputHash,
+                                                    hashLen,
                                                     inputSig,
-                                                    sigLen, 
-                                                    pubKey, 
-                                                    pubKeyLen, 
+                                                    sigLen,
+                                                    pubKey,
+                                                    pubKeyLen,
                                                     hwEccCurve);
-                                                    
+
     lDRV_CRYPTO_ECDSA_InterruptSetup();
 
     /* Verify the signature */
     hwResult = DRV_CRYPTO_ECDSA_Verify(&eccData);
-    
+
     /* Set verification status */
-    if (hwResult == CRYPTO_ECDSA_RESULT_SUCCESS) 
+    if (hwResult == CRYPTO_ECDSA_RESULT_SUCCESS)
     {
         *hashVerifyStatus = 1;
     }
-    else 
+    else
     {
         *hashVerifyStatus = 0;
     }

@@ -46,7 +46,7 @@ typedef struct
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
-	hsm_CommandGroups_E aesGcmCmdGroup_en           :8; //It represent the command group here command group is always HSM_CMD_AES for Hash Algorithm
+    hsm_CommandGroups_E aesGcmCmdGroup_en           :8; //It represent the command group here command group is always HSM_CMD_AES for Hash Algorithm
     hsm_Aes_CmdTypes_E aesGcmCmdType_en             :8;
     hsm_Aes_KeySize_E aesGcmKeySize_en              :2; //Aes Key Size
     uint8_t aesMode                                 :4;
@@ -54,7 +54,7 @@ typedef struct
     uint8_t lastMsg                                 :1;                    
     uint8_t aesGcmAuthInc                           :1; //Authentication Included in input bit
     uint8_t aesGcmSlotParamInc                      :1; //This field indicates if slot parameters are included in the list of parameters
-    uint8_t	reserved1                               :6; //Reserved
+    uint8_t reserved1                               :6; //Reserved
 #pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
 #pragma GCC diagnostic pop
 }st_Hsm_Aead_AesGcm_CmdHeader;
@@ -69,20 +69,21 @@ typedef struct
     uint8_t useAad          :1;
     uint8_t reserved1       :5;
     uint8_t varSlotNum      :8;
-	uint16_t reserved2      :16; //Reserved
+    uint16_t reserved2      :16; //Reserved
 #pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
 #pragma GCC diagnostic pop
 }st_Hsm_Aead_AesGcm_Param2;
 
 typedef struct
 {
-	st_Hsm_MailBoxHeader            aesMailBoxHdr_st;
-	st_Hsm_Aead_AesGcm_CmdHeader	aesCmdHeader_st;
-	st_Hsm_SgDmaDescriptor          arr_aesInSgDmaDes_st[6] __attribute__((aligned(4)));
-	st_Hsm_SgDmaDescriptor          arr_aesOutSgDmaDes_st[3]  __attribute__((aligned(4)));
-	uint32_t                        inputDataLenParm1;
-	st_Hsm_Aead_AesGcm_Param2       aesGcmCmdParm2_st;
+    st_Hsm_MailBoxHeader            aesMailBoxHdr_st;
+    st_Hsm_Aead_AesGcm_CmdHeader    aesCmdHeader_st;
+    st_Hsm_SgDmaDescriptor          arr_aesInSgDmaDes_st[6] __attribute__((aligned(4)));
+    st_Hsm_SgDmaDescriptor          arr_aesOutSgDmaDes_st[3]  __attribute__((aligned(4)));
+    uint32_t                        inputDataLenParm1;
+    st_Hsm_Aead_AesGcm_Param2       aesGcmCmdParm2_st;
     uint32_t                        aadLengthParm3;
+    uint32_t                        totalTextLengthParm4;
 }st_Hsm_Aead_AesGcm_Cmd;
 
 typedef struct 

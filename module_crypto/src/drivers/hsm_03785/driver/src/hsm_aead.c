@@ -57,7 +57,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     hsm_Cmd_Status_E ret_aesGcmStat_en;
     
      //Mailbox Header
-    ptr_aesGcmCmd_st->aesMailBoxHdr_st.msgSize =  0x1c;
+    ptr_aesGcmCmd_st->aesMailBoxHdr_st.msgSize =  0x20;
     ptr_aesGcmCmd_st->aesMailBoxHdr_st.unProtection = 0x1;
     ptr_aesGcmCmd_st->aesMailBoxHdr_st.reserved1 = 0x00;
     ptr_aesGcmCmd_st->aesMailBoxHdr_st.reserved2 = 0x00;
@@ -86,7 +86,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
 
 #pragma GCC diagnostic push
@@ -102,7 +102,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
 
     // Input SG-DMA Descriptor 3 for the AAD
@@ -113,7 +113,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
     
     // Input SG-DMA Descriptor 4 for the Plain Text
@@ -124,7 +124,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
 
 #pragma GCC diagnostic push
@@ -203,7 +203,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
 
 #pragma GCC diagnostic push
@@ -219,7 +219,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
     
     //So Input SG-DMA Descriptor 4 for the Plain Text
@@ -230,7 +230,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
 
     //Output SG-DMA Descriptor 1 for Cipher Text
@@ -318,7 +318,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
 
 #pragma GCC diagnostic push
@@ -334,7 +334,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
 
 #pragma GCC diagnostic push
@@ -430,7 +430,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Final(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st,
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
     
     //So Input SG-DMA Descriptor 3 for the Plain Text
@@ -441,7 +441,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Final(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st,
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
     
     //Output SG-DMA Descriptor 1 for Cipher Text
@@ -520,7 +520,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     uint8_t arr_lastByte[4] = {0};
     uint32_t nonAlignByteLen = 0;
     //Mailbox Header
-    aesGcmCmd_st.aesMailBoxHdr_st.msgSize =  0x1c;
+    aesGcmCmd_st.aesMailBoxHdr_st.msgSize =  0x20;
     aesGcmCmd_st.aesMailBoxHdr_st.unProtection = 0x1;
     aesGcmCmd_st.aesMailBoxHdr_st.reserved1 = 0x00;
     aesGcmCmd_st.aesMailBoxHdr_st.reserved2 = 0x00;
@@ -549,7 +549,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
 
 #pragma GCC diagnostic push
@@ -565,7 +565,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00; 
     
 #pragma GCC diagnostic push
@@ -581,7 +581,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
 
 #pragma GCC diagnostic push
@@ -597,7 +597,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     nonAlignByteLen = (inputDataLen % 4UL);
@@ -678,6 +678,10 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     
     //Parameter 3 : AAD Length
     aesGcmCmd_st.aadLengthParm3 = aadLen;
+
+    //Parameter 4: Total length of the cipher
+    aesGcmCmd_st.totalTextLengthParm4 = inputDataLen;
+    
 #pragma coverity compliance end_block "MISRA C-2012 Rule 2.2"
 #pragma GCC diagnostic pop     
 
@@ -717,7 +721,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     uint32_t nonAlignByteLen = 0;
     
     //Mailbox Header
-    aesGcmCmd_st.aesMailBoxHdr_st.msgSize =  0x1c;
+    aesGcmCmd_st.aesMailBoxHdr_st.msgSize =  0x20;
     aesGcmCmd_st.aesMailBoxHdr_st.unProtection = 0x1;
     aesGcmCmd_st.aesMailBoxHdr_st.reserved1 = 0x00;
     aesGcmCmd_st.aesMailBoxHdr_st.reserved2 = 0x00;
@@ -746,7 +750,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
 
 #pragma GCC diagnostic push
@@ -762,7 +766,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00; 
 
 #pragma GCC diagnostic push
@@ -778,7 +782,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
 
 #pragma GCC diagnostic push
@@ -794,7 +798,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
-	aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
+    aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -891,7 +895,11 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     aesGcmCmd_st.aesGcmCmdParm2_st.reserved2 = 0x00;
     
     //Parameter 3: Length of AAD
-   aesGcmCmd_st.aadLengthParm3 = aadLen;
+    aesGcmCmd_st.aadLengthParm3 = aadLen;
+
+    //Parameter 4: Total length of the cipher
+    aesGcmCmd_st.totalTextLengthParm4 = inputDataLen;
+
 #pragma coverity compliance end_block "MISRA C-2012 Rule 2.2"
 #pragma GCC diagnostic pop 
 

@@ -704,7 +704,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
     Hsm_Cmd_ReadCmdResponse(&aesGcmCmdResponse_st);
 
     //Check the command response with expected values for AES-GCM Encrypt Cmd
-    ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,(*aesGcmSendCmd_st.mailBoxHdr-16U), *aesGcmSendCmd_st.algocmdHdr);
+    ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,(*aesGcmSendCmd_st.mailBoxHdr-20U), *aesGcmSendCmd_st.algocmdHdr);
     
     return ret_aesGcmStat_en;
 }
@@ -922,7 +922,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     Hsm_Cmd_ReadCmdResponse(&aesGcmCmdResponse_st);
     
     //Check the command response with expected values for AES-GCM Decrypt Cmd
-    ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,(*aesGcmSendCmd_st.mailBoxHdr-16U), *aesGcmSendCmd_st.algocmdHdr);
+    ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,(*aesGcmSendCmd_st.mailBoxHdr-20U), *aesGcmSendCmd_st.algocmdHdr);
     
     if(aesGcmCmdResponse_st.resultCode_en == HSM_CMD_RC_AUTHFAILED)
     {

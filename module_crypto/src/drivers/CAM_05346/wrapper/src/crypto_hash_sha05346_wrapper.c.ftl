@@ -49,7 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_int_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_hash.h"
 #include <xc.h>
 

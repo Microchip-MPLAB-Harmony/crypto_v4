@@ -49,7 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <xc.h>
 #include "crypto/drivers/wrapper/crypto_sym_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_int_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_aes.h"
 
 // *****************************************************************************

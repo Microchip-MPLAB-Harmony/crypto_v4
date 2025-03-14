@@ -121,7 +121,7 @@ crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handler
 
     if (status == CRYPTO_INT_SUCCESS)
     {
-        if (cryptoIntHandlers.handlers[handlerID] != NULL)
+        if ((handler != NULL) && (cryptoIntHandlers.handlers[handlerID] != NULL))
         {
             status = CRYPTO_INT_ALREADY_REGISTERED;
         }

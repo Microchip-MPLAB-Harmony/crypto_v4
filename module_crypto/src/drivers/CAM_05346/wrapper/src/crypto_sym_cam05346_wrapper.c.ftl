@@ -53,6 +53,14 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
+// Section: Global Data Definitions
+// *****************************************************************************
+// *****************************************************************************
+
+#define AES_SYM_INIT_VECTOR_LENGTH (16U)
+
+// *****************************************************************************
+// *****************************************************************************
 // Section: Global Functions
 // *****************************************************************************
 // *****************************************************************************
@@ -161,7 +169,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
     
     if(status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, initVect);
+        aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     }
     
     if(aesStatus == AES_NO_ERROR)

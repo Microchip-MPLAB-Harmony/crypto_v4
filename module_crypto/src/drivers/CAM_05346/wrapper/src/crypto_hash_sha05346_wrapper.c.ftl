@@ -112,7 +112,7 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E 
     
     return status;
 }
- 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Hash Algorithms Common Interface Implementation
@@ -152,82 +152,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
-    HASH_ERROR hashStatus = HASH_UPDATE_ERROR;
-    
-    uint8_t *inputData = data;
-    uint32_t inputDataLen = dataLen;
-    uint32_t numOfInvalidBytes = 0;
-    
-    #ifdef ENABLE_SW_PADDING
-
-    const CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
-    
-    switch(shaCtx->algo)
-    {
-        case CRYPTO_HASH_SHA2_256:
-            inputDataLen = 64;
-            break;
-        case CRYPTO_HASH_SHA2_384:
-            inputDataLen = 128;
-            break;
-        default:
-            return CRYPTO_HASH_ERROR_ALGO;
-    }
-    
-    /* cppcheck-suppress misra-c2012-18.8
-    * 
-    *  (Rule 18.8) REQUIRED: Variable-length array types shall not be used
-    * 
-    *  Reasoning: Software padding requires an array to be created according to 
-    *   passed in data length plus padding size
-    */
-    uint8_t inputDataPadded[inputDataLen];
-    
-    (void) memcpy(inputDataPadded, inputData, dataLen);
-    
-    for(uint32_t index = dataLen; index < (inputDataLen - 1U); index++)
-    {
-        inputDataPadded[index] = (uint8_t) 0x00;
-    }
-
-    inputDataPadded[dataLen] = 0x80;
-    
-    inputDataPadded[inputDataLen - 5U] = dataLen >> 29U;
-    inputDataPadded[inputDataLen - 4U] = dataLen >> 21U;
-    inputDataPadded[inputDataLen - 3U] = dataLen >> 13U;
-    inputDataPadded[inputDataLen - 2U] = dataLen >> 5U;
-    inputDataPadded[inputDataLen - 1U] = dataLen << 3U;
-
-    inputData = &inputDataPadded[0];
-    
-    #else
-
-    if(inputDataLen == 0U)
-    {
-        inputDataLen = 4;
-        numOfInvalidBytes = 4;
-    }
-    else
-    {
-        uint32_t bytesOverHashBlock = inputDataLen % (uint32_t) HASH_BLOCK_SIZE;
-
-        if (bytesOverHashBlock != (uint32_t) 0)
-        {
-            numOfInvalidBytes = (uint32_t) HASH_BLOCK_SIZE - bytesOverHashBlock;
-        }
-    }
-    
-    #endif
-
-    hashStatus = DRV_CRYPTO_Hash_Update(inputData, inputDataLen, numOfInvalidBytes);
+    HASH_ERROR hashStatus = DRV_CRYPTO_Hash_Update(data, dataLen);
     
     if (hashStatus == HASH_NO_ERROR)
     {
         status = CRYPTO_HASH_SUCCESS;
-    }
-    else
-    {
-        status = CRYPTO_HASH_ERROR_FAIL;
     }
     
     return status;
@@ -264,15 +193,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
             break;
     }
     
-    hashStatus = DRV_CRYPTO_Hash_GetOutputData(digest, digestLen);
+    hashStatus = DRV_CRYPTO_Hash_Final(digest, digestLen);
     
     if (hashStatus == HASH_NO_ERROR)
     {
         status = CRYPTO_HASH_SUCCESS;
-    }
-    else
-    {
-        status = CRYPTO_HASH_ERROR_FAIL;
     }
     
     return status;

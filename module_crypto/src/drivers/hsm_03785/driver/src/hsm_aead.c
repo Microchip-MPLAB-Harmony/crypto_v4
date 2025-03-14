@@ -66,8 +66,8 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmCmdGroup_en = HSM_CMD_AES;
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmCmdType_en = aesCipherOper_en; //this argument can be other instead of Cmd type because here we support encrypt or decrypt not GCM and others type.
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmKeySize_en = aesKeyLen_en;
-    ptr_aesGcmCmd_st->aesCmdHeader_st.aesMode = 0x00;
-    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x01; //this is the first data
+    ptr_aesGcmCmd_st->aesCmdHeader_st.aesMode = 0x06;
+    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x01;    // this is the first data
     ptr_aesGcmCmd_st->aesCmdHeader_st.lastMsg = 0x00; //this is not the last data
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmAuthInc = 0x00;
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmSlotParamInc = 0x00;

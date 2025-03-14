@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_int_cam05346_wrapper.h
+    crypto_common_cam05346_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for CAM hardware interrupt management.
+    Crypto Framework Library wrapper file for common CAM hardware management.
 
   Description:
-    This header file contains the wrapper interface to manage CAM interrupts
-    for Microchip microcontrollers.
+    This header file contains the wrapper interface to manage common CAM hardware
+    interactions for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_INT_HWWRAPPER_H
-#define MCHP_CRYPTO_INT_HWWRAPPER_H
+#ifndef MCHP_CRYPTO_COMMON_HWWRAPPER_H
+#define MCHP_CRYPTO_COMMON_HWWRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -98,4 +98,4 @@ crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID);
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_INT_HWWRAPPER_H */
+#endif /* MCHP_CRYPTO_COMMON_HWWRAPPER_H */

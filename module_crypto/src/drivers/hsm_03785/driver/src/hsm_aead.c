@@ -54,28 +54,33 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     hsm_Aes_CmdTypes_E aesCipherOper_en, uint8_t *ptr_aeskey, 
     hsm_Aes_KeySize_E aesKeyLen_en, uint8_t *ptr_initVect, uint32_t ivLen)
 {
-    st_Hsm_ResponseCmd aesGcmCmdResponse_st;
-    st_Hsm_SendCmdLayout aesGcmSendCmd_st;
-    hsm_Cmd_Status_E ret_aesGcmStat_en;
-    
-    //Mailbox Header
-    ptr_aesGcmCmd_st->aesMailBoxHdr_st.msgSize =  0x20;
+    // Mailbox Header
+    ptr_aesGcmCmd_st->aesMailBoxHdr_st.msgSize = 0x20;
     ptr_aesGcmCmd_st->aesMailBoxHdr_st.unProtection = 0x1;
     ptr_aesGcmCmd_st->aesMailBoxHdr_st.reserved1 = 0x00;
     ptr_aesGcmCmd_st->aesMailBoxHdr_st.reserved2 = 0x00;
     
-    //Command Header
+    // Command Header
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmCmdGroup_en = HSM_CMD_AES;
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmCmdType_en = aesCipherOper_en; //this argument can be other instead of Cmd type because here we support encrypt or decrypt not GCM and others type.
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmKeySize_en = aesKeyLen_en;
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesMode = 0x06;
-    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x01;    // this is the first data
-    ptr_aesGcmCmd_st->aesCmdHeader_st.lastMsg = 0x00; //this is not the last data
+    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x01;        // This is the first data
+    ptr_aesGcmCmd_st->aesCmdHeader_st.lastMsg = 0x00;           // This is not last data
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmAuthInc = 0x00;
     ptr_aesGcmCmd_st->aesCmdHeader_st.aesGcmSlotParamInc = 0x00;
     ptr_aesGcmCmd_st->aesCmdHeader_st.reserved1 = 0x00;
     
-    //Input SG-DMA Descriptor 1 for AES Key
+    /* 
+        Input DMA Descriptors (0, 1, 2, 3, 4) 
+        0. Key
+        1. IV
+        2. ctx
+        3. AAD
+        4. Plaintext
+    */
+
+    // Input SG-DMA Descriptor 0 for AES Key
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
@@ -92,16 +97,16 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
     
-    //Input SG-DMA Descriptor 2 for IV
+    // Input SG-DMA Descriptor 1 for IV
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_initVect;
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 #pragma GCC diagnostic pop     
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.stop = 0x00;                       // Don't stop
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.stop = 0x00;            // Don't stop
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = 
-        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2])>>2);                        // Link to descriptor 3
+        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2])>>2);             // Link to descriptor 3
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = (uint32_t)ivLen;   // IV length is entered
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
@@ -109,49 +114,115 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
 
-    // Input SG-DMA Descriptor 3 for the AAD
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].ptr_dataAddr = NULL;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.stop = 0x00;                       // Don't stop
+    // Input SG-DMA Descriptor 2 for Context
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_aesGcmCtx;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop    
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.nextDescriptorAddr = 
-        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3])>>2);                        // Link to descriptor 4
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = (uint32_t)0x00;    // AAD length is entered
+        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3])>>2);                        // Link to descriptor 3
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = (uint32_t)0x00;    // ctx length is entered
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
-    
-    // Input SG-DMA Descriptor 4 for the Plain Text
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
+
+    // Input SG-DMA Descriptor 3 for the AAD
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].ptr_dataAddr = NULL;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.stop = 0x01;                       // Stop
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr = 0x00;         // Signal final descriptor 
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)0x00;    // Plaintext length is entered
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.stop = 0x00;                       // Don't stop
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr = 
+        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4])>>2);                        // Link to descriptor 4
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)0x00;    // AAD length is entered
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
+    
+    // Input SG-DMA Descriptor 4 for the Plain Text
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].ptr_dataAddr = NULL;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].nextDes_st.stop = 0x01;                       // Stop
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].nextDes_st.nextDescriptorAddr = 0x00;         // Signal final descriptor 
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.dataLen = (uint32_t)0x00;    // Plaintext length is entered
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.cstAddr = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.reAlign = 0x01;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.discard = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].nextDes_st.reserved1 = 0x00; 
 
-    //Output SG-DMA Descriptor 1 for Ciphertext
+    /* 
+        Output DMA Descriptors (0, 1, 2) 
+        0. Ciphertext
+        1. ctx
+        2. Tag
+    */
+
+    // Output SG-DMA Descriptor 0 for Ciphertext
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"       
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t *)ptr_aesGcmCtx;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = NULL;
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 #pragma GCC diagnostic pop       
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.stop = 0x01;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = 0x000000;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.dataLen = 32;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.stop = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = 
+        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1])>>2);                   // Link to descriptor 1
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.dataLen = 0x00;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
 
-    //Parameter 1 : Length of Plain/Cipher Text
+    // Output SG-DMA Descriptor 1 for CTX
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"  
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t *)ptr_aesGcmCtx;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop     
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.stop = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = 
+        ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2])>>2);                   // Link to descriptor 2
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.dataLen = (uint32_t)32;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
+
+    //Output SG-DMA Descriptor 2 for Tag
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].ptr_dataAddr = NULL;
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+#pragma GCC diagnostic pop       
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].nextDes_st.stop = 0x01;                  // Stop
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].nextDes_st.nextDescriptorAddr = 0x00;    // Signal final descriptor
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].flagAndLength_st.dataLen = 0x00;         // init tagLen = 0  
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
+    
+    /* 
+        HSM Parameters (1, 2, 3, 4)
+        1. Length of current input text
+        2. IV information
+        3. AAD Length
+        4. Total length of input text
+    */
+
+    // Parameter 1: Length of Plain/Cipher Text
     ptr_aesGcmCmd_st->inputDataLenParm1 = 0;
     
-    //Parameter 2
+    // Parameter 2: 
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.useIV = 0x00;
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.resetIV = 0x00;
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.useAad = 0x00;
@@ -160,31 +231,14 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Init(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, 
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.reserved1 = 0x00;
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.reserved2 = 0x00;
     
-    //Parameter 3 : AAD Length
+    // Parameter 3: AAD Length
     ptr_aesGcmCmd_st->aadLengthParm3 = 0;
-    
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
-    aesGcmSendCmd_st.mailBoxHdr = (uint32_t*)&ptr_aesGcmCmd_st->aesMailBoxHdr_st;
-    aesGcmSendCmd_st.algocmdHdr = (uint32_t*)&ptr_aesGcmCmd_st->aesCmdHeader_st;
-    aesGcmSendCmd_st.ptr_sgDescriptorIn = (uint32_t*)ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st;
-    aesGcmSendCmd_st.ptr_sgDescriptorOut = (uint32_t*)ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st;
-#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
-#pragma GCC diagnostic pop     
-    aesGcmSendCmd_st.ptr_params = (uint32_t*)&(ptr_aesGcmCmd_st->inputDataLenParm1);
-    aesGcmSendCmd_st.paramsCount = (uint8_t) ((ptr_aesGcmCmd_st->aesMailBoxHdr_st.msgSize/4U) - 4U);
-    
-    //Send the Command to MailBox
-    HSM_Cmd_Send(aesGcmSendCmd_st);
 
-    //Read the command response 
-    Hsm_Cmd_ReadCmdResponse(&aesGcmCmdResponse_st);
+    // Parameter 4: Total length
+    ptr_aesGcmCmd_st->totalTextLengthParm4 = 0;
 
-    //Check the command response with expected values for AES-GCM Encrypt Cmd
-    ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,((*aesGcmSendCmd_st.mailBoxHdr)-20U), *aesGcmSendCmd_st.algocmdHdr);
-    
-    return ret_aesGcmStat_en;
+    // No mailbox activity, return success
+    return HSM_CMD_SUCCESS;
 }
 
 hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st, uint8_t *ptr_aesGcmCtx, 
@@ -193,83 +247,53 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
     st_Hsm_ResponseCmd aesGcmCmdResponse_st;
     st_Hsm_SendCmdLayout aesGcmSendCmd_st;
     hsm_Cmd_Status_E ret_aesGcmStat_en;
+    
+    /* 
+        Input DMA Descriptors (0, 1, 2, 3, 4) 
+        0. Key
+        1. IV
+        2. ctx
+        3. AAD
+        4. Plaintext
+    */
 
-    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x00;    //this is not the first data
-    ptr_aesGcmCmd_st->aesCmdHeader_st.lastMsg = 0x00;       //this is not the last data
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
-    //Input SG-DMA Descriptor 2 for Context
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_aesGcmCtx;
-#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
-#pragma GCC diagnostic pop    
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2])>>2);
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = (uint32_t)32;  //here ctx length is entered
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
-
+    // Input SG-DMA Descriptor 3 for the AAD
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
-    //Input SG-DMA Descriptor 3 for AAD
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_aad;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)ptr_aad;
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 #pragma GCC diagnostic pop      
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.stop = 0x00; //do not stop
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3])>>2);
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = (uint32_t)aadLen;  //here IV length is entered
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00;
-    
-    //So Input SG-DMA Descriptor 4 for the Plain Text
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].ptr_dataAddr = (uint32_t*)NULL;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.stop = 0x01; //Stop
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr = 0x0000; //((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4])>>2);
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)0;  //here Plain Text length is entered
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.stop = 0x00; //do not stop
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4])>>2);
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)aadLen;  //here aad length is entered
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.cstAddr = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.reAlign = 0x01;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.discard = 0x00;
     ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00; 
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].nextDes_st.reserved1 = 0x00;
 
-    //Output SG-DMA Descriptor 1 for Cipher Text
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t *)NULL;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.stop = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.nextDescriptorAddr = ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1])>>2);
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.dataLen = 0;//INput and Output data length will be same always
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
+    /* 
+        Output DMA Descriptors (0, 1, 2) 
+        0. Ciphertext
+        1. ctx
+        2. Tag
+    */
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"  
-    //Output SG-DMA Descriptor 2 for CTX
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t *)ptr_aesGcmCtx;
-#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
-#pragma GCC diagnostic pop     
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.stop = 0x01; //Stop
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.dataLen = (uint32_t)32;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
-    
+    // N/A 
+
+    /* 
+        HSM Parameters (1, 2, 3, 4)
+        1. Length of current input text
+        2. IV information
+        3. AAD Length
+        4. Total length of input text
+    */
+
     //Parameter 1: Length of Encrypted Text
     ptr_aesGcmCmd_st->inputDataLenParm1 = 0x00;
     
-    //Parameter 2
+    //Parameter 2: IV
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.useIV = 0x00;
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.resetIV = 0x00;
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.useAad = 0x00;
@@ -278,8 +302,15 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.reserved1 = 0x00;
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.reserved2 = 0x00;
     
-    //Parameter 2:  AAD Length
+    //Parameter 3: AAD Length
     ptr_aesGcmCmd_st->aadLengthParm3 = aadLen;
+
+    // Parameter 4: Total length
+    ptr_aesGcmCmd_st->totalTextLengthParm4 = 0;
+
+    /* 
+        Package and send msg
+    */
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
@@ -301,6 +332,15 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
 
     //Check the command response with expected values for AES-GCM Encrypt Cmd
     ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,(*aesGcmSendCmd_st.mailBoxHdr-20U), *aesGcmSendCmd_st.algocmdHdr);
+
+    /* 
+        Bookkeeping for following steps 
+        * first message to HSM has been sent
+        * drop AAD len to 0
+    */
+
+    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x00; // First message sent this is no longer first message, update Command Header   
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = 0x00; // Update the AAD length
     
     return ret_aesGcmStat_en;
 }
@@ -312,42 +352,48 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
     st_Hsm_SendCmdLayout aesGcmSendCmd_st;
     hsm_Cmd_Status_E ret_aesGcmStat_en;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
-    //Input SG-DMA Descriptor 2 for Context
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].ptr_dataAddr = (uint32_t*)ptr_aesGcmCtx;
-#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
-#pragma GCC diagnostic pop      
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.stop = 0x00; //do not stop
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.nextDescriptorAddr =  ((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2])>>2);
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = (uint32_t)32;  //here ctx length is entered
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
+    if (!ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg)
+    {
+        ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = 0x00;          // IV length 0
+        ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = (uint32_t)32;  // ctx length 32
+    }
 
+    /* 
+        Input DMA Descriptors (0, 1, 2, 3, 4) 
+        0. Key
+        1. IV
+        2. ctx
+        3. AAD
+        4. Plaintext
+    */
+
+    //So Input SG-DMA Descriptor 4 for the Plaintext
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
-    //So Input SG-DMA Descriptor 3 for the Plain Text
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].ptr_dataAddr = (uint32_t*)ptr_dataIn;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].ptr_dataAddr = (uint32_t*)ptr_dataIn;
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 #pragma GCC diagnostic pop         
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.stop = 0x01; //Stop
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.nextDescriptorAddr = 0x0000; //((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4])>>2);
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = (uint32_t)inputDataLen;  //here Plain Text length is entered
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].nextDes_st.reserved1 = 0x00; 
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].nextDes_st.stop = 0x01; //Stop
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].nextDes_st.nextDescriptorAddr = 0x0000; //((uint32_t)(&ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4])>>2);
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.dataLen = (uint32_t)inputDataLen;  //here Plain Text length is entered
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.cstAddr = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.reAlign = 0x01;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.discard = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].flagAndLength_st.intEn = 0x00;
+    ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[4].nextDes_st.reserved1 = 0x00; 
 
+    /* 
+        Output DMA Descriptors (0, 1, 2) 
+        0. Ciphertext
+        1. ctx
+        2. Tag
+    */
+
+    //Output SG-DMA Descriptor 0 for Ciphertext
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"    
-    //Output SG-DMA Descriptor 1 for Cipher Text
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].ptr_dataAddr = (uint32_t *)ptr_outData;
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 #pragma GCC diagnostic pop       
@@ -359,23 +405,11 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.discard = 0x00;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].flagAndLength_st.intEn = 0x00;
     ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[0].nextDes_st.reserved1 = 0x00;
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1" 
-    //Output SG-DMA Descriptor 2 for CTX
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].ptr_dataAddr = (uint32_t *)ptr_aesGcmCtx;
-#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
-#pragma GCC diagnostic pop     
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.stop = 0x01; //Stop
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.nextDescriptorAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.dataLen = (uint32_t)32;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.cstAddr = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.reAlign = 0x01;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.discard = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].flagAndLength_st.intEn = 0x00;
-    ptr_aesGcmCmd_st->arr_aesOutSgDmaDes_st[1].nextDes_st.reserved1 = 0x00;
     
+    /* 
+        Package and send msg
+    */
+
     //Parameter 1 : Length of Encrypted Text
     ptr_aesGcmCmd_st->inputDataLenParm1 = inputDataLen;
     
@@ -411,6 +445,12 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
 
     //Check the command response with expected values for AES-GCM Encrypt Cmd
     ret_aesGcmStat_en = Hsm_Cmd_CheckCmdRespParms(aesGcmCmdResponse_st,(*aesGcmSendCmd_st.mailBoxHdr-20U), *aesGcmSendCmd_st.algocmdHdr);
+
+    /* 
+        Bookkeeping for following steps
+    */
+
+    ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg = 0x00; // First message sent this is no longer first message, update Command Header   
     
     return ret_aesGcmStat_en;
 }

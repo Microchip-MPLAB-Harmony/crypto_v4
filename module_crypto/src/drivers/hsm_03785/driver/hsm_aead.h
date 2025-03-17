@@ -88,6 +88,8 @@ typedef struct
 
 typedef struct 
 {
+    // TODO: 
+    // track ivLen? track aadLen?
     st_Hsm_Aead_AesGcm_Cmd aesGcmHsmCmd_st;
     uint8_t aesGcmHsmCtx[32];
 }st_Hsm_Aead_AesGcm_Ctx;
@@ -112,5 +114,5 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
 hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inputDataLen, uint8_t *ptr_outputData,
     uint8_t *ptr_aeskey, hsm_Aes_KeySize_E aesKeyLen_en, uint8_t *ptr_initVect,  uint32_t ivLen, 
     uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_inputTagMac, uint8_t tagLen);
-    
+
 #endif /* HSM_AEAD_H*/

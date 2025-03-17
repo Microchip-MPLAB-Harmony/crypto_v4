@@ -97,7 +97,7 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen)
     AESCON_MODE mode = MODE_CMAC;
     AESCON_OPERATION operation = OP_ENC;
     
-    aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, NULL);
+    aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, NULL, 0U);
     
     if(aesStatus == AES_NO_ERROR)
     {                      

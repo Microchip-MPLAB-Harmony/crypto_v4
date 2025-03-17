@@ -88,8 +88,6 @@ typedef struct
 
 typedef struct 
 {
-    // TODO: 
-    // track ivLen? track aadLen?
     st_Hsm_Aead_AesGcm_Cmd aesGcmHsmCmd_st;
     uint8_t aesGcmHsmCtx[32];
 }st_Hsm_Aead_AesGcm_Ctx;

@@ -44,10 +44,10 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include "stdio.h"
+
+#include "crypto/crypto_config.h"
 #include "crypto/drivers/driver/hsm_boot.h"
 #include "crypto/drivers/driver/hsm_common.h"
-#include "string.h"
 #include "crypto/drivers/driver/hsm_cmd.h"
 
 static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)

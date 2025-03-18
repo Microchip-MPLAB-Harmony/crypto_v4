@@ -42,8 +42,8 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-#ifndef CRYPTO_HW_CONFIG_H
-#define CRYPTO_HW_CONFIG_H
+#ifndef CRYPTO_CONFIG_H
+#define CRYPTO_CONFIG_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -51,7 +51,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-//#include "user.h"
 #include "device.h"
 
 // DOM-IGNORE-BEGIN
@@ -62,19 +61,9 @@
 #endif
 // DOM-IGNORE-END
 
-/*** Crypto Library Configuration ***/
-
-//Crypto V4 Common Crypto API - WolfCrypt Library Support
-<#lt>#define CRYPTO_V4_API
-
-<#lt>/*** Hardware Driver Configuration ***/
-<#if driver_defines?has_content>
-    <#lt>//Hardware Drivers Available:
-    <#list driver_defines?split(", ") as driver>
-        <#lt>#define ${driver}
-    </#list>
-<#else>
-    <#lt>/*   (Crypto Hardware Drivers Not Available)   */ 
+<#if HSM_BOOT_FIRMWARE_INIT_ADDR?has_content>
+    <#lt>/* HSM Firmware Metadata Address */
+    <#lt>#define HSM_BOOT_FIRMWARE_INIT_ADDR  (${HSM_BOOT_FIRMWARE_INIT_ADDR})
 </#if>
 
 //DOM-IGNORE-BEGIN

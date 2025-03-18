@@ -602,10 +602,17 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CTX;
     }
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+    else if((ptr_inputData == NULL) || (dataLen == 0u) || (dataLen % 16u))
+    {
+        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+<#else>
     else if((ptr_inputData == NULL) || (dataLen == 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
+</#if>
     else if(ptr_outData == NULL)
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 

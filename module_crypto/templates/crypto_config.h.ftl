@@ -51,6 +51,35 @@
 // *****************************************************************************
 // *****************************************************************************
 
+<#if hsm_boot_h_ftl_flag?? &&(hsm_boot_h_ftl_flag == true)>
+    <#lt> /* HSM Initialization */
+    <#lt>#include "crypto/drivers/driver/hsm_boot.h"
+</#if>
+<#if crypto_common_h_ftl_flag?? &&(crypto_common_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_common.h"
+</#if>
+<#if crypto_aead_cipher_h_ftl_flag?? &&(crypto_aead_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_aead_cipher.h"
+</#if>
+<#if crypto_digsign_h_ftl_flag?? &&(crypto_digsign_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_digsign.h"
+</#if>
+<#if crypto_hash_h_ftl_flag?? &&(crypto_hash_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_hash.h"
+</#if>
+<#if crypto_kas_h_ftl_flag?? &&(crypto_kas_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_kas.h"
+</#if>
+<#if crypto_mac_cipher_h_ftl_flag?? &&(crypto_mac_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_mac_cipher.h"
+</#if>
+<#if crypto_rng_h_ftl_flag?? &&(crypto_rng_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_rng.h"
+</#if>
+<#if crypto_sym_cipher_h_ftl_flag?? &&(crypto_sym_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_sym_cipher.h"
+</#if>
+
 #include "device.h"
 
 // DOM-IGNORE-BEGIN

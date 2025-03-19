@@ -127,6 +127,10 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     {
         lDRV_CRYPTO_Hash_InterruptSetup();
     }
+    else
+    {
+        status = CRYPTO_HASH_ERROR_FAIL;
+    }
 
     return status;
 }
@@ -140,10 +144,6 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     if (hashStatus == HASH_NO_ERROR)
     {
         status = CRYPTO_HASH_SUCCESS;
-    }
-    else
-    {
-        status = CRYPTO_HASH_ERROR_FAIL;
     }
 
     return status;

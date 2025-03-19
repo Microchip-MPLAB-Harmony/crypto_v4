@@ -49,6 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <xc.h>
 #include "crypto/drivers/wrapper/crypto_mac_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_aes.h"
 
 // *****************************************************************************
@@ -59,8 +60,8 @@ Microchip or any third party.
 
 static void lDRV_CRYPTO_AES_InterruptSetup(void)
 {
-    _CRYPT1IF = 0;
-    _CRYPT1IE = 1;
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
+    Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
     
 static uint32_t lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)

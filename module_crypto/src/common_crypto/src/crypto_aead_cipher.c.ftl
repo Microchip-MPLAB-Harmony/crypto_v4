@@ -486,7 +486,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
     return ret_aesEaxStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_EAX -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))) || ((CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))) || ((CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && ( (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))))>
 
 crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en, 
                                                               uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, uint32_t sessionID)

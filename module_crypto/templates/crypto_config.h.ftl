@@ -82,9 +82,6 @@
     <#lt>#include "crypto/common_crypto/crypto_sym_cipher.h"
 </#if>
 
-#ifndef DEFINITIONS_H
-    #include "definitions.h"
-#endif
 #include "device.h"
 
 // DOM-IGNORE-BEGIN
@@ -94,7 +91,6 @@
 
 #endif
 // DOM-IGNORE-END
-
 <#-- Define hexDigits outside of any macro to make it globally accessible -->
 <#assign hexDigits = "0123456789ABCDEF">
 
@@ -129,41 +125,57 @@
     <#return hexString?substring(firstNonZeroIndex)>
 </#function>
 
+<#lt>/* HSM metadata address for provided HSM .hex file */
 <#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR?has_content>
 #define DEFAULT_HSM_BOOT_FIRMWARE_ADDR (${DEFAULT_HSM_BOOT_FIRMWARE_ADDR})
 </#if>
 
 <#if FLASH_START_ADDR?has_content && core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
-    <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
-    <#assign bytesIndexANSC = core.IDAU_ANSC_SIZE?index_of(" Bytes")>
-    <#if (bytesIndexAS != -1) && (bytesIndexANSC != -1)>
-        <#if FLASH_START_ADDR?is_number>
-            <#assign flashStartNumber = FLASH_START_ADDR?number>
-            <#assign idauAsSizeNumber = core.IDAU_AS_SIZE?substring(0, bytesIndexAS)?number>
-            <#assign idauAnscSizeNumber = core.IDAU_ANSC_SIZE?substring(0, bytesIndexANSC)?number>
-            <#assign sum = flashStartNumber + (idauAsSizeNumber+idauAnscSizeNumber)>
-            <#assign hsm_addr = sum - 133120>   <#--  130 KB offset  -->
-            <#lt><@decimalToHex hsm_addr/>       <#-- Custom address calculation  -->
-        <#else>
-            <#lt>#define CUSTOM_HSM_BOOT_FIRMWARE_ADDR (/* Unable to automatically fill address */)
-        </#if>
+  <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
+  <#assign bytesIndexANSC = core.IDAU_ANSC_SIZE?index_of(" Bytes")>
+  <#if (bytesIndexAS != -1) && (bytesIndexANSC != -1)>
+    <#assign flashStartNumber = FLASH_START_ADDR?number>
+    <#assign idauAsSizeNumber = core.IDAU_AS_SIZE?substring(0, bytesIndexAS)?number>
+    <#assign idauAnscSizeNumber = core.IDAU_ANSC_SIZE?substring(0, bytesIndexANSC)?number>
+    <#assign sum = flashStartNumber + (idauAsSizeNumber + idauAnscSizeNumber)>
+    <#assign hsm_addr = sum - 133120>   <#--  130 KB offset  -->
+    <#if hsm_addr < flashStartNumber>
+      <#-- Error condition: HSM address is less than flash start address -->
+      <#lt>/*
+      <#lt>   WARNING: HSM metadata address (0x${_trimLeadingZeros(_decimalToHex(hsm_addr))}) 
+      <#lt>   is less than flash start address (${FLASH_START_ADDR}U). 
+      <#lt>*/
+      <#lt>#warning "Allow at least 130 KB of secure flash for the HSM."
+      <#lt><@decimalToHex hsm_addr/>      <#-- Custom address calculation  -->
+    <#else>
+      <#lt>/* HSM metadata address for custom-sized secure flash HSM .hex file. */
+      <#lt><@decimalToHex hsm_addr/>      <#-- Custom address calculation  -->
     </#if>
+  </#if>
 </#if>
 <#--  
         TO DO
         * error handle for if START_ADDR doesn't have actual number
-        * error handle for if there isn't 130 KB of space
-        * put all of this inside of definitions.h
-
   -->
-#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR == (TZ_START_NS - 0x20800)
-// This is the address that the provided HSM images will be using
-#define HSM_BOOT_FIRMWARE_INIT_ADDR (DEFAULT_HSM_BOOT_FIRMWARE_ADDR)
+/* 
+    HSM_BOOT_METADATA_ADDR must match the address 
+    to the HSM metadata in the HSM .hex file. 
+ */
+#ifndef HSM_METADATA_ADDR_WARNING_DISABLE
+#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR == CUSTOM_HSM_BOOT_FIRMWARE_ADDR
+#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_BOOT_FIRMWARE_ADDR)
 #else
-// If this address is being provided to the HSM, then you will need
-// to regenerate your HSM .hex file and attach it to your project.
-// Make sure to read the documentation for how to do so on Microchip.com
-#define HSM_BOOT_FIRMWARE_INIT_ADDR (CUSTOM_HSM_BOOT_FIRMWARE_ADDR)
+#define HSM_BOOT_METADATA_ADDR (CUSTOM_HSM_BOOT_FIRMWARE_ADDR)
+#warning "CUSTOM_HSM_BOOT_FIRMWARE_ADDR has been used. " \
+         "Ensure that the new HSM .hex has been attached to this project." \
+         "Disable warning with macro HSM_METADATA_ADDR_WARNING_DISABLE" \
+         "                                                          " \
+         "The default HSM .hex is configured to use the lower 130 KB " \
+         "address range of secure flash. CUSTOM_HSM_BOOT_FIRMWARE_ADDR" \
+         "reflects the updated metadata address, but the .hex must as well." \
+         "The steps for this can be found in the App Note, linked " \
+         "inside of ```/crypto_v4/readme.md/```."
+#endif
 #endif
 
 //DOM-IGNORE-BEGIN

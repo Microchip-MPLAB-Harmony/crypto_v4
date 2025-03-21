@@ -45,6 +45,10 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
+#ifdef HSM_PRINT 
+#include <stdio.h>
+#endif
+
 #include "crypto/crypto_config.h"
 #include "crypto/drivers/driver/hsm_boot.h"
 #include "crypto/drivers/driver/hsm_common.h"
@@ -74,7 +78,7 @@ static hsm_Cmd_Status_E Hsm_Boot_LoadBootFirmware(void)
     ptr_loadFimrwareCmd_st->cmdHeader_st.reserved2 = 0x00;
 
     //Parameter 1: Pointer to Firmware Meta Data #0
-    ptr_loadFimrwareCmd_st->metaData0Parm1 = HSM_BOOT_FIRMWARE_INIT_ADDR;
+    ptr_loadFimrwareCmd_st->metaData0Parm1 = HSM_BOOT_METADATA_ADDR;
     
     //Parameter 2: Pointer to Firmware Meta Data #1
     ptr_loadFimrwareCmd_st->metaData1Parm2 = 0x00000000UL;      // Not being sent when msgSize = 0x14 

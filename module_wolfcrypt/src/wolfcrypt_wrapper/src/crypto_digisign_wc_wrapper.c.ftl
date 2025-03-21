@@ -319,6 +319,11 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(uint8_t *ptr_w
 	{
 		wcStatus = wc_RsaSSL_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, &wcRsaPrivKey, &wcRng);
 	}
+
+    if(wcStatus == wcOutLen)
+    {
+        wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
+    }
 	
 	if(wcStatus == 0)
     {
@@ -362,17 +367,15 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 		wcOutLen = wc_RsaEncryptSize(&wcRsaPubKey);
 	}
 	
-	uint8_t arr_wcPlainText[wcOutLen];
+	uint8_t arr_wcPlainText[wcHashLen];
 	
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaSSL_Verify((const byte*)ptr_wcInSig, wcOutLen, (byte*)arr_wcPlainText, (word32)wcHashLen, &wcRsaPubKey);
 	}
 	
-	if(wcStatus == 0)
+	if(wcStatus == wcHashLen)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_SUCCESS;
-		
 		for(uint8_t i = 0; i < wcHashLen; i++)
 		{
 			if(ptr_wcInHash[i] != arr_wcPlainText[i])
@@ -381,6 +384,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 				break;
 			}
 		}
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_SUCCESS;
     }
     else if(wcStatus == BAD_FUNC_ARG)
     {

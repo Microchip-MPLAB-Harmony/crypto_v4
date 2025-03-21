@@ -81,12 +81,12 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en, 
 {
     crypto_Rng_Status_E ret_rngStat_en = CRYPTO_RNG_ERROR_NOTSUPPTED;
     
-    if(ptr_rngData == NULL || rngLen <= 0u)
+    if(ptr_rngData == NULL || rngLen == 0u)
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_ARG;
     }
-    else if( ((ptr_nonce == NULL) && (nonceLen  > 0u))
-             || ((ptr_nonce != NULL) && (nonceLen <= 0u)) )
+    else if( ((ptr_nonce == NULL) && (nonceLen > 0u))
+             || ((ptr_nonce != NULL) && (nonceLen == 0u)) )
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_NONCE;
     }

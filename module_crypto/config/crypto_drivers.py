@@ -298,8 +298,8 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     found_node = False
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 
-    DEFAULT_HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("DEFAULT_HSM_BOOT_FIRMWARE_ADDR", None)
-    DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
+    DEFAULT_HSM_METADATA_ADDR = CommonCryptoComponent.createStringSymbol("DEFAULT_HSM_METADATA_ADDR", None)
+    DEFAULT_HSM_METADATA_ADDR.setVisible(False)
 
     FLASH_START_ADDR = CommonCryptoComponent.createStringSymbol("FLASH_START_ADDR", None)
     FLASH_START_ADDR.setVisible(False)
@@ -324,13 +324,13 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
             hsm_start_addr = hsm_end_addr - 0x20800     # 130kB
 
             # Save to string obj
-            DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(hsm_start_addr)) 
+            DEFAULT_HSM_METADATA_ADDR.setDefaultValue(hex(hsm_start_addr)) 
             FLASH_START_ADDR.setDefaultValue(str(flash_start))
 
             print("Reserved space for HSM: 0x{:X} - 0x{:X}".format(hsm_start_addr, hsm_end_addr))
     
     if not found_node:
-        DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("")
+        DEFAULT_HSM_METADATA_ADDR.setDefaultValue("")
         FLASH_START_ADDR.setDefaultValue("")
         
 #--------------------------------------------------------------------------------------- 

@@ -100,7 +100,7 @@
 <#macro decimalToHex decimalNumber>
     <#local hexString = _decimalToHex(decimalNumber)>
     <#local trimmedHexString = _trimLeadingZeros(hexString)>
-    <#lt>#define CUSTOM_HSM_BOOT_FIRMWARE_ADDR (0x${trimmedHexString})
+    <#lt>#define CUSTOM_HSM_METADATA_ADDR (0x${trimmedHexString})
 </#macro>
 
 <#--  Recursive calculation of BASE16 from BASE10 -->
@@ -129,9 +129,9 @@
 <#--  END CUSTOM ADDR MATH  -->
 <#--  if HSM drivers enabled, put addresses in config  -->
 <#if hsm_boot_h_ftl_flag?? &&(hsm_boot_h_ftl_flag == true)>
-    <#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR?has_content>
+    <#if DEFAULT_HSM_METADATA_ADDR?has_content>
         <#lt>/* HSM metadata address for provided HSM .hex file */
-        <#lt>#define DEFAULT_HSM_BOOT_FIRMWARE_ADDR (${DEFAULT_HSM_BOOT_FIRMWARE_ADDR})
+        <#lt>#define DEFAULT_HSM_METADATA_ADDR (${DEFAULT_HSM_METADATA_ADDR})
     </#if>
 
     <#if core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
@@ -163,16 +163,16 @@
         <#lt>    to the HSM metadata in the HSM .hex file. 
         <#lt> */
         <#lt>#ifndef HSM_METADATA_ADDR_WARNING_DISABLE
-        <#lt>#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR == CUSTOM_HSM_BOOT_FIRMWARE_ADDR
-        <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_BOOT_FIRMWARE_ADDR)
+        <#lt>#if DEFAULT_HSM_METADATA_ADDR == CUSTOM_HSM_METADATA_ADDR
+        <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_METADATA_ADDR)
         <#lt>#else
-        <#lt>#define HSM_BOOT_METADATA_ADDR (CUSTOM_HSM_BOOT_FIRMWARE_ADDR)
-        <#lt>#warning "CUSTOM_HSM_BOOT_FIRMWARE_ADDR has been used. " \
+        <#lt>#define HSM_BOOT_METADATA_ADDR (CUSTOM_HSM_METADATA_ADDR)
+        <#lt>#warning "CUSTOM_HSM_METADATA_ADDR has been used. " \
         <#lt>         "Ensure that the new HSM .hex has been attached to this project." \
         <#lt>         "Disable warning with macro HSM_METADATA_ADDR_WARNING_DISABLE" \
         <#lt>         "                                                          " \
         <#lt>         "The default HSM .hex is configured to use the lower 130 KB " \
-        <#lt>         "address range of secure flash. CUSTOM_HSM_BOOT_FIRMWARE_ADDR" \
+        <#lt>         "address range of secure flash. CUSTOM_HSM_METADATA_ADDR" \
         <#lt>         "reflects the updated metadata address, but the .hex must as well." \
         <#lt>         "The steps for this can be found in the App Note, linked " \
         <#lt>         "inside of ```/crypto_v4/readme.md/```."
@@ -183,7 +183,7 @@
         <#lt>    HSM_BOOT_METADATA_ADDR must match the address 
         <#lt>    to the HSM metadata in the HSM .hex file. 
         <#lt> */
-        <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_BOOT_FIRMWARE_ADDR)
+        <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_METADATA_ADDR)
     </#if> <#--  if TZ memory addresses weren't found  -->
 </#if> <#--  if hsm_boot.h is enabled  -->
 

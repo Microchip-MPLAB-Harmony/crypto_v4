@@ -295,6 +295,7 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
         trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
 
     # Maintain set of ways to refer to flash size in .atdf 
+    found_node = False
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 
     DEFAULT_HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("DEFAULT_HSM_BOOT_FIRMWARE_ADDR", None)

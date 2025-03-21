@@ -543,7 +543,8 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
     int wcAesGcmStatus = BAD_FUNC_ARG;
     Aes arr_aesGcmCtx[1];
     
-    wcAesGcmStatus = wc_AesGcmInit (arr_aesGcmCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect,(word32)initVectLen);
+    wcAesGcmStatus = wc_AesInit(arr_aesGcmCtx, NULL, 0u);
+    wcAesGcmStatus = wc_AesGcmSetKey(arr_aesGcmCtx, (const byte*)ptr_key, (word32)keySize);
 
     if(wcAesGcmStatus == 0)
     {

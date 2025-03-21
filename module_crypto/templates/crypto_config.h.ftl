@@ -54,7 +54,9 @@
 <#if hsm_boot_h_ftl_flag?? &&(hsm_boot_h_ftl_flag == true)>
     <#lt> /* HSM Initialization */
     <#lt>#include "crypto/drivers/driver/hsm_boot.h"
+
 </#if>
+/* Crypto v4 API */
 <#if crypto_common_h_ftl_flag?? &&(crypto_common_h_ftl_flag == true)>
     <#lt>#include "crypto/common_crypto/crypto_common.h"
 </#if>
@@ -80,6 +82,9 @@
     <#lt>#include "crypto/common_crypto/crypto_sym_cipher.h"
 </#if>
 
+#ifndef DEFINITIONS_H
+    #include "definitions.h"
+#endif
 #include "device.h"
 
 // DOM-IGNORE-BEGIN
@@ -127,21 +132,23 @@
 <#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR?has_content>
 #define DEFAULT_HSM_BOOT_FIRMWARE_ADDR (${DEFAULT_HSM_BOOT_FIRMWARE_ADDR})
 </#if>
+
 <#if FLASH_START_ADDR?has_content && core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
-  <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
-  <#assign bytesIndexANSC = core.IDAU_ANSC_SIZE?index_of(" Bytes")>
-  <#if (bytesIndexAS != -1) && (bytesIndexANSC != -1)>
-    <#assign flashStartNumber = FLASH_START_ADDR?number>
-    <#assign idauAsSizeNumber = core.IDAU_AS_SIZE?substring(0, bytesIndexAS)?number>
-    <#assign idauAnscSizeNumber = core.IDAU_ANSC_SIZE?substring(0, bytesIndexANSC)?number>
-    <#assign sum = flashStartNumber + (idauAsSizeNumber+idauAnscSizeNumber)>
-    <#assign hsm_addr = sum - 133120>   <#--  130 KB offset  -->
-    <#lt><@decimalToHex hsm_addr/>      <#-- Custom address calculation  -->
-  </#if>
+    <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
+    <#assign bytesIndexANSC = core.IDAU_ANSC_SIZE?index_of(" Bytes")>
+    <#if (bytesIndexAS != -1) && (bytesIndexANSC != -1)>
+        <#if FLASH_START_ADDR?is_number>
+            <#assign flashStartNumber = FLASH_START_ADDR?number>
+            <#assign idauAsSizeNumber = core.IDAU_AS_SIZE?substring(0, bytesIndexAS)?number>
+            <#assign idauAnscSizeNumber = core.IDAU_ANSC_SIZE?substring(0, bytesIndexANSC)?number>
+            <#assign sum = flashStartNumber + (idauAsSizeNumber+idauAnscSizeNumber)>
+            <#assign hsm_addr = sum - 133120>   <#--  130 KB offset  -->
+            <#lt><@decimalToHex hsm_addr/>       <#-- Custom address calculation  -->
+        <#else>
+            <#lt>#define CUSTOM_HSM_BOOT_FIRMWARE_ADDR (/* Unable to automatically fill address */)
+        </#if>
+    </#if>
 </#if>
-
-
-
 <#--  
         TO DO
         * error handle for if START_ADDR doesn't have actual number
@@ -149,10 +156,6 @@
         * put all of this inside of definitions.h
 
   -->
-
-
-
-
 #if DEFAULT_HSM_BOOT_FIRMWARE_ADDR == (TZ_START_NS - 0x20800)
 // This is the address that the provided HSM images will be using
 #define HSM_BOOT_FIRMWARE_INIT_ADDR (DEFAULT_HSM_BOOT_FIRMWARE_ADDR)

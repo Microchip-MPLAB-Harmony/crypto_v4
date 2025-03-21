@@ -91,6 +91,7 @@
 
 #endif
 // DOM-IGNORE-END
+<#--  BEGIN CUSTOM ADDR MATH  -->
 <#-- Define hexDigits outside of any macro to make it globally accessible -->
 <#assign hexDigits = "0123456789ABCDEF">
 
@@ -124,11 +125,11 @@
     </#list>
     <#return hexString?substring(firstNonZeroIndex)>
 </#function>
+<#--  END CUSTOM ADDR MATH  -->
 
-<#lt>/* HSM metadata address for provided HSM .hex file */
 <#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR?has_content>
+<#lt>/* HSM metadata address for provided HSM .hex file */
 #define DEFAULT_HSM_BOOT_FIRMWARE_ADDR (${DEFAULT_HSM_BOOT_FIRMWARE_ADDR})
-</#if>
 
 <#if FLASH_START_ADDR?has_content && core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
   <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
@@ -153,10 +154,6 @@
     </#if>
   </#if>
 </#if>
-<#--  
-        TO DO
-        * error handle for if START_ADDR doesn't have actual number
-  -->
 /* 
     HSM_BOOT_METADATA_ADDR must match the address 
     to the HSM metadata in the HSM .hex file. 
@@ -177,6 +174,7 @@
          "inside of ```/crypto_v4/readme.md/```."
 #endif
 #endif
+</#if>
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

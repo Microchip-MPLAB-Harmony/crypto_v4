@@ -330,8 +330,8 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
             print("Reserved space for HSM: 0x{:X} - 0x{:X}".format(hsm_start_addr, hsm_end_addr))
     
     if not found_node:
-        DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("/* Unable to automatically fill address */")
-        FLASH_START_ADDR.setDefaultValue("/* Unable to automatically fill address */")
+        DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("")
+        FLASH_START_ADDR.setDefaultValue("")
         
 #--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):

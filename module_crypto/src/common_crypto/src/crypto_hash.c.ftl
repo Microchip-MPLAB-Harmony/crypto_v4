@@ -90,7 +90,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, 
     {      
         ret_md5Stat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-    else if( (md5SessionId <= 0u) || (md5SessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (md5SessionId == 0u) || (md5SessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_md5Stat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -126,7 +126,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Init(st_Crypto_Hash_Md5_Ctx *ptr_md5Ctx_st,
     {
         ret_md5Stat_en = CRYPTO_HASH_ERROR_CTX;
     }
-    else if( (md5SessionId <= 0u) || (md5SessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (md5SessionId == 0u) || (md5SessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_md5Stat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -244,7 +244,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Digest(crypto_HandlerType_E ripedmd16
     {      
         ret_ripemdStat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-    else if( (ripemdSessionId <= 0u) || (ripemdSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX))
+    else if( (ripemdSessionId == 0u) || (ripemdSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX))
     {
         ret_ripemdStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -277,7 +277,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Init(st_Crypto_Hash_Ripemd160_Ctx *pt
     {
         ret_ripemdStat_en = CRYPTO_HASH_ERROR_CTX;
     }
-    else if( (ripemdSessionId <= 0u) || (ripemdSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (ripemdSessionId == 0u) || (ripemdSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_ripemdStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -398,7 +398,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_ALGO;
     }
-    else if( (shaSessionId <= 0u) || (shaSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (shaSessionId == 0u) || (shaSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -453,7 +453,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_ALGO;
     }
-    else if( (shaSessionId <= 0u) || (shaSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (shaSessionId == 0u) || (shaSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -626,7 +626,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerT
     {      
         ret_shakeStat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-    else if( (shakeSessionId <= 0u) || (shakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (shakeSessionId == 0u) || (shakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -666,7 +666,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Init(st_Crypto_Hash_Shake_Ctx* ptr_shakeC
     {      
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
     }
-    else if( (shakeSessionId <= 0u) || (shakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (shakeSessionId == 0u) || (shakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -785,7 +785,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Digest(crypto_HandlerType_E blakeHandlerT
     {      
         ret_blakeStat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-    else if( (blakeSessionId <= 0u) || (blakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (blakeSessionId == 0u) || (blakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_blakeStat_en = CRYPTO_HASH_ERROR_SID;
     }
@@ -831,7 +831,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Init(st_Crypto_Hash_Blake_Ctx* ptr_blakeC
     {      
         ret_blakeStat_en = CRYPTO_HASH_ERROR_ARG;
     }
-    else if( (blakeSessionId <= 0u) || (blakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
+    else if( (blakeSessionId == 0u) || (blakeSessionId > (uint32_t)CRYPTO_HASH_SESSION_MAX) )
     {
         ret_blakeStat_en = CRYPTO_HASH_ERROR_SID;
     }

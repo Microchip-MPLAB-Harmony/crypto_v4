@@ -99,7 +99,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHa
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_PRIVKEY;
     }
-    else if((ecdsaSessionId <= 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
+    else if((ecdsaSessionId == 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_SID;
     }
@@ -153,7 +153,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
     }
-    else if((ecdsaSessionId <= 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
+    else if((ecdsaSessionId == 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_SID;
     }
@@ -211,7 +211,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecd
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
     }
-    else if((ecdsaSessionId <= 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
+    else if((ecdsaSessionId == 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_SID;
     }
@@ -272,7 +272,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
     }
-    else if((ecdsaSessionId <= 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
+    else if((ecdsaSessionId == 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_SID;
     }

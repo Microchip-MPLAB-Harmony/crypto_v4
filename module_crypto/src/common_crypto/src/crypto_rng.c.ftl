@@ -90,7 +90,7 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en, 
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_NONCE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_RNG_SESSION_MAX))
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_RNG_SESSION_MAX))
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_SID;
     }

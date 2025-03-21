@@ -84,7 +84,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCt
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_SID; 
     }
@@ -193,7 +193,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_SID; 
     }
@@ -232,7 +232,7 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCt
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_SID; 
     }
@@ -312,7 +312,7 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_SID; 
     }
@@ -359,7 +359,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st,
     {
         ret_hmacStat_en = CRYPTO_MAC_ERROR_HASHTYPE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_SID; 
     }
@@ -470,7 +470,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, 
     {
         ret_hmacStat_en = CRYPTO_MAC_ERROR_HASHTYPE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_SID; 
     }

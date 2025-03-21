@@ -90,10 +90,78 @@
 #endif
 // DOM-IGNORE-END
 
-<#if HSM_BOOT_FIRMWARE_INIT_ADDR?has_content>
-    <#lt>/* HSM Firmware Metadata Address */
-    <#lt>#define HSM_BOOT_FIRMWARE_INIT_ADDR  (${HSM_BOOT_FIRMWARE_INIT_ADDR})
+<#-- Define hexDigits outside of any macro to make it globally accessible -->
+<#assign hexDigits = "0123456789ABCDEF">
+
+<#--  Provide custom define for HSM boot  -->
+<#macro decimalToHex decimalNumber>
+    <#local hexString = _decimalToHex(decimalNumber)>
+    <#local trimmedHexString = _trimLeadingZeros(hexString)>
+    <#lt>#define CUSTOM_HSM_BOOT_FIRMWARE_ADDR (0x${trimmedHexString})
+</#macro>
+
+<#--  Recursive calculation of BASE16 from BASE10 -->
+<#function _decimalToHex decimalNumber>
+    <#local remainder = decimalNumber % 16>
+    <#local quotient = decimalNumber / 16?floor>
+
+    <#if quotient != 0>
+        <#return _decimalToHex(quotient) + hexDigits?substring(remainder, remainder + 1)>
+    <#else>
+        <#return hexDigits?substring(remainder, remainder + 1)>
+    </#if>
+</#function>
+
+<#--  Remove first 10 digits, attempt to do it in general way -->
+<#function _trimLeadingZeros hexString>
+    <#local firstNonZeroIndex = 10>   <#-- Remove 10 leading char -->
+    <#list 0..hexString?length - 1 as i>
+        <#if hexString?substring(i, i + 1) != "0">
+        <#break>
+        </#if>
+        <#assign firstNonZeroIndex = i + 1>
+    </#list>
+    <#return hexString?substring(firstNonZeroIndex)>
+</#function>
+
+<#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR?has_content>
+#define DEFAULT_HSM_BOOT_FIRMWARE_ADDR (${DEFAULT_HSM_BOOT_FIRMWARE_ADDR})
 </#if>
+<#if FLASH_START_ADDR?has_content && core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
+  <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
+  <#assign bytesIndexANSC = core.IDAU_ANSC_SIZE?index_of(" Bytes")>
+  <#if (bytesIndexAS != -1) && (bytesIndexANSC != -1)>
+    <#assign flashStartNumber = FLASH_START_ADDR?number>
+    <#assign idauAsSizeNumber = core.IDAU_AS_SIZE?substring(0, bytesIndexAS)?number>
+    <#assign idauAnscSizeNumber = core.IDAU_ANSC_SIZE?substring(0, bytesIndexANSC)?number>
+    <#assign sum = flashStartNumber + (idauAsSizeNumber+idauAnscSizeNumber)>
+    <#assign hsm_addr = sum - 133120>   <#--  130 KB offset  -->
+    <#lt><@decimalToHex hsm_addr/>      <#-- Custom address calculation  -->
+  </#if>
+</#if>
+
+
+
+<#--  
+        TO DO
+        * error handle for if START_ADDR doesn't have actual number
+        * error handle for if there isn't 130 KB of space
+        * put all of this inside of definitions.h
+
+  -->
+
+
+
+
+#if DEFAULT_HSM_BOOT_FIRMWARE_ADDR == (TZ_START_NS - 0x20800)
+// This is the address that the provided HSM images will be using
+#define HSM_BOOT_FIRMWARE_INIT_ADDR (DEFAULT_HSM_BOOT_FIRMWARE_ADDR)
+#else
+// If this address is being provided to the HSM, then you will need
+// to regenerate your HSM .hex file and attach it to your project.
+// Make sure to read the documentation for how to do so on Microchip.com
+#define HSM_BOOT_FIRMWARE_INIT_ADDR (CUSTOM_HSM_BOOT_FIRMWARE_ADDR)
+#endif
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

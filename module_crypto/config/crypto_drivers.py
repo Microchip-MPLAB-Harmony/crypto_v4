@@ -297,9 +297,12 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     # Maintain set of ways to refer to flash size in .atdf 
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 
-    HSM_BOOT_FIRMWARE_INIT_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_INIT_ADDR", None)
-    HSM_BOOT_FIRMWARE_INIT_ADDR.setVisible(False)
-    
+    DEFAULT_HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("DEFAULT_HSM_BOOT_FIRMWARE_ADDR", None)
+    DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
+
+    FLASH_START_ADDR = CommonCryptoComponent.createStringSymbol("FLASH_START_ADDR", None)
+    FLASH_START_ADDR.setVisible(False)
+        
     for pfm in pfm_names:
         flash_pfm_node = ATDF.getNode(
             '/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name="{}"]'.format(pfm)
@@ -312,23 +315,22 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
             flash_start = int(flash_pfm_node.getAttribute("start"), 16)
             flash_end = int(flash_pfm_node.getAttribute("size"), 16)
             
-            # if TZ, HSM placed in AS  
+            # if TZ, HSM placed in AS+ANSC (HSM FW won't actually use ANSC)
             if trustzone_enabled:
-                CoreComponent = Database.getComponentByID("core")
-                idau_as_size = CoreComponent.getSymbolValue("IDAU_AS_SIZE")
-                idau_as_location = idau_as_size * 0x1000                    # 4kB per 
-                flash_end = idau_as_location
+                flash_end = flash_end // 2
 
             hsm_end_addr = flash_start + flash_end
-            hsm_start_addr = hsm_end_addr - 0x20800                         # 130kB
+            hsm_start_addr = hsm_end_addr - 0x20800     # 130kB
 
             # Save to string obj
-            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(hsm_start_addr))  
+            DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(hsm_start_addr)) 
+            FLASH_START_ADDR.setDefaultValue(str(flash_start))
 
             print("Reserved space for HSM: 0x{:X} - 0x{:X}".format(hsm_start_addr, hsm_end_addr))
     
     if not found_node:
-        HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue("/* Unable to automatically fill address */")
+        DEFAULT_HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("/* Unable to automatically fill address */")
+        FLASH_START_ADDR.setDefaultValue("/* Unable to automatically fill address */")
         
 #--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):

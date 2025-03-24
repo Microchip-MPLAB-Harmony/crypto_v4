@@ -268,12 +268,12 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_AddAad(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st
     
     /* 
         Input DMA Descriptors (0, 1, 2, 3, 4, 5) 
-        //0. Key
-        //1. IV
-        //2. ctx
+        -0. Key
+        -1. IV
+        -2. ctx
         3. AAD
-        //4. Input text
-        //5. Tag (Decrypt only)
+        -4. Input text
+        -5. Tag (Decrypt only)
     */
 
     // Input SG-DMA Descriptor 3 for the AAD
@@ -358,7 +358,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
         Bookkeeping
     */
 
-    if (!ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg)
+    if (ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg == 0u)
     {
         ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = 0x00;  // IV length 0
         ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = 0x20;  // ctx length 32
@@ -366,12 +366,12 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
 
     /* 
         Input DMA Descriptors (0, 1, 2, 3, 4, 5) 
-        //0. Key
-        //1. IV
-        //2. ctx
-        //3. AAD
+        -0. Key
+        -1. IV
+        -2. ctx
+        -3. AAD
         4. Input text
-        //5. Tag (Decrypt only)
+        -5. Tag (Decrypt only)
     */
 
     // Input SG-DMA Descriptor 4 for the Input text
@@ -386,8 +386,8 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
     /* 
         Output DMA Descriptors (0, 1, 2)
         0. Output text
-        //1. ctx
-        //2. Tag (Encrypt only)
+        -1. ctx
+        -2. Tag (Encrypt only)
     */
 
     // Output SG-DMA Descriptor 0 for Output text
@@ -416,7 +416,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_UpdateCipher(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcm
     ptr_aesGcmCmd_st->aesGcmCmdParm2_st.reserved2 = 0x00;
     
     //Parameter 3 : AAD Length
-    ptr_aesGcmCmd_st->aadLengthParm3 += 0x00;
+    ptr_aesGcmCmd_st->aadLengthParm3 += 0x00u;
 
     // Parameter 4: Total length
     ptr_aesGcmCmd_st->totalTextLengthParm4 += inputDataLen;
@@ -464,7 +464,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Final(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st,
 
     ptr_aesGcmCmd_st->aesCmdHeader_st.lastMsg = 0x01;   // Last msg
 
-    if (!ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg)
+    if (ptr_aesGcmCmd_st->aesCmdHeader_st.initialMsg == 0u)
     {
         ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[1].flagAndLength_st.dataLen = 0x00;  // IV length 0
         ptr_aesGcmCmd_st->arr_aesInSgDmaDes_st[2].flagAndLength_st.dataLen = 0x20;  // ctx length 32
@@ -472,10 +472,10 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_Final(st_Hsm_Aead_AesGcm_Cmd *ptr_aesGcmCmd_st,
 
     /* 
         Input DMA Descriptors (0, 1, 2, 3, 4, 5) 
-        //0. Key
-        //1. IV
-        //2. ctx
-        //3. AAD
+        -0. Key
+        -1. IV
+        -2. ctx
+        -3. AAD
         4. Input text
         5. Tag (Decrypt only)
     */
@@ -662,7 +662,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectEncrypt(uint8_t *ptr_dataIn, uint32_t inp
         aesGcmCmd_st.arr_aesInSgDmaDes_st[3].nextDes_st.nextDescriptorAddr = ((uint32_t)(&aesGcmCmd_st.arr_aesInSgDmaDes_st[4])>>2);
         aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)(inputDataLen - nonAlignByteLen);
     
-        for(int i = 0; i < nonAlignByteLen; i++)
+        for(uint32_t i = 0; i < nonAlignByteLen; i++)
         {
             arr_lastByte[i] = ptr_dataIn[inputDataLen - nonAlignByteLen + i];
         }
@@ -862,7 +862,7 @@ hsm_Cmd_Status_E Hsm_Aead_AesGcm_DirectDecrypt(uint8_t *ptr_dataIn, uint32_t inp
     {
         aesGcmCmd_st.arr_aesInSgDmaDes_st[3].flagAndLength_st.dataLen = (uint32_t)(inputDataLen - nonAlignByteLen);
     
-        for(int i = 0; i < nonAlignByteLen; i++)
+        for(uint32_t i = 0; i < nonAlignByteLen; i++)
         {
             arr_lastByte[i] = ptr_dataIn[inputDataLen - nonAlignByteLen + i];
         }

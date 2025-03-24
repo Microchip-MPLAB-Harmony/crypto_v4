@@ -70,7 +70,8 @@ typedef enum
     CRYPTO_ASYM_ERROR_OUTPUTDATA = -120,     //Error when Output Data pointer is NULL        
     CRYPTO_ASYM_ERROR_SID = -118,            //Error when Session ID is 0 or Its value is more than Max. session configure in configurations
     CRYPTO_ASYM_ERROR_ARG = -117,            //Error when any other argument is Invalid
-    CRYPTO_ASYM_ERROR_CIPFAIL = -116,        //Error when Encryption or Decryption operation failed due to any reason
+    CRYPTO_ASYM_ERROR_BUFFER = -116,         // Error When Output too small or input too large 
+    CRYPTO_ASYM_ERROR_CIPFAIL = -115,        //Error when Encryption or Decryption operation failed due to any reason
     CRYPTO_ASYM_CIPHER_SUCCESS = 0,        
 }crypto_Asym_Status_E;
 
@@ -86,7 +87,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_inputData, ui
 crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
                                                                                     crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
                                                                                     uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
-crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData,  uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint32_t outDatLen, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
 															crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
 															uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP  -->

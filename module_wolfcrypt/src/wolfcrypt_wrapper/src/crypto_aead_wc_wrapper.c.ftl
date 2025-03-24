@@ -664,7 +664,15 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(crypto_CipherOper_E 
     
     if( (ptr_chaChaPolyWcCtx != NULL ) && (ptr_inputData != NULL) && (ptr_outData != NULL) && (dataLen > 0u) )
     {
-        ptr_chaChaPoly_Ctx->isEncrypt = (cipherOper_en == CRYPTO_CIOP_ENCRYPT) ? 1 : 0;
+        if (cipherOper_en == CRYPTO_CIOP_ENCRYPT)
+        {
+            ptr_chaChaPoly_Ctx->isEncrypt = 1;
+        }
+        
+        if (cipherOper_en == CRYPTO_CIOP_DECRYPT)
+        {
+            ptr_chaChaPoly_Ctx->isEncrypt = 0;
+        }
         
         wcChaChaPolyStatus = wc_ChaCha20Poly1305_UpdateData(ptr_chaChaPoly_Ctx, ptr_inputData, ptr_outData, dataLen);
         

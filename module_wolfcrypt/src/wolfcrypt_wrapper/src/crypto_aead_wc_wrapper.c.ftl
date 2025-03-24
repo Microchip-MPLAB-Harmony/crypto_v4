@@ -543,10 +543,14 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
     int wcAesGcmStatus = BAD_FUNC_ARG;
     Aes arr_aesGcmCtx[1];
 
-    wcAesGcmStatus = wc_AesInit(arr_aesGcmCtx, NULL, 0u);
-    wcAesGcmStatus = wc_AesGcmSetKey(arr_aesGcmCtx, (const byte*)ptr_key, (word32)keySize);
+    wcAesGcmStatus = wc_AesInit(arr_aesGcmCtx, NULL, (int)0);
 
-    if(wcAesGcmStatus == 0)
+    if (wcAesGcmStatus == 0)
+    {
+        wcAesGcmStatus = wc_AesGcmSetKey(arr_aesGcmCtx, (const byte*)ptr_key, (word32)keySize);
+    }
+
+    if (wcAesGcmStatus == 0)
     {
         if( cipherOper_en == CRYPTO_CIOP_ENCRYPT)
         {
@@ -563,11 +567,12 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
             ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
         }
     }
-    if(wcAesGcmStatus == 0)
+
+    if (wcAesGcmStatus == 0)
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_CIPHER_SUCCESS;
     }
-    else if(ret_aesGcmStat_en == CRYPTO_AEAD_ERROR_CIPOPER)
+    else if (ret_aesGcmStat_en == CRYPTO_AEAD_ERROR_CIPOPER)
     {
         //do nothing
     }

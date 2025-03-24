@@ -52,7 +52,7 @@
 #include "crypto_common.h"
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))>
 #include "crypto/common_crypto/crypto_hash.h"
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->		
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->        
 
 typedef enum
 {
@@ -78,7 +78,7 @@ typedef enum
 // *****************************************************************************
 // *****************************************************************************
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))
-			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
+    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
 typedef struct
 {
     uint32_t cryptoSessionID;

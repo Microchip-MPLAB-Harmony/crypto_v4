@@ -69,10 +69,12 @@ typedef enum
     CRYPTO_ASYM_ERROR_INPUTDATA = -121,      //Error when input data length is 0 or its pointer is NULL 
     CRYPTO_ASYM_ERROR_OUTPUTDATA = -120,     //Error when Output Data pointer is NULL        
     CRYPTO_ASYM_ERROR_SID = -118,            //Error when Session ID is 0 or Its value is more than Max. session configure in configurations
-    CRYPTO_ASYM_ERROR_ARG = -117,            //Error when any other argument is Invalid
-    CRYPTO_ASYM_ERROR_BUFFER = -116,         // Error When Output too small or input too large 
-    CRYPTO_ASYM_ERROR_CIPFAIL = -115,        //Error when Encryption or Decryption operation failed due to any reason
-    CRYPTO_ASYM_CIPHER_SUCCESS = 0,        
+    CRYPTO_ASYM_ERROR_ARG = -117,            //Error when any other argument is Invalid    
+    CRYPTO_ASYM_ERROR_CIPFAIL = -116,        //Error when Encryption or Decryption operation failed due to any reason
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP == true)))>
+    CRYPTO_ASYM_ERROR_BUFFER = -115,         // Error When Output too small or input too large     
+</#if><#-- CRYPTO_WC_ASYM_RSA_OAEP -->   
+    CRYPTO_ASYM_CIPHER_SUCCESS = 0,    
 }crypto_Asym_Status_E;
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15 == true)))>

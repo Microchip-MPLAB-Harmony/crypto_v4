@@ -300,6 +300,66 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Decrypt(uint8_t *ptr_wcInData, uint
     return ret_rsaStat_en;
 }
 
+</#if> <#-- CRYPTO_WC_ASYM_RSA_OAEP -->
+
+<#if (CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(CRYPTO_WC_ASYM_RSA_NO_PADDING == true))>
+
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen)
+{
+    crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
+	int wcStatus = BAD_FUNC_ARG;
+	RsaKey wcRsaPubKey;
+	WC_RNG wcRng;
+	word32 wcOutLen = 0;
+	word32 inOutIdx = 0;
+	
+	wcStatus = wc_InitRsaKey(&wcRsaPubKey, NULL);
+	
+	if(wcStatus == 0)
+	{
+		wcStatus = wc_RsaPublicKeyDecode((const byte*) ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
+		wcOutLen = wc_RsaEncryptSize(&wcRsaPubKey);
+	}
+	
+	if(wcStatus == 0)
+	{
+		wcStatus = wc_InitRng(&wcRng);
+	}
+	
+	if(wcStatus == 0)
+	{
+        wcStatus = wc_RsaPublicEncrypt_ex(ptr_wcInData, wcDataLen, ptr_wcOutData, wcOutLen, &wcRsaPubKey, &wcRng, WC_RSA_NO_PAD, WC_HASH_TYPE_NONE, WC_MGF1NONE, NULL, 0);
+	}
+    
+    if(wcStatus == 0)
+	{
+        wcStatus = wc_FreeRsaKey(&wcRsaPubKey);
+    }
+	
+    if(wcStatus == 0 || wcStatus == wcOutLen)
+    {
+        ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
+    }
+    else if(wcStatus == BAD_FUNC_ARG)
+    {
+        ret_rsaStat_en = CRYPTO_ASYM_ERROR_ARG;
+    }
+    else if( (wcStatus == ASN_PARSE_E) || (wcStatus == WC_KEY_SIZE_E) )
+    {
+        ret_rsaStat_en = CRYPTO_ASYM_ERROR_KEY;
+    }
+    else if(wcStatus == RSA_PAD_E)
+    {
+        ret_rsaStat_en = CRYPTO_ASYM_ERROR_PADDING;
+    }
+    else
+    {
+        ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPFAIL;
+    }
+	
+    return ret_rsaStat_en;
+}
+
 crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen)
 {
 	crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
@@ -321,7 +381,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData,
 		wcStatus = wc_RsaPrivateDecrypt_ex(ptr_wcInData, wcDataLen, ptr_wcOutData, wcOutLen, &wcRsaPrivKey, WC_RSA_NO_PAD, WC_HASH_TYPE_NONE, WC_MGF1NONE, NULL, 0);
 	}
     
-    if(wcStatus == 0)
+    if(wcStatus == wcDataLen)
 	{
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }
@@ -349,4 +409,6 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData,
 	
     return ret_rsaStat_en;
 }
+
+
 </#if> <#-- CRYPTO_WC_ASYM_RSA_NO_PADDING -->

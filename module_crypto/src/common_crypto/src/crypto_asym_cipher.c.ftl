@@ -318,7 +318,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Decrypt(uint8_t *ptr_inputData, u
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING == true)))>			
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(ptr_inputData, dataLen, ptr_outData, ptr_privKeyDer, privKeyBufLen);   
+                    ret_rsaStat_en = Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(ptr_inputData, dataLen, ptr_outData, ptr_privKeyDer, privKeyBufLen);   
                 break;
 </#if><#-- CRYPTO_WC_ASYM_RSA_NO_PADDING -->               
             case CRYPTO_HANDLER_HW_INTERNAL:

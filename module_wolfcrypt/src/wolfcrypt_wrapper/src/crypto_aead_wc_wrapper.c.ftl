@@ -595,6 +595,9 @@ crypto_Aead_Status_E Crypto_Aead_Wc_AesGcm_EncDecAuthDirect(crypto_CipherOper_E 
 }
 </#if><#--CRYPTO_WC_AES_GCM-->
 <#if (CRYPTO_WC_CHACHA20_POLY1305?? &&(CRYPTO_WC_CHACHA20_POLY1305 == true))>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1" 
 crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_Init(void *ptr_chaChaPolyWcCtx, uint8_t *ptr_key, uint8_t *ptr_nonce)
 {
     crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -772,5 +775,7 @@ crypto_Aead_Status_E Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(crypto_Cip
     
     return ret_chaChaPolyStat_en;
 }
+#pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
+#pragma GCC diagnostic pop 
 </#if><#--CRYPTO_WC_CHACHA20_POLY1305-->
 // *****************************************************************************

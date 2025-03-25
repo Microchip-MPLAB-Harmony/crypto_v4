@@ -698,15 +698,14 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-    if( ((ptr_inputData == NULL) && (dataLen > 0u))
-                || ((ptr_inputData != NULL) && (dataLen == 0u)) )
+
+    if ((ptr_inputData == NULL) == (dataLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
-    else if( ((ptr_inputData != NULL) && (ptr_outData == NULL))
-                || ((ptr_inputData == NULL) && (ptr_outData != NULL)) )
+    else if ((ptr_inputData == NULL) != (ptr_outData == NULL)) 
     {
-       ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
     else if( (ptr_key == NULL) || 
                 ( (keyLen != (uint32_t)CRYPTO_AESKEYSIZE_128)
@@ -719,8 +718,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-    else if( ((ptr_aad == NULL) && (aadLen > 0u))
-                || ((ptr_aad != NULL) && (aadLen == 0u)) )
+    else if ((ptr_aad == NULL) == (aadLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
@@ -728,10 +726,6 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-//    else if((ptr_aad == NULL) && (ptr_inputData == NULL))
-//    {
-//        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_ARG;
-//    }
     else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_SID; 
@@ -762,6 +756,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
                 break;
         }
     }
+
     return ret_aesGcmStat_en;
 }
 
@@ -770,15 +765,14 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-    if( ((ptr_inputData == NULL) && (dataLen > 0u))
-        || ((ptr_inputData != NULL) && (dataLen == 0u)) )
+    
+    if ((ptr_inputData == NULL) == (dataLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
-    else if( ((ptr_inputData != NULL) && (ptr_outData == NULL))
-                || ((ptr_inputData == NULL) && (ptr_outData != NULL)) )
+    else if ((ptr_inputData == NULL) != (ptr_outData == NULL)) 
     {
-       ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
     else if( (ptr_key == NULL) || 
                 ( (keyLen != (uint32_t)CRYPTO_AESKEYSIZE_128)
@@ -791,8 +785,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-    else if( ((ptr_aad == NULL) && (aadLen > 0u))
-                || ((ptr_aad != NULL) && (aadLen == 0u)) )
+    else if ((ptr_aad == NULL) == (aadLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
@@ -834,6 +827,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
                 break;
         }
     }
+
     return ret_aesGcmStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
@@ -843,6 +837,7 @@ crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Init(st_Crypto_Aead_ChaCha20Po
     crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint8_t *ptr_nonce, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    
     if(ptr_chaChaPolyCtx == NULL)
     {
         ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;

@@ -108,7 +108,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_wcInData, 
         wcStatus = wc_FreeRsaKey(&wcRsaPubKey);
     }
 	
-    if(wcStatus == 0 || wcStatus == wcOutLen)
+    if(wcStatus == 0 || wcStatus == (int)wcOutLen)
     {
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }
@@ -217,7 +217,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Encrypt(uint8_t *ptr_wcInData, uint
                                                                                                                                 wcMgfType, ptr_wcLabel, wcLabelLen);     
 	}
 	
-    if(wcStatus == 0 || wcStatus == wcOutLen)
+    if(wcStatus == 0 || wcStatus == (int)wcOutLen)
     {
         wc_FreeRsaKey(&wcRsaPubKey);
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
@@ -318,7 +318,16 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(uint8_t *ptr_wcInData,
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*) ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPubKey);
+        int32_t tempSize = wc_RsaEncryptSize(&wcRsaPubKey); 
+        if (tempSize >= 0)
+        {
+            wcOutLen = (word32)tempSize; // Explicitly cast to unsigned
+        }
+        else
+        {
+            wcOutLen = 0; 
+            wcStatus = BAD_FUNC_ARG;
+        }
 	}
 	
 	if(wcStatus == 0)
@@ -336,7 +345,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(uint8_t *ptr_wcInData,
         wcStatus = wc_FreeRsaKey(&wcRsaPubKey);
     }
 	
-    if(wcStatus == 0 || wcStatus == wcOutLen)
+    if(wcStatus == 0 || wcStatus == (int)wcOutLen)
     {
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }
@@ -373,7 +382,16 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData,
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPrivateKeyDecode((const byte*) ptr_wcPrivKeyDer, &inOutIdx, &wcRsaPrivKey, (word32)wcPrivKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPrivKey);
+        int32_t tempSize = wc_RsaEncryptSize(&wcRsaPrivKey); 
+        if (tempSize >= 0)
+        {
+            wcOutLen = (word32)tempSize; // Explicitly cast to unsigned
+        }
+        else
+        {
+            wcOutLen = 0; 
+            wcStatus = BAD_FUNC_ARG;
+        }
 	}
 	
 	if(wcStatus == 0)
@@ -381,7 +399,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData,
 		wcStatus = wc_RsaPrivateDecrypt_ex(ptr_wcInData, wcDataLen, ptr_wcOutData, wcOutLen, &wcRsaPrivKey, WC_RSA_NO_PAD, WC_HASH_TYPE_NONE, WC_MGF1NONE, NULL, 0);
 	}
     
-    if(wcStatus == wcDataLen)
+    if(wcStatus == (int)wcDataLen)
 	{
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }

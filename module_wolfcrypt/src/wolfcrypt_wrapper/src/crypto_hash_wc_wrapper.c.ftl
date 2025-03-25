@@ -1029,7 +1029,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeFinal(void *ptr_blakeCtx_st, uint8_t *p
 													|| (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
 int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en)
 {
-    int wcHashType = WC_HASH_TYPE_NONE;
+    int wcHashType = (int)WC_HASH_TYPE_NONE;
        
     switch(hashType_en)
     {
@@ -1094,7 +1094,7 @@ int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en)
             break;
 </#if><#-- CRYPTO_WC_MD5 -->
         default:
-            wcHashType = WC_HASH_TYPE_NONE;
+            wcHashType = (int)WC_HASH_TYPE_NONE;
             break;    
     }; 
     return wcHashType;

@@ -75,7 +75,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_inputData, ui
 															                                          crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inputData == NULL) || (dataLen == 0) )
+    if ((ptr_inputData == NULL) || (dataLen == (unsigned int)0))
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -119,7 +119,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_inputData, ui
                                                         crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inputData == NULL) || (dataLen == 0) )
+    if ((ptr_inputData == NULL) || (dataLen == (unsigned int)0))
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -164,7 +164,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inputData, uint32
                                                                                     uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inputData == NULL) || (dataLen == 0) )
+    if ((ptr_inputData == NULL) || (dataLen == (unsigned int)0))
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}
@@ -172,7 +172,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inputData, uint32
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_OUTPUTDATA;
 	}
-	else if( (ptr_pubKeyDer == NULL) || (pubKeyBufLen == 0) ) 
+	else if( (ptr_pubKeyDer == NULL) || (pubKeyBufLen == (unsigned int)0) ) 
     {
        ret_rsaStat_en =  CRYPTO_ASYM_ERROR_KEY;
     }
@@ -207,7 +207,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32
 															uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID)
 {
     crypto_Asym_Status_E ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inputData == NULL) || (dataLen == 0) )
+    if ((ptr_inputData == NULL) || (dataLen == (unsigned int)0))
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_INPUTDATA;
 	}

@@ -209,7 +209,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecd
     }
     else if( (hashType_en <= CRYPTO_HASH_INVALID) || (hashType_en >= CRYPTO_HASH_MAX))
     {
-        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else if((ecdsaSessionId == 0u) || (ecdsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
@@ -265,7 +265,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
     }
     else if( (hashType_en <= CRYPTO_HASH_INVALID) || (hashType_en >= CRYPTO_HASH_MAX))
     {
-        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     //Check the Key compression Type, 0x04 for uncompressed, 0x02 for Even compressed and 0x03 for Odd compressed
     else if( !( (ptr_pubKey[0] == 0x04u) || ((ptr_pubKey[0] == 0x02u) || (ptr_pubKey[0] == 0x03u)) ) )
@@ -383,7 +383,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_Verify(crypto_HandlerType_
 }
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_SignData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outSign, 
-                                                                uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, crypto_Hash_Algo_E dataHashType_en, uint32_t rsaSessionId)
+                                                                uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
 {
     crypto_DigiSign_Status_E ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
@@ -399,9 +399,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_SignData(crypto_HandlerTyp
     {
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_PRIVKEY;
     }
-    else if( (dataHashType_en <= CRYPTO_HASH_INVALID) || (dataHashType_en >= CRYPTO_HASH_MAX) )
+    else if( (maskHashType_en <= CRYPTO_HASH_INVALID) || (maskHashType_en >= CRYPTO_HASH_MAX) )
     {    
-        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else if( (rsaSessionId <= 0u) || (rsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
@@ -413,7 +413,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_SignData(crypto_HandlerTyp
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, dataHashType_en);
+                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
             	break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->        
        
@@ -426,7 +426,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_SignData(crypto_HandlerTyp
 } 
        
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_VerifyData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_inSign, 
-                                                                uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E dataHashType_en, uint32_t rsaSessionId)
+                                                                uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
 {
     crypto_DigiSign_Status_E ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
@@ -442,9 +442,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_VerifyData(crypto_HandlerT
     {
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_PUBKEY;
     }
-    else if( (dataHashType_en <= CRYPTO_HASH_INVALID) || (dataHashType_en >= CRYPTO_HASH_MAX) )
+    else if( (maskHashType_en <= CRYPTO_HASH_INVALID) || (maskHashType_en >= CRYPTO_HASH_MAX) )
     {    
-        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else if( (rsaSessionId <= 0u) || (rsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
@@ -456,7 +456,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_VerifyData(crypto_HandlerT
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, dataHashType_en);
+                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
             	break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->        
        
@@ -559,8 +559,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_Verify(crypto_HandlerType_E rsa
 }
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_SignData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outSign, 
-                                                                uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, crypto_Hash_Algo_E dataHashType_en,
-                                                                crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
+                                                                uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
 {
     crypto_DigiSign_Status_E ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
@@ -576,10 +575,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_SignData(crypto_HandlerType_E r
     {
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_PRIVKEY;
     }
-    else if( (dataHashType_en <= CRYPTO_HASH_INVALID) || (dataHashType_en >= CRYPTO_HASH_MAX) )
-    {    
-        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
-    }
     else if( (maskHashType_en <= CRYPTO_HASH_INVALID) || (maskHashType_en >= CRYPTO_HASH_MAX) )
     {    
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
@@ -594,7 +589,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_SignData(crypto_HandlerType_E r
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, dataHashType_en, maskHashType_en);
+                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
             	break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->        
        
@@ -606,8 +601,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_SignData(crypto_HandlerType_E r
     return ret_rsaStat_en;
 }        
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_VerifyData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_inSign, 
-                                                               uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E dataHashType_en, 
-                                                                crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
+                                                               uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
 {
     crypto_DigiSign_Status_E ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
@@ -623,10 +617,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_VerifyData(crypto_HandlerType_E
     {
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_PUBKEY;
     }
-    else if( (dataHashType_en <= CRYPTO_HASH_INVALID) || (dataHashType_en >= CRYPTO_HASH_MAX) )
-    {    
-        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
-    }
     else if( (maskHashType_en <= CRYPTO_HASH_INVALID) || (maskHashType_en >= CRYPTO_HASH_MAX) )
     {    
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
@@ -641,7 +631,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_VerifyData(crypto_HandlerType_E
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, dataHashType_en, maskHashType_en);
+                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
             	break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->        
        
@@ -736,7 +726,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_Verify(crypto_HandlerType
     return ret_rsaStat_en;
 }
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_outSign, 
-                                                                uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, crypto_Hash_Algo_E dataHashType_en, uint32_t rsaSessionId)
+                                                                uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
 {
     crypto_DigiSign_Status_E ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
@@ -752,9 +742,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerTy
     {
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_PRIVKEY;
     }
-    else if( (dataHashType_en <= CRYPTO_HASH_INVALID) || (dataHashType_en >= CRYPTO_HASH_MAX) )
+    else if( (maskHashType_en <= CRYPTO_HASH_INVALID) || (maskHashType_en >= CRYPTO_HASH_MAX) )
     {    
-        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else if( (rsaSessionId <= 0u) || (rsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
@@ -766,7 +756,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerTy
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, dataHashType_en);
+                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
             	break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->        
        
@@ -778,7 +768,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerTy
     return ret_rsaStat_en;
 }        
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_inSign, 
-                                                                uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E dataHashType_en, uint32_t rsaSessionId)
+                                                                uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId)
 {
     crypto_DigiSign_Status_E ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
@@ -794,9 +784,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
     {
         ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_PUBKEY;
     }
-    else if( (dataHashType_en <= CRYPTO_HASH_INVALID) || (dataHashType_en >= CRYPTO_HASH_MAX) )
+    else if( (maskHashType_en <= CRYPTO_HASH_INVALID) || (maskHashType_en >= CRYPTO_HASH_MAX) )
     {    
-        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else if( (rsaSessionId <= 0u) || (rsaSessionId > (uint32_t)CRYPTO_DIGISIGN_SESSION_MAX) )
     {
@@ -808,7 +798,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, dataHashType_en);
+                ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
             	break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->        
        

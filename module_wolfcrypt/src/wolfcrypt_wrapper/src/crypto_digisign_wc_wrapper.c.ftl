@@ -249,7 +249,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_SignData(uint8_t *ptr_wcInputD
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcEcdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcEcdsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -277,7 +277,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_VerifyData(uint8_t *ptr_wcInpu
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcEcdsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcEcdsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -408,18 +408,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 #pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
 #pragma GCC diagnostic pop
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSig, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
-																		crypto_Hash_Algo_E dataHashType_en)
+																		crypto_Hash_Algo_E maskHashType_en)
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
     uint8_t arr_hash[512];
     uint32_t wcHashLen = 0x00UL;
     
     //calculate the hash before signing
-    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, dataHashType_en, ptr_wcInData, wcDataLen, arr_hash);
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, maskHashType_en, ptr_wcInData, wcDataLen, arr_hash);
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -434,18 +434,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(uint8_t *ptr_w
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSig, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
-																							crypto_Hash_Algo_E dataHashType_en) 
+																							crypto_Hash_Algo_E maskHashType_en) 
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
     uint8_t arr_hash[512];
     uint32_t wcHashLen = 0x00UL;
     
     //calculate the hash before verify
-    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, dataHashType_en, ptr_wcInData, wcDataLen, arr_hash);
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, maskHashType_en, ptr_wcInData, wcDataLen, arr_hash);
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -583,18 +583,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcIn
 	return ret_wcRsaStat_en;
 }
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSig, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
-																		crypto_Hash_Algo_E dataHashType_en, crypto_Hash_Algo_E maskHashType_en)
+																		crypto_Hash_Algo_E maskHashType_en)
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
     uint8_t arr_hash[512];
     uint32_t wcHashLen = 0x00UL;
     
     //calculate the hash before signing
-    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, dataHashType_en, ptr_wcInData, wcDataLen, arr_hash);
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, maskHashType_en, ptr_wcInData, wcDataLen, arr_hash);
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -608,18 +608,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignData(uint8_t *ptr_wcInDa
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSig, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,																							crypto_Hash_Algo_E dataHashType_en, crypto_Hash_Algo_E maskHashType_en) 
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSig, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen, crypto_Hash_Algo_E maskHashType_en) 
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
     uint8_t arr_hash[512];
     uint32_t wcHashLen = 0x00UL;
     
     //calculate the hash before verify
-    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, dataHashType_en, ptr_wcInData, wcDataLen, arr_hash);
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, maskHashType_en, ptr_wcInData, wcDataLen, arr_hash);
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -748,18 +748,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *pt
 #pragma GCC diagnostic pop 
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSig, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
-																		crypto_Hash_Algo_E dataHashType_en)
+																		crypto_Hash_Algo_E maskHashType_en)
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
     uint8_t arr_hash[512];
     uint32_t wcHashLen = 0x00UL;
     
     //calculate the hash before signing
-    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, dataHashType_en, ptr_wcInData, wcDataLen, arr_hash);
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, maskHashType_en, ptr_wcInData, wcDataLen, arr_hash);
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {
@@ -774,18 +774,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSig, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
-																							crypto_Hash_Algo_E dataHashType_en) 
+																							crypto_Hash_Algo_E maskHashType_en) 
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
     uint8_t arr_hash[512];
     uint32_t wcHashLen = 0x00UL;
     
     //calculate the hash before verify
-    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, dataHashType_en, ptr_wcInData, wcDataLen, arr_hash);
+    wcHashLen = Crypto_Hash_GetHashAndHashSize(CRYPTO_HANDLER_SW_WOLFCRYPT, maskHashType_en, ptr_wcInData, wcDataLen, arr_hash);
     
     if(wcHashLen == 0x00UL)
     {
-        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     else
     {

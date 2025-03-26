@@ -219,7 +219,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Encrypt(uint8_t *ptr_wcInData, uint
 	
     if(wcStatus == 0 || wcStatus == (int)wcOutLen)
     {
-    crypto_Asym_Status_E freeRsaKeyStatus = wc_FreeRsaKey(&wcRsaPubKey);
+    crypto_Asym_Status_E freeRsaKeyStatus = (crypto_Asym_Status_E)wc_FreeRsaKey(&wcRsaPubKey);
     if (freeRsaKeyStatus == CRYPTO_ASYM_CIPHER_SUCCESS) {
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }
@@ -276,7 +276,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Decrypt(uint8_t *ptr_wcInData, uint
 	
     if(wcStatus == 0 || wcStatus > 0)
     {
-    crypto_Asym_Status_E freeRsaKeyStatus = wc_FreeRsaKey(&wcRsaPrivKey);
+    crypto_Asym_Status_E freeRsaKeyStatus = (crypto_Asym_Status_E)wc_FreeRsaKey(&wcRsaPrivKey);
     if (freeRsaKeyStatus == CRYPTO_ASYM_CIPHER_SUCCESS) {
         ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }

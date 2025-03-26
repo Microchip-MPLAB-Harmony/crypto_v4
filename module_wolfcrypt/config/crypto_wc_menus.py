@@ -159,7 +159,7 @@ wolfcrypt_AllMenuList = [
     ["RSA Sign/Verify",                 "CRYPTO_WC_DIGISIGN_RSA_MENU",       "Crypto_Wc_Digisign_Rsa_Menu",          "Crypto_Wc_Digisign_Menu",     True,   None,    None],
     ["PSS",                             "CRYPTO_WC_DIGISIGN_RSA_PSS",       "Crypto_Wc_Digisign_Rsa_Pss",         "Crypto_Wc_Digisign_Rsa_Menu",      True,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_PSS_PADDING"],
     ["PKCS1_V15",                        "CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15",  "Crypto_Wc_Digisign_Rsa_Pkcs1v15",    "Crypto_Wc_Digisign_Rsa_Menu",      True,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_PKCS1_V15_PADDING"],
-    ["NoPadding",                        "CRYPTO_WC_DIGISIGN_RSA_NO_PADDING", "Crypto_Wc_Digisign_Rsa_NoPadding",   "Crypto_Wc_Digisign_Rsa_Menu",      True,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_NO_PADDING"],
+    ["NoPadding",                        "CRYPTO_WC_DIGISIGN_RSA_NO_PADDING", "Crypto_Wc_Digisign_Rsa_NoPadding",   "Crypto_Wc_Digisign_Rsa_Menu",      False,   False,    ["HashAlgo", "DigisignAlgo"], "RSA_NO_PADDING"],
     
     ["Key Agreement Algorithms(KAS)",   "CRYPTO_WC_KAS_MENU",           "Crypto_Wc_Kas_Menu",              None,                          True,   None,     None],
     ["ECDH",                            "CRYPTO_WC_ECDH",               "Crypto_Wc_Ecdh",                  "Crypto_Wc_Kas_Menu",          True,   False,    "KasAlgo",      "ECDH_Algorithm"],

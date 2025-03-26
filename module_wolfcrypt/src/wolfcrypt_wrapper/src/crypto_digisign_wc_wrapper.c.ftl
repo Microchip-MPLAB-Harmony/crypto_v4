@@ -374,7 +374,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 		wcStatus = wc_RsaSSL_Verify((const byte*)ptr_wcInSig, wcOutLen, (byte*)arr_wcPlainText, (word32)wcHashLen, &wcRsaPubKey);
 	}
 	
-	if(wcStatus == wcHashLen)
+	if(wcStatus == (int)wcHashLen)
     {
 		for(uint8_t i = 0; i < wcHashLen; i++)
 		{
@@ -538,21 +538,21 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcIn
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*)ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-		wcSigLen = wc_RsaEncryptSize(&wcRsaPubKey);
+		wcSigLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey);
 	}
 	
-	uint8_t arr_wcPlainText[wcHashLen*2];
+	uint8_t arr_wcPlainText[wcHashLen*(uint32_t)2];
 
 	if(wcStatus == 0)
 	{
 		wcHashType = Crypto_Hash_Wc_GetWcHashType(maskHashType_en);
 		wcMgfType = wc_hash2mgf((enum wc_HashType)wcHashType);
-		wcStatus = wc_RsaPSS_Verify((byte*)ptr_wcInSig, wcSigLen, (byte*)arr_wcPlainText, (word32)(wcHashLen*2), (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPubKey);
+		wcStatus = wc_RsaPSS_Verify((byte*)ptr_wcInSig, wcSigLen, (byte*)arr_wcPlainText, (word32)(wcHashLen*(uint32_t)2), (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPubKey);
 	}
 	
 	if(wcStatus >= 0)
     {
-        wcStatus = wc_RsaPSS_CheckPadding(ptr_wcInHash, wcHashLen, arr_wcPlainText, (wcHashLen*2), (enum wc_HashType)wcHashType); 
+        wcStatus = wc_RsaPSS_CheckPadding(ptr_wcInHash, wcHashLen, arr_wcPlainText, (wcHashLen*(uint32_t)2), (enum wc_HashType)wcHashType); 
                 
 		if(wcStatus == 0)
 		{

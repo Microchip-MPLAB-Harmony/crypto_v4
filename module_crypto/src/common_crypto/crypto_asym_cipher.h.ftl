@@ -89,7 +89,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_inputData, ui
 crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
                                                                                     crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
                                                                                     uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
-crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint32_t outDatLen, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
+crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint32_t outDataLen, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
 															crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
 															uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP  -->

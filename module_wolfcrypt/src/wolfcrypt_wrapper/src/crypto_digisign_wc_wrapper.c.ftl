@@ -320,7 +320,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(uint8_t *ptr_w
 		wcStatus = wc_RsaSSL_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, &wcRsaPrivKey, &wcRng);
 	}
 
-    if(wcStatus == (int32_t)wcOutLen)
+    if(wcStatus == (int)wcOutLen)
     {
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }
@@ -468,7 +468,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHa
 	int wcStatus = BAD_FUNC_ARG;
 	RsaKey wcRsaPrivKey;
 	WC_RNG wcRng;
-	int wcHashType = WC_HASH_TYPE_NONE;
+	int wcHashType = (int)WC_HASH_TYPE_NONE;
 	int wcMgfType = WC_MGF1NONE;
 	word32 wcOutLen = 0;
 	word32 inOutIdx = 0;
@@ -490,10 +490,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHa
 	{
 		wcHashType = Crypto_Hash_Wc_GetWcHashType(maskHashType_en);
 		wcMgfType = wc_hash2mgf((enum wc_HashType)wcHashType);
-		wcStatus = wc_RsaPSS_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, wcHashType, wcMgfType, &wcRsaPrivKey, &wcRng);
+		wcStatus = wc_RsaPSS_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPrivKey, &wcRng);
 	}
 	
-    if(wcStatus == (int32_t)wcOutLen)
+    if(wcStatus == (int)wcOutLen)
     {
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }
@@ -528,7 +528,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcIn
 	crypto_DigiSign_Status_E ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
 	int wcStatus = BAD_FUNC_ARG;
 	RsaKey wcRsaPubKey;
-	int wcHashType = WC_HASH_TYPE_NONE;
+	int wcHashType = (int)WC_HASH_TYPE_NONE;
 	int wcMgfType = WC_MGF1NONE;
 	word32 wcSigLen = 1;
 	word32 inOutIdx = 0;
@@ -547,12 +547,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcIn
 	{
 		wcHashType = Crypto_Hash_Wc_GetWcHashType(maskHashType_en);
 		wcMgfType = wc_hash2mgf((enum wc_HashType)wcHashType);
-		wcStatus = wc_RsaPSS_Verify((byte*)ptr_wcInSig, wcSigLen, (byte*)arr_wcPlainText, (word32)(wcHashLen*2), wcHashType, wcMgfType, &wcRsaPubKey);
+		wcStatus = wc_RsaPSS_Verify((byte*)ptr_wcInSig, wcSigLen, (byte*)arr_wcPlainText, (word32)(wcHashLen*2), (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPubKey);
 	}
 	
 	if(wcStatus >= 0)
     {
-        wcStatus = wc_RsaPSS_CheckPadding(ptr_wcInHash, wcHashLen, arr_wcPlainText, (wcHashLen*2), wcHashType); 
+        wcStatus = wc_RsaPSS_CheckPadding(ptr_wcInHash, wcHashLen, arr_wcPlainText, (wcHashLen*2), (enum wc_HashType)wcHashType); 
                 
 		if(wcStatus == 0)
 		{

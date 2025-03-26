@@ -321,7 +321,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(uint8_t *ptr_w
 	
 	if(wcStatus == 0)
 	{
-		wcStatus = wc_RsaSSL_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, &wcRsaPrivKey, &wcRng);
+		wcStatus = wc_RsaSSL_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSign, wcOutLen, &wcRsaPrivKey, &wcRng);
 	}
 
     if(wcStatus == (int)wcOutLen)
@@ -379,7 +379,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 	
 	if(wcStatus == 0)
 	{
-		wcStatus = wc_RsaSSL_Verify((const byte*)ptr_wcInSig, wcOutLen, (byte*)arr_wcPlainText, (word32)wcHashLen, &wcRsaPubKey);
+		wcStatus = wc_RsaSSL_Verify((const byte*)ptr_wcInSign, wcOutLen, (byte*)arr_wcPlainText, (word32)wcHashLen, &wcRsaPubKey);
 	}
 	
 	if(wcStatus == (int)wcHashLen)
@@ -420,7 +420,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 }
 #pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
 #pragma GCC diagnostic pop
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSig, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
 																		crypto_Hash_Algo_E maskHashType_en)
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
@@ -437,7 +437,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(uint8_t *ptr_w
     else
     {
         //Sign the Hash
-		ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(arr_hash, wcHashLen, ptr_wcOutSig, ptr_wcPrivKeyDer, wcPrivKeyBufLen);
+		ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(arr_hash, wcHashLen, ptr_wcOutSign, ptr_wcPrivKeyDer, wcPrivKeyBufLen);
     }
     
     return ret_wcRsaStat_en;
@@ -463,7 +463,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(uint8_t *ptr
     else
     {
         //Verify the Hash
-        ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(arr_hash, wcHashLen, ptr_wcInSig, ptr_wcPubKeyDer, wcPubKeyBufLen);
+        ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(arr_hash, wcHashLen, ptr_wcInSign, ptr_wcPubKeyDer, wcPubKeyBufLen);
     }
     
     return ret_wcRsaStat_en;
@@ -478,7 +478,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(uint8_t *ptr
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSig, 
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSign, 
 																uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen, crypto_Hash_Algo_E maskHashType_en)
 {
 	crypto_DigiSign_Status_E ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
@@ -507,7 +507,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHa
 	{
 		wcHashType = Crypto_Hash_Wc_GetWcHashType(maskHashType_en);
 		wcMgfType = wc_hash2mgf((enum wc_HashType)wcHashType);
-		wcStatus = wc_RsaPSS_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPrivKey, &wcRng);
+		wcStatus = wc_RsaPSS_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSign, wcOutLen, (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPrivKey, &wcRng);
 	}
 	
     if(wcStatus == (int)wcOutLen)
@@ -570,7 +570,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcIn
 	{
 		wcHashType = Crypto_Hash_Wc_GetWcHashType(maskHashType_en);
 		wcMgfType = wc_hash2mgf((enum wc_HashType)wcHashType);
-		wcStatus = wc_RsaPSS_Verify((byte*)ptr_wcInSig, wcSigLen, (byte*)arr_wcPlainText, (word32)(wcHashLen*(uint32_t)2), (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPubKey);
+		wcStatus = wc_RsaPSS_Verify((byte*)ptr_wcInSign, wcSigLen, (byte*)arr_wcPlainText, (word32)(wcHashLen*(uint32_t)2), (enum wc_HashType)wcHashType, wcMgfType, &wcRsaPubKey);
 	}
 	
 	if(wcStatus >= 0)
@@ -626,7 +626,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignData(uint8_t *ptr_wcInDa
     else
     {
         //Sign the Hash
-		ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_SignHash(arr_hash, wcHashLen, ptr_wcOutSig, ptr_wcPrivKeyDer, wcPrivKeyBufLen, maskHashType_en);
+		ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_SignHash(arr_hash, wcHashLen, ptr_wcOutSign, ptr_wcPrivKeyDer, wcPrivKeyBufLen, maskHashType_en);
     }
     
     return ret_wcRsaStat_en;
@@ -635,7 +635,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignData(uint8_t *ptr_wcInDa
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
-crypto_DigiSign_Status_Ecrypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
 																		crypto_Hash_Algo_E maskHashType_en) 		
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
@@ -652,7 +652,7 @@ crypto_DigiSign_Status_Ecrypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_Veri
     else
     {
         //Verify the Hash
-        ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(arr_hash, wcHashLen, ptr_wcInSig, ptr_wcPubKeyDer, wcPubKeyBufLen, maskHashType_en);
+        ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(arr_hash, wcHashLen, ptr_wcInSign, ptr_wcPubKeyDer, wcPubKeyBufLen, maskHashType_en);
     }
     
     return ret_wcRsaStat_en;
@@ -662,7 +662,7 @@ crypto_DigiSign_Status_Ecrypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_Veri
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->
 
 <#if (CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true))>
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSig, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen)
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen)
 {
 	crypto_DigiSign_Status_E ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
 	int wcStatus = BAD_FUNC_ARG;
@@ -686,7 +686,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(uint8_t *ptr_
 	
 	if(wcStatus == 0)
 	{
-		wcStatus = wc_RsaPublicEncrypt_ex((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, &wcRsaPrivKey, &wcRng,
+		wcStatus = wc_RsaPublicEncrypt_ex((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSign, wcOutLen, &wcRsaPrivKey, &wcRng,
 											WC_RSA_NO_PAD, WC_HASH_TYPE_NONE, WC_MGF1NONE, NULL, 0);
 	}
 	
@@ -716,7 +716,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(uint8_t *ptr_
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcInSig, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen)
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen)
 {
 	crypto_DigiSign_Status_E ret_wcRsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
 	int wcStatus = BAD_FUNC_ARG;
@@ -737,7 +737,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *pt
 	
 	if(wcStatus == 0)
 	{
-		wcStatus = wc_RsaSSL_Verify_ex((const byte*)ptr_wcInSig, wcOutLen, (byte*)arr_wcPlainText, (word32)wcHashLen, &wcRsaPubKey, WC_RSA_NO_PAD);
+		wcStatus = wc_RsaSSL_Verify_ex((const byte*)ptr_wcInSign, wcOutLen, (byte*)arr_wcPlainText, (word32)wcHashLen, &wcRsaPubKey, WC_RSA_NO_PAD);
 	}
 	
 	if(wcStatus == 0)
@@ -775,7 +775,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *pt
 #pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
 #pragma GCC diagnostic pop 
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSig, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
 																		crypto_Hash_Algo_E maskHashType_en)
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
@@ -792,7 +792,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_
     else
     {
         //Sign the Hash
-		ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(arr_hash, wcHashLen, ptr_wcOutSig, ptr_wcPrivKeyDer, wcPrivKeyBufLen);
+		ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(arr_hash, wcHashLen, ptr_wcOutSign, ptr_wcPrivKeyDer, wcPrivKeyBufLen);
     }
     
     return ret_wcRsaStat_en;
@@ -801,7 +801,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
-crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSig, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
 																							crypto_Hash_Algo_E maskHashType_en) 
 {
     crypto_DigiSign_Status_E ret_wcRsaStat_en;
@@ -818,7 +818,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(uint8_t *pt
     else
     {
         //Verify the Hash
-        ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(arr_hash, wcHashLen, ptr_wcInSig, ptr_wcPubKeyDer, wcPubKeyBufLen);
+        ret_wcRsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(arr_hash, wcHashLen, ptr_wcInSign, ptr_wcPubKeyDer, wcPubKeyBufLen);
     }
     
     return ret_wcRsaStat_en;

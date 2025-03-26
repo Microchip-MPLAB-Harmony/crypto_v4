@@ -307,7 +307,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(uint8_t *ptr_w
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPrivateKeyDecode((const byte*)ptr_wcPrivKeyDer, &inOutIdx, &wcRsaPrivKey, (word32)wcPrivKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPrivKey);
+		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPrivKey);
 	}
 	
 	if(wcStatus == 0)
@@ -320,7 +320,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(uint8_t *ptr_w
 		wcStatus = wc_RsaSSL_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, &wcRsaPrivKey, &wcRng);
 	}
 
-    if(wcStatus == wcOutLen)
+    if(wcStatus == (int32_t)wcOutLen)
     {
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }
@@ -364,7 +364,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*)ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPubKey);
+		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey);
 	}
 	
 	uint8_t arr_wcPlainText[wcHashLen];
@@ -478,7 +478,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHa
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPrivateKeyDecode((const byte*)ptr_wcPrivKeyDer, &inOutIdx, &wcRsaPrivKey, (word32)wcPrivKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPrivKey);
+		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPrivKey);
 	}
 	
 	if(wcStatus == 0)
@@ -493,7 +493,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHa
 		wcStatus = wc_RsaPSS_Sign((const byte*)ptr_wcInHash, (word32)wcHashLen, (byte*)ptr_wcOutSig, wcOutLen, wcHashType, wcMgfType, &wcRsaPrivKey, &wcRng);
 	}
 	
-    if(wcStatus == wcOutLen)
+    if(wcStatus == (int32_t)wcOutLen)
     {
         wcStatus = wc_FreeRsaKey(&wcRsaPrivKey);
     }
@@ -648,7 +648,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(uint8_t *ptr_
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPrivateKeyDecode((const byte*)ptr_wcPrivKeyDer, &inOutIdx, &wcRsaPrivKey, (word32)wcPrivKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPrivKey);
+		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPrivKey);
 	}
 	
 	if(wcStatus == 0)
@@ -701,7 +701,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *pt
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*)ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPubKey);
+		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey);
 	}
 	
 	uint8_t arr_wcPlainText[wcOutLen];

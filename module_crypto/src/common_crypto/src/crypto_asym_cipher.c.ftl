@@ -215,7 +215,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_OUTPUTDATA;
 	}
-	else if( (ptr_privKeyDer == NULL) || (privKeyBufLen == 0) ) 
+	else if( (ptr_privKeyDer == NULL) || (privKeyBufLen == (uint32_t)0) ) 
     {
        ret_rsaStat_en =  CRYPTO_ASYM_ERROR_KEY;
     }

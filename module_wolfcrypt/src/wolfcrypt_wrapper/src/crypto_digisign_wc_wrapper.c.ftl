@@ -67,6 +67,7 @@
 #include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS || CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->
 
+#define MAX_HASH_LEN_IN_BYTES 64
 <#if (CRYPTO_WC_ECDSA?? &&(CRYPTO_WC_ECDSA == true))>
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_SignHash(uint8_t *ptr_wcInputHash, uint32_t wcHashLen, uint8_t *ptr_wcSig, uint32_t wcSigLen, uint8_t *ptr_wcPrivKey, 
@@ -293,7 +294,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_VerifyData(uint8_t *ptr_wcInpu
 </#if><#-- CRYPTO_WC_ECDSA -->	
 
 <#if (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1" 
@@ -472,9 +472,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(uint8_t *ptr
 #pragma GCC diagnostic pop  
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->	
 
-
 <#if (CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(CRYPTO_WC_DIGISIGN_RSA_PSS == true))>
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
@@ -541,7 +539,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHa
 #pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
 #pragma GCC diagnostic pop  
 
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "H3_MISRAC_2012_R_5_1_DR_1"
@@ -564,8 +561,8 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcIn
 		wcSigLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey);
 	}
 	
-	uint8_t arr_wcPlainText[wcHashLen*(uint32_t)2];
-
+	uint8_t arr_wcPlainText[MAX_HASH_LEN_IN_BYTES*(uint32_t)2];
+    
 	if(wcStatus == 0)
 	{
 		wcHashType = Crypto_Hash_Wc_GetWcHashType(maskHashType_en);

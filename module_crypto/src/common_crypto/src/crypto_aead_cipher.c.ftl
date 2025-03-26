@@ -781,7 +781,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-        else if(ptr_initVect == NULL || initVectLen == 0u)
+    else if(ptr_initVect == NULL || initVectLen == 0u)
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
@@ -792,10 +792,6 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
     else if((ptr_authTag == NULL) || (authTagLen > 16u) || (authTagLen < 4u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
-    }
-    else if((ptr_aad == NULL) && (ptr_inputData == NULL))
-    {
-        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_ARG;
     }
     else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {

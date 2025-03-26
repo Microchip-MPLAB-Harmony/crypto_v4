@@ -375,7 +375,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr
 		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey);
 	}
 	
-	uint8_t arr_wcPlainText[wcHashLen];
+	uint8_t arr_wcPlainText[MAX_HASH_LEN_IN_BYTES];
 	
 	if(wcStatus == 0)
 	{

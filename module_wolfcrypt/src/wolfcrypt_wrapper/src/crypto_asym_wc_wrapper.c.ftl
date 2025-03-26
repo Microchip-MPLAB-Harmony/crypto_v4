@@ -90,16 +90,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_wcInData, 
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*) ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-        int32_t tempSize = wc_RsaEncryptSize(&wcRsaPubKey); 
-        if (tempSize >= 0)
-        {
-            wcOutLen = (word32)tempSize; // Explicitly cast to unsigned
-        }
-        else
-        {
-            wcOutLen = 0; 
-            wcStatus = BAD_FUNC_ARG;
-        }
+        wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey); 
 	}
 	
 	if(wcStatus == 0)
@@ -154,7 +145,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_wcInData, 
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPrivateKeyDecode((const byte*) ptr_wcPrivKeyDer, &inOutIdx, &wcRsaPrivKey, (word32)wcPrivKeyBufLen);
-		wcOutLen = wc_RsaEncryptSize(&wcRsaPrivKey);
+		wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPrivKey);
 	}
 	
 	if(wcStatus == 0)
@@ -210,16 +201,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Encrypt(uint8_t *ptr_wcInData, uint
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*) ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-		        int32_t tempSize = wc_RsaEncryptSize(&wcRsaPubKey); 
-        if (tempSize >= 0)
-        {
-            wcOutLen = (word32)tempSize; // Explicitly cast to unsigned
-        }
-        else
-        {
-            wcOutLen = 0; 
-            wcStatus = BAD_FUNC_ARG;
-        }  
+        wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey); 
 	}
 	
 	if(wcStatus == 0)
@@ -237,11 +219,11 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Encrypt(uint8_t *ptr_wcInData, uint
 	
     if(wcStatus == 0 || wcStatus == (int)wcOutLen)
     {
-    crypto_Asym_Status_E freeRsaKeyStatus = wc_FreeRsaKey(&wcRsaPubKey);
-    if (freeRsaKeyStatus != CRYPTO_ASYM_CIPHER_SUCCESS) {
-        ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPFAIL;
+    int freeRsaKeyStatus = wc_FreeRsaKey(&wcRsaPubKey);
+    if (freeRsaKeyStatus == CRYPTO_ASYM_CIPHER_SUCCESS) {
+        ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }
-    ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
+    
     }
     else if(wcStatus == BAD_FUNC_ARG)
     {
@@ -294,11 +276,11 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Decrypt(uint8_t *ptr_wcInData, uint
 	
     if(wcStatus == 0 || wcStatus > 0)
     {
-    crypto_Asym_Status_E freeRsaKeyStatus = wc_FreeRsaKey(&wcRsaPubKey);
-    if (freeRsaKeyStatus != CRYPTO_ASYM_CIPHER_SUCCESS) {
-        ret_rsaStat_en = CRYPTO_ASYM_ERROR_CIPFAIL;
+    int freeRsaKeyStatus = wc_FreeRsaKey(&wcRsaPrivKey);
+    if (freeRsaKeyStatus == CRYPTO_ASYM_CIPHER_SUCCESS) {
+        ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
     }
-    ret_rsaStat_en = CRYPTO_ASYM_CIPHER_SUCCESS;
+    
     }
     else if(wcStatus == BAD_FUNC_ARG)
     {
@@ -342,16 +324,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(uint8_t *ptr_wcInData,
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPublicKeyDecode((const byte*) ptr_wcPubKeyDer, &inOutIdx, &wcRsaPubKey, (word32)wcPubKeyBufLen);
-        int32_t tempSize = wc_RsaEncryptSize(&wcRsaPubKey); 
-        if (tempSize >= 0)
-        {
-            wcOutLen = (word32)tempSize; // Explicitly cast to unsigned
-        }
-        else
-        {
-            wcOutLen = 0; 
-            wcStatus = BAD_FUNC_ARG;
-        }
+        wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPubKey); 
 	}
 	
 	if(wcStatus == 0)
@@ -406,16 +379,7 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData,
 	if(wcStatus == 0)
 	{
 		wcStatus = wc_RsaPrivateKeyDecode((const byte*) ptr_wcPrivKeyDer, &inOutIdx, &wcRsaPrivKey, (word32)wcPrivKeyBufLen);
-        int32_t tempSize = wc_RsaEncryptSize(&wcRsaPrivKey); 
-        if (tempSize >= 0)
-        {
-            wcOutLen = (word32)tempSize; // Explicitly cast to unsigned
-        }
-        else
-        {
-            wcOutLen = 0; 
-            wcStatus = BAD_FUNC_ARG;
-        }
+        wcOutLen = (word32)wc_RsaEncryptSize(&wcRsaPrivKey);
 	}
 	
 	if(wcStatus == 0)

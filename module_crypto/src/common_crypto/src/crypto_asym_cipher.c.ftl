@@ -83,7 +83,7 @@ crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_inputData, ui
 	{
 		ret_rsaStat_en =  CRYPTO_ASYM_ERROR_OUTPUTDATA;
 	}
-	else if( (ptr_pubKeyDer == NULL) || (pubKeyBufLen == 0) )
+	else if( (ptr_pubKeyDer == NULL) || (pubKeyBufLen == (unsigned int)0) )
     {
        ret_rsaStat_en =  CRYPTO_ASYM_ERROR_KEY;
     }

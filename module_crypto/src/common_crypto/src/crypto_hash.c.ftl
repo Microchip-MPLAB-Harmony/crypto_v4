@@ -1105,5 +1105,3 @@ uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, cryp
     return hashSize;
 }
 </#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->
-
-</#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->

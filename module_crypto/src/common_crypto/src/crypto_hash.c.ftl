@@ -1095,12 +1095,12 @@ uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, cryp
         
         if(hashStatus_en != CRYPTO_HASH_SUCCESS)
         {
-           hashSize = 0x00U;  
+            hashSize = 0x00U;  
         }
     }
     else
     {
-       hashSize = 0x00U; 
+        hashSize = 0x00U; 
     }
     return hashSize;
 }

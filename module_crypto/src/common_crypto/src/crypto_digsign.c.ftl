@@ -77,7 +77,7 @@
 // *****************************************************************************
 
 <#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER"))) 
-					|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))))>
+                    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))))>
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_outSig, 
                                                     uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId)
 {
@@ -110,18 +110,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHa
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ecdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_SignHash(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_ECDSA -->
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER")> 
-            	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);            	
+                ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);                
 </#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER -->  
                 break;             
 </#if><#-- CRYPTO_HW_ECDSA -->
             default:
                 ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         }
     }
     return ret_ecdsaStat_en;
@@ -164,26 +164,26 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>          
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_ecdsaStat_en = Crypto_DigiSign_Wc_Ecdsa_VerifyHash(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, ptr_sigVerifyStat, eccCurveType_En);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_ECDSA -->            
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER")>
-            	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
+                ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
                                         ptr_sigVerifyStat, eccCurveType_En);
 </#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER --> 
-            	break;
+                break;
 </#if><#-- CRYPTO_HW_ECDSA -->            
             default:
                 ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         }
     }
     return ret_ecdsaStat_en;
 }
 </#if><#-- (CRYPTO_HW_ECDSA && !HAVE_CRYPTO_HW_HSM_03785_DRIVER) || CRYPTO_WC_ECDSA -->
 <#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))) 
-					|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) )>
+                    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) )>
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                         uint8_t *ptr_outSig, uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, 
@@ -227,9 +227,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecd
 </#if><#-- CRYPTO_WC_ECDSA -->
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>	
+<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>    
                 ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_SignData(ptr_inputData, dataLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, hashType_en, eccCurveType_En);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->  				
+</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->                  
             break;
 </#if><#-- CRYPTO_HW_ECDSA -->           
             default:
@@ -289,7 +289,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-            	ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_VerifyData(ptr_inputData, dataLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
+                ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_VerifyData(ptr_inputData, dataLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
                                                                             hashType_en, ptr_sigVerifyStat, eccCurveType_En);
 </#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->               
             break;
@@ -332,12 +332,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_Sign(crypto_HandlerType_E 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(ptr_inHash, hashLen, ptr_outSig, ptr_privKeyDer, privKeyBufLen);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -371,12 +371,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_Verify(crypto_HandlerType_
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(ptr_inHash, hashLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -417,12 +417,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_SignData(crypto_HandlerTyp
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -466,12 +466,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_VerifyData(crypto_HandlerT
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -513,12 +513,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_Sign(crypto_HandlerType_E rsaHa
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_SignHash(ptr_inHash, hashLen, ptr_outSig, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -557,13 +557,13 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_Verify(crypto_HandlerType_E rsa
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(ptr_inHash, hashLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
-        } 
+                break;
+        }
     }
     return ret_rsaStat_en;
 }
@@ -600,12 +600,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_SignData(crypto_HandlerType_E r
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -642,12 +642,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pss_VerifyData(crypto_HandlerType_E
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -685,12 +685,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_Sign(crypto_HandlerType_E
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(ptr_inHash, hashLen, ptr_outSig, ptr_privKeyDer, privKeyBufLen);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -725,12 +725,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_Verify(crypto_HandlerType
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(ptr_inHash, hashLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -767,12 +767,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerTy
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(ptr_inData, dataLen, ptr_outSign, ptr_privKeyDer, privKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;
@@ -809,12 +809,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
                 ret_rsaStat_en = Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(ptr_inData, dataLen, ptr_inSign, ptr_pubKeyDer, pubKeyBufLen, maskHashType_en);
-            	break; 
+                break; 
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->        
        
             default:
                 ret_rsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
-            	break;
+                break;
         } 
     }
     return ret_rsaStat_en;

@@ -79,26 +79,26 @@ typedef enum
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15 == true)))>
 crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
-															                                          crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);
+                                                                                                      crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);
 
 crypto_Asym_Status_E Crypto_Asym_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outputData, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
-																		                                      crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);
+                                                                                                              crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_PKCS1_V15  -->
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP == true)))>														
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP == true)))>
 crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
                                                                                     crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
                                                                                     uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
 crypto_Asym_Status_E Crypto_Asym_Rsa_Oaep_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint32_t outDataLen, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
-															crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
-															uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
+                                                            crypto_Hash_Algo_E hashType_en, crypto_HandlerType_E rsaHandlerType_en, 
+                                                            uint8_t *ptr_label, uint32_t labelLen, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_OAEP  -->
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING == true)))>	
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING == true)))>
 crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Encrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, 
-															                                        crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);
+                                                                                                    crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);
 crypto_Asym_Status_E Crypto_Asym_Rsa_NoPadding_Decrypt(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_privKeyDer, uint32_t privKeyBufLen, 
-															                                            crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);																									
+                                                                                                        crypto_HandlerType_E rsaHandlerType_en, uint32_t sessionID);                                                                                                    
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_ASYM_RSA_NO_PADDING  -->
 
 #endif //CRYPTO_ASYM_CIPHER_H

@@ -62,9 +62,9 @@ crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_wcInData, 
 
 <#if (CRYPTO_WC_ASYM_RSA_OAEP?? &&(CRYPTO_WC_ASYM_RSA_OAEP == true))>
 crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Encrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen, 
-																	                            crypto_Hash_Algo_E wcMaskHashType_en, uint8_t *ptr_wcLabel, uint32_t wcLabelLen);
+                                                                                                crypto_Hash_Algo_E wcMaskHashType_en, uint8_t *ptr_wcLabel, uint32_t wcLabelLen);
 crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Decrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint32_t wcOutDatLen, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen, 
-                                                                                                 crypto_Hash_Algo_E wcMaskHashType_en, uint8_t *ptr_wcLabel, uint32_t wcLabelLen);
+                                                                                                crypto_Hash_Algo_E wcMaskHashType_en, uint8_t *ptr_wcLabel, uint32_t wcLabelLen);
 </#if> <#-- CRYPTO_WC_ASYM_RSA_OAEP -->
 
 <#if (CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(CRYPTO_WC_ASYM_RSA_NO_PADDING == true))>

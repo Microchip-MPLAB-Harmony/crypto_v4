@@ -1024,13 +1024,14 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeFinal(void *ptr_blakeCtx_st, uint8_t *p
 }
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
 
-<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))  || (CRYPTO_WC_ASYM_RSA_OAEP?? &&(CRYPTO_WC_ASYM_RSA_OAEP == true)) 
-													|| (CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(CRYPTO_WC_DIGISIGN_RSA_PSS == true)) 
-													|| (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))  
+    || (CRYPTO_WC_ASYM_RSA_OAEP?? &&(CRYPTO_WC_ASYM_RSA_OAEP == true)) 
+    || (CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(CRYPTO_WC_DIGISIGN_RSA_PSS == true)) 
+    || (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
 int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en)
 {
     int wcHashType = (int)WC_HASH_TYPE_NONE;
-       
+
     switch(hashType_en)
     {
 <#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true))>          
@@ -1060,7 +1061,7 @@ int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en)
 </#if><#-- CRYPTO_WC_SHA2_512 -->  
 <#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))>           
         case CRYPTO_HASH_SHA2_512_224:
-			wcHashType = WC_SHA512_224;
+            wcHashType = WC_SHA512_224;
             break;
 </#if><#-- CRYPTO_WC_SHA2_512_224 -->  
 <#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true))>            

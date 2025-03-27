@@ -80,7 +80,7 @@
 //MD5 Algorithm
 crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t md5SessionId)
 {
-   	crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
 
     if( (ptr_data == NULL) || (dataLen == 0u) )
     {
@@ -115,12 +115,12 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, 
                 break;
         };
     }
-	return ret_md5Stat_en;  
+    return ret_md5Stat_en;  
 }
 
 crypto_Hash_Status_E Crypto_Hash_Md5_Init(st_Crypto_Hash_Md5_Ctx *ptr_md5Ctx_st, crypto_HandlerType_E md5HandlerType_en, uint32_t md5SessionId)
 {
-	crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
 
     if(ptr_md5Ctx_st == NULL)
     {
@@ -154,12 +154,12 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Init(st_Crypto_Hash_Md5_Ctx *ptr_md5Ctx_st,
                 break;
         };
     }
-	return ret_md5Stat_en;
+    return ret_md5Stat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Md5_Update(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_st, uint8_t *ptr_data, uint32_t dataLen)
 {
-	crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_md5Ctx_st == NULL)
     {
@@ -190,12 +190,12 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Update(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_
                 break;
         };
     }
-	return ret_md5Stat_en;
+    return ret_md5Stat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Md5_Final(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_st, uint8_t *ptr_digest)
 {
-   	crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+       crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_md5Ctx_st == NULL)
     {
@@ -226,7 +226,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Final(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_s
                 break;
         };
     }
-	return ret_md5Stat_en; 
+    return ret_md5Stat_en; 
 }
 </#if><#-- CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160?? &&(lib_wolfcrypt.CRYPTO_WC_RIPEMD160 == true)))>
@@ -234,7 +234,7 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Final(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_s
 //RIPEMD160 Algorithm
 crypto_Hash_Status_E Crypto_Hash_Ripemd160_Digest(crypto_HandlerType_E ripedmd160Handler_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t ripemdSessionId)
 {
-   	crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+       crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if( (ptr_data == NULL) || (dataLen == 0u) )
     {
@@ -258,20 +258,20 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Digest(crypto_HandlerType_E ripedmd16
                 break;
 </#if><#-- CRYPTO_WC_RIPEMD160 -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_ripemdStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
         } 
     } 
-	return ret_ripemdStat_en;     
+    return ret_ripemdStat_en;     
 }
 
 //RIPEMD160
 crypto_Hash_Status_E Crypto_Hash_Ripemd160_Init(st_Crypto_Hash_Ripemd160_Ctx *ptr_ripemdCtx_st, crypto_HandlerType_E ripedmd160Handler_en, uint32_t ripemdSessionId)
 {
-	crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_ripemdCtx_st == NULL)
     {
@@ -301,12 +301,12 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Init(st_Crypto_Hash_Ripemd160_Ctx *pt
                 break;
         }
     } 
-	return ret_ripemdStat_en;
+    return ret_ripemdStat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Ripemd160_Update(st_Crypto_Hash_Ripemd160_Ctx *ptr_ripemdCtx_st, uint8_t *ptr_data, uint32_t dataLen)
 {
-	crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_ripemdCtx_st == NULL)
     {
@@ -326,19 +326,19 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Update(st_Crypto_Hash_Ripemd160_Ctx *
                 break;
 </#if><#-- CRYPTO_WC_RIPEMD160 -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_ripemdStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
         };
     }
-	return ret_ripemdStat_en;
+    return ret_ripemdStat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Ripemd160_Final (st_Crypto_Hash_Ripemd160_Ctx *ptr_ripemdCtx_st, uint8_t *ptr_digest)
 {
-   	crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+       crypto_Hash_Status_E ret_ripemdStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_ripemdCtx_st == NULL)
     {
@@ -365,7 +365,7 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Final (st_Crypto_Hash_Ripemd160_Ctx *
                 break;
         };
     }
-	return ret_ripemdStat_en; 
+    return ret_ripemdStat_en; 
 }
 </#if><#-- CRYPTO_WC_RIPEMD160 -->
 <#if    (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true))) || (CRYPTO_HW_SHA1?? &&(CRYPTO_HW_SHA1 == true))  || (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true))
@@ -379,12 +379,12 @@ crypto_Hash_Status_E Crypto_Hash_Ripemd160_Final (st_Crypto_Hash_Ripemd160_Ctx *
     ||  (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true)))
     ||  (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)))
     ||  (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true)))>
-	
+    
 //SHA-1, SHA-2 and SHA-3 except SHAKE Algorithm
 crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, uint8_t *ptr_data, uint32_t dataLen, 
                                                 uint8_t *ptr_digest, crypto_Hash_Algo_E shaAlgorithm_en,  uint32_t shaSessionId)
 {
- 	crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if( (ptr_data == NULL) || (dataLen == 0u) )
     {
@@ -402,12 +402,12 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_SID;
     }
-	else
+    else
     {
         switch(shaHandler_en)
         {
 <#if (lib_wolfcrypt?? && ((lib_wolfcrypt.CRYPTO_WC_SHA1?? &&(lib_wolfcrypt.CRYPTO_WC_SHA1 == true))
-	|| (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
+    || (lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true))
     ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_384 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true))
     ||  (lib_wolfcrypt.CRYPTO_WC_SHA2_512_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true))
     ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)) ||  (lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true))))>          
@@ -429,7 +429,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
 </#if><#-- CRYPTO_HW_SHA1 || CRYPTO_HW_SHA2_224 || CRYPTO_HW_SHA2_256 || CRYPTO_HW_SHA2_384 || CRYPTO_HW_SHA2_512 || CRYPTO_HW_SHA2_512_224 || CRYPTO_HW_SHA2_512_256-->
 <#if (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>  
             case CRYPTO_HANDLER_HW_ICM:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>			 
+<#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>             
 </#if><#-- HAVE_CRYPTO_HW_ICM_11105_DRIVER -->
                 break; 
 </#if><#-- CRYPTO_ICM11105_SHA1 || CRYPTO_ICM11105_SHA2_224 || CRYPTO_ICM11105_SHA2_256 -->
@@ -438,12 +438,12 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
                 break;
         }
     }
-	return ret_shaStat_en;
+    return ret_shaStat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, crypto_Hash_Algo_E shaAlgorithm_en, crypto_HandlerType_E shaHandler_en, uint32_t shaSessionId)
 {
- 	crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_shaCtx_st == NULL)
     {
@@ -457,7 +457,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_SID;
     }
-	else
+    else
     {
         ptr_shaCtx_st->shaSessionId = shaSessionId;
         ptr_shaCtx_st->shaAlgo_en = shaAlgorithm_en;
@@ -482,11 +482,11 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
      (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true)) ||
      (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true)) >           
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")> 		
+<#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER")>         
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
 <#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-				ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
-</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->			
+                ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
+</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->            
                 break;
 </#if><#-- CRYPTO_HW_SHA1 || CRYPTO_HW_SHA2_224 || CRYPTO_HW_SHA2_256 || CRYPTO_HW_SHA2_384 || CRYPTO_HW_SHA2_512 || CRYPTO_HW_SHA2_512_224 || CRYPTO_HW_SHA2_512_256-->
  <#if (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>  
@@ -500,12 +500,12 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
                 break;
         }
     }
-	return ret_shaStat_en;
+    return ret_shaStat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, uint8_t *ptr_data, uint32_t dataLen)
 {
-	crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_shaCtx_st == NULL)
     {
@@ -550,12 +550,12 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
                 break;
         }
     }
-	return ret_shaStat_en;
+    return ret_shaStat_en;
 }
 
 crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, uint8_t *ptr_digest)
 {
-	crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+    crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_shaCtx_st == NULL)
     {
@@ -565,7 +565,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-	else
+    else
     {
         switch(ptr_shaCtx_st->shaHandler_en)
         {
@@ -600,7 +600,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
                 break;
         }
     }
-	return ret_shaStat_en;
+    return ret_shaStat_en;
 }
 </#if><#--  lib_wolfcrypt.CRYPTO_WC_SHA1 || CRYPTO_HW_SHA1 || CRYPTO_ICM11105_SHA1 || lib_wolfcrypt.CRYPTO_WC_SHA2_224 || CRYPTO_HW_SHA2_224 || CRYPTO_ICM11105_SHA2_224
         || lib_wolfcrypt.CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 || lib_wolfcrypt.CRYPTO_WC_SHA2_384 || CRYPTO_HW_SHA2_384 || lib_wolfcrypt.CRYPTO_WC_SHA2_512
@@ -630,7 +630,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerT
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_SID;
     }
-	else
+    else
     {
         switch(shakeHandlerType_en)
         {
@@ -646,13 +646,13 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerT
                 break;
         }
     }
-	return ret_shakeStat_en;   
+    return ret_shakeStat_en;   
 }
 
 crypto_Hash_Status_E Crypto_Hash_Shake_Init(st_Crypto_Hash_Shake_Ctx* ptr_shakeCtx_st, crypto_Hash_Algo_E shakeAlgorithm_en, 
                                                 crypto_HandlerType_E shakeHandlerType_en, uint32_t digestLen, uint32_t shakeSessionId)
 {
-  	crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+      crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_shakeCtx_st == NULL)
     {
@@ -685,19 +685,19 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Init(st_Crypto_Hash_Shake_Ctx* ptr_shakeC
                 break;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
         }
     }
-	return ret_shakeStat_en;   
+    return ret_shakeStat_en;   
 }
 
 crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shakeCtx_st, uint8_t *ptr_data, uint32_t dataLen)
 {
-  	crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+      crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_shakeCtx_st == NULL)
     {
@@ -707,7 +707,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shak
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }        
-	else
+    else
     {
         switch(ptr_shakeCtx_st->shakeHandler_en)
         {
@@ -717,19 +717,19 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shak
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
         }
     }
-	return ret_shakeStat_en;   
+    return ret_shakeStat_en;   
 }
 
 crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shakeCtx_st, uint8_t *ptr_digest)
 {
-  	crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+      crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     
     if(ptr_shakeCtx_st == NULL)
     {
@@ -739,7 +739,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shake
     {      
         ret_shakeStat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-	else
+    else
     {
         switch(ptr_shakeCtx_st->shakeHandler_en)
         {
@@ -750,14 +750,14 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shake
 </#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
                 
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
         }
     }
-	return ret_shakeStat_en;   
+    return ret_shakeStat_en;   
 }
 </#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
 <#if (lib_wolfcrypt?? && ((lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))))>
@@ -799,7 +799,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Digest(crypto_HandlerType_E blakeHandlerT
                 break;
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_blakeStat_en = CRYPTO_HASH_ERROR_HDLR;
@@ -835,7 +835,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Init(st_Crypto_Hash_Blake_Ctx* ptr_blakeC
     {
         ret_blakeStat_en = CRYPTO_HASH_ERROR_SID;
     }
-	else 
+    else 
     {
         ptr_blakeCtx_st->blakeSessionId = blakeSessionId;
         ptr_blakeCtx_st->blakeAlgo_en = blakeAlgorithm_en;
@@ -852,7 +852,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Init(st_Crypto_Hash_Blake_Ctx* ptr_blakeC
                 break;
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_blakeStat_en = CRYPTO_HASH_ERROR_HDLR;
@@ -874,7 +874,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Update(st_Crypto_Hash_Blake_Ctx * ptr_bla
     {
         ret_blakeStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }
-	else
+    else
     {
         switch(ptr_blakeCtx_st->blakeHandler_en)
         {
@@ -884,7 +884,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Update(st_Crypto_Hash_Blake_Ctx * ptr_bla
                 break;
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_blakeStat_en = CRYPTO_HASH_ERROR_HDLR;
@@ -906,7 +906,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
     {
         ret_blakeStat_en = CRYPTO_HASH_ERROR_OUTPUTDATA;
     }
-	else
+    else
     {
         switch(ptr_blakeCtx_st->blakeHandler_en)
         {
@@ -916,7 +916,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
                 break;
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-			
+            
                 break;
             default:
                 ret_blakeStat_en = CRYPTO_HASH_ERROR_HDLR;
@@ -928,10 +928,10 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
 
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))
-			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
-			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
-			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
-			|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
+            || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
+            || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
+            || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
+            || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
 static crypto_Hash_Status_E Crypto_Hash_GetHashSize(crypto_Hash_Algo_E hashType_en, uint32_t *hashSize)
 {
     crypto_Hash_Status_E ret_val_en = CRYPTO_HASH_SUCCESS;

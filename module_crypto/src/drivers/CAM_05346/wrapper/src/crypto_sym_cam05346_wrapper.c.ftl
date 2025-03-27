@@ -180,15 +180,13 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData,
     uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
     uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
 
-    aesStatus = DRV_CRYPTO_AES_WriteInputData(inputData, fullBlockLen, numOfInvalidBytes);
-
+    // AES cipher/decipher only operates upon block-size aligned data.
+    // Since the full input data is being processed as one block, its size
+    // must be aligned to the AES block size.
+    aesStatus = DRV_CRYPTO_AES_Execute(inputData, outData, fullBlockLen);
     if(aesStatus == AES_NO_ERROR)
     {
-        aesStatus = DRV_CRYPTO_AES_ReadOutputData(outData, fullBlockLen);
-    }
-
-    if(aesStatus == AES_NO_ERROR)
-    {
+        DRV_CRYPTO_AES_Complete();
         status = CRYPTO_SYM_CIPHER_SUCCESS;
     }
 
@@ -217,12 +215,9 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
     crypto_Sym_Status_E status = Crypto_Sym_Hw_Aes_Init(CRYPTO_CIOP_DECRYPT,
             opMode_en, key, keyLen, initVect);
 
-    uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
-    uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
-
     if (status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        status = Crypto_Sym_Hw_Aes_Cipher(inputData, fullBlockLen, outData);
+        status = Crypto_Sym_Hw_Aes_Cipher(inputData, dataLen, outData);
     }
 
     return status;

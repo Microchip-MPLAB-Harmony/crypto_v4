@@ -11,7 +11,7 @@
     Crypto Framework Library wrapper file for CAM hardware AES MAC.
 
   Description:
-    This source file contains the wrapper interface to access the 
+    This source file contains the wrapper interface to access the
     AES MAC algorithms in the AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -63,26 +63,6 @@ static void lDRV_CRYPTO_AES_InterruptSetup(void)
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
     Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
-    
-static uint32_t lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
-{
-    uint32_t numOfInvalidBytes = 0;
-    if(dataLen == 0U)
-    {
-        numOfInvalidBytes = AES_BLOCK_SIZE;
-    }
-    else
-    {
-        uint32_t bytesOverAesBlock = dataLen % (uint32_t) AES_BLOCK_SIZE;
-
-        if (bytesOverAesBlock != 0U)
-        {
-            numOfInvalidBytes = (uint32_t) AES_BLOCK_SIZE - bytesOverAesBlock;
-        }
-    }
-
-    return numOfInvalidBytes;
-}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -91,38 +71,33 @@ static uint32_t lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
 // *****************************************************************************
 
 crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen)
-{ 
+{
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_INITIALIZE_ERROR;
-    
+
     AESCON_MODE mode = MODE_CMAC;
     AESCON_OPERATION operation = OP_ENC;
-    
+
     aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, NULL, 0U);
-    
     if(aesStatus == AES_NO_ERROR)
-    {                      
+    {
         lDRV_CRYPTO_AES_InterruptSetup();
         status = CRYPTO_MAC_CIPHER_SUCCESS;
-    } 
-    else 
-    {        
+    }
+    else
+    {
         status = CRYPTO_MAC_ERROR_CIPFAIL;
     }
-    
+
     return status;
 }
-    
+
 crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(uint8_t *inputData, uint32_t dataLen)
 {
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_GENERAL_ERROR;
-    
-    uint32_t numOfInvalidBytes = lCrypto_Cmac_Hw_Aes_GetNumOfInvalidBytes(dataLen);
-    uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
-    
-    aesStatus = DRV_CRYPTO_AES_WriteInputData(inputData, fullBlockLen, numOfInvalidBytes);
- 
+
+    aesStatus = DRV_CRYPTO_AES_AddData(inputData, dataLen);
     if(aesStatus == AES_NO_ERROR)
     {
         status = CRYPTO_MAC_CIPHER_SUCCESS;
@@ -131,16 +106,17 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(uint8_t *inputData, uint32_t dataL
     return status;
 }
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(uint8_t *outputMac, uint32_t macLen){
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(uint8_t *outputMac, uint32_t macLen)
+{
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_GENERAL_ERROR;
 
-    aesStatus = DRV_CRYPTO_AES_ReadOutputData(outputMac, macLen);
-
+    aesStatus = DRV_CRYPTO_AES_Execute(NULL, outputMac, macLen);
     if(aesStatus == AES_NO_ERROR)
     {
+        DRV_CRYPTO_AES_Complete();
         status = CRYPTO_MAC_CIPHER_SUCCESS;
     }
+
     return status;
 }
-

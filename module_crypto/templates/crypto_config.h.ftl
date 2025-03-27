@@ -63,6 +63,9 @@
 <#if crypto_aead_cipher_h_ftl_flag?? &&(crypto_aead_cipher_h_ftl_flag == true)>
     <#lt>#include "crypto/common_crypto/crypto_aead_cipher.h"
 </#if>
+<#if crypto_asym_cipher_h_ftl_flag?? &&(crypto_asym_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_asym_cipher.h"
+</#if>
 <#if crypto_digsign_h_ftl_flag?? &&(crypto_digsign_h_ftl_flag == true)>
     <#lt>#include "crypto/common_crypto/crypto_digsign.h"
 </#if>

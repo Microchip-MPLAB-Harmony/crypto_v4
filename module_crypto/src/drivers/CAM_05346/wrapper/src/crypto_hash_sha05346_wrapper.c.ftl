@@ -59,9 +59,9 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static void lDRV_CRYPTO_Hash_InterruptSetup(void)
+static void lDRV_CRYPTO_HASH_InterruptSetup(void)
 {
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_Hash_IsrHelper);
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_HASH_IsrHelper);
     Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
@@ -120,12 +120,12 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     if (status == CRYPTO_HASH_SUCCESS)
     {
         shaCtx->algorithm = shaAlgorithm;
-        hashStatus = DRV_CRYPTO_Hash_Initialize(mode);
+        hashStatus = DRV_CRYPTO_HASH_Initialize(mode);
     }
 
     if (hashStatus == HASH_NO_ERROR)
     {
-        lDRV_CRYPTO_Hash_InterruptSetup();
+        lDRV_CRYPTO_HASH_InterruptSetup();
     }
     else
     {
@@ -139,7 +139,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
-    HASH_ERROR hashStatus = DRV_CRYPTO_Hash_Update(data, dataLen);
+    HASH_ERROR hashStatus = DRV_CRYPTO_HASH_Update(data, dataLen);
 
     if (hashStatus == HASH_NO_ERROR)
     {
@@ -180,7 +180,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
             break;
     }
 
-    hashStatus = DRV_CRYPTO_Hash_Final(digest, digestLen);
+    hashStatus = DRV_CRYPTO_HASH_Final(digest, digestLen);
 
     if (hashStatus == HASH_NO_ERROR)
     {

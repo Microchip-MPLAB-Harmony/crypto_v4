@@ -324,6 +324,13 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CPKCL_ECC_DATA *pEccData,
     pfu1 hash, u4 hashLen, pfu1 pubKey, CRYPTO_CPKCL_CURVE eccCurveType)
 {
     CRYPTO_CPKCL_RESULT result;
+
+   /* Initialize CPKCL */
+    result = DRV_CRYPTO_ECC_InitCpkcl();
+    if (result != CRYPTO_CPKCL_RESULT_INIT_SUCCESS) 
+    {
+        return CRYPTO_ECDSA_RESULT_INIT_FAIL;     
+    }
     
     /* Fill curve parameters */
     result = DRV_CRYPTO_ECC_InitCurveParams(pEccData, eccCurveType);

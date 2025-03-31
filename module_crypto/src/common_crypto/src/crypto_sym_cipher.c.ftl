@@ -96,15 +96,15 @@
     ((lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? && lib_wolfcrypt.CRYPTO_WC_AES_ECB)) || (CRYPTO_HW_AES_ECB?? && CRYPTO_HW_AES_ECB))
 )>
     <#-- Trigger if only AES-XTS or AES-ECB is true -->
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 14.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_14_3_DR_1 */
-<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-<#if core.COMPILER_CHOICE == "XC32">
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-</#if>
-</#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 14.3" "H3_MISRAC_2012_R_14_3_DR_1"
+    <#lt>/* MISRA C-2012 deviation block start */
+    <#lt>/* MISRA C-2012 Rule 14.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_14_3_DR_1 */
+    <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+        <#if core.COMPILER_CHOICE == "XC32">
+            <#lt>#pragma GCC diagnostic push
+            <#lt>#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+            <#lt>#pragma coverity compliance block deviate "MISRA C-2012 Rule 14.3" "H3_MISRAC_2012_R_14_3_DR_1"
+        </#if>
+    </#if>
 </#if>
 
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true)) 
@@ -1313,11 +1313,11 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_e
     ((lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? && lib_wolfcrypt.CRYPTO_WC_AES_ECB)) || (CRYPTO_HW_AES_ECB?? && CRYPTO_HW_AES_ECB))
 )>
     <#-- Trigger if only AES-XTS or AES-ECB is true -->
-<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-#pragma coverity compliance end_block "MISRA C-2012 Rule 14.3"
-<#if core.COMPILER_CHOICE == "XC32">
-#pragma GCC diagnostic pop
-</#if>
-</#if>
-/* MISRA C-2012 deviation block end */
+    <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+        <#if core.COMPILER_CHOICE == "XC32">
+            <#lt>#pragma coverity compliance end_block "MISRA C-2012 Rule 14.3"
+            <#lt>#pragma GCC diagnostic pop
+        </#if>
+    </#if>
+    <#lt>/* MISRA C-2012 deviation block end */
 </#if>

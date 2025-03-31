@@ -165,11 +165,11 @@
         <#lt>    HSM_BOOT_METADATA_ADDR must match the address 
         <#lt>    to the HSM metadata in the HSM .hex file. 
         <#lt> */
-        <#lt>#ifndef HSM_METADATA_ADDR_WARNING_DISABLE
         <#lt>#if DEFAULT_HSM_METADATA_ADDR == CUSTOM_HSM_METADATA_ADDR
         <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_METADATA_ADDR)
         <#lt>#else
         <#lt>#define HSM_BOOT_METADATA_ADDR (CUSTOM_HSM_METADATA_ADDR)
+        <#lt>#ifndef HSM_METADATA_ADDR_WARNING_DISABLE
         <#lt>#warning "CUSTOM_HSM_METADATA_ADDR has been used. " \
         <#lt>         "Ensure that the new HSM .hex has been attached to this project." \
         <#lt>         "Disable warning with macro HSM_METADATA_ADDR_WARNING_DISABLE" \

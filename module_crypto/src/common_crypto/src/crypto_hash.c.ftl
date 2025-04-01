@@ -927,8 +927,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
 }
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
 
-<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))
-            || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
             || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
             || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
             || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
@@ -1104,4 +1103,4 @@ uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, cryp
     }
     return hashSize;
 }
-</#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->

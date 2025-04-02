@@ -11,7 +11,7 @@
     Crypto Framework Library wrapper file for CAM hardware AES MAC.
 
   Description:
-    This header file contains the wrapper interface to access the 
+    This header file contains the wrapper interface to access the
     AES MAC algorithms in the AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -48,18 +48,39 @@ Microchip or any third party.
 #ifdef	__cplusplus
 extern "C" {
 #endif
-    
+
 // *****************************************************************************
 // *****************************************************************************
-// Section: MAC Algorithms Common Interface 
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen);
-    
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(uint8_t *inputData, uint32_t dataLen);
+// The minimum size to store a CAM library AES-CMAC context data block.
+#define MINIMUM_CMAC_CONTEXT_DATA_SIZE  (32UL)
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(uint8_t *outputMac, uint32_t macLen);
+typedef struct
+{
+  // This is used to store the CAM library context data.
+  uint8_t contextData[MINIMUM_CMAC_CONTEXT_DATA_SIZE];
+
+} CRYPTO_CMAC_HW_CONTEXT;
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: MAC Algorithms Common Interface
+// *****************************************************************************
+// *****************************************************************************
+
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *contextData, uint8_t *key, uint32_t keyLen);
+
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(void *contextData, uint8_t *inputData, uint32_t dataLen);
+
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(void *contextData, uint8_t *outputMac, uint32_t macLen);
+
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Direct(uint8_t *ptr_inputData, uint32_t dataLen,
+                                              uint8_t *ptr_outMac, uint32_t macLen,
+                                              uint8_t *ptr_key, uint32_t keyLen);
 
 #ifdef	__cplusplus
 }

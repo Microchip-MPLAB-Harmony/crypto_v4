@@ -11,7 +11,7 @@
     Crypto Framework Library wrapper file for hardware SHA.
 
   Description:
-    This header file contains the wrapper interface to access the SHA 
+    This header file contains the wrapper interface to access the SHA
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -67,27 +67,34 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
+// The minimum size to store a CAM library HASH context data block.
+#define MINIMUM_HASH_CONTEXT_DATA_SIZE  (224UL)
+
 typedef struct
 {
   crypto_Hash_Algo_E algorithm;
+
+  // This is used to store the CAM library context data.
+  uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE];
+
 } CRYPTO_HASH_HW_CONTEXT;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Hash Algorithms Common Interface 
+// Section: Hash Algorithms Common Interface
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
-    
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx, 
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     crypto_Hash_Algo_E shaAlgorithm_en);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx, 
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest);
 
 // DOM-IGNORE-BEGIN

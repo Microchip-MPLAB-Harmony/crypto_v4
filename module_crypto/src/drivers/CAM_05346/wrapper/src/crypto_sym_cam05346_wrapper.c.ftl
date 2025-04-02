@@ -47,7 +47,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include <xc.h>
+#include <string.h>
 #include "crypto/drivers/wrapper/crypto_sym_cam05346_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_aes.h"
@@ -137,10 +137,12 @@ static uint32_t lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
+crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx,
+    crypto_CipherOper_E cipherOpType_en,
     crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen,
     uint8_t *initVect)
 {
+    CRYPTO_AES_HW_CONTEXT *aesCtx = (CRYPTO_AES_HW_CONTEXT*) aesInitCtx;
     crypto_Sym_Status_E status = CRYPTO_SYM_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_INITIALIZE_ERROR;
 
@@ -156,7 +158,10 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
 
     if(status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
+        // Context data must be cleared as the context may be on a stack versus static memory.
+        memset(aesCtx->contextData, 0, sizeof(aesCtx->contextData));
+
+        aesStatus = DRV_CRYPTO_AES_Initialize(aesCtx->contextData, mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     }
 
     if(aesStatus == AES_NO_ERROR)
@@ -171,23 +176,29 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en,
     return status;
 }
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData,
-    uint32_t dataLen, uint8_t *outData)
+crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *aesCipherCtx,
+    uint8_t *inputData, uint32_t dataLen, uint8_t *outData)
 {
+    CRYPTO_AES_HW_CONTEXT *aesCtx = (CRYPTO_AES_HW_CONTEXT*) aesCipherCtx;
     crypto_Sym_Status_E status = CRYPTO_SYM_ERROR_CIPFAIL;
-    AES_ERROR aesStatus = AES_GENERAL_ERROR;
+    AES_ERROR aesStatus;
+    AES_ERROR aesActive;
 
-    uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
-    uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
-
-    // AES cipher/decipher only operates upon block-size aligned data.
-    // Since the full input data is being processed as one block, its size
-    // must be aligned to the AES block size.
-    aesStatus = DRV_CRYPTO_AES_Execute(inputData, outData, fullBlockLen);
-    if(aesStatus == AES_NO_ERROR)
+    aesStatus = DRV_CRYPTO_AES_IsActive(aesCtx->contextData, &aesActive);
+    if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
     {
-        DRV_CRYPTO_AES_Complete();
-        status = CRYPTO_SYM_CIPHER_SUCCESS;
+        /* AES cipher/decipher only operates upon block-size aligned data.
+        * Since the full input data is being processed as one block, its size
+        * must be aligned to the AES block size. */
+        uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
+        uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
+
+        aesStatus = DRV_CRYPTO_AES_Execute(aesCtx->contextData, inputData, outData, fullBlockLen);
+        if(aesStatus == AES_NO_ERROR)
+        {
+            DRV_CRYPTO_AES_Complete(aesCtx->contextData);
+            status = CRYPTO_SYM_CIPHER_SUCCESS;
+        }
     }
 
     return status;
@@ -197,12 +208,14 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData,
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-    crypto_Sym_Status_E status = Crypto_Sym_Hw_Aes_Init(CRYPTO_CIOP_ENCRYPT,
+    CRYPTO_AES_HW_CONTEXT aesCtx;
+
+    crypto_Sym_Status_E status = Crypto_Sym_Hw_Aes_Init(&aesCtx, CRYPTO_CIOP_ENCRYPT,
             opMode_en, key, keyLen, initVect);
 
     if (status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        status = Crypto_Sym_Hw_Aes_Cipher(inputData, dataLen, outData);
+        status = Crypto_Sym_Hw_Aes_Cipher(&aesCtx, inputData, dataLen, outData);
     }
 
     return status;
@@ -212,12 +225,14 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData,
     uint8_t *key, uint32_t keyLen, uint8_t *initVect)
 {
-    crypto_Sym_Status_E status = Crypto_Sym_Hw_Aes_Init(CRYPTO_CIOP_DECRYPT,
+    CRYPTO_AES_HW_CONTEXT aesCtx;
+
+    crypto_Sym_Status_E status = Crypto_Sym_Hw_Aes_Init(&aesCtx, CRYPTO_CIOP_DECRYPT,
             opMode_en, key, keyLen, initVect);
 
     if (status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        status = Crypto_Sym_Hw_Aes_Cipher(inputData, dataLen, outData);
+        status = Crypto_Sym_Hw_Aes_Cipher(&aesCtx, inputData, dataLen, outData);
     }
 
     return status;

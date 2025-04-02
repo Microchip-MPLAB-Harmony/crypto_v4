@@ -51,7 +51,6 @@ Microchip or any third party.
 #include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_hash.h"
-#include <xc.h>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -109,9 +108,8 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
         crypto_Hash_Algo_E shaAlgorithm)
 {
-    HASHCON_MODE mode;
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
-
+    HASHCON_MODE mode;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
 
@@ -120,7 +118,8 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     if (status == CRYPTO_HASH_SUCCESS)
     {
         shaCtx->algorithm = shaAlgorithm;
-        hashStatus = DRV_CRYPTO_HASH_Initialize(mode);
+        memset(shaCtx->contextData, 0, sizeof(shaCtx->contextData));
+        hashStatus = DRV_CRYPTO_HASH_Initialize(shaCtx->contextData, mode);
     }
 
     if (hashStatus == HASH_NO_ERROR)
@@ -138,12 +137,20 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
-    HASH_ERROR hashStatus = DRV_CRYPTO_HASH_Update(data, dataLen);
+    HASH_ERROR hashStatus;
+    HASH_ERROR hashActive;
 
-    if (hashStatus == HASH_NO_ERROR)
+    hashStatus = DRV_CRYPTO_HASH_IsActive(shaCtx->contextData, &hashActive);
+    if ((hashStatus == HASH_NO_ERROR) && (hashActive == HASH_OPERATION_IS_ACTIVE))
     {
-        status = CRYPTO_HASH_SUCCESS;
+        hashStatus = DRV_CRYPTO_HASH_Update(shaCtx->contextData, data, dataLen);
+
+        if (hashStatus == HASH_NO_ERROR)
+        {
+            status = CRYPTO_HASH_SUCCESS;
+        }
     }
 
     return status;
@@ -152,39 +159,47 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest)
 {
+    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
-    HASH_ERROR hashStatus = HASH_READ_ERROR;
+    HASH_ERROR hashStatus;
+    HASH_ERROR hashActive;
 
-    const CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;
-    uint32_t digestLen;
-
-    switch(shaCtx->algorithm)
+    hashStatus = DRV_CRYPTO_HASH_IsActive(shaCtx->contextData, &hashActive);
+    if ((hashStatus == HASH_NO_ERROR) && (hashActive == HASH_OPERATION_IS_ACTIVE))
     {
-        case CRYPTO_HASH_SHA1:
-            digestLen = 20;
-            break;
-        case CRYPTO_HASH_SHA2_224:
-            digestLen = 28;
-            break;
-        case CRYPTO_HASH_SHA2_256:
-            digestLen = 32;
-            break;
-        case CRYPTO_HASH_SHA2_384:
-            digestLen = 48;
-            break;
-        case CRYPTO_HASH_SHA2_512:
-            digestLen = 64;
-            break;
-        default:
-            digestLen = 0;
-            break;
-    }
+        uint32_t digestLen;
 
-    hashStatus = DRV_CRYPTO_HASH_Final(digest, digestLen);
+        switch(shaCtx->algorithm)
+        {
+            case CRYPTO_HASH_SHA1:
+                digestLen = 20;
+                break;
+            case CRYPTO_HASH_SHA2_224:
+                digestLen = 28;
+                break;
+            case CRYPTO_HASH_SHA2_256:
+                digestLen = 32;
+                break;
+            case CRYPTO_HASH_SHA2_384:
+                digestLen = 48;
+                break;
+            case CRYPTO_HASH_SHA2_512:
+                digestLen = 64;
+                break;
+            default:
+                digestLen = 0;
+                hashStatus = HASH_READ_ERROR;
+                break;
+        }
 
-    if (hashStatus == HASH_NO_ERROR)
-    {
-        status = CRYPTO_HASH_SUCCESS;
+        if (hashStatus == HASH_NO_ERROR)
+        {
+            hashStatus = DRV_CRYPTO_HASH_Final(shaCtx->contextData, digest, digestLen);
+            if (hashStatus == HASH_NO_ERROR)
+            {
+                status = CRYPTO_HASH_SUCCESS;
+            }
+        }
     }
 
     return status;
@@ -194,7 +209,6 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
 {
     CRYPTO_HASH_HW_CONTEXT shaCtx;
-
     crypto_Hash_Status_E status = Crypto_Hash_Hw_Sha_Init(&shaCtx, shaAlgorithm_en);
 
     if (status == CRYPTO_HASH_SUCCESS)

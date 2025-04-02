@@ -11,7 +11,7 @@
     Crypto Framework Library wrapper file for CAM hardware AES.
 
   Description:
-    This header file contains the wrapper interface to access the symmetric 
+    This header file contains the wrapper interface to access the symmetric
     AES algorithms in the AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -61,23 +61,39 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Symmetric Algorithms Common Interface 
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(crypto_CipherOper_E cipherOpType_en, 
-    crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen, 
+// The minimum size to store a CAM library AES context data block.
+#define MINIMUM_AES_CONTEXT_DATA_SIZE  (48UL)
+
+typedef struct
+{
+  // This is used to store the CAM library context data.
+  uint8_t contextData[MINIMUM_AES_CONTEXT_DATA_SIZE];
+
+} CRYPTO_AES_HW_CONTEXT;
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Symmetric Algorithms Common Interface
+// *****************************************************************************
+// *****************************************************************************
+
+crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx, crypto_CipherOper_E cipherOpType_en,
+    crypto_Sym_OpModes_E opMode_en, uint8_t *key, uint32_t keyLen,
     uint8_t *initVect);
-    
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData, 
+
+crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *aesCipherCtx, uint8_t *inputData,
     uint32_t dataLen, uint8_t *outData);
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_en, 
-    uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
+crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_en,
+    uint8_t *inputData, uint32_t dataLen, uint8_t *outData,
     uint8_t *key, uint32_t keyLen, uint8_t *initVect);
 
-crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_en, 
-    uint8_t *inputData, uint32_t dataLen, uint8_t *outData, 
+crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_en,
+    uint8_t *inputData, uint32_t dataLen, uint8_t *outData,
     uint8_t *key, uint32_t keyLen, uint8_t *initVect);
 
 // DOM-IGNORE-BEGIN

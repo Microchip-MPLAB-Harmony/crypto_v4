@@ -47,7 +47,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include <xc.h>
+#include <string.h>
 #include "crypto/drivers/wrapper/crypto_mac_cam05346_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_aes.h"
@@ -70,15 +70,19 @@ static void lDRV_CRYPTO_AES_InterruptSetup(void)
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen)
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *cmacInitCtx, uint8_t *key, uint32_t keyLen)
 {
+    CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacInitCtx;
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
     AES_ERROR aesStatus = AES_INITIALIZE_ERROR;
 
     AESCON_MODE mode = MODE_CMAC;
     AESCON_OPERATION operation = OP_ENC;
 
-    aesStatus = DRV_CRYPTO_AES_Initialize(mode, operation, key, keyLen, NULL, 0U);
+    // Context data must be cleared as the context may be on a stack versus static memory.
+    memset(cmacCtx->contextData, 0, sizeof(cmacCtx->contextData));
+
+    aesStatus = DRV_CRYPTO_AES_Initialize(cmacCtx->contextData, mode, operation, key, keyLen, NULL, 0U);
     if(aesStatus == AES_NO_ERROR)
     {
         lDRV_CRYPTO_AES_InterruptSetup();
@@ -92,30 +96,63 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(uint8_t *key, uint32_t keyLen)
     return status;
 }
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(uint8_t *inputData, uint32_t dataLen)
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(void *cmacCipherCtx, uint8_t *inputData, uint32_t dataLen)
 {
+    CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacCipherCtx;
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
-    AES_ERROR aesStatus = AES_GENERAL_ERROR;
+    AES_ERROR aesStatus;
+    AES_ERROR aesActive;
 
-    aesStatus = DRV_CRYPTO_AES_AddData(inputData, dataLen);
-    if(aesStatus == AES_NO_ERROR)
+    aesStatus = DRV_CRYPTO_AES_IsActive(cmacCtx->contextData, &aesActive);
+    if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
     {
-        status = CRYPTO_MAC_CIPHER_SUCCESS;
+        aesStatus = DRV_CRYPTO_AES_AddData(cmacCtx->contextData, inputData, dataLen);
+        if(aesStatus == AES_NO_ERROR)
+        {
+            status = CRYPTO_MAC_CIPHER_SUCCESS;
+        }
     }
 
     return status;
 }
 
-crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(uint8_t *outputMac, uint32_t macLen)
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(void *cmacFinalCtx, uint8_t *outputMac, uint32_t macLen)
 {
+    CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacFinalCtx;
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
-    AES_ERROR aesStatus = AES_GENERAL_ERROR;
+    AES_ERROR aesStatus;
+    AES_ERROR aesActive;
 
-    aesStatus = DRV_CRYPTO_AES_Execute(NULL, outputMac, macLen);
-    if(aesStatus == AES_NO_ERROR)
+    aesStatus = DRV_CRYPTO_AES_IsActive(cmacCtx->contextData, &aesActive);
+    if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
     {
-        DRV_CRYPTO_AES_Complete();
-        status = CRYPTO_MAC_CIPHER_SUCCESS;
+        aesStatus = DRV_CRYPTO_AES_Execute(cmacCtx->contextData, NULL, outputMac, macLen);
+        if(aesStatus == AES_NO_ERROR)
+        {
+            DRV_CRYPTO_AES_Complete(cmacCtx->contextData);
+            status = CRYPTO_MAC_CIPHER_SUCCESS;
+        }
+    }
+
+    return status;
+}
+
+crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Direct(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint32_t macLen,
+                                              uint8_t *ptr_key, uint32_t keyLen)
+{
+    CRYPTO_CMAC_HW_CONTEXT cmacCtx;
+    crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
+
+    status = Crypto_Sym_Hw_Cmac_Init(&cmacCtx, ptr_key, keyLen);
+
+    if(status == CRYPTO_MAC_CIPHER_SUCCESS)
+    {
+        status = Crypto_Sym_Hw_Cmac_Cipher(&cmacCtx, ptr_inputData, dataLen);
+    }
+
+    if(status == CRYPTO_MAC_CIPHER_SUCCESS)
+    {
+        status = Crypto_Sym_Hw_Cmac_Final(&cmacCtx, ptr_outMac, macLen);
     }
 
     return status;

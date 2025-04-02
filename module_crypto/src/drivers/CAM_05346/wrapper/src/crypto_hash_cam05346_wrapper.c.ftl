@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_sha05346_wrapper.c
+    crypto_hash_cam05346_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware SHA.
@@ -48,7 +48,7 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/drivers/wrapper/crypto_hash_sha05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hash_cam05346_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_hash.h"
 

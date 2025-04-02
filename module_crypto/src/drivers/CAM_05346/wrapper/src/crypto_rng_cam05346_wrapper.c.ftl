@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_rng_trng05346_wrapper.h
+    crypto_rng_cam05346_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to access the TRNG 
+    This source file contains the wrapper interface to access the TRNG
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -40,9 +40,6 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_RNG_TRNG05346_WRAPPER_H
-#define CRYPTO_RNG_TRNG05346_WRAPPER_H
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -50,31 +47,39 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/crypto_rng.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
-#endif
-// DOM-IGNORE-END
+#include <xc.h>
+#include "crypto/drivers/wrapper/crypto_rng_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/library/cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: TRNG Common Interface 
+// Section: File Scope Functions
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
+static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
+{
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO2_INT, DRV_CRYPTO_TRNG_IsrHelper);
+    Crypto_Int_Hw_Enable(CRYPTO2_INT);
+}
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
+// *****************************************************************************
+// *****************************************************************************
+// Section: TRNG Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
 
-    }
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
+{
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
 
-#endif
-// DOM-IGNORE-END
+    (void) DRV_CRYPTO_TRNG_Setup();
+    lDRV_CRYPTO_TRNG_InterruptSetup();
+    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
 
-#endif /* CRYPTO_RNG_TRNG05346_WRAPPER_H */
+    return CRYPTO_RNG_SUCCESS;
+<#else>
+    return CRYPTO_RNG_ERROR_NOTSUPPTED;
+</#if>
+}

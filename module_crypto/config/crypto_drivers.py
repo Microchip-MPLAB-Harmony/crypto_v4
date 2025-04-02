@@ -2,23 +2,23 @@
 #/*****************************************************************************
 # Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
 #
-# Subject to your compliance with these terms, you may use Microchip software 
-# and any derivatives exclusively with Microchip products. It is your 
-# responsibility to comply with third party license terms applicable to your 
-# use of third party software (including open source software) that may 
+# Subject to your compliance with these terms, you may use Microchip software
+# and any derivatives exclusively with Microchip products. It is your
+# responsibility to comply with third party license terms applicable to your
+# use of third party software (including open source software) that may
 # accompany Microchip software.
-# 
-# THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
-# EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
-# WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR 
+#
+# THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
+# EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
+# WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR
 # PURPOSE.
-# 
-# IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
-# INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
-# WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
-# BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE 
-# FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN 
-# ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY, 
+#
+# IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+# INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
+# WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
+# BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
+# FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
+# ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 # THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 # *****************************************************************************/
 
@@ -49,7 +49,7 @@ Crypto_HW_AllDriversList = [
         ["CAM", "05346", "", "CAM_05346", "HAVE_CRYPTO_HW_CAM_05346_DRIVER", "Crypto_Hw_CAM_05346_DriverSymbol", "CAM_05346 Driver Supported"],    #CAM_05346
 ]
 
-#---------------------------------------------------------------------------------------        
+#---------------------------------------------------------------------------------------
 Crypto_HW_CommonCryptoFilesDict = {
     "HashAlgo": [
         "crypto_hash.h.ftl",
@@ -100,9 +100,9 @@ Crypto_HW_DriverAndWrapperFilesDict = {
     "CAM_05346": {
         "HashAlgo": {
             "WrapperFiles": [
-                "crypto_hash_sha05346_wrapper.h.ftl", 
-                "crypto_hash_sha05346_wrapper.c.ftl",
-                
+                "crypto_hash_cam05346_wrapper.h.ftl",
+                "crypto_hash_cam05346_wrapper.c.ftl",
+
             ],
             "DriverFiles": [
                 "drv_crypto_sha_hw_05346.h",
@@ -121,11 +121,11 @@ Crypto_HW_DriverAndWrapperFilesDict = {
         },
         "RngAlgo": {
             "WrapperFiles": [
-                "crypto_rng_trng03597_wrapper.h.ftl", 
+                "crypto_rng_trng03597_wrapper.h.ftl",
                 "crypto_rng_trng03597_wrapper.c.ftl"
             ],
             "DriverFiles": [
-                "drv_crypto_trng_hw_03597.h", 
+                "drv_crypto_trng_hw_03597.h",
                 "drv_crypto_trng_hw_03597.c"
             ],
         },
@@ -137,15 +137,15 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"
             ],
             "DriverFiles": [
-                "hsm_hash.h", "hsm_hash.c", 
-                "hsm_common.h", 
-                "hsm_cmd.h", "hsm_cmd.c", 
+                "hsm_hash.h", "hsm_hash.c",
+                "hsm_common.h",
+                "hsm_cmd.h", "hsm_cmd.c",
                 "hsm_boot.h.ftl", "hsm_boot.c"
             ],
         },
         "SymAlgo": {
             "WrapperFiles": [
-                "crypto_sym_hsm03785_wrapper.h.ftl", "crypto_sym_hsm03785_wrapper.c.ftl", 
+                "crypto_sym_hsm03785_wrapper.h.ftl", "crypto_sym_hsm03785_wrapper.c.ftl",
                 "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
             ],
             "DriverFiles": [
@@ -157,39 +157,39 @@ Crypto_HW_DriverAndWrapperFilesDict = {
         },
         "AeadAlgo": {
             "WrapperFiles": [
-                "crypto_aead_hsm03785_wrapper.h.ftl", "crypto_aead_hsm03785_wrapper.c.ftl", 
+                "crypto_aead_hsm03785_wrapper.h.ftl", "crypto_aead_hsm03785_wrapper.c.ftl",
                 "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
             ],
             "DriverFiles": [
                 "hsm_aead.h", "hsm_aead.c",
-                "hsm_common.h", 
+                "hsm_common.h",
                 "hsm_cmd.h", "hsm_cmd.c",
                 "hsm_boot.h.ftl", "hsm_boot.c"
             ],
         },
         "DigisignAlgo": {
             "WrapperFiles": [
-                "crypto_digisign_hsm03785_wrapper.h.ftl", "crypto_digisign_hsm03785_wrapper.c.ftl", 
-                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl", 
+                "crypto_digisign_hsm03785_wrapper.h.ftl", "crypto_digisign_hsm03785_wrapper.c.ftl",
+                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl",
                 "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"
             ],
             "DriverFiles": [
                 "hsm_sign.h", "hsm_sign.c",
                 "hsm_common.h", "hsm_common.c",
-                "hsm_cmd.h", "hsm_cmd.c", 
+                "hsm_cmd.h", "hsm_cmd.c",
                 "hsm_boot.h.ftl", "hsm_boot.c",
                 "hsm_hash.h", "hsm_hash.c"
             ],
         },
         "KasAlgo": {
             "WrapperFiles": [
-                "crypto_kas_hsm03785_wrapper.h.ftl", "crypto_kas_hsm03785_wrapper.c.ftl", 
+                "crypto_kas_hsm03785_wrapper.h.ftl", "crypto_kas_hsm03785_wrapper.c.ftl",
                 "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
             ],
             "DriverFiles": [
                 "hsm_kas.h", "hsm_kas.c",
                 "hsm_common.h", "hsm_common.c",
-                "hsm_cmd.h", "hsm_cmd.c", 
+                "hsm_cmd.h", "hsm_cmd.c",
                 "hsm_boot.h.ftl", "hsm_boot.c",
                 "hsm_hash.h", "hsm_hash.c"
             ],
@@ -221,7 +221,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "crypto_digisign_cpkcc44163_wrapper.h.ftl", "crypto_digisign_cpkcc44163_wrapper.c.ftl"
             ],
             "DriverFiles": [
-                "drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl", 
+                "drv_crypto_ecdsa_hw_cpkcl.h", "drv_crypto_ecdsa_hw_cpkcl.c.ftl",
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
             "LibraryFiles": ["cpkcl_lib"]
@@ -231,7 +231,7 @@ Crypto_HW_DriverAndWrapperFilesDict = {
                 "crypto_kas_cpkcc44163_wrapper.h.ftl", "crypto_kas_cpkcc44163_wrapper.c.ftl"
             ],
             "DriverFiles": [
-                "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl", 
+                "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl",
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
             "LibraryFiles": ["cpkcl_lib"]
@@ -271,10 +271,10 @@ Crypto_HW_DriverAndWrapperFilesDict = {
         },
     },
 }
-   
+
 #---------------------------------------------------------------------------------------
 def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
-    
+
     # Harmony installed DSP:    %USERPROFILE%\.mcc\HarmonyContent\dev_packs\Microchip
     # MPLABX installed DSP:     %USERPROFILE%\.mchp_packs\Microchip
 
@@ -287,18 +287,18 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
 
     for module in atdf_Modules:
         for driver in Crypto_HW_AllDriversList:
-            
+
             name = module.getAttribute("name")
             id = module.getAttribute("id")
             version = module.getAttribute("version")
 
-            if ((name == driver[0]) 
-                and (id == driver[1]) 
+            if ((name == driver[0])
+                and (id == driver[1])
                 and ((version == driver[2]) or driver[2] == "")):
-                
+
                 print("%s | %s | %s" % (name, id, version))
                 Crypto_HW_AllSupportedDriver.append(driver)
-                
+
                 # Add the driver's label to the supported drivers set
                 supported_drivers.add(driver[3])
 
@@ -306,10 +306,10 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
 
     return supported_drivers
 
-#--------------------------------------------------------------------------------------- 
+#---------------------------------------------------------------------------------------
 def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     ''' Pulls size of flash from ATDF to determine HSM firmware location
-    
+
     Args:
         CommonCryptoComponent:  Harmony component
         supported_drivers:      set() of drivers supported by this board
@@ -322,7 +322,7 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     # Return early if HSM is not used
     if "HSM_03785" not in supported_drivers:
         return
-    
+
     # Check if TrustZone is enabled
     sec_enabled_node = ATDF.getNode('/avr-tools-device-file/devices/device/parameters/param@[name="__SEC_ENABLED"]')
     trustzone_enabled = False
@@ -330,14 +330,14 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     if sec_enabled_node is not None:
         trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
 
-    # Maintain set of ways to refer to flash size in .atdf 
+    # Maintain set of ways to refer to flash size in .atdf
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 
     HSM_BOOT_FIRMWARE_INIT_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_INIT_ADDR", None)
     HSM_BOOT_FIRMWARE_INIT_ADDR.setVisible(False)
     HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_ADDR", None)
     HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
-    
+
     for pfm in pfm_names:
         flash_pfm_node = ATDF.getNode(
             '/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name="{}"]'.format(pfm)
@@ -349,22 +349,22 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
             print("Node found           | %s" % (pfm))
             flash_start = int(flash_pfm_node.getAttribute("start"), 16)
             flash_end = int(flash_pfm_node.getAttribute("size"), 16)
-            
+
             # HSM placed from midpoint of flash address space if TZ
             if trustzone_enabled:
                 flash_end = flash_end // 2
-            
+
             flash_size = flash_start + flash_end
-            
+
             # Save to string obj
             HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(flash_size - 0x20800))  # 130kB
             HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(flash_size - 0x20000))       # 128kB
-    
+
     if not found_node:
         HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue("/* Unable to automatically fill address */")
         HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("/* Unable to automatically fill address */")
-        
-#--------------------------------------------------------------------------------------- 
+
+#---------------------------------------------------------------------------------------
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
 
     #String Implementation of defines for crypto_config.h.ftl
@@ -377,25 +377,25 @@ def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
         globals()[hwDriver[5]].setDescription(hwDriver[6])
         globals()[hwDriver[5]].setVisible(False)
         #globals()[driver[5]].setHelp('MC_CRYPTO_API_H')
-    
+
     #String Implementation of defines for crypto_config.h.ftl
     #--created from each of the additional define strings
     # Accumulate all hwDriver[4] items into a string to set as default
     driver_define_strings = [hwDriver[4] for hwDriver in Crypto_HW_AllSupportedDriver]
     driver_defines.setDefaultValue(", ".join(driver_define_strings))
-        
-#---------------------------------------------------------------------------------------    
+
+#---------------------------------------------------------------------------------------
 
 def dir_item_to_files(path):
     all_files = []
 
-    if os.path.exists(path): 
+    if os.path.exists(path):
         for root, dirs, files in os.walk(path):
             all_files.extend(files)
-    else: 
+    else:
         print("%s damaged. Check that this path exists." % path)
         return []
-    
+
     return all_files
 
 # Function to check if an entry is a directory (no extension)
@@ -419,7 +419,7 @@ def expand_dir_entries_in_driver_requests():
                             if item in dirs:
                                 dir_path = os.path.join(root, item)
                                 files_in_dir = dir_item_to_files(dir_path)
-                                
+
                                 files[i:i+1] = files_in_dir
 
     # Show the updated dict structure

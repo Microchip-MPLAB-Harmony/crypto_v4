@@ -70,7 +70,7 @@ extern "C" {
         DRV_CRYPT_HSMLITE_SHA_2_224,
         DRV_CRYPT_HSMLITE_SHA_2_256,
         DRV_CRYPT_HSMLITE_SHA_2_384,
-        DRV_CRYPT_HSMLITE_SHA_2_512,
+        DRV_CRYPT_HSMLITE_SHA_2_512
     };
 
     enum // Status

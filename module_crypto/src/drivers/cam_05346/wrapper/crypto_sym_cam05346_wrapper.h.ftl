@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_SYM_HWWRAPPER_H
-#define MCHP_CRYPTO_SYM_HWWRAPPER_H
+#ifndef CRYPTO_SYM_CAM05346_WRAPPER_H
+#define CRYPTO_SYM_CAM05346_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -104,4 +104,4 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_SYM_HWWRAPPER_H */
+#endif /* CRYPTO_SYM_CAM05346_WRAPPER_H */

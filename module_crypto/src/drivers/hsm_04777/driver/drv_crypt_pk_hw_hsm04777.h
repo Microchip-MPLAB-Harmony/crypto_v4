@@ -66,7 +66,12 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 
-#define DRV_CRYPTO_HSMLITE_PK_USRMEM_MIN_SIZE 16384
+    enum {
+        DRV_CRYPT_HSMLITE_PK_OP_256_MIN_SIZE = 2176 + 112,  //for p192, p224 and p256
+       DRV_CRYPT_HSMLITE_PK_OP_521_MIN_SIZE = 4096 + 112,  //for p384, p521 - Recommended if only using ECC
+        DRV_CRYPT_HSMLITE_PK_OP_2048_MIN_SIZE = 8192 + 112, //for RSA 2048
+        DRV_CRYPT_HSMLITE_PK_OP_4096_MIN_SIZE = 16384 + 112 //for RSA 4096 - Recommended if using RSA
+    };
 
     enum {
          DRV_CRYPT_HSMLITE_ECC_CURVE_P192,
@@ -96,7 +101,7 @@ extern "C" {
     } DRV_CRYPT_HSMLITE_PK_REQ;
     
     
-    typedef void * DRV_CRYPT_HSMLITE_PK_CNX;    
+    typedef uint32_t * DRV_CRYPT_HSMLITE_PK_CNX;    
 
 // *****************************************************************************
 // *****************************************************************************
@@ -118,11 +123,29 @@ extern "C" {
     void DRV_CRYPT_HSMLITE_PK_GetCurve_X448(DRV_CRYPT_HSMLITE_PK_CNX context, DRV_CRYPT_HSMLITE_ECC_CURVE * curve); // each one gets a function, that way those curves not used aren't compiled in.
     void DRV_CRYPT_HSMLITE_PK_GetCurve_P256K1(DRV_CRYPT_HSMLITE_PK_CNX context, DRV_CRYPT_HSMLITE_ECC_CURVE * curve); // each one gets a function, that way those curves not used aren't compiled in.
 
-    int32_t DRV_CRYPT_HSM_PK_ECDSA_SigVerStart(DRV_CRYPT_HSMLITE_ECC_CURVE curve, int8_t * pubX, size_t pubXSz, int8_t * pubY, size_t pubYSz, int8_t * R, size_t RSz, int8_t * S, size_t SSz, int8_t * hash, size_t hashSz, DRV_CRYPT_HSMLITE_PK_REQ * req);
-    int32_t DRV_CRYPT_HSM_PK_ECDSA_SigVerEnd(DRV_CRYPT_HSMLITE_PK_REQ * request);
-    int32_t DRV_CRYPT_HSM_PK_ECDSA_SigGenStart(DRV_CRYPT_HSMLITE_ECC_CURVE curve, int8_t * privKey, size_t privKeySz, int8_t * K, size_t KSz, int8_t * hash, size_t hashSz, DRV_CRYPT_HSMLITE_PK_REQ * req);
-    void DRV_CRYPT_HSM_PK_ECDSA_SigGenEnd(DRV_CRYPT_HSMLITE_PK_REQ * request, int8_t * R, size_t RSz, int8_t * S, size_t SSz);
-    int32_t DRV_CRYPT_HSM_PK_Status(DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_ECDSA_SigVerStart(DRV_CRYPT_HSMLITE_ECC_CURVE curve, int8_t * pubX, size_t pubXSz, int8_t * pubY, size_t pubYSz, int8_t * R, size_t RSz, int8_t * S, size_t SSz, int8_t * hash, size_t hashSz, DRV_CRYPT_HSMLITE_PK_REQ * req);
+    int32_t DRV_CRYPT_HSMLITE_PK_ECDSA_SigVerEnd(DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_ECDSA_SigGenStart(DRV_CRYPT_HSMLITE_ECC_CURVE curve, int8_t * privKey, size_t privKeySz, int8_t * K, size_t KSz, int8_t * hash, size_t hashSz, DRV_CRYPT_HSMLITE_PK_REQ * req);
+    void DRV_CRYPT_HSMLITE_PK_ECDSA_SigGenEnd(DRV_CRYPT_HSMLITE_PK_REQ * request, int8_t * R, size_t RSz, int8_t * S, size_t SSz);
+    int32_t DRV_CRYPT_HSMLITE_PK_Status(DRV_CRYPT_HSMLITE_PK_REQ * request);
+
+    //int32_t DRV_CRYPT_HSM_PK_ECC_PointMultiply(DRV_CRYPT_HSMLITE_ECC_CURVE * curve, int8_t * pubX, int8_t * pubY, size_t pubSz, int8_t *privkey, size_t privKeySz, int8_t * output, size_t outputSz);
+    int32_t DRV_CRYPT_HSMLITE_PK_ModularExponentStart(DRV_CRYPT_HSMLITE_PK_CNX context, uint8_t * input, size_t inputSz, uint8_t * exp, size_t expSz, uint8_t * m, size_t mSz, DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_ModularExponentEnd(DRV_CRYPT_HSMLITE_PK_REQ * request, uint8_t * output, size_t outputSz);
+    
+    int32_t DRV_CRYPT_HSMLITE_PK_RSASignGenerateStartPrePadded(DRV_CRYPT_HSMLITE_PK_CNX context, uint8_t * prePaddedHash, size_t hashSz, uint8_t * d, size_t dSz, uint8_t * n, size_t nSz, DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_RSASignGenerateEndPrePadded(DRV_CRYPT_HSMLITE_PK_REQ * request, uint8_t * signature, size_t signatureSz);
+    
+    int32_t DRV_CRYPT_HSMLITE_PK_RSASignVerifyStartPrePadded(DRV_CRYPT_HSMLITE_PK_CNX context, uint8_t * signature, size_t signatureSz, uint8_t * e, size_t eSz, uint8_t * n, size_t nSz, DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_RSASignVerifyEndPrePadded(DRV_CRYPT_HSMLITE_PK_REQ * request, uint8_t * prePaddedHash, size_t hashSz);
+    
+    int32_t DRV_CRYPT_HSMLITE_PK_RSAEncryptStartPrePadded(DRV_CRYPT_HSMLITE_PK_CNX context, uint8_t * prePaddedMessage, size_t msgSz, uint8_t * e, size_t eSz, uint8_t * n, size_t nSz, DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_RSAEncryptEndPrePadded(DRV_CRYPT_HSMLITE_PK_REQ * request, uint8_t * cipherText, size_t cipherTextSz);
+
+    int32_t DRV_CRYPT_HSMLITE_PK_RSADecryptStartPrePadded(DRV_CRYPT_HSMLITE_PK_CNX context, uint8_t * cipherText, size_t cipherTextSz, uint8_t * d, size_t dSz, uint8_t * n, size_t nSz, DRV_CRYPT_HSMLITE_PK_REQ * request);
+    int32_t DRV_CRYPT_HSMLITE_PK_RSADecryptEndPrePadded(DRV_CRYPT_HSMLITE_PK_REQ * request, uint8_t * messageText, size_t messageSz);
+    
+    
     
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

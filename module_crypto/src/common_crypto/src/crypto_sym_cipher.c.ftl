@@ -79,6 +79,37 @@
 // *****************************************************************************
 // *****************************************************************************
 
+<#if !( 
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? && lib_wolfcrypt.CRYPTO_WC_AES_CBC)) ||
+    (CRYPTO_HW_AES_CBC?? && CRYPTO_HW_AES_CBC) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? && lib_wolfcrypt.CRYPTO_WC_AES_CTR)) ||
+    (CRYPTO_HW_AES_CTR?? && CRYPTO_HW_AES_CTR) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_OFB?? && lib_wolfcrypt.CRYPTO_WC_AES_OFB)) ||
+    (CRYPTO_HW_AES_OFB?? && CRYPTO_HW_AES_OFB) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CFB1?? && lib_wolfcrypt.CRYPTO_WC_AES_CFB1)) ||
+    (lib_wolfcrypt.CRYPTO_WC_AES_CFB8?? && lib_wolfcrypt.CRYPTO_WC_AES_CFB8) ||
+    (CRYPTO_HW_AES_CFB8?? && CRYPTO_HW_AES_CFB8) ||
+    (CRYPTO_HW_AES_CFB16?? && CRYPTO_HW_AES_CFB16) ||
+    (CRYPTO_HW_AES_CFB32?? && CRYPTO_HW_AES_CFB32) ||
+    (CRYPTO_HW_AES_CFB64?? && CRYPTO_HW_AES_CFB64) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? && lib_wolfcrypt.CRYPTO_WC_AES_CFB128)) ||
+    (CRYPTO_HW_AES_CFB128?? && CRYPTO_HW_AES_CFB128)
+) && (
+    ((lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? && lib_wolfcrypt.CRYPTO_WC_AES_XTS)) || (CRYPTO_HW_AES_XTS?? && CRYPTO_HW_AES_XTS)) ||
+    ((lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? && lib_wolfcrypt.CRYPTO_WC_AES_ECB)) || (CRYPTO_HW_AES_ECB?? && CRYPTO_HW_AES_ECB))
+)>
+    <#-- Trigger if only AES-XTS or AES-ECB is true -->
+    <#lt>/* MISRA C-2012 deviation block start */
+    <#lt>/* MISRA C-2012 Rule 14.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_14_3_DR_1 */
+    <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+        <#if core.COMPILER_CHOICE == "XC32">
+            <#lt>#pragma GCC diagnostic push
+            <#lt>#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+            <#lt>#pragma coverity compliance block deviate "MISRA C-2012 Rule 14.3" "H3_MISRAC_2012_R_14_3_DR_1"
+        </#if>
+    </#if>
+</#if>
+
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_CBC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CBC == true)))) || (CRYPTO_HW_AES_CBC?? &&(CRYPTO_HW_AES_CBC == true))
     || (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)))) || (CRYPTO_HW_AES_CTR?? &&(CRYPTO_HW_AES_CTR == true))
@@ -123,8 +154,8 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     {
         ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
     }
-</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->       
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -375,8 +406,8 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
     {
         ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
     }
-</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
-    else if( (sessionID <= 0u ) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->  
+    else if( (sessionID == 0u ) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -459,8 +490,8 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     {
         ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
     }
-</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS --> 
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -535,7 +566,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_Init(st_Crypto_Sym_BlockCtx *ptr_camCtx_
     {
         ret_camStatus_en = CRYPTO_SYM_ERROR_OPMODE;
     }
-    else if((sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if((sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_camStatus_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -646,7 +677,7 @@ crypto_Sym_Status_E Crypto_Sym_Camellia_EncryptDirect(crypto_HandlerType_E handl
     {
        ret_camStatus_en =  CRYPTO_SYM_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_camStatus_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -757,7 +788,7 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_Init(st_Crypto_Sym_BlockCtx *ptr_tdesCtx_st,
     {
         ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_tdesStat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -869,7 +900,7 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_EncryptDirect(crypto_HandlerType_E handlerTy
     {
         ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_tdesStat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -922,7 +953,7 @@ crypto_Sym_Status_E Crypto_Sym_Tdes_DecryptDirect(crypto_HandlerType_E handlerTy
     {
         ret_tdesStat_en = CRYPTO_SYM_ERROR_OPMODE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_tdesStat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -978,7 +1009,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrap_Init(st_Crypto_Sym_BlockCtx *ptr_aesCt
     {
        ret_aesKwStat_en =  CRYPTO_SYM_ERROR_CIPOPER;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesKwStat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -1075,7 +1106,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyWrapDirect(crypto_HandlerType_E handlerType
     {
        ret_aesKwStat_en =  CRYPTO_SYM_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesKwStat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -1116,7 +1147,7 @@ crypto_Sym_Status_E Crypto_Sym_AesKeyUnWrapDirect(crypto_HandlerType_E handlerTy
     {
        ret_aesKwStat_en =  CRYPTO_SYM_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesKwStat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -1155,7 +1186,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20_Init(st_Crypto_Sym_StreamCtx *ptr_chaCha
     {
        ret_chaCha20Stat_en =  CRYPTO_SYM_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_chaCha20Stat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -1242,7 +1273,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_e
     {
         ret_chaCha20Stat_en = CRYPTO_SYM_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_chaCha20Stat_en =  CRYPTO_SYM_ERROR_SID;
     }
@@ -1270,3 +1301,32 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_e
     return ret_chaCha20Stat_en;
 }
 </#if><#-- CRYPTO_WC_CHACHA20  -->
+
+<#if !( 
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? && lib_wolfcrypt.CRYPTO_WC_AES_CBC)) ||
+    (CRYPTO_HW_AES_CBC?? && CRYPTO_HW_AES_CBC) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? && lib_wolfcrypt.CRYPTO_WC_AES_CTR)) ||
+    (CRYPTO_HW_AES_CTR?? && CRYPTO_HW_AES_CTR) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_OFB?? && lib_wolfcrypt.CRYPTO_WC_AES_OFB)) ||
+    (CRYPTO_HW_AES_OFB?? && CRYPTO_HW_AES_OFB) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CFB1?? && lib_wolfcrypt.CRYPTO_WC_AES_CFB1)) ||
+    (lib_wolfcrypt.CRYPTO_WC_AES_CFB8?? && lib_wolfcrypt.CRYPTO_WC_AES_CFB8) ||
+    (CRYPTO_HW_AES_CFB8?? && CRYPTO_HW_AES_CFB8) ||
+    (CRYPTO_HW_AES_CFB16?? && CRYPTO_HW_AES_CFB16) ||
+    (CRYPTO_HW_AES_CFB32?? && CRYPTO_HW_AES_CFB32) ||
+    (CRYPTO_HW_AES_CFB64?? && CRYPTO_HW_AES_CFB64) ||
+    (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? && lib_wolfcrypt.CRYPTO_WC_AES_CFB128)) ||
+    (CRYPTO_HW_AES_CFB128?? && CRYPTO_HW_AES_CFB128)
+) && (
+    ((lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_XTS?? && lib_wolfcrypt.CRYPTO_WC_AES_XTS)) || (CRYPTO_HW_AES_XTS?? && CRYPTO_HW_AES_XTS)) ||
+    ((lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_ECB?? && lib_wolfcrypt.CRYPTO_WC_AES_ECB)) || (CRYPTO_HW_AES_ECB?? && CRYPTO_HW_AES_ECB))
+)>
+    <#-- Trigger if only AES-XTS or AES-ECB is true -->
+    <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+        <#if core.COMPILER_CHOICE == "XC32">
+            <#lt>#pragma coverity compliance end_block "MISRA C-2012 Rule 14.3"
+            <#lt>#pragma GCC diagnostic pop
+        </#if>
+    </#if>
+    <#lt>/* MISRA C-2012 deviation block end */
+</#if>

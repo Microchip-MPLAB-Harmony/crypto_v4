@@ -169,8 +169,11 @@ extern "C" {
 <#lt>#define HAVE_ANON
 <#lt>#define WOLFSSL_OLD_PRIME_CHECK
 <#lt>#define NO_DSA
-<#lt>#define FP_MAX_BITS 4096
+<#lt>#define FP_MAX_BITS 8192
+<#lt>#define USE_CERT_BUFFERS_1024   
 <#lt>#define USE_CERT_BUFFERS_2048
+<#lt>#define USE_CERT_BUFFERS_3072
+<#lt>#define USE_CERT_BUFFERS_4096
 <#lt>//#define WOLFSSL_RSA_PUBLIC_ONLY  //JK //Conflict with WOLFSSL_HAVE_SP_DH
 <#lt>//#define WC_RSA_PSS               //JK
 <#lt>//#define WOLFSSL_STATIC_RSA       //JK
@@ -201,11 +204,16 @@ extern "C" {
 <#lt>//#define WC_NO_RNG //when using RNG
 <#lt>//#define WC_NO_HASHDRBG
 <#lt>//#define HAVE_ECC_ENCRYPT
-<#lt>#define NO_RSA                 //JK
+<#lt>//#define NO_RSA                 //JK
 <#lt>#define NO_DH                  //JK
 <#lt>//#define NO_SIG_WRAPPER
 <#lt>//**********************************************************
-
+<#lt>#define HAVE_POLY1305
+<#lt>#define WC_ASYNC_ENABLE_RSA
+<#lt>#define WC_RSA_PSS 
+<#lt>#define WOLFSSL_HAVE_SP_RSA 
+<#lt>#define WC_RSA_NO_PADDING
+#define WOLFSSL_SP_4096
 <#lt>// ---------- WOLFCRYPT CONFIGURATION END ----------
 
 //DOM-IGNORE-BEGIN

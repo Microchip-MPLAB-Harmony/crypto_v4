@@ -86,7 +86,7 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
     {
         ret_ecdhStat_en = CRYPTO_KAS_ERROR_PUBKEY;
     }
-    else if( (ptr_privKey == NULL) || (privKeyLen <= 0u) || (privKeyLen > (uint32_t)CRYPTO_ECC_MAX_KEY_LENGTH) )
+    else if( (ptr_privKey == NULL) || (privKeyLen == 0u) || (privKeyLen > (uint32_t)CRYPTO_ECC_MAX_KEY_LENGTH) )
     {
          ret_ecdhStat_en = CRYPTO_KAS_ERROR_PRIVKEY;
     }
@@ -94,7 +94,7 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
     {
          ret_ecdhStat_en = CRYPTO_KAS_ERROR_CURVE;
     }
-    else if((ecdhSessionId <= 0u) || (ecdhSessionId > (uint32_t)CRYPTO_KAS_SESSION_MAX) )
+    else if((ecdhSessionId == 0u) || (ecdhSessionId > (uint32_t)CRYPTO_KAS_SESSION_MAX) )
     {
         ret_ecdhStat_en = CRYPTO_KAS_ERROR_SID;
     }

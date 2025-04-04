@@ -93,7 +93,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesC
     {
        ret_aesCcmStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesCcmStat_en =  CRYPTO_AEAD_ERROR_SID; 
     }
@@ -115,7 +115,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesC
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
-				
+                
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -180,7 +180,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -189,8 +189,8 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
     return ret_aesCcmStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_CCM --> 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true)))>
- 
+
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX?? &&(lib_wolfcrypt.CRYPTO_WC_AES_EAX == true)))> 
 crypto_Aead_Status_E Crypto_Aead_AesEax_Init(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en, 
                                                 uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_nonce, uint32_t nonceLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID)
 {
@@ -219,7 +219,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Init(st_Crypto_Aead_AesEax_ctx *ptr_aesE
     {
         ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesEaxStat_en =  CRYPTO_AEAD_ERROR_SID; 
     }    
@@ -245,7 +245,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Init(st_Crypto_Aead_AesEax_ctx *ptr_aesE
             case CRYPTO_HANDLER_HW_INTERNAL:
                 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -290,7 +290,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Cipher(st_Crypto_Aead_AesEax_ctx *ptr_ae
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -298,6 +298,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Cipher(st_Crypto_Aead_AesEax_ctx *ptr_ae
     }
     return ret_aesEaxStat_en;
 }
+
 crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, uint8_t *ptr_authTag, uint32_t authTagLen)
 {
     crypto_Aead_Status_E ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -323,7 +324,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aes
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -331,6 +332,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_Final(st_Crypto_Aead_AesEax_ctx *ptr_aes
     }
     return ret_aesEaxStat_en;
 }
+
 crypto_Aead_Status_E Crypto_Aead_AesEax_AddAadData(st_Crypto_Aead_AesEax_ctx *ptr_aesEaxCtx_st, uint8_t *ptr_aad, uint32_t aadLen)
 {
     crypto_Aead_Status_E ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
@@ -355,7 +357,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_AddAadData(st_Crypto_Aead_AesEax_ctx *pt
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -384,7 +386,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_EncryptAuthDirect(crypto_HandlerType_E h
     {
        ret_aesEaxStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesEaxStat_en =  CRYPTO_AEAD_ERROR_SID; 
     } 
@@ -415,7 +417,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_EncryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -444,7 +446,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
     {
        ret_aesEaxStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesEaxStat_en =  CRYPTO_AEAD_ERROR_SID; 
     } 
@@ -475,7 +477,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
             case CRYPTO_HANDLER_HW_INTERNAL:
 
                 break;
-				
+                
             default:
                 ret_aesEaxStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -484,7 +486,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
     return ret_aesEaxStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_EAX -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))) || ((CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))) || ((CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && ( (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))))>
 
 crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en, 
                                                               uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, uint32_t sessionID)
@@ -510,7 +512,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_SID; 
     }
@@ -528,16 +530,20 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)))> 
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aesGcmCtx_st->ptr_key, 
-                                                                                ptr_aesGcmCtx_st->aeadKeySize, ptr_initVect, initVectLen);     
+                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize, ptr_initVect, initVectLen);     
                 break;
 </#if><#-- CRYPTO_WC_AES_GCM-->                
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && !(driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>             
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>             
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>			
-                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,cipherOper_en, ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize);    
-</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER -->
-				break;	
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>            
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    cipherOper_en, ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize);    
+<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Init((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    cipherOper_en, ptr_aesGcmCtx_st->ptr_key, ptr_aesGcmCtx_st->aeadKeySize, ptr_initVect, initVectLen);
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
+                break;    
 </#if><#-- CRYPTO_HW_AES_GCM && HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
             default:
                 ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
@@ -565,14 +571,19 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)))>              
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_AddAadData(ptr_aesGcmCtx_st->aeadCipherOper_en, ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aad, aadLen);
+                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_AddAadData(ptr_aesGcmCtx_st->aeadCipherOper_en, 
+                    ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aad, aadLen);
                 break;  
 </#if><#-- CRYPTO_WC_AES_GCM-->            
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && !(driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>               
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
-                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0); 
-</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER -->
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0); 
+<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_AddAad((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    ptr_aad, aadLen);
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_AES_GCM && !HAVE_CRYPTO_HW_HSM_03785_DRIVER -->          
             default:
@@ -591,10 +602,21 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CTX;
     }
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
     else if((ptr_inputData == NULL) || (dataLen == 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
+    else if ((dataLen % 16u) != 0u)
+    {
+        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+<#else>
+    else if((ptr_inputData == NULL) || (dataLen == 0u))
+    {
+        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+</#if>
     else if(ptr_outData == NULL)
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
@@ -605,16 +627,20 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Cipher(st_Crypto_Aead_AesGcm_ctx *ptr_ae
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)))>             
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Cipher(ptr_aesGcmCtx_st->aeadCipherOper_en, ptr_aesGcmCtx_st->arr_aeadDataCtx, 
-                                                                    ptr_inputData, dataLen, ptr_outData);
+                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Cipher(ptr_aesGcmCtx_st->aeadCipherOper_en, 
+                    ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_inputData, dataLen, ptr_outData);
                 break;  
 </#if><#-- CRYPTO_WC_AES_GCM-->       
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && !(driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>                
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>                
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
-                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen,
-                                                                                                             ptr_inputData, dataLen, ptr_outData, NULL, 0, NULL, 0);     
-</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER -->
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen, ptr_inputData, dataLen, 
+                    ptr_outData, NULL, 0, NULL, 0);
+<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    ptr_inputData, dataLen, ptr_outData);
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_AES_GCM && !HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
             default:
@@ -642,15 +668,19 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)))>            
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Final(ptr_aesGcmCtx_st->aeadCipherOper_en, ptr_aesGcmCtx_st->arr_aeadDataCtx, 
-                                                                    ptr_authTag, authTagLen);
+                ret_aesGcmStat_en = Crypto_Aead_Wc_AesGcm_Final(ptr_aesGcmCtx_st->aeadCipherOper_en, 
+                    ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_authTag, authTagLen);
                 break; 
 </#if><#-- CRYPTO_WC_AES_GCM-->            
-<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)) && !(driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>               
+<#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>            
-                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, NULL, 0,NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);     
-</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER -->
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    NULL, 0,NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);     
+<#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
+                ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Final((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, 
+                    ptr_authTag, authTagLen);
+</#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_AES_GCM && !HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
             default:
@@ -668,15 +698,14 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-    if( ((ptr_inputData == NULL) && (dataLen > 0u))
-                || ((ptr_inputData != NULL) && (dataLen == 0u)) )
+
+    if ((ptr_inputData == NULL) == (dataLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
-    else if( ((ptr_inputData != NULL) && (ptr_outData == NULL))
-                || ((ptr_inputData == NULL) && (ptr_outData != NULL)) )
+    else if ((ptr_inputData == NULL) != (ptr_outData == NULL)) 
     {
-       ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
     else if( (ptr_key == NULL) || 
                 ( (keyLen != (uint32_t)CRYPTO_AESKEYSIZE_128)
@@ -689,8 +718,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-    else if( ((ptr_aad == NULL) && (aadLen > 0u))
-                || ((ptr_aad != NULL) && (aadLen == 0u)) )
+    else if ((ptr_aad == NULL) == (aadLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
@@ -698,11 +726,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-//    else if((ptr_aad == NULL) && (ptr_inputData == NULL))
-//    {
-//        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_ARG;
-//    }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_SID; 
     } 
@@ -732,6 +756,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
                 break;
         }
     }
+
     return ret_aesGcmStat_en;
 }
 
@@ -740,15 +765,14 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID)
 {
     crypto_Aead_Status_E ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
-    if( ((ptr_inputData == NULL) && (dataLen > 0u))
-        || ((ptr_inputData != NULL) && (dataLen == 0u)) )
+    
+    if ((ptr_inputData == NULL) == (dataLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
     }
-    else if( ((ptr_inputData != NULL) && (ptr_outData == NULL))
-                || ((ptr_inputData == NULL) && (ptr_outData != NULL)) )
+    else if ((ptr_inputData == NULL) != (ptr_outData == NULL)) 
     {
-       ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
     }
     else if( (ptr_key == NULL) || 
                 ( (keyLen != (uint32_t)CRYPTO_AESKEYSIZE_128)
@@ -757,12 +781,11 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-        else if(ptr_initVect == NULL || initVectLen == 0u)
+    else if(ptr_initVect == NULL || initVectLen == 0u)
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
-    else if( ((ptr_aad == NULL) && (aadLen > 0u))
-                || ((ptr_aad != NULL) && (aadLen == 0u)) )
+    else if ((ptr_aad == NULL) == (aadLen > 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AAD;
     }
@@ -770,11 +793,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
     }
-    else if((ptr_aad == NULL) && (ptr_inputData == NULL))
-    {
-        ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_ARG;
-    }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_SID; 
     } 
@@ -804,7 +823,260 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
                 break;
         }
     }
+
     return ret_aesGcmStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
 // *****************************************************************************
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))>
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Init(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, 
+    crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint8_t *ptr_nonce, uint32_t sessionID)
+{
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    
+    if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+    else if(ptr_key == NULL) 
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+    }
+    else if(ptr_nonce == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
+    }
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX) )
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_SID; 
+    }
+    else
+    {
+        ptr_chaChaPolyCtx->cryptoSessionID =  sessionID;
+        ptr_chaChaPolyCtx->aeadHandlerType_en = handlerType_en;
+                
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_Init(
+                    (void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_key, ptr_nonce);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+    }
+    return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_AddAadData(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, 
+    uint8_t *ptr_aad, uint32_t aadLen)
+{
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+    else if((ptr_aad == NULL) && (aadLen > 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+    else
+    {                
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_AddAadData(
+                    (void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_aad, aadLen);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305 -->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+    }
+    
+    return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Cipher(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, 
+    uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, crypto_CipherOper_E cipherOper_en)
+{
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+    else if((ptr_inputData == NULL) || (dataLen == 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+    else if(ptr_outData == NULL)
+    {
+       ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+    }
+    else if((cipherOper_en != CRYPTO_CIOP_ENCRYPT) && (cipherOper_en != CRYPTO_CIOP_DECRYPT))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPOPER;
+    }    
+    else
+    {   
+        ptr_chaChaPolyCtx->aeadCipherOper_en = cipherOper_en;
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_Cipher(cipherOper_en, 
+                    (void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_inputData, dataLen, ptr_outData);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+    }
+    
+    return ret_chaChaPolyStat_en;    
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_Final(st_Crypto_Aead_ChaCha20Poly1305_ctx *ptr_chaChaPolyCtx, 
+    uint8_t *ptr_authTag)
+{
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    if(ptr_chaChaPolyCtx == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CTX;
+    }
+    else if(ptr_authTag == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+    }
+    else
+    {                
+        switch(ptr_chaChaPolyCtx->aeadHandlerType_en)
+        {
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_Final(
+                    (void*)ptr_chaChaPolyCtx->arr_aeadDataCtx, ptr_authTag);     
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+    }
+
+    return ret_chaChaPolyStat_en;
+}
+
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_EncryptAuthDirect(crypto_HandlerType_E handlerType_en, 
+    uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+    uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t sessionID)
+{
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    
+    if((ptr_inputData == NULL) || (dataLen == 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_INPUTDATA;
+    }
+    else if(ptr_outData == NULL)
+    {
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+    }
+    else if(ptr_key == NULL) 
+    {
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+    }
+    else if(ptr_nonce == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
+    }
+    else if(ptr_authTag == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+    }
+    else if((ptr_aad == NULL) && (aadLen > 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+    else if((sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX))
+    {
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_SID; 
+    }
+    else
+    {
+        switch(handlerType_en)
+        {
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_ENCRYPT, 
+                    ptr_inputData, dataLen, ptr_outData, ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_authTag);
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+    }
+    
+    return ret_chaChaPolyStat_en;
+}
+
+crypto_Aead_Status_E Crypto_Aead_ChaCha20Poly1305_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, 
+    uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData, uint8_t *ptr_key, uint8_t *ptr_nonce, 
+    uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint32_t sessionID)
+{
+    crypto_Aead_Status_E ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_CIPNOTSUPPTD;
+    
+    if((ptr_inputData == NULL) || (dataLen == 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+    else if(ptr_outData == NULL)
+    {
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_OUTPUTDATA; 
+    }
+    else if(ptr_key == NULL) 
+    {
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_KEY;
+    }
+    else if(ptr_nonce == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_NONCE;
+    }
+    else if(ptr_authTag == NULL)
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AUTHTAG;
+    }
+    else if((ptr_aad == NULL) && (aadLen > 0u))
+    {
+        ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_AAD;
+    }
+    else if((sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_AEAD_SESSION_MAX))
+    {
+        ret_chaChaPolyStat_en =  CRYPTO_AEAD_ERROR_SID; 
+    }
+    else
+    {
+        switch(handlerType_en)
+        {
+<#if (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? && (lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true)))> 
+            case CRYPTO_HANDLER_SW_WOLFCRYPT:
+                ret_chaChaPolyStat_en = Crypto_Aead_Wc_ChaCha20Poly1305_EncDecAuthDirect(CRYPTO_CIOP_DECRYPT, 
+                    ptr_inputData, dataLen, ptr_outData, ptr_key, ptr_nonce, ptr_aad, aadLen, ptr_authTag);
+                break;
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->
+            default:
+                ret_chaChaPolyStat_en = CRYPTO_AEAD_ERROR_HDLR;
+                break;
+        }
+    }
+    
+    return ret_chaChaPolyStat_en;
+}
+</#if><#-- CRYPTO_WC_CHACHA20_POLY1305-->

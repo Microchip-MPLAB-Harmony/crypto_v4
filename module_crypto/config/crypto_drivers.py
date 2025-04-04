@@ -63,6 +63,12 @@ Crypto_HW_CommonCryptoFilesDict = {
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
     ],
+    "AsymAlgo": [
+        "crypto_asym_cipher.h.ftl",
+        "crypto_asym_cipher.c.ftl",
+        "crypto_common.h.ftl",
+        "crypto_config.h.ftl"
+    ],
     "MacAlgo": [
         "crypto_mac_cipher.h.ftl",
         "crypto_mac_cipher.c.ftl",
@@ -330,14 +336,16 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
     if sec_enabled_node is not None:
         trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
 
-    # Maintain set of ways to refer to flash size in .atdf
+    # Maintain set of ways to refer to flash size in .atdf 
+    found_node = False
     pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
 
-    HSM_BOOT_FIRMWARE_INIT_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_INIT_ADDR", None)
-    HSM_BOOT_FIRMWARE_INIT_ADDR.setVisible(False)
-    HSM_BOOT_FIRMWARE_ADDR = CommonCryptoComponent.createStringSymbol("HSM_BOOT_FIRMWARE_ADDR", None)
-    HSM_BOOT_FIRMWARE_ADDR.setVisible(False)
+    DEFAULT_HSM_METADATA_ADDR = CommonCryptoComponent.createStringSymbol("DEFAULT_HSM_METADATA_ADDR", None)
+    DEFAULT_HSM_METADATA_ADDR.setVisible(False)
 
+    FLASH_START_ADDR = CommonCryptoComponent.createStringSymbol("FLASH_START_ADDR", None)
+    FLASH_START_ADDR.setVisible(False)
+        
     for pfm in pfm_names:
         flash_pfm_node = ATDF.getNode(
             '/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name="{}"]'.format(pfm)
@@ -346,25 +354,28 @@ def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
         if flash_pfm_node is not None:
             found_node = True
 
-            print("Node found           | %s" % (pfm))
+            print("Flash information found (%s)" % (pfm))
             flash_start = int(flash_pfm_node.getAttribute("start"), 16)
             flash_end = int(flash_pfm_node.getAttribute("size"), 16)
-
-            # HSM placed from midpoint of flash address space if TZ
+            
+            # if TZ, HSM placed in AS+ANSC (HSM FW won't actually use ANSC)
             if trustzone_enabled:
                 flash_end = flash_end // 2
 
-            flash_size = flash_start + flash_end
+            hsm_end_addr = flash_start + flash_end
+            hsm_start_addr = hsm_end_addr - 0x20800     # 130kB
 
             # Save to string obj
-            HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue(hex(flash_size - 0x20800))  # 130kB
-            HSM_BOOT_FIRMWARE_ADDR.setDefaultValue(hex(flash_size - 0x20000))       # 128kB
+            DEFAULT_HSM_METADATA_ADDR.setDefaultValue(hex(hsm_start_addr)) 
+            FLASH_START_ADDR.setDefaultValue(str(flash_start))
 
+            print("Reserved space for HSM: 0x{:X} - 0x{:X}".format(hsm_start_addr, hsm_end_addr))
+    
     if not found_node:
-        HSM_BOOT_FIRMWARE_INIT_ADDR.setDefaultValue("/* Unable to automatically fill address */")
-        HSM_BOOT_FIRMWARE_ADDR.setDefaultValue("/* Unable to automatically fill address */")
-
-#---------------------------------------------------------------------------------------
+        DEFAULT_HSM_METADATA_ADDR.setDefaultValue("")
+        FLASH_START_ADDR.setDefaultValue("")
+        
+#--------------------------------------------------------------------------------------- 
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
 
     #String Implementation of defines for crypto_config.h.ftl

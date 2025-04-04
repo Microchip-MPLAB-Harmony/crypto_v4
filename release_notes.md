@@ -3,6 +3,28 @@
 
 # Microchip MPLAB® Harmony 3 Crypto v4 Release Notes
 
+## Crypto Release v4.0.0-TC2
+
+### New Features
+* **Automatically included API for new projects** by including ```crypto_config.h``` in ```definitions.h``` 
+* **Dynamically determine HSM addresses** in ```crypto_config.h``` for TrustZone parts 
+* **SW support for the following algorithms:** 
+  * ChaCha20Poly1305
+  * RSA-NoPadding
+  * RSA-OAEP
+  * RSA-PKCS_V1_5
+  * RSA_PSS
+  * HMAC
+
+### Bug fixes
+* AES-GCM multi-step in HSM, and single-step in SW fixed
+* Support minor changes for PIC32CXMTG
+* Cleaned MISRA issues
+
+### Notes
+* This is an engineering release which has not been fully validated
+
+
 ## Crypto Release v4.0.0-E4
 
 ### New Features

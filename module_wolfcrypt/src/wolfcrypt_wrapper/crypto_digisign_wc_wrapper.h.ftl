@@ -65,4 +65,33 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Ecdsa_VerifyData(uint8_t *ptr_wcInpu
                                                             int8_t *ptr_wcHashVerifyStat, crypto_EccCurveType_E wcEccCurveType_en);
 </#if><#-- CRYPTO_WC_ECDSA -->
 
+<#if (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
+                                                                        crypto_Hash_Algo_E maskHashType_en);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pkcs1v15_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
+                                                                        crypto_Hash_Algo_E maskHashType_en);
+</#if><#-- CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->    
+
+<#if (CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(CRYPTO_WC_DIGISIGN_RSA_PSS == true))>
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSign, 
+                                                                uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen, crypto_Hash_Algo_E maskHashType_en);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcInSign, 
+                                                                uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen, crypto_Hash_Algo_E maskHashType_en);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
+                                                                        crypto_Hash_Algo_E maskHashType_en);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_Pss_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
+                                                                        crypto_Hash_Algo_E maskHashType_en) ;                                                                        
+</#if><#-- CRYPTO_WC_DIGISIGN_RSA_PSS -->
+
+<#if (CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true))>
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyHash(uint8_t *ptr_wcInHash, uint32_t wcHashLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_SignData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutSign, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen,
+                                                                        crypto_Hash_Algo_E maskHashType_en);
+crypto_DigiSign_Status_E Crypto_DigiSign_Wc_Rsa_NoPadding_VerifyData(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcInSign, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen,
+                                                                        crypto_Hash_Algo_E maskHashType_en);                                                                         
+</#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->
+
 #endif /* CRYPTO_DIGISIGN_WC_WRAPPER_H */

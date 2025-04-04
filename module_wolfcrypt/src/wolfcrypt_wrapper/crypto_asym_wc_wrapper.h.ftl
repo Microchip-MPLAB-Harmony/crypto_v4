@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_mac_wc_wrapper.h
+    crypto_asym_wc_wrapper.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -41,40 +41,35 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-#ifndef CRYPTO_MAC_WC_WRAPPER_H
-#define CRYPTO_MAC_WC_WRAPPER_H
+#ifndef CRYPTO_ASYM_WC_WRAPPER_H
+#define CRYPTO_ASYM_WC_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-
+#include "wolfssl/wolfcrypt/error-crypt.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Type Definitions
-// *****************************************************************************
-<#if (CRYPTO_WC_AES_CMAC?? &&(CRYPTO_WC_AES_CMAC == true))>
-crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Init(void *ptr_aesCmacCtx, uint8_t *ptr_key, uint32_t keySize);
-crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Cipher(void *ptr_aesCmacCtx, uint8_t *ptr_inputData, uint32_t dataLen);
-crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Final(void *ptr_aesCmacCtx, uint8_t *ptr_outMac, uint32_t macLen);
-crypto_Mac_Status_E Crypto_Mac_Wc_AesCmac_Direct(uint8_t *ptr_inputData, uint32_t inuptLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, uint32_t keyLen);
-</#if><#-- CRYPTO_WC_AES_CMAC -->
-<#if (CRYPTO_WC_AES_GMAC?? &&(CRYPTO_WC_AES_GMAC == true))>
+// ***************************************************************************** 
+<#if (CRYPTO_WC_ASYM_RSA_PKCS1_V15?? &&(CRYPTO_WC_ASYM_RSA_PKCS1_V15 == true))>
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Encrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen);
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Pkcs1v15_Decrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen);
+</#if> <#-- CRYPTO_WC_ASYM_RSA_PKCS1_V15 -->
 
-crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Init(void *ptr_aesGmacCtx, uint8_t *ptr_key, uint32_t keySize);
-crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Cipher(void *ptr_aesGmacCtx, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, 
-                                                                                                                uint8_t *ptr_outMac, uint32_t macLen);
-crypto_Mac_Status_E Crypto_Mac_Wc_AesGmac_Direct(uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, 
-                                                                                                  uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen);
-</#if><#-- CRYPTO_WC_AES_GMAC -->
+<#if (CRYPTO_WC_ASYM_RSA_OAEP?? &&(CRYPTO_WC_ASYM_RSA_OAEP == true))>
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Encrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen, 
+                                                                                                crypto_Hash_Algo_E wcMaskHashType_en, uint8_t *ptr_wcLabel, uint32_t wcLabelLen);
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_Oaep_Decrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint32_t wcOutDatLen, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen, 
+                                                                                                crypto_Hash_Algo_E wcMaskHashType_en, uint8_t *ptr_wcLabel, uint32_t wcLabelLen);
+</#if> <#-- CRYPTO_WC_ASYM_RSA_OAEP -->
 
-<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))>
-crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Init(void *ptr_hmacCtx, uint8_t *ptr_key, uint32_t keySize, crypto_Hash_Algo_E hashType_en);
-crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Cipher(void *ptr_hmacCtx, uint8_t *ptr_inputData, uint32_t dataLen); 
-crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Final(void *ptr_hmacCtx, uint8_t *ptr_outMac);
-crypto_Mac_Status_E Crypto_Mac_Wc_Hmac_Direct(uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, uint32_t keySize, crypto_Hash_Algo_E hashType_en);
-</#if><#-- CRYPTO_WC_HMAC -->
+<#if (CRYPTO_WC_ASYM_RSA_NO_PADDING?? &&(CRYPTO_WC_ASYM_RSA_NO_PADDING == true))>
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Encrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPubKeyDer, uint32_t wcPubKeyBufLen);
+crypto_Asym_Status_E Crypto_Asym_Wc_Rsa_NoPadding_Decrypt(uint8_t *ptr_wcInData, uint32_t wcDataLen, uint8_t *ptr_wcOutData, uint8_t *ptr_wcPrivKeyDer, uint32_t wcPrivKeyBufLen);
+</#if><#-- CRYPTO_WC_ASYM_RSA_NO_PADDING  -->
 
-#endif //CRYPTO_MAC_WC_WRAPPER_H
+#endif //CRYPTO_ASYM_WC_WRAPPER_H

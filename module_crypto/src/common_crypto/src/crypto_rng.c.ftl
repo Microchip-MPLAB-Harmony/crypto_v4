@@ -88,15 +88,17 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en, 
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_ARG;
     }
-    else if( ((ptr_nonce == NULL) && (nonceLen  > 0u))
-             || ((ptr_nonce != NULL) && (nonceLen <= 0u)) )
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG?? &&(lib_wolfcrypt.CRYPTO_WC_PRNG == true)))>
+    else if( ((ptr_nonce == NULL) && (nonceLen > 0u))
+             || ((ptr_nonce != NULL) && (nonceLen == 0u)) )
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_NONCE;
     }
-    else if( (sessionID <= 0u) || (sessionID > (uint32_t)CRYPTO_RNG_SESSION_MAX))
+    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_RNG_SESSION_MAX))
     {
         ret_rngStat_en = CRYPTO_RNG_ERROR_SID;
     }
+</#if><#-- CRYPTO_WC_PRNG -->
     else
     {
         switch(rngHandlerType_en)

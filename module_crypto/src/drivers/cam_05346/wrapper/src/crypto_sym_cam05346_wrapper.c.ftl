@@ -66,7 +66,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-static void lDRV_CRYPTO_AES_InterruptSetup(void)
+static void lCrypto_Sym_Hw_Aes_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
     Crypto_Int_Hw_Enable(CRYPTO1_INT);
@@ -166,7 +166,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx,
 
     if(aesStatus == AES_NO_ERROR)
     {
-        lDRV_CRYPTO_AES_InterruptSetup();
+        lCrypto_Sym_Hw_Aes_InterruptSetup();
     }
     else
     {
@@ -187,16 +187,25 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *aesCipherCtx,
     aesStatus = DRV_CRYPTO_AES_IsActive(aesCtx->contextData, &aesActive);
     if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
     {
-        /* AES cipher/decipher only operates upon block-size aligned data.
-        * Since the full input data is being processed as one block, its size
-        * must be aligned to the AES block size. */
+        /* AES block cipher/decipher only operates upon block-size aligned data.
+         * Since the full input data is being processed as one block, its size
+         * must be aligned to the AES block size. */
         uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
         uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
 
-        aesStatus = DRV_CRYPTO_AES_Execute(aesCtx->contextData, inputData, outData, fullBlockLen);
+        aesStatus = DRV_CRYPTO_AES_AddInputData(aesCtx->contextData, inputData, fullBlockLen);
         if(aesStatus == AES_NO_ERROR)
         {
-            DRV_CRYPTO_AES_Complete(aesCtx->contextData);
+            aesStatus = DRV_CRYPTO_AES_AddOutputData(aesCtx->contextData, outData, fullBlockLen);
+        }
+
+        if(aesStatus == AES_NO_ERROR)
+        {
+            aesStatus = DRV_CRYPTO_AES_Execute(aesCtx->contextData);
+        }
+
+        if(aesStatus == AES_NO_ERROR)
+        {
             status = CRYPTO_SYM_CIPHER_SUCCESS;
         }
     }

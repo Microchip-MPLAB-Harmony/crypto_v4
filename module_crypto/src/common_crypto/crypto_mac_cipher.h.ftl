@@ -52,7 +52,7 @@
 #include "crypto_common.h"
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))>
 #include "crypto/common_crypto/crypto_hash.h"
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->        
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->
 
 typedef enum
 {
@@ -61,7 +61,7 @@ typedef enum
     CRYPTO_MAC_ERROR_KEY = -125,
     CRYPTO_MAC_ERROR_HDLR = -124,
     CRYPTO_MAC_ERROR_INPUTDATA = -123,
-    CRYPTO_MAC_ERROR_MACDATA = -122,        
+    CRYPTO_MAC_ERROR_MACDATA = -122,
     CRYPTO_MAC_ERROR_CIPOPER = -121,
     CRYPTO_MAC_ERROR_SID = -120,  ////session ID Error
     CRYPTO_MAC_ERROR_ARG = -119,
@@ -69,7 +69,7 @@ typedef enum
     CRYPTO_MAC_ERROR_IV = -117,
     CRYPTO_MAC_ERROR_AAD = -116,
     CRYPTO_MAC_ERROR_HASHTYPE = -115,
-    CRYPTO_MAC_CIPHER_SUCCESS = 0,        
+    CRYPTO_MAC_CIPHER_SUCCESS = 0,
 }crypto_Mac_Status_E;
 
 // *****************************************************************************
@@ -78,7 +78,8 @@ typedef enum
 // *****************************************************************************
 // *****************************************************************************
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true)))
-    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
+    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))
+    || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
 typedef struct
 {
     uint32_t cryptoSessionID;
@@ -95,34 +96,34 @@ typedef struct
     crypto_HandlerType_E macHandlerType_en;
     uint8_t arr_macDataCtx[768]__attribute__((aligned (4)));
 }st_Crypto_Mac_Hmac_ctx;
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->	
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->
 // *****************************************************************************
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CMAC == true))) || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
-crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, crypto_HandlerType_E handlerType_en, 
+crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, crypto_HandlerType_E handlerType_en,
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, uint8_t *ptr_inputData, uint32_t dataLen);
 
 crypto_Mac_Status_E Crypto_Mac_AesCmac_Final(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCtx_st, uint8_t *ptr_outMac, uint32_t macLen);
 
-crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
+crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen,
                                                 uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_AES_CMAC -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
 
-crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, crypto_HandlerType_E handlerType_en, 
+crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, crypto_HandlerType_E handlerType_en,
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
-crypto_Mac_Status_E Crypto_Mac_AesGmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, 
+crypto_Mac_Status_E Crypto_Mac_AesGmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen,
                                                                                                                 uint8_t *ptr_outMac, uint32_t macLen);
-crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, 
+crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerType_en, uint8_t *ptr_initVect, uint32_t initVectLen, uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key,
                                                                                                   uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_AES_GMAC -->
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))>
-crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint32_t keyLen, 
+crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint32_t keyLen,
 																									crypto_Hash_Algo_E hashType_en, uint32_t sessionID);
 crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_inputData, uint32_t dataLen);
 crypto_Mac_Status_E Crypto_Mac_Hmac_Final(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, uint8_t *ptr_outMac);
-crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key, 
+crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key,
                                                                                                   uint32_t keyLen, crypto_Hash_Algo_E hashType_en, uint32_t sessionID);
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->																								  
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->
 #endif /* CRYPTO_MAC_CIPHER_H */

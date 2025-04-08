@@ -106,7 +106,7 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(void *cmacCipherCtx, uint8_t *inpu
     aesStatus = DRV_CRYPTO_AES_IsActive(cmacCtx->contextData, &aesActive);
     if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
     {
-        aesStatus = DRV_CRYPTO_AES_AddData(cmacCtx->contextData, inputData, dataLen);
+        aesStatus = DRV_CRYPTO_AES_AddInputData(cmacCtx->contextData, inputData, dataLen);
         if(aesStatus == AES_NO_ERROR)
         {
             status = CRYPTO_MAC_CIPHER_SUCCESS;
@@ -120,18 +120,26 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(void *cmacFinalCtx, uint8_t *output
 {
     CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacFinalCtx;
     crypto_Mac_Status_E status = CRYPTO_MAC_ERROR_CIPFAIL;
+
     AES_ERROR aesStatus;
     AES_ERROR aesActive;
 
     aesStatus = DRV_CRYPTO_AES_IsActive(cmacCtx->contextData, &aesActive);
     if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
     {
-        aesStatus = DRV_CRYPTO_AES_Execute(cmacCtx->contextData, NULL, outputMac, macLen);
-        if(aesStatus == AES_NO_ERROR)
+        if ((NULL != outputMac) && (0UL != macLen))
         {
-            DRV_CRYPTO_AES_Complete(cmacCtx->contextData);
-            status = CRYPTO_MAC_CIPHER_SUCCESS;
+            aesStatus = DRV_CRYPTO_AES_AddOutputData(cmacCtx->contextData, outputMac, macLen);
+            if(aesStatus == AES_NO_ERROR)
+            {
+                aesStatus = DRV_CRYPTO_AES_Execute(cmacCtx->contextData);
+            }
         }
+    }
+
+    if(aesStatus == AES_NO_ERROR)
+    {
+        status = CRYPTO_MAC_CIPHER_SUCCESS;
     }
 
     return status;

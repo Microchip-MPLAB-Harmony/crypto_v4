@@ -6,15 +6,18 @@
 ## Crypto Release v4.0.0-TC2
 
 ### New Features
-* **Automatically included API for new projects** by including ```crypto_config.h``` in ```definitions.h``` 
-* **Dynamically determine HSM addresses** in ```crypto_config.h``` for TrustZone parts 
-* **SW support for the following algorithms:** 
+* **Automatically included API for new projects** by including ```crypto_config.h``` in ```definitions.h```
+* **Dynamically determine HSM addresses** in ```crypto_config.h``` for TrustZone parts
+* **SW support for the following algorithms:**
   * ChaCha20Poly1305
   * RSA-NoPadding
   * RSA-OAEP
   * RSA-PKCS_V1_5
   * RSA_PSS
   * HMAC
+
+* **Enable Beta Software support on supported algorithms for the following device families**
+  - dsPIC33AK 512MPS512
 
 ### Bug fixes
 * AES-GCM multi-step in HSM, and single-step in SW fixed
@@ -35,8 +38,8 @@
 * D-cache can be enabled when using the HSM
 * Changed parameter ```ptr_hashVerifyStat to ptr_sigVerifyStat``` to accurately describe ECDSA operation
 * Fixed memory alignment and buffer sizes for many SW-only algorithms
-* Added missing ```Crypto_Mac_AesGmac_Cipher``` call for GMAC multi-step  
-* Added correct copyright headings 
+* Added missing ```Crypto_Mac_AesGmac_Cipher``` call for GMAC multi-step
+* Added correct copyright headings
 
 ### Known issues
 * AES-GCM multi-step not supported in this engineering release
@@ -70,15 +73,15 @@
 - **MCC Configuration Options** The crypto v4 library now supports enabling hardware acceleration on PIC32CXMTG for the following cryptographic operations
     1.  Hash Algorithms:
 
-            SHA-2: SHA2-224, SHA2-256, SHA2-384, SHA2-512  
+            SHA-2: SHA2-224, SHA2-256, SHA2-384, SHA2-512
 
     2.  Symmetric Algorithms:
 
-            AES: ECB, CBC, OFB, CTR, CFB1, CFB8, CFB64, CFB128  
+            AES: ECB, CBC, OFB, CTR, CFB1, CFB8, CFB64, CFB128
 
     3.  MAC Algorithms (Message authentication code):
-   
-            *N/A*  
+
+            *N/A*
 
     4.  Digital Signature Algorithms:
 
@@ -122,20 +125,20 @@
 
     1.  Hash Algorithms:
 
-            MD5  
-            RIPEMD-160  
-            SHA-1  
-            SHA-2: SHA2-224, SHA2-256, SHA2-384, SHA2-512  
-            SHA-3: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE-128, SHAKE-256  
-            BLAKE: Blake2b, Blake2s  
+            MD5
+            RIPEMD-160
+            SHA-1
+            SHA-2: SHA2-224, SHA2-256, SHA2-384, SHA2-512
+            SHA-3: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE-128, SHAKE-256
+            BLAKE: Blake2b, Blake2s
 
     2.  Symmetric Algorithms:
 
-            TDES/3DES: ECB, CBC  
-            AES: ECB, CBC, OFB, CTR, XTS, CFB1, CFB8, CFB64, CFB128  
-            Camellia: ECB, CBC, OFB, CTR, XTS, CFB1, CFB8, CFB64, CFB128  
-            AES-KW  
-            ChaCha20  
+            TDES/3DES: ECB, CBC
+            AES: ECB, CBC, OFB, CTR, XTS, CFB1, CFB8, CFB64, CFB128
+            Camellia: ECB, CBC, OFB, CTR, XTS, CFB1, CFB8, CFB64, CFB128
+            AES-KW
+            ChaCha20
 
     3.  MAC Algorithms (Message authentication code):
 
@@ -147,7 +150,7 @@
 
     5.  AEAD  Algorithms (Authenticated Encryption With Associated Data):
 
-            AES-CCM  
+            AES-CCM
             AES-EAX
 
     6.  KAS Algorithms(Key Agreement Scheme):
@@ -162,7 +165,7 @@
 - N/A
 
 ### Known Issues
-1. It is required to use the v5.6.7-E1 tag of wolfSSL with this repository. 
+1. It is required to use the v5.6.7-E1 tag of wolfSSL with this repository.
 
 ### Development Tools
 - [MPLAB® X IDE v6.20](https://www.microchip.com/mplab/mplab-x-ide)

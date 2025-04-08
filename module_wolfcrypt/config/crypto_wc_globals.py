@@ -36,6 +36,12 @@ wolfCrypt_CommonFilesDict = {
         "crypto_common_wc_wrapper.h.ftl",
         "crypto_common_wc_wrapper.c.ftl",
     ],
+    "AsymAlgo": [
+        "crypto_asym_wc_wrapper.h.ftl",
+        "crypto_asym_wc_wrapper.c.ftl",
+        "crypto_common_wc_wrapper.h.ftl",
+        "crypto_common_wc_wrapper.c.ftl",
+    ],
     "MacAlgo": [
         "crypto_mac_wc_wrapper.h.ftl",
         "crypto_mac_wc_wrapper.c.ftl",

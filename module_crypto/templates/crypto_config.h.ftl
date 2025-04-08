@@ -42,8 +42,8 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-#ifndef CRYPTO_HW_CONFIG_H
-#define CRYPTO_HW_CONFIG_H
+#ifndef CRYPTO_CONFIG_H
+#define CRYPTO_CONFIG_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -51,7 +51,40 @@
 // *****************************************************************************
 // *****************************************************************************
 
-//#include "user.h"
+<#if hsm_boot_h_ftl_flag?? &&(hsm_boot_h_ftl_flag == true)>
+    <#lt> /* HSM Initialization */
+    <#lt>#include "crypto/drivers/driver/hsm_boot.h"
+
+</#if>
+/* Crypto v4 API */
+<#if crypto_common_h_ftl_flag?? &&(crypto_common_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_common.h"
+</#if>
+<#if crypto_aead_cipher_h_ftl_flag?? &&(crypto_aead_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_aead_cipher.h"
+</#if>
+<#if crypto_asym_cipher_h_ftl_flag?? &&(crypto_asym_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_asym_cipher.h"
+</#if>
+<#if crypto_digsign_h_ftl_flag?? &&(crypto_digsign_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_digsign.h"
+</#if>
+<#if crypto_hash_h_ftl_flag?? &&(crypto_hash_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_hash.h"
+</#if>
+<#if crypto_kas_h_ftl_flag?? &&(crypto_kas_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_kas.h"
+</#if>
+<#if crypto_mac_cipher_h_ftl_flag?? &&(crypto_mac_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_mac_cipher.h"
+</#if>
+<#if crypto_rng_h_ftl_flag?? &&(crypto_rng_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_rng.h"
+</#if>
+<#if crypto_sym_cipher_h_ftl_flag?? &&(crypto_sym_cipher_h_ftl_flag == true)>
+    <#lt>#include "crypto/common_crypto/crypto_sym_cipher.h"
+</#if>
+
 #include "device.h"
 
 // DOM-IGNORE-BEGIN
@@ -62,20 +95,100 @@
 #endif
 // DOM-IGNORE-END
 
-/*** Crypto Library Configuration ***/
+<#--  BEGIN CUSTOM ADDR MATH  -->
+<#-- Define hexDigits outside of any macro to make it globally accessible -->
+<#assign hexDigits = "0123456789ABCDEF">
 
-//Crypto V4 Common Crypto API - WolfCrypt Library Support
-<#lt>#define CRYPTO_V4_API
+<#--  Provide custom define for HSM boot  -->
+<#macro decimalToHex decimalNumber>
+    <#local hexString = _decimalToHex(decimalNumber)>
+    <#local trimmedHexString = _trimLeadingZeros(hexString)>
+    <#lt>#define CUSTOM_HSM_METADATA_ADDR (0x${trimmedHexString})
+</#macro>
 
-<#lt>/*** Hardware Driver Configuration ***/
-<#if driver_defines?has_content>
-    <#lt>//Hardware Drivers Available:
-    <#list driver_defines?split(", ") as driver>
-        <#lt>#define ${driver}
+<#--  Recursive calculation of BASE16 from BASE10 -->
+<#function _decimalToHex decimalNumber>
+    <#local remainder = decimalNumber % 16>
+    <#local quotient = decimalNumber / 16?floor>
+
+    <#if quotient != 0>
+        <#return _decimalToHex(quotient) + hexDigits?substring(remainder, remainder + 1)>
+    <#else>
+        <#return hexDigits?substring(remainder, remainder + 1)>
+    </#if>
+</#function>
+
+<#--  Remove first 10 digits, attempt to do it in general way -->
+<#function _trimLeadingZeros hexString>
+    <#local firstNonZeroIndex = 10>   <#-- Remove 10 leading char -->
+    <#list 0..hexString?length - 1 as i>
+        <#if hexString?substring(i, i + 1) != "0">
+        <#break>
+        </#if>
+        <#assign firstNonZeroIndex = i + 1>
     </#list>
-<#else>
-    <#lt>/*   (Crypto Hardware Drivers Not Available)   */ 
-</#if>
+    <#return hexString?substring(firstNonZeroIndex)>
+</#function>
+<#--  END CUSTOM ADDR MATH  -->
+<#--  if HSM drivers enabled, put addresses in config  -->
+<#if hsm_boot_h_ftl_flag?? &&(hsm_boot_h_ftl_flag == true)>
+    <#if DEFAULT_HSM_METADATA_ADDR?has_content>
+        <#lt>/* HSM metadata address for provided HSM .hex file */
+        <#lt>#define DEFAULT_HSM_METADATA_ADDR (${DEFAULT_HSM_METADATA_ADDR})
+    </#if>
+
+    <#if core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
+        <#if FLASH_START_ADDR?has_content && core.IDAU_AS_SIZE?has_content && core.IDAU_ANSC_SIZE?has_content>
+        <#assign bytesIndexAS = core.IDAU_AS_SIZE?index_of(" Bytes")>
+        <#assign bytesIndexANSC = core.IDAU_ANSC_SIZE?index_of(" Bytes")>
+            <#if (bytesIndexAS != -1) && (bytesIndexANSC != -1)>
+                <#assign flashStartNumber = FLASH_START_ADDR?number>
+                <#assign idauAsSizeNumber = core.IDAU_AS_SIZE?substring(0, bytesIndexAS)?number>
+                <#assign idauAnscSizeNumber = core.IDAU_ANSC_SIZE?substring(0, bytesIndexANSC)?number>
+                <#assign sum = flashStartNumber + (idauAsSizeNumber + idauAnscSizeNumber)>
+                <#assign hsm_addr = sum - 133120>   <#--  130 KB offset  -->
+                <#if hsm_addr < flashStartNumber>
+                <#-- Error condition: HSM address is less than flash start address -->
+                <#lt>/*
+                <#lt>   WARNING: HSM metadata address (0x${_trimLeadingZeros(_decimalToHex(hsm_addr))}) 
+                <#lt>   is less than flash start address (${FLASH_START_ADDR}U). 
+                <#lt>*/
+                <#lt>#warning "Allow at least 130 KB of secure flash for the HSM."
+                <#lt><@decimalToHex hsm_addr/>      <#-- Custom address calculation  -->
+                <#else>
+                <#lt>/* HSM metadata address for custom-sized secure flash HSM .hex file. */
+                <#lt><@decimalToHex hsm_addr/>      <#-- Custom address calculation  -->
+                </#if>
+            </#if>
+        </#if>
+        <#lt>/* 
+        <#lt>    HSM_BOOT_METADATA_ADDR must match the address 
+        <#lt>    to the HSM metadata in the HSM .hex file. 
+        <#lt> */
+        <#lt>#if DEFAULT_HSM_METADATA_ADDR == CUSTOM_HSM_METADATA_ADDR
+        <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_METADATA_ADDR)
+        <#lt>#else
+        <#lt>#define HSM_BOOT_METADATA_ADDR (CUSTOM_HSM_METADATA_ADDR)
+        <#lt>#ifndef HSM_METADATA_ADDR_WARNING_DISABLE
+        <#lt>#warning "CUSTOM_HSM_METADATA_ADDR has been used. " \
+        <#lt>         "Ensure that the new HSM .hex has been attached to this project." \
+        <#lt>         "Disable warning with macro HSM_METADATA_ADDR_WARNING_DISABLE" \
+        <#lt>         "                                                          " \
+        <#lt>         "The default HSM .hex is configured to use the lower 130 KB " \
+        <#lt>         "address range of secure flash. CUSTOM_HSM_METADATA_ADDR" \
+        <#lt>         "reflects the updated metadata address, but the .hex must as well." \
+        <#lt>         "The steps for this can be found in the App Note, linked " \
+        <#lt>         "inside of ```/crypto_v4/readme.md/```."
+        <#lt>#endif
+        <#lt>#endif
+    <#else>
+        <#lt>/* 
+        <#lt>    HSM_BOOT_METADATA_ADDR must match the address 
+        <#lt>    to the HSM metadata in the HSM .hex file. 
+        <#lt> */
+        <#lt>#define HSM_BOOT_METADATA_ADDR (DEFAULT_HSM_METADATA_ADDR)
+    </#if> <#--  if TZ memory addresses weren't found  -->
+</#if> <#--  if hsm_boot.h is enabled  -->
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

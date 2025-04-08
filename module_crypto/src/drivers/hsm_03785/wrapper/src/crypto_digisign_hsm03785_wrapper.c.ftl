@@ -162,7 +162,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_SignData(uint8_t *ptr_inputDat
     }
     else
     {
-        digiSignStatus_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        digiSignStatus_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     
     return digiSignStatus_en;
@@ -203,7 +203,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Hw_Ecdsa_VerifyData(uint8_t *ptr_inputD
     }
     else
     {
-        digiSignStatus_en = CRYPTO_DIGISIGN_ERROR_HASHTYPE;
+        digiSignStatus_en = CRYPTO_DIGISIGN_ERROR_MASKHASHTYPE;
     }
     
     return digiSignStatus_en;

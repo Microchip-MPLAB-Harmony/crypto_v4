@@ -116,7 +116,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_Md5Digest(uint8_t *ptr_data, uint32_t dataLe
 }
 
 crypto_Hash_Status_E Crypto_Hash_Wc_Md5Init(void *ptr_md5Ctx_st)
-{  	
+{
     crypto_Hash_Status_E ret_md5Stat_en = CRYPTO_HASH_ERROR_NOTSUPPTED; 
     int wcMd5Status = BAD_FUNC_ARG;
     if(ptr_md5Ctx_st != NULL)
@@ -325,7 +325,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_Ripemd160Final(void *ptr_ripemdCtx_st, uint8
     ||  (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))
     ||  (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))
     ||  (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>
-	
+    
 crypto_Hash_Status_E Crypto_Hash_Wc_ShaDigest(uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, crypto_Hash_Algo_E hashAlgo_en)
 {
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
@@ -355,8 +355,8 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShaDigest(uint8_t *ptr_data, uint32_t dataLe
 crypto_Hash_Status_E Crypto_Hash_Wc_ShaInit(void *ptr_shaCtx_st, crypto_Hash_Algo_E hashAlgo_en)
 {
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
-	int wcShaStatus = BAD_FUNC_ARG;
-	
+    int wcShaStatus = BAD_FUNC_ARG;
+    
     if(ptr_shaCtx_st != NULL)
     {
         switch(hashAlgo_en)
@@ -365,57 +365,57 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShaInit(void *ptr_shaCtx_st, crypto_Hash_Alg
             case CRYPTO_HASH_SHA1:
                 wcShaStatus = wc_InitSha((wc_Sha*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA1 -->	
+</#if><#-- CRYPTO_WC_SHA1 -->    
 <#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true))>
             case CRYPTO_HASH_SHA2_224:
                 wcShaStatus = wc_InitSha224((wc_Sha224*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA2_224 -->		
+</#if><#-- CRYPTO_WC_SHA2_224 -->        
 <#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))>
             case CRYPTO_HASH_SHA2_256:
                 wcShaStatus = wc_InitSha256((wc_Sha256*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA2_256 -->		               
+</#if><#-- CRYPTO_WC_SHA2_256 -->                       
 <#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true))>
             case CRYPTO_HASH_SHA2_384:
                 wcShaStatus = wc_InitSha384((wc_Sha384*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA2_384 -->	
+</#if><#-- CRYPTO_WC_SHA2_384 -->    
 <#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true))>
             case CRYPTO_HASH_SHA2_512:
                 wcShaStatus = wc_InitSha512((wc_Sha512*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA2_512 -->	
+</#if><#-- CRYPTO_WC_SHA2_512 -->    
 <#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))>          
             case CRYPTO_HASH_SHA2_512_224:
                 wcShaStatus = wc_InitSha512_224((wc_Sha512*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA2_512_224 -->	       
+</#if><#-- CRYPTO_WC_SHA2_512_224 -->           
 <#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true))>                                
             case CRYPTO_HASH_SHA2_512_256:
                 wcShaStatus = wc_InitSha512_256((wc_Sha512*)ptr_shaCtx_st);
                 break;
-</#if><#-- CRYPTO_WC_SHA2_512_256 -->	
+</#if><#-- CRYPTO_WC_SHA2_512_256 -->    
 <#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>                
             case CRYPTO_HASH_SHA3_224:
                 wcShaStatus = wc_InitSha3_224((wc_Sha3*)ptr_shaCtx_st, NULL, INVALID_DEVID);
             break;
-</#if><#-- CRYPTO_WC_SHA3_224 -->	            
+</#if><#-- CRYPTO_WC_SHA3_224 -->                
 <#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>            
             case CRYPTO_HASH_SHA3_256:
                 wcShaStatus = wc_InitSha3_256((wc_Sha3*)ptr_shaCtx_st, NULL, INVALID_DEVID);
             break;
-</#if><#-- CRYPTO_WC_SHA3_256 -->	
+</#if><#-- CRYPTO_WC_SHA3_256 -->    
 <#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>            
             case CRYPTO_HASH_SHA3_384:
                 wcShaStatus = wc_InitSha3_384((wc_Sha3*)ptr_shaCtx_st, NULL, INVALID_DEVID);
             break;
-</#if><#-- CRYPTO_WC_SHA3_384 -->	
+</#if><#-- CRYPTO_WC_SHA3_384 -->    
 <#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>           
             case CRYPTO_HASH_SHA3_512:
                 wcShaStatus = wc_InitSha3_512((wc_Sha3*)ptr_shaCtx_st, NULL, INVALID_DEVID);
             break;
-</#if><#-- CRYPTO_WC_SHA3_512 -->	         
+</#if><#-- CRYPTO_WC_SHA3_512 -->             
             default:
                 ret_shaStat_en = CRYPTO_HASH_ERROR_ALGO;
                 break;
@@ -449,34 +449,34 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShaUpdate(void *ptr_shaCtx_st, uint8_t *ptr_
 {
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     int wcShaStatus = BAD_FUNC_ARG;
-	
-	switch(hashAlgo_en)
-	{
+    
+    switch(hashAlgo_en)
+    {
 <#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true))>
-		case CRYPTO_HASH_SHA1:
-			wcShaStatus = wc_ShaUpdate((wc_Sha*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA1:
+            wcShaStatus = wc_ShaUpdate((wc_Sha*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA1 -->		 
+</#if><#-- CRYPTO_WC_SHA1 -->         
 <#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true))>
-		case CRYPTO_HASH_SHA2_224:
-			wcShaStatus = wc_Sha224Update((wc_Sha224*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA2_224:
+            wcShaStatus = wc_Sha224Update((wc_Sha224*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA2_224 -->	            
+</#if><#-- CRYPTO_WC_SHA2_224 -->                
 <#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))>          
-		case CRYPTO_HASH_SHA2_256:
-			wcShaStatus = wc_Sha256Update((wc_Sha256*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA2_256:
+            wcShaStatus = wc_Sha256Update((wc_Sha256*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
 </#if><#-- CRYPTO_WC_SHA2_256 -->           
 <#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true))>
-		case CRYPTO_HASH_SHA2_384:
-			wcShaStatus = wc_Sha384Update((wc_Sha384*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA2_384:
+            wcShaStatus = wc_Sha384Update((wc_Sha384*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA2_384 -->	
+</#if><#-- CRYPTO_WC_SHA2_384 -->    
 <#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true))>
-		case CRYPTO_HASH_SHA2_512:
-			wcShaStatus = wc_Sha512Update((wc_Sha512*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
-            break;	
-</#if><#-- CRYPTO_WC_SHA2_512 -->	
+        case CRYPTO_HASH_SHA2_512:
+            wcShaStatus = wc_Sha512Update((wc_Sha512*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+            break;    
+</#if><#-- CRYPTO_WC_SHA2_512 -->    
 <#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))>            
         case CRYPTO_HASH_SHA2_512_224:
             wcShaStatus = wc_Sha512_224Update((wc_Sha512*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
@@ -486,36 +486,36 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShaUpdate(void *ptr_shaCtx_st, uint8_t *ptr_
         case CRYPTO_HASH_SHA2_512_256:
             wcShaStatus = wc_Sha512_256Update((wc_Sha512*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;            
-</#if><#-- CRYPTO_WC_SHA2_512_256 -->	            
+</#if><#-- CRYPTO_WC_SHA2_512_256 -->                
 <#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>             
-		case CRYPTO_HASH_SHA3_224:
-			wcShaStatus = wc_Sha3_224_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA3_224:
+            wcShaStatus = wc_Sha3_224_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA3_224 -->	            
+</#if><#-- CRYPTO_WC_SHA3_224 -->                
 <#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>                 
-		case CRYPTO_HASH_SHA3_256:
-			wcShaStatus = wc_Sha3_256_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA3_256:
+            wcShaStatus = wc_Sha3_256_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA3_256 -->	
+</#if><#-- CRYPTO_WC_SHA3_256 -->    
 <#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>              
-		case CRYPTO_HASH_SHA3_384:
-			wcShaStatus = wc_Sha3_384_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA3_384:
+            wcShaStatus = wc_Sha3_384_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA3_384 -->	
+</#if><#-- CRYPTO_WC_SHA3_384 -->    
 <#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>              
-		case CRYPTO_HASH_SHA3_512:
-			wcShaStatus = wc_Sha3_512_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
+        case CRYPTO_HASH_SHA3_512:
+            wcShaStatus = wc_Sha3_512_Update((wc_Sha3*)ptr_shaCtx_st, (const byte*)ptr_data, (word32)dataLen);
             break;
-</#if><#-- CRYPTO_WC_SHA3_512 -->	                        
+</#if><#-- CRYPTO_WC_SHA3_512 -->                            
         default:
             ret_shaStat_en = CRYPTO_HASH_ERROR_ALGO;
             break;
-	}
+    }
 
-	if(wcShaStatus == 0)
-	{
-		ret_shaStat_en = CRYPTO_HASH_SUCCESS;
-	}
+    if(wcShaStatus == 0)
+    {
+        ret_shaStat_en = CRYPTO_HASH_SUCCESS;
+    }
     else if(ret_shaStat_en == CRYPTO_HASH_ERROR_ALGO)
     {
         //do nothing
@@ -525,80 +525,80 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShaUpdate(void *ptr_shaCtx_st, uint8_t *ptr_
         ret_shaStat_en = CRYPTO_HASH_ERROR_FAIL;
     }
     
-	return ret_shaStat_en;  
+    return ret_shaStat_en;  
 }
 
 crypto_Hash_Status_E Crypto_Hash_Wc_ShaFinal(void *ptr_shaCtx_st, uint8_t *ptr_digest, crypto_Hash_Algo_E hashAlgo_en)
 {
     crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     int wcShaStatus = BAD_FUNC_ARG;
-	
-	switch(hashAlgo_en)
-	{
+    
+    switch(hashAlgo_en)
+    {
 <#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true))>
-		case CRYPTO_HASH_SHA1:
-			wcShaStatus = wc_ShaFinal((wc_Sha*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA1:
+            wcShaStatus = wc_ShaFinal((wc_Sha*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA1 -->		 
+</#if><#-- CRYPTO_WC_SHA1 -->         
 <#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true))>
-		case CRYPTO_HASH_SHA2_224:
-			wcShaStatus = wc_Sha224Final((wc_Sha224*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA2_224:
+            wcShaStatus = wc_Sha224Final((wc_Sha224*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA2_224 -->		            
+</#if><#-- CRYPTO_WC_SHA2_224 -->                    
 <#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))>              
-		case CRYPTO_HASH_SHA2_256:
-			wcShaStatus = wc_Sha256Final((wc_Sha256*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA2_256:
+            wcShaStatus = wc_Sha256Final((wc_Sha256*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
 </#if><#-- CRYPTO_WC_SHA2_256 -->           
 <#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true))>
-		case CRYPTO_HASH_SHA2_384:
-			wcShaStatus = wc_Sha384Final((wc_Sha384*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA2_384:
+            wcShaStatus = wc_Sha384Final((wc_Sha384*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA2_384 -->	
+</#if><#-- CRYPTO_WC_SHA2_384 -->    
 <#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true))>
-		case CRYPTO_HASH_SHA2_512:
-			wcShaStatus = wc_Sha512Final((wc_Sha512*)ptr_shaCtx_st, (byte*)ptr_digest);
-            break;	
-</#if><#-- CRYPTO_WC_SHA2_512 -->	
+        case CRYPTO_HASH_SHA2_512:
+            wcShaStatus = wc_Sha512Final((wc_Sha512*)ptr_shaCtx_st, (byte*)ptr_digest);
+            break;    
+</#if><#-- CRYPTO_WC_SHA2_512 -->    
 <#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))>             
         case CRYPTO_HASH_SHA2_512_224:
             wcShaStatus = wc_Sha512_224Final((wc_Sha512*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA2_512_224 -->	            
+</#if><#-- CRYPTO_WC_SHA2_512_224 -->                
 <#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true))>             
         case CRYPTO_HASH_SHA2_512_256:
             wcShaStatus = wc_Sha512_256Final((wc_Sha512*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA2_512_256 -->	           
+</#if><#-- CRYPTO_WC_SHA2_512_256 -->               
 <#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>              
-		case CRYPTO_HASH_SHA3_224:
-			wcShaStatus = wc_Sha3_224_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA3_224:
+            wcShaStatus = wc_Sha3_224_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA3_224 -->	            
+</#if><#-- CRYPTO_WC_SHA3_224 -->                
 <#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>             
-		case CRYPTO_HASH_SHA3_256:
-			wcShaStatus = wc_Sha3_256_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA3_256:
+            wcShaStatus = wc_Sha3_256_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA3_256 -->	
+</#if><#-- CRYPTO_WC_SHA3_256 -->    
 <#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>              
-		case CRYPTO_HASH_SHA3_384:
-			wcShaStatus = wc_Sha3_384_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA3_384:
+            wcShaStatus = wc_Sha3_384_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
-</#if><#-- CRYPTO_WC_SHA3_384 -->	
+</#if><#-- CRYPTO_WC_SHA3_384 -->    
 <#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>             
-		case CRYPTO_HASH_SHA3_512:
-			wcShaStatus = wc_Sha3_512_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
+        case CRYPTO_HASH_SHA3_512:
+            wcShaStatus = wc_Sha3_512_Final((wc_Sha3*)ptr_shaCtx_st, (byte*)ptr_digest);
             break;
 </#if><#-- CRYPTO_WC_SHA3_512 -->       
         default:
             ret_shaStat_en = CRYPTO_HASH_ERROR_ALGO;
             break;
-	}
+    }
 
-	if(wcShaStatus == 0)
-	{
-		ret_shaStat_en = CRYPTO_HASH_SUCCESS;
-	}
+    if(wcShaStatus == 0)
+    {
+        ret_shaStat_en = CRYPTO_HASH_SUCCESS;
+    }
     else if(ret_shaStat_en == CRYPTO_HASH_ERROR_ALGO)
     {
         //do nothing
@@ -608,7 +608,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShaFinal(void *ptr_shaCtx_st, uint8_t *ptr_d
         ret_shaStat_en = CRYPTO_HASH_ERROR_FAIL;
     }
     
-	return ret_shaStat_en;  
+    return ret_shaStat_en;  
 }
 </#if>
 <#if (CRYPTO_WC_SHAKE_128?? &&(CRYPTO_WC_SHAKE_128 == true)) || (CRYPTO_WC_SHAKE_256?? &&(CRYPTO_WC_SHAKE_256 == true))>
@@ -663,7 +663,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeDigest(uint8_t *ptr_data, uint32_t data
 crypto_Hash_Status_E Crypto_Hash_Wc_ShakeInit(void *ptr_shakeCtx_st, crypto_Hash_Algo_E hashAlgo_en)
 {
     crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;    
-     int wcShakeStatus = BAD_FUNC_ARG;
+    int wcShakeStatus = BAD_FUNC_ARG;
     if(ptr_shakeCtx_st != NULL)
     {
         switch(hashAlgo_en)
@@ -703,6 +703,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeInit(void *ptr_shakeCtx_st, crypto_Hash
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
     }   
+
     return ret_shakeStat_en;
 }          
 
@@ -725,34 +726,38 @@ crypto_Hash_Status_E Crypto_Hash_Wc_ShakeUpdate(void *ptr_shakeCtx_st, uint8_t *
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_256 --> 
             default:
-                ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_ALGO;
                 break; 
         }
 
-        if(wcShakeStatus == 0)
+        if(ret_shakeStat_en != CRYPTO_HASH_ERROR_ALGO)
         {
-            ret_shakeStat_en = CRYPTO_HASH_SUCCESS;
-        }
-        else if (wcShakeStatus == BAD_FUNC_ARG)
-        {
-            ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
-        }
-        else
-        {
-            ret_shakeStat_en = CRYPTO_HASH_ERROR_FAIL;
+            if(wcShakeStatus == 0)
+            {
+                ret_shakeStat_en = CRYPTO_HASH_SUCCESS;
+            }
+            else if (wcShakeStatus == BAD_FUNC_ARG)
+            {
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
+            }
+            else
+            {
+                ret_shakeStat_en = CRYPTO_HASH_ERROR_FAIL;
+            }
         }
     }
     else
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ARG;
-    }  
+    }
+
     return ret_shakeStat_en;
 } 
 
 crypto_Hash_Status_E Crypto_Hash_Wc_ShakeFinal(void *ptr_shakeCtx_st, uint8_t *ptr_digest, uint32_t digestLen, crypto_Hash_Algo_E hashAlgo_en)
 {
    crypto_Hash_Status_E ret_shakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
-    int wcShakeStatus = BAD_FUNC_ARG;	
+    int wcShakeStatus = BAD_FUNC_ARG;    
     if( (ptr_shakeCtx_st != NULL) && (ptr_digest != NULL) )
     {
         switch(hashAlgo_en)
@@ -806,7 +811,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeDigest(uint8_t *ptr_data, uint32_t data
 {   
     crypto_Hash_Status_E ret_blakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;   
 
-	if( (ptr_data != NULL) && (dataLen > 0u) && (ptr_digest != NULL) && (digestLen > 0u) )
+    if( (ptr_data != NULL) && (dataLen > 0u) && (ptr_digest != NULL) && (digestLen > 0u) )
     {
 <#if (CRYPTO_WC_BLAKE2B?? &&(CRYPTO_WC_BLAKE2B == true))>      
         if(blakeAlgorithm_en == CRYPTO_HASH_BLAKE2B)
@@ -853,10 +858,10 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeDigest(uint8_t *ptr_data, uint32_t data
 }
 
 crypto_Hash_Status_E Crypto_Hash_Wc_BlakeInit(void *ptr_blakeCtx_st, crypto_Hash_Algo_E hashAlgo_en, uint8_t *ptr_blakeKey, uint32_t keySize, uint32_t digestLen)        
-{	   
+{       
     crypto_Hash_Status_E ret_blakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     int wcBlakeStatus = BAD_FUNC_ARG;
-	if(ptr_blakeCtx_st != NULL)
+    if(ptr_blakeCtx_st != NULL)
     {
         switch(hashAlgo_en)
         {
@@ -920,7 +925,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeUpdate(void *ptr_blakeCtx_st, uint8_t *
 {   
     crypto_Hash_Status_E ret_blakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     int wcBlakeStatus = BAD_FUNC_ARG;
-	if(ptr_blakeCtx_st != NULL)
+    if(ptr_blakeCtx_st != NULL)
     {
         switch(hashAlgo_en)
         {
@@ -971,7 +976,7 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeFinal(void *ptr_blakeCtx_st, uint8_t *p
 {   
     crypto_Hash_Status_E ret_blakeStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
     int wcBlakeStatus = BAD_FUNC_ARG;
-	if(ptr_blakeCtx_st != NULL)
+    if(ptr_blakeCtx_st != NULL)
     {
         switch(hashAlgo_en)
         {
@@ -1018,3 +1023,81 @@ crypto_Hash_Status_E Crypto_Hash_Wc_BlakeFinal(void *ptr_blakeCtx_st, uint8_t *p
     return ret_blakeStat_en;       
 }
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
+
+<#if (CRYPTO_WC_HMAC?? &&(CRYPTO_WC_HMAC == true))  
+    || (CRYPTO_WC_ASYM_RSA_OAEP?? &&(CRYPTO_WC_ASYM_RSA_OAEP == true)) 
+    || (CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(CRYPTO_WC_DIGISIGN_RSA_PSS == true)) 
+    || (CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true))>
+int Crypto_Hash_Wc_GetWcHashType(crypto_Hash_Algo_E hashType_en)
+{
+    int wcHashType = (int)WC_HASH_TYPE_NONE;
+
+    switch(hashType_en)
+    {
+<#if (CRYPTO_WC_SHA1?? &&(CRYPTO_WC_SHA1 == true))>          
+        case CRYPTO_HASH_SHA1:
+            wcHashType = WC_SHA;
+            break;
+</#if><#-- CRYPTO_WC_SHA1 -->             
+<#if (CRYPTO_WC_SHA2_224?? &&(CRYPTO_WC_SHA2_224 == true))>            
+        case CRYPTO_HASH_SHA2_224:
+            wcHashType = WC_SHA224;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_224 --> 
+<#if (CRYPTO_WC_SHA2_256?? &&(CRYPTO_WC_SHA2_256 == true))>            
+        case CRYPTO_HASH_SHA2_256:
+            wcHashType = WC_SHA256;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_256 -->             
+<#if (CRYPTO_WC_SHA2_384?? &&(CRYPTO_WC_SHA2_384 == true))>             
+        case CRYPTO_HASH_SHA2_384:
+            wcHashType = WC_SHA384;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_384 -->             
+<#if (CRYPTO_WC_SHA2_512?? &&(CRYPTO_WC_SHA2_512 == true))>            
+        case CRYPTO_HASH_SHA2_512:
+            wcHashType = WC_SHA512;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_512 -->  
+<#if (CRYPTO_WC_SHA2_512_224?? &&(CRYPTO_WC_SHA2_512_224 == true))>           
+        case CRYPTO_HASH_SHA2_512_224:
+            wcHashType = WC_SHA512_224;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_512_224 -->  
+<#if (CRYPTO_WC_SHA2_512_256?? &&(CRYPTO_WC_SHA2_512_256 == true))>            
+        case CRYPTO_HASH_SHA2_512_256:
+            wcHashType = WC_SHA512_256;
+            break;
+</#if><#-- CRYPTO_WC_SHA2_512_256 -->             
+<#if (CRYPTO_WC_SHA3_224?? &&(CRYPTO_WC_SHA3_224 == true))>            
+        case CRYPTO_HASH_SHA3_224:
+                wcHashType = WC_SHA3_224;
+                break;
+</#if><#-- CRYPTO_WC_SHA3_224 -->
+<#if (CRYPTO_WC_SHA3_256?? &&(CRYPTO_WC_SHA3_256 == true))>             
+        case CRYPTO_HASH_SHA3_256:
+            wcHashType = WC_SHA3_256;
+            break;
+</#if><#-- CRYPTO_WC_SHA3_256 -->
+<#if (CRYPTO_WC_SHA3_384?? &&(CRYPTO_WC_SHA3_384 == true))>            
+        case CRYPTO_HASH_SHA3_384:
+            wcHashType = WC_SHA3_384;
+            break;
+</#if><#-- CRYPTO_WC_SHA3_384 -->
+<#if (CRYPTO_WC_SHA3_512?? &&(CRYPTO_WC_SHA3_512 == true))>                    
+        case CRYPTO_HASH_SHA3_512:
+            wcHashType = WC_SHA3_512;
+            break;
+</#if><#-- CRYPTO_WC_SHA3_512 -->
+<#if (CRYPTO_WC_MD5?? &&(CRYPTO_WC_MD5 == true))>            
+        case CRYPTO_HASH_MD5:
+            wcHashType = WC_MD5;
+            break;
+</#if><#-- CRYPTO_WC_MD5 -->
+        default:
+            wcHashType = (int)WC_HASH_TYPE_NONE;
+            break;    
+    }; 
+    return wcHashType;
+}
+</#if><#-- CRYPTO_WC_HMAC || CRYPTO_WC_ASYM_RSA_OAEP || CRYPTO_WC_DIGISIGN_RSA_PSS || CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 -->

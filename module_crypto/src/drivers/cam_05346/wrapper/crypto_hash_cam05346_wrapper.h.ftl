@@ -68,7 +68,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 // The minimum size to store a CAM library HASH context data block.
-#define MINIMUM_HASH_CONTEXT_DATA_SIZE  (224UL)
+#define MINIMUM_HASH_CONTEXT_DATA_SIZE  (384UL)
 
 typedef struct
 {

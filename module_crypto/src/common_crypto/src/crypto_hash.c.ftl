@@ -386,7 +386,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
 {
  	crypto_Hash_Status_E ret_shaStat_en = CRYPTO_HASH_ERROR_NOTSUPPTED;
 
-    if( (ptr_data == NULL) || (dataLen == 0u) )
+    if( (ptr_data == NULL) && (dataLen != 0u) )
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }
@@ -511,7 +511,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_CTX;
     }
-    else if( (ptr_data == NULL) || (dataLen == 0u) )
+    else if( (ptr_data == NULL) && (dataLen != 0u) )
     {
         ret_shaStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }
@@ -920,7 +920,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
 }
 </#if><#-- CRYPTO_WC_BLAKE2S || CRYPTO_WC_BLAKE2B -->
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))
             || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
             || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
             || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>

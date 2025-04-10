@@ -16,9 +16,6 @@
   * RSA_PSS
   * HMAC
 
-* **Enable Beta Software support on supported algorithms for the following device families**
-  - dsPIC33AK 512MPS512
-
 ### Bug fixes
 * AES-GCM multi-step in HSM, and single-step in SW fixed
 * Support minor changes for PIC32CXMTG

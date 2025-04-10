@@ -146,10 +146,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
     ECDSA_CMD_CURVE hwEccCurve;
     ECDSA_CONFIG eccData = {
         .p1.size = 0,
-        .result_location = 0x99,
-        .op_size = 0x4,
-        .flag_a = 0,
-        .flag_b = 0,
+        .resultLocation = 0x99,
+        .opSize = 0x4,
+        .flagA = 0,
+        .flagB = 0,
         .edwards = EDWARDS_OFF,
         .field = FIELD_PRIME,
     };
@@ -179,10 +179,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     ECDSA_CMD_CURVE hwEccCurve;
     ECDSA_CONFIG eccData = {
         .p1.size = 0,
-        .result_location = 0x99,
-        .op_size = 0x4,
-        .flag_a = 0,
-        .flag_b = 0,
+        .resultLocation = 0x99,
+        .opSize = 0x4,
+        .flagA = 0,
+        .flagB = 0,
         .edwards = EDWARDS_OFF,
         .field = FIELD_PRIME,
     };

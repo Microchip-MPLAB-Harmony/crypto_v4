@@ -77,7 +77,7 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *cmacInitCtx, uint8_t *key, uin
     AES_ERROR aesStatus = AES_INITIALIZE_ERROR;
 
     AESCON_MODE mode = MODE_CMAC;
-    AESCON_OPERATION operation = OP_ENC;
+    AESCON_OPERATION operation = OP_ENCRYPT;
 
     // Context data must be cleared as the context may be on a stack versus static memory.
     memset(cmacCtx->contextData, 0, sizeof(cmacCtx->contextData));

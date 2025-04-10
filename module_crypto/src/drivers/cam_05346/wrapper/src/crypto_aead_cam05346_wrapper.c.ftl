@@ -70,11 +70,11 @@ static crypto_Aead_Status_E lCrypto_Aead_Hw_Aes_GetOperation
     switch (cipherOpType)
     {
         case CRYPTO_CIOP_ENCRYPT:
-            *operation = OP_ENC;
+            *operation = OP_ENCRYPT;
             status = CRYPTO_AEAD_CIPHER_SUCCESS;
             break;
         case CRYPTO_CIOP_DECRYPT:
-            *operation = OP_DEC;
+            *operation = OP_DECRYPT;
             status = CRYPTO_AEAD_CIPHER_SUCCESS;
             break;
         default:

@@ -82,9 +82,14 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
     
-int32_t DRV_CRYPTO_HSMLITE_Hmac_DigestMac(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx, uint32_t hashType_en, uint8_t *ptr_inputKey, uint32_t keyLen, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_mac, uint32_t macLen);
+int32_t DRV_CRYPTO_HSMLITE_Hmac_MacDirect(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx, uint32_t hashType_en, uint8_t *ptr_inputKey, uint32_t keyLen, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outData);
+int32_t DRV_CRYPTO_HSMLITE_Hmac_Init(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx, uint32_t hashType_en, uint8_t *ptr_inputKey, uint32_t keyLen);
+int32_t DRV_CRYPTO_HSMLITE_Hmac_Update(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx, uint8_t *ptr_inputData, uint32_t dataLen);
+int32_t DRV_CRYPTO_HSMLITE_Hmac_Final(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx, uint8_t *ptr_leftoverInData, uint32_t dataLen, uint8_t *ptr_OutputData);
         
-int32_t DRV_CRYPTO_HSMLITE_Hash_Status(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx);
+int32_t DRV_CRYPTO_HSMLITE_Hmac_Status(DRV_CRYPT_HSMLITE_HMAC_CTX *ptr_hmacCtx);
+
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 

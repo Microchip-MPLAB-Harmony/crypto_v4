@@ -81,7 +81,7 @@ typedef struct {
 }DRV_CRYPT_HSMLITE_AES_AEAD_CTX;
 
 typedef struct {
-   uint8_t data[220];
+   uint8_t data[232];
 }DRV_CRYPT_HSMLITE_AES_CMAC_CTX;
 
 
@@ -123,7 +123,9 @@ int32_t DRV_CRYPT_HSMLITE_AES_BLK_Crypt(DRV_CRYPT_HSMLITE_AES_CTX * ctx, uint8_t
 int32_t DRV_CRYPT_HSMLITE_AES_AEAD_Crypt(DRV_CRYPT_HSMLITE_AES_AEAD_CTX * ctx, uint8_t * dataIn, uint8_t * dataOut, uint32_t dataSize, uint8_t initial, uint8_t final, uint8_t * tag, uint32_t tagSz);
 int32_t DRV_CRYPT_HSMLITE_AES_CMAC_AddData(DRV_CRYPT_HSMLITE_AES_CMAC_CTX * ctx, uint8_t * dataIn, uint32_t dataSize);
 
-int32_t DRV_CRYPT_HSMLITE_AES_AEAD_ProduceCmac(DRV_CRYPT_HSMLITE_AES_CMAC_CTX * ctx, uint8_t * cmac, uint32_t cmacSz);
+int32_t DRV_CRYPT_HSMLITE_AES_CMAC_ProduceMac(DRV_CRYPT_HSMLITE_AES_CMAC_CTX * ctx, uint8_t * cmac, uint32_t cmacSz);
+int32_t DRV_CRYPTO_HSMLITE_AES_CmacDirect(DRV_CRYPT_HSMLITE_AES_CMAC_CTX *ctx, uint8_t *key, uint32_t keyLen, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_mac);
+
 
 int32_t  DRV_CRYPT_HSMLITE_AES_BLK_Status(DRV_CRYPT_HSMLITE_AES_CTX * ctx);
 int32_t  DRV_CRYPT_HSMLITE_AES_AEAD_Status(DRV_CRYPT_HSMLITE_AES_AEAD_CTX * ctx);

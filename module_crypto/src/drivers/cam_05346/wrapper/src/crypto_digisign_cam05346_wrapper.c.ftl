@@ -163,9 +163,15 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
 
     /* Initialize the hardware library for ECDSA signature */
     hwResult = DRV_CRYPTO_ECDSA_InitEccParamsSign(&eccData, inputHash, hashLen, privKey, privKeyLen, hwEccCurve);
+    
     lDRV_CRYPTO_ECDSA_InterruptSetup();
-    /* Generate the signature */
-    hwResult = DRV_CRYPTO_ECDSA_Sign(&eccData, outSig, sigLen);
+    
+    if(hwResult == CRYPTO_ECDSA_RESULT_SUCCESS)
+    {
+        /* Generate the signature */
+        hwResult = DRV_CRYPTO_ECDSA_Sign(&eccData, outSig, sigLen);
+    }
+    
     return lCrypto_DigSign_Ecdsa_Hw_MapResult(hwResult);
 }
 
@@ -205,10 +211,13 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
                                                     hwEccCurve);
 
     lDRV_CRYPTO_ECDSA_InterruptSetup();
-
-    /* Verify the signature */
-    hwResult = DRV_CRYPTO_ECDSA_Verify(&eccData);
-
+    
+    if(hwResult == CRYPTO_ECDSA_RESULT_SUCCESS)
+    {
+        /* Verify the signature */
+        hwResult = DRV_CRYPTO_ECDSA_Verify(&eccData);
+    }
+    
     /* Set verification status */
     if (hwResult == CRYPTO_ECDSA_RESULT_SUCCESS)
     {

@@ -99,6 +99,36 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E 
     return status;
 }
 
+static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength)
+{
+    crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
+
+    switch(shaAlgorithm)
+    {
+        case CRYPTO_HASH_SHA1:
+            *digestLength = 20;
+            break;
+        case CRYPTO_HASH_SHA2_224:
+            *digestLength = 28;
+            break;
+        case CRYPTO_HASH_SHA2_256:
+            *digestLength = 32;
+            break;
+        case CRYPTO_HASH_SHA2_384:
+            *digestLength = 48;
+            break;
+        case CRYPTO_HASH_SHA2_512:
+            *digestLength = 64;
+            break;
+        default:
+            *digestLength = 0;
+            status = CRYPTO_HASH_ERROR_FAIL;
+            break;
+    }
+
+    return status;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Hash Algorithms Common Interface Implementation
@@ -208,17 +238,31 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
 {
+    HASHCON_MODE mode;
+    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     CRYPTO_HASH_HW_CONTEXT shaCtx;
-    crypto_Hash_Status_E status = Crypto_Hash_Hw_Sha_Init(&shaCtx, shaAlgorithm_en);
+
+    status = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &mode);
 
     if (status == CRYPTO_HASH_SUCCESS)
     {
-        status = Crypto_Hash_Hw_Sha_Update(&shaCtx, data, dataLen);
-    }
+        HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
+        uint32_t digestLength = 0;
 
-    if (status == CRYPTO_HASH_SUCCESS)
-    {
-        status = Crypto_Hash_Hw_Sha_Final(&shaCtx, digest);
+        lDRV_CRYPTO_HASH_InterruptSetup();
+
+        shaCtx.algorithm = shaAlgorithm_en;
+        memset(shaCtx.contextData, 0, sizeof(shaCtx.contextData));
+
+        if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaAlgorithm_en, &digestLength))
+        {
+            hashStatus = DRV_CRYPTO_HASH_Digest(shaCtx.contextData, mode, data, dataLen, digest, digestLength);
+        }
+
+        if (hashStatus != HASH_NO_ERROR)
+        {
+            status = CRYPTO_HASH_ERROR_FAIL;
+        }
     }
 
     return status;

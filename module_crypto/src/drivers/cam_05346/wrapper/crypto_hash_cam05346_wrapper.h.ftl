@@ -68,7 +68,11 @@ Microchip or any third party.
 // *****************************************************************************
 
 // The minimum size to store a CAM library HASH context data block.
-#define MINIMUM_HASH_CONTEXT_DATA_SIZE  (384UL)
+#define MINIMUM_HASH_CONTEXT_DATA_SIZE        (384UL)
+
+/* The minimum size to store a CAM library HASH single-step digest context.
+ * A single-step digest operation doesn't need state, cache or padding space. */
+#define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (20UL)
 
 typedef struct
 {
@@ -78,6 +82,15 @@ typedef struct
   uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE];
 
 } CRYPTO_HASH_HW_CONTEXT;
+
+typedef struct
+{
+  crypto_Hash_Algo_E algorithm;
+
+  // This is used to store the CAM library context data.
+  uint8_t contextData[MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE];
+
+} CRYPTO_HASH_HW_DIGEST_CONTEXT;
 
 // *****************************************************************************
 // *****************************************************************************

@@ -148,7 +148,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     if (status == CRYPTO_HASH_SUCCESS)
     {
         shaCtx->algorithm = shaAlgorithm;
-        memset(shaCtx->contextData, 0, sizeof(shaCtx->contextData));
+        (void)memset(shaCtx->contextData, 0, sizeof(shaCtx->contextData));
         hashStatus = DRV_CRYPTO_HASH_Initialize(shaCtx->contextData, mode);
     }
 
@@ -254,7 +254,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
         shaDigestCtx.algorithm = shaAlgorithm_en;
         (void)memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
 
-        if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaAlgorithm_en, &digestLength))
+        if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaDigestCtx.algorithm, &digestLength))
         {
             hashStatus = DRV_CRYPTO_HASH_Digest(shaDigestCtx.contextData, mode, data, dataLen, digest, digestLength);
         }

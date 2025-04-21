@@ -171,7 +171,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx,
     if(status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
         // Context data must be cleared as the context may be on a stack versus static memory.
-        memset(aesCtx->contextData, 0, sizeof(aesCtx->contextData));
+        (void)memset(aesCtx->contextData, 0, sizeof(aesCtx->contextData));
 
         aesStatus = DRV_CRYPTO_AES_Initialize(aesCtx->contextData, mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     }

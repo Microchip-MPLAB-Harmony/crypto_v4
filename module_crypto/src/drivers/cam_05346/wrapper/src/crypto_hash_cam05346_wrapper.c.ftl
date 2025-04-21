@@ -252,7 +252,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
         lDRV_CRYPTO_HASH_InterruptSetup();
 
         shaDigestCtx.algorithm = shaAlgorithm_en;
-        memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
+        (void)memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
 
         if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaAlgorithm_en, &digestLength))
         {

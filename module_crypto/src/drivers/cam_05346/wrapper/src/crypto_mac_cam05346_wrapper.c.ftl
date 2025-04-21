@@ -61,7 +61,7 @@ Microchip or any third party.
 static void lDRV_CRYPTO_AES_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO1_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
 // *****************************************************************************

@@ -62,7 +62,7 @@ Microchip or any third party.
 static void lDRV_CRYPTO_ECDSA_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO3_INT, DRV_CRYPTO_ECDSA_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO3_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO3_INT);
 }
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(

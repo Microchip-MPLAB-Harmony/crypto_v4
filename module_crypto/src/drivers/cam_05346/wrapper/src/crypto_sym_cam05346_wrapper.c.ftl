@@ -69,7 +69,7 @@ Microchip or any third party.
 static void lCrypto_Sym_Hw_Aes_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO1_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
 static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E opMode,

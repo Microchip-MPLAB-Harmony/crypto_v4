@@ -61,7 +61,7 @@ Microchip or any third party.
 static void lDRV_CRYPTO_HASH_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_HASH_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO1_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
 static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm,

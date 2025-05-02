@@ -47,13 +47,13 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 #include <stdint.h>
-#include "config/default/crypto/drivers/wrapper/crypto_kas_cam05346_wrapper.h"
-#include "config/default/crypto/drivers/driver/cam_ecdh.h"
-#include "config/default/crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_kas_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/library/cam_ecdh.h"
 
 static void lDRV_CRYPTO_ECC_InterruptSetup(void)
 {
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO3_INT, DRV_CRYPTO_ECDH_IsrHelper);
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO3_INT, DRV_CRYPTO_PKE_IsrHelper);
     Crypto_Int_Hw_Enable(CRYPTO3_INT);
 }
 

@@ -129,7 +129,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesCmac
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_CTX;
     }
-    else if( (ptr_inputData == NULL) && (dataLen != 0ul) )
+    else if( (ptr_inputData == NULL) && (dataLen != 0UL) )
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_INPUTDATA;
     }
@@ -196,11 +196,11 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
                                                 uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
 {
     crypto_Mac_Status_E ret_aesCmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inputData == NULL) && (dataLen != 0ul) )
+    if( (ptr_inputData == NULL) && (dataLen != 0UL) )
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_INPUTDATA;
     }
-    else if( (ptr_outMac == NULL) || (macLen == 0ul) )
+    else if( (ptr_outMac == NULL) || (macLen == 0UL) )
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_MACDATA;
     }

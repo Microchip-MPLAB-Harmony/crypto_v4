@@ -49,7 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "crypto/drivers/wrapper/crypto_hash_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_hash.h"
 
 // *****************************************************************************
@@ -61,7 +61,7 @@ Microchip or any third party.
 static void lDRV_CRYPTO_HASH_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_HASH_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO1_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
 static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm,
@@ -148,7 +148,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     if (status == CRYPTO_HASH_SUCCESS)
     {
         shaCtx->algorithm = shaAlgorithm;
-        memset(shaCtx->contextData, 0, sizeof(shaCtx->contextData));
+        (void)memset(shaCtx->contextData, 0, sizeof(shaCtx->contextData));
         hashStatus = DRV_CRYPTO_HASH_Initialize(shaCtx->contextData, mode);
     }
 
@@ -252,9 +252,9 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
         lDRV_CRYPTO_HASH_InterruptSetup();
 
         shaDigestCtx.algorithm = shaAlgorithm_en;
-        memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
+        (void)memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
 
-        if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaAlgorithm_en, &digestLength))
+        if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaDigestCtx.algorithm, &digestLength))
         {
             hashStatus = DRV_CRYPTO_HASH_Digest(shaDigestCtx.contextData, mode, data, dataLen, digest, digestLength);
         }

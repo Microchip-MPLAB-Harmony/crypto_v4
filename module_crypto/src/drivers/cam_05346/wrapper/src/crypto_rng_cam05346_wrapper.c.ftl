@@ -49,7 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <xc.h>
 #include "crypto/drivers/wrapper/crypto_rng_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_trng.h"
 
 // *****************************************************************************
@@ -61,7 +61,7 @@ Microchip or any third party.
 static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO2_INT, DRV_CRYPTO_TRNG_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO2_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO2_INT);
 }
 
 // *****************************************************************************

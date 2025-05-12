@@ -49,7 +49,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include <string.h>
 #include "crypto/drivers/wrapper/crypto_mac_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_aes.h"
 
 // *****************************************************************************
@@ -61,7 +61,7 @@ Microchip or any third party.
 static void lDRV_CRYPTO_AES_InterruptSetup(void)
 {
     (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
-    Crypto_Int_Hw_Enable(CRYPTO1_INT);
+    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
 // *****************************************************************************
@@ -80,9 +80,14 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *cmacInitCtx, uint8_t *key, uin
     AESCON_OPERATION operation = OP_ENCRYPT;
 
     // Context data must be cleared as the context may be on a stack versus static memory.
-    memset(cmacCtx->contextData, 0, sizeof(cmacCtx->contextData));
+    (void)memset(cmacCtx->contextData, 0, sizeof(cmacCtx->contextData));
 
-    aesStatus = DRV_CRYPTO_AES_Initialize(cmacCtx->contextData, mode, operation, key, keyLen, NULL, 0U);
+    aesStatus = DRV_CRYPTO_AES_Initialize(cmacCtx->contextData, mode, key, keyLen, NULL, 0U);
+    if(aesStatus == AES_NO_ERROR)
+    {
+        aesStatus = DRV_CRYPTO_AES_SetOperation(cmacCtx->contextData, operation);
+    }
+
     if(aesStatus == AES_NO_ERROR)
     {
         lDRV_CRYPTO_AES_InterruptSetup();

@@ -93,49 +93,25 @@ static uint32_t lCrypto_Aead_Hw_Aes_GetPadBytes(uint32_t dataLen)
     return pad;
 }
 
-static uint32_t lCrypto_Aead_Hw_CompareBytes(uint8_t *cmp1, uint8_t *cmp2, uint32_t cmpLen)
+static uint32_t lCrypto_Aead_Hw_CompareAsBytes(uint8_t *cmp1, uint8_t *cmp2, uint32_t cmpLen)
 {
-    uint8_t *c1 = (uint8_t *)cmp1;
-    uint8_t *c2 = (uint8_t *)cmp2;
-    int32_t len = (int32_t)cmpLen;
-    uint32_t result = 0;
+    register uint8_t* c1 = cmp1;
+    register uint8_t* c2 = cmp2;
+    register int32_t len = (int32_t)cmpLen;
+    uint32_t result = 0UL;
 
     while (len > 0L)
     {
-        // If at least four bytes left and the pointers are aligned to a 4-byte boundary, compare as uint32_t.
-        if ((len >= (int32_t)sizeof(uint32_t)) &&
-            ( (((uint32_t)c1 & 0x3UL) == 0UL) && (((uint32_t)c2 & 0x3UL) == 0UL) ))
+        if (*c1 != *c2)
         {
-            if (*(uint32_t *)c1 != *(uint32_t *)c2)
-            {
-                result = 1UL;
-                break;
-            }
-
-            len -= (int32_t)sizeof(uint32_t);
+            result = 1UL;
+            break;
         }
-        // If at least two bytes left and the pointers are at least aligned to a 2-byte boundary, compare as uint16_t.
-        else if ((len >= (int32_t)sizeof(uint16_t)) &&
-                 ( (((uint32_t)c1 & 0x1UL) == 0UL) && (((uint32_t)c2 & 0x1UL) == 0UL) ))
-        {
-            if (*(uint16_t *)c1 != *(uint16_t *)c2)
-            {
-                result = 1UL;
-                break;
-            }
-
-            len -= (int32_t)sizeof(uint16_t);
-        }
-        // If the pointers are either not aligned or didn't pass earlier checks, compare the single bytes.
         else
         {
-            if (*c1 != *c2)
-            {
-                result = 1UL;
-                break;
-            }
-
-            len -= (int32_t)sizeof(uint8_t);
+            len--;
+            c1++;
+            c2++;
         }
     }
 
@@ -343,7 +319,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
         if (result == CRYPTO_AEAD_CIPHER_SUCCESS)
         {
             // The tag must be verified against what was calculated.
-            if (0UL != lCrypto_Aead_Hw_CompareBytes(generatedAuthTag, authTag, authTagLen))
+            if (0UL != lCrypto_Aead_Hw_CompareAsBytes(generatedAuthTag, authTag, authTagLen))
             {
                 result = CRYPTO_AEAD_ERROR_AUTHFAIL;
             }

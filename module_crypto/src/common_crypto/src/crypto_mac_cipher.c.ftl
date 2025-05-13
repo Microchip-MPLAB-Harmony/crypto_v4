@@ -87,7 +87,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesCmacCt
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0U) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_SID;
     }
@@ -129,7 +129,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesCmac
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_CTX;
     }
-    else if( (ptr_inputData == NULL) && (dataLen != 0ul) )
+    else if( (ptr_inputData == NULL) && (dataLen != 0UL) )
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_INPUTDATA;
     }
@@ -164,7 +164,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Final(st_Crypto_Mac_Aes_ctx *ptr_aesCmacC
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_CTX;
     }
-    else if(ptr_outMac == NULL || macLen == 0u)
+    else if(ptr_outMac == NULL || macLen == 0U)
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_MACDATA;
     }
@@ -196,11 +196,11 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
                                                 uint8_t *ptr_outMac, uint32_t macLen, uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
 {
     crypto_Mac_Status_E ret_aesCmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
-    if( (ptr_inputData == NULL) && (dataLen != 0ul) )
+    if( (ptr_inputData == NULL) && (dataLen != 0UL) )
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_INPUTDATA;
     }
-    else if( (ptr_outMac == NULL) || (macLen == 0ul) )
+    else if( (ptr_outMac == NULL) || (macLen == 0UL) )
     {
         ret_aesCmacStat_en = CRYPTO_MAC_ERROR_MACDATA;
     }
@@ -208,7 +208,7 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0U) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesCmacStat_en =  CRYPTO_MAC_ERROR_SID;
     }
@@ -251,7 +251,7 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCt
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0U) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_SID;
     }
@@ -290,7 +290,7 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesGmac
     {
         ret_aesGmacStat_en = CRYPTO_MAC_ERROR_CTX;
     }
-    else if( (ptr_aad == NULL) && (aadLen > 0u) )
+    else if( (ptr_aad == NULL) && (aadLen > 0U) )
     {
         ret_aesGmacStat_en = CRYPTO_MAC_ERROR_AAD;
     }
@@ -319,11 +319,11 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
                                                                                                   uint32_t keyLen, uint8_t *ptr_aad, uint32_t aadLen, uint32_t sessionID)
 {
     crypto_Mac_Status_E ret_aesGmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
-    if( (ptr_initVect == NULL) || (initVectLen == 0u) )
+    if( (ptr_initVect == NULL) || (initVectLen == 0U) )
     {
         ret_aesGmacStat_en = CRYPTO_MAC_ERROR_INPUTDATA;
     }
-    else if( (ptr_outMac == NULL) || (macLen == 0u) )
+    else if( (ptr_outMac == NULL) || (macLen == 0U) )
     {
         ret_aesGmacStat_en = CRYPTO_MAC_ERROR_MACDATA;
     }
@@ -331,11 +331,11 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_KEY;
     }
-    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0U) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_aesGmacStat_en =  CRYPTO_MAC_ERROR_SID;
     }
-    else if( (ptr_aad == NULL) && (aadLen > 0u) )
+    else if( (ptr_aad == NULL) && (aadLen > 0U) )
     {
         ret_aesGmacStat_en = CRYPTO_MAC_ERROR_AAD;
     }
@@ -378,7 +378,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st,
     {
         ret_hmacStat_en = CRYPTO_MAC_ERROR_HASHTYPE;
     }
-    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0U) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_SID;
     }
@@ -489,7 +489,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, 
     {
         ret_hmacStat_en = CRYPTO_MAC_ERROR_HASHTYPE;
     }
-    else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
+    else if( (sessionID == 0U) || (sessionID > (uint32_t)CRYPTO_MAC_SESSION_MAX) )
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_SID;
     }

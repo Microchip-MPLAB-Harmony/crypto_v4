@@ -82,11 +82,7 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *cmacInitCtx, uint8_t *key, uin
     // Context data must be cleared as the context may be on a stack versus static memory.
     (void)memset(cmacCtx->contextData, 0, sizeof(cmacCtx->contextData));
 
-    aesStatus = DRV_CRYPTO_AES_Initialize(cmacCtx->contextData, mode, key, keyLen, NULL, 0U);
-    if(aesStatus == AES_NO_ERROR)
-    {
-        aesStatus = DRV_CRYPTO_AES_SetOperation(cmacCtx->contextData, operation);
-    }
+    aesStatus = DRV_CRYPTO_AES_Initialize(cmacCtx->contextData, mode, operation, key, keyLen, NULL, 0U);
 
     if(aesStatus == AES_NO_ERROR)
     {

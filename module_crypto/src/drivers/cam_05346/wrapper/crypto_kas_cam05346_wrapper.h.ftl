@@ -53,7 +53,7 @@ extern "C" {
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "config/default/crypto/common_crypto/crypto_common.h"
+#include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_kas.h"
     
 crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 

@@ -47,7 +47,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "crypto/drivers/wrapper/crypto_aead_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_common_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
 #include "crypto/drivers/library/cam_aes.h"
 
 <#if (CRYPTO_HW_AES_CCM?? && (CRYPTO_HW_AES_CCM == true))>
@@ -389,7 +389,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
 
     if (result == CRYPTO_AEAD_CIPHER_SUCCESS)
     {
-        Crypto_Aead_Hw_AesGcm_Cipher(&aeadCtx, inputData, dataLen, outData);
+        result = Crypto_Aead_Hw_AesGcm_Cipher(&aeadCtx, inputData, dataLen, outData);
     }
 
     if (result == CRYPTO_AEAD_CIPHER_SUCCESS)

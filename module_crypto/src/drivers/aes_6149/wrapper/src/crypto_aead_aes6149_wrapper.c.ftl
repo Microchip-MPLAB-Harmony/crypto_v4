@@ -245,9 +245,12 @@ static void lCrypto_Aead_Hw_Gcm_RunBlocks(uint32_t *in, uint32_t byteLen,
         return;
     }
     
-    uint32_t blockLen = byteLen / 4UL;
-    uint32_t block;   /* 4 32bit block size */
-    for (block = 0; block < blockLen; block += 4UL)
+    uint32_t numFullBlocks = byteLen / 16UL;
+    uint32_t remainingBytes = byteLen % 16UL;
+    
+    /* Process all full 16-byte blocks */
+    uint32_t i;
+    for (i = 0; i < numFullBlocks; i++)
     {
         /* Write the data to be ciphered to the input data registers. */
         DRV_CRYPTO_AES_WriteInputData(in);
@@ -267,11 +270,12 @@ static void lCrypto_Aead_Hw_Gcm_RunBlocks(uint32_t *in, uint32_t byteLen,
         }
     }
     
-    uint32_t numBytes = byteLen % 16UL;
-    if (numBytes > 0UL)
+    /* Process the final partial block, if any */
+    if (remainingBytes > 0UL)
     {
         uint32_t partialPlusPad[4] = {0};
-        (void) memcpy(partialPlusPad, in, numBytes);
+        /* Copy the remaining bytes into the buffer, pad with zeros */
+        (void) memcpy(partialPlusPad, in, remainingBytes);
         
         /* Write the data to be ciphered to the input data registers. */
         DRV_CRYPTO_AES_WriteInputData(partialPlusPad);
@@ -289,38 +293,10 @@ static void lCrypto_Aead_Hw_Gcm_RunBlocks(uint32_t *in, uint32_t byteLen,
             /* Cipher complete - read out the data */
             DRV_CRYPTO_AES_ReadOutputData(completeOut);
             
-            if (numBytes >= 4UL)
-            {
-                *out++ = completeOut[0];
-                if (numBytes >= 8UL)
-                {
-                    *out++ = completeOut[1];
-                    if (numBytes >= 12UL)
-                    {
-                        *out++ = completeOut[2];
-                        if (numBytes > 12UL)
-                        {
-                            uint32_t tmp = completeOut[3];
-                            (void) memcpy(out, &tmp, (numBytes - 12UL));                                                
-                        }
-                    }
-                    else
-                    {
-                        uint32_t tmp = completeOut[2];
-                        (void) memcpy(out, &tmp, (numBytes - 8UL));                    
-                    }
-                }
-                else
-                {
-                    uint32_t tmp = completeOut[1];
-                    (void) memcpy(out, &tmp, (numBytes - 4UL));                    
-                }
-            }
-            else
-            {
-                uint32_t tmp = completeOut[0];
-                (void) memcpy(out, &tmp, numBytes);
-            }
+            /* Copy only the valid output bytes */
+            uint8_t *outBytes = (uint8_t *)out;
+            uint8_t *srcBytes = (uint8_t *)completeOut;
+            memcpy(outBytes, srcBytes, remainingBytes);
         }
     }
 }
@@ -330,9 +306,14 @@ static void lCrypto_Aead_Hw_Gcm_CmpMsgWithTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     uint8_t *outData, uint8_t *aad, uint32_t aadLen, uint8_t *tag, 
     uint32_t tagLen)
 {
+    (void)tagLen;
+    
     /* Calculate the J0 value */
     gcmCtx->invokeCtr[0] = 0x02000000;
     lCrypto_Aead_Hw_Gcm_GenerateJ0(gcmCtx, iv, ivLen);
+    
+    /* Restart the driver */
+    DRV_CRYPTO_AES_Init();
     
     /* Enable tag generation in driver */
     aesGcmCfg.gtagEn = 1;
@@ -408,6 +389,9 @@ static void lCrypto_Aead_Hw_Gcm_1stMsgFrag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     /* Calculate the J0 value */
     gcmCtx->invokeCtr[0] = 0x02000000;
     lCrypto_Aead_Hw_Gcm_GenerateJ0(gcmCtx, iv, ivLen);
+    
+    /* Restart the driver */
+    DRV_CRYPTO_AES_Init();
     
     /* Disable tag generation in driver */
     aesGcmCfg.gtagEn = 0;
@@ -492,6 +476,18 @@ static void lCrypto_Aead_Hw_Gcm_MoreMsgFrag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     DRV_CRYPTO_AES_ReadGcmH(gcmCtx->H);
 }
 
+static void lCrypto_Aead_Hw_Gcm_Write_BigEndian64(uint8_t *out, uint64_t val)
+{
+    out[0] = (uint8_t)(val >> 56);
+    out[1] = (uint8_t)(val >> 48);
+    out[2] = (uint8_t)(val >> 40);
+    out[3] = (uint8_t)(val >> 32);
+    out[4] = (uint8_t)(val >> 24);
+    out[5] = (uint8_t)(val >> 16);
+    out[6] = (uint8_t)(val >> 8);
+    out[7] = (uint8_t)(val);
+}
+
 static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     uint32_t dataLen, uint32_t aadLen, uint8_t *tag, uint32_t tagLen)
 {
@@ -511,20 +507,12 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     DRV_CRYPTO_AES_WriteGcmHash(gcmCtx->intermediateHash);
     
     /* Fill input data with lengths in bits */
-    aadLen = aadLen * 8UL;
-    dataLen = dataLen * 8UL;
-    uint32_t lenIn[4] = {0};
-    lenIn[1] = (((aadLen << 24U) & 0xFF000000UL) | 
-                ((aadLen << 8U) & 0x00FF0000UL) |
-                ((aadLen >> 8U) & 0x0000FF00UL) |
-                ((aadLen >> 24U) & 0x000000FFUL));
-    lenIn[3] = (((dataLen << 24U) & 0xFF000000UL) | 
-                ((dataLen << 8U) & 0x00FF0000UL) |
-                ((dataLen >> 8U) & 0x0000FF00UL) |
-                ((dataLen >> 24U) & 0x000000FFUL));
+    uint8_t lenBlock[16];
+    lCrypto_Aead_Hw_Gcm_Write_BigEndian64(lenBlock, ((uint64_t)aadLen) * 8UL);
+    lCrypto_Aead_Hw_Gcm_Write_BigEndian64(lenBlock + 8UL, ((uint64_t)dataLen) * 8UL);
     
     /* Write the data to be ciphered to the input data registers. */
-    DRV_CRYPTO_AES_WriteInputData(lenIn);
+    DRV_CRYPTO_AES_WriteInputData((uint32_t*)lenBlock);
         
     /* Wait for the cipher process to end */
     while (!DRV_CRYPTO_AES_CipherIsReady())
@@ -569,6 +557,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateTag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     (void) memcpy(tag, (uint8_t*)gcmTag, tagLen);
 }
 </#if><#-- CRYPTO_HW_AES_GCM -->
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: AEAD Algorithms Common Interface Implementation
@@ -610,10 +599,10 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *gcmInitCtx,
     uint32_t i;
     for (i = 0; i < (keyLen / 4UL); i++)
     {
-        gcmCtx->key[i]  = ((uint32_t) *key++) << 24UL;
-        gcmCtx->key[i] += ((uint32_t) *key++) << 16UL;
+        gcmCtx->key[i]  = ((uint32_t) *key++);
         gcmCtx->key[i] += ((uint32_t) *key++) << 8UL;
-        gcmCtx->key[i] += ((uint32_t) *key++);
+        gcmCtx->key[i] += ((uint32_t) *key++) << 16UL;
+        gcmCtx->key[i] += ((uint32_t) *key++) << 24UL;
     }
     
     return CRYPTO_AEAD_CIPHER_SUCCESS;

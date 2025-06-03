@@ -73,6 +73,8 @@ typedef struct
     uint32_t intermediateHash[4];
     uint32_t H[4];
     uint32_t invokeCtr[2];
+    uint32_t totalDataLen;
+    uint32_t totalAadLen;
 } CRYPTO_GCM_HW_CONTEXT;
 </#if><#-- CRYPTO_HW_AES_GCM -->
 

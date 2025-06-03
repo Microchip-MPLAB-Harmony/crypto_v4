@@ -430,6 +430,10 @@ static void lCrypto_Aead_Hw_Gcm_1stMsgFrag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     /* Read hash */
     DRV_CRYPTO_AES_ReadGcmHash(gcmCtx->intermediateHash);
     DRV_CRYPTO_AES_ReadGcmH(gcmCtx->H);
+    
+    /* Accumulate lengths */
+    gcmCtx->totalDataLen += dataLen;
+    gcmCtx->totalAadLen += aadLen;
 }
 
 static void lCrypto_Aead_Hw_Gcm_MoreMsgFrag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
@@ -474,6 +478,9 @@ static void lCrypto_Aead_Hw_Gcm_MoreMsgFrag(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
     /* Read hash */
     DRV_CRYPTO_AES_ReadGcmHash(gcmCtx->intermediateHash);
     DRV_CRYPTO_AES_ReadGcmH(gcmCtx->H);
+    
+    /* Accumulate length */
+    gcmCtx->totalDataLen += dataLen;
 }
 
 static void lCrypto_Aead_Hw_Gcm_Write_BigEndian64(uint8_t *out, uint64_t val)
@@ -647,8 +654,8 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
             lCrypto_Aead_Hw_Gcm_GenerateJ0(gcmCtx, initVect, initVectLen);
         }
         
-        lCrypto_Aead_Hw_Gcm_GenerateTag(gcmCtx, dataLen, aadLen, authTag, 
-                authTagLen);
+        lCrypto_Aead_Hw_Gcm_GenerateTag(gcmCtx, gcmCtx->totalDataLen, 
+                            gcmCtx->totalAadLen, authTag, authTagLen);
     }
     
     return CRYPTO_AEAD_CIPHER_SUCCESS;

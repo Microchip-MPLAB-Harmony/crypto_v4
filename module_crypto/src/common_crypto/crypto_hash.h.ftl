@@ -65,12 +65,12 @@ typedef enum {
     CRYPTO_HASH_SHA1 = 1,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA1 || CRYPTO_HW_SHA1 || CRYPTO_ICM11105_SHA1 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_224 == true)))
-    || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true)) 
+    || (CRYPTO_HW_SHA2_224?? &&(CRYPTO_HW_SHA2_224 == true))
     || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true))>
     CRYPTO_HASH_SHA2_224 = 2,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA2_224 || CRYPTO_HW_SHA2_224 || CRYPTO_ICM11105_SHA2_224 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_256 == true)))
-    || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true)) 
+    || (CRYPTO_HW_SHA2_256?? &&(CRYPTO_HW_SHA2_256 == true))
     || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>
     CRYPTO_HASH_SHA2_256 = 3,
 </#if><#-- CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 -->
@@ -81,7 +81,7 @@ typedef enum {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512 == true)))
     || (CRYPTO_HW_SHA2_512?? &&(CRYPTO_HW_SHA2_512 == true))>
     CRYPTO_HASH_SHA2_512 = 5,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA2_512 || CRYPTO_HW_SHA2_512 --> 
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA2_512 || CRYPTO_HW_SHA2_512 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 == true)))
     || (CRYPTO_HW_SHA2_512_224?? &&(CRYPTO_HW_SHA2_512_224 == true))>
     CRYPTO_HASH_SHA2_512_224 = 6,
@@ -114,7 +114,7 @@ typedef enum {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)))>
     CRYPTO_HASH_BLAKE2S = 15,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_BLAKE2S -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))) 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)))
     || (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
     CRYPTO_HASH_MD5 = 16,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_MD5 || CRYPTO_HW_MD5 -->
@@ -137,7 +137,7 @@ typedef enum {
     CRYPTO_HASH_ERROR_FAIL = -118,
     CRYPTO_HASH_SUCCESS = 0
 }crypto_Hash_Status_E;
-<#if     (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true))) 
+<#if     (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_MD5?? &&(lib_wolfcrypt.CRYPTO_WC_MD5 == true)))
     ||     (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
 
 //MD5 Algorithm
@@ -271,7 +271,7 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Update(st_Crypto_Hash_Blake_Ctx * ptr_bla
 crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blakeCtx_st, uint8_t *ptr_digest);
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_BLAKE2S || lib_wolfcrypt.CRYPTO_WC_BLAKE2B -->
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) 
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))
         || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
         || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
         || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>

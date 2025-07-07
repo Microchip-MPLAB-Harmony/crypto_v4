@@ -291,7 +291,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     fill = blockSizeBytes - left;
     shaCtx->totalLen += dataLen;
 
-    if ((left & dataLen) >= fill)
+    if ((left != 0U) && (dataLen >= fill))
     {
         (void) memcpy((shaCtx->buffer + left), data, fill);
         
@@ -313,19 +313,14 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 </#if>
 </#if>
         /* MISRA C-2012 deviation block end */
-
-        for (uint32_t x = 0; x < dataLen; x += blockSizeBytes)
-        {
-            DRV_CRYPTO_SHA_Update(localBuffer, blockSizeWords);
-            localBuffer += (uint32_t)blockSizeWords;
-        }
         
+        DRV_CRYPTO_SHA_Update(localBuffer, blockSizeWords);
         data += fill;
         dataLen -= fill;
         left = 0;
     }
 
-    if (dataLen >= blockSizeBytes)
+    while (dataLen >= blockSizeBytes)
     {
         /* MISRA C-2012 deviation block start */
         /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
@@ -336,7 +331,8 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 </#if>
 #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
 </#if>
-        DRV_CRYPTO_SHA_Update((uint32_t *)data, blockSizeWords);
+        /* Load message */
+        localBuffer = (uint32_t *)data;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
 <#if core.COMPILER_CHOICE == "XC32">
@@ -344,6 +340,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 </#if>
 </#if>
         /* MISRA C-2012 deviation block end */
+        DRV_CRYPTO_SHA_Update(localBuffer, blockSizeWords);
         data += blockSizeBytes;
         dataLen -= blockSizeBytes; 
     }
@@ -388,9 +385,10 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     blockSizeBytes = lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(shaCtx->algo);
     paddingSizeBytes = lCrypto_Hash_Hw_Sha_GetPaddingSizeBytes(shaCtx->algo);
    
-    /* Get the number of bits */    
+    /* Get the number of bits before padding */    
     uint64_t totalBits = shaCtx->totalLen << 3;
     
+    /* Add padding */
     last = ((uint32_t)(shaCtx->totalLen)) & ((uint32_t)(blockSizeBytes - 1UL));
     if (last < paddingSizeBytes)
     { 

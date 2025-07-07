@@ -328,4 +328,3 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
 
     return result;
 }
-</#if><#-- CRYPTO_HW_AES_GCM -->

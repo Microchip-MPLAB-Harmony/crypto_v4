@@ -79,7 +79,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true))) || ((CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesCcmCtx_st, crypto_HandlerType_E handlerType_en,
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
 {
@@ -115,14 +115,9 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesC
                 break;
 </#if><#-- CRYPTO_WC_AES_CCM -->
 
-<#if (CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
-                    ret_aesCcmStat_en = Crypto_Aead_Hw_AesCcm_Init((void*)ptr_aesCcmCtx_st->arr_aeadDataCtx, ptr_aesCcmCtx_st->ptr_key, ptr_aesCcmCtx_st->aeadKeySize);
-</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
+            
                 break;
-
-</#if><#-- CRYPTO_HW_AES_CCM -->
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;
@@ -184,15 +179,9 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
                 break;
 </#if><#-- CRYPTO_WC_AES_CCM -->
 
-<#if (CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
-                ret_aesCcmStat_en =  Crypto_Aead_Hw_AesCcm_Cipher(ptr_aesCcmCtx_st->arr_aeadDataCtx, cipherOper_en, ptr_inputData, dataLen,
-                                                        ptr_outData, ptr_nonce, nonceLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
-                break;
 
-</#if><#-- CRYPTO_HW_AES_CCM -->
+                break;
             default:
                 ret_aesCcmStat_en = CRYPTO_AEAD_ERROR_HDLR;
                 break;

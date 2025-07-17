@@ -55,7 +55,7 @@
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define CRYPTO_HASH_SHA512CTX_SIZE (512)
+#define CRYPTO_HASH_SHA512CTX_SIZE (608)
 
 typedef enum {
     CRYPTO_HASH_INVALID = 0,

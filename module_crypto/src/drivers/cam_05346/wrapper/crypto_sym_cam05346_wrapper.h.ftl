@@ -66,7 +66,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 // The minimum size to store a CAM library AES context data block.
-#define MINIMUM_AES_CONTEXT_DATA_SIZE  (56UL)
+#define MINIMUM_AES_CONTEXT_DATA_SIZE  (252UL)
 
 typedef struct
 {

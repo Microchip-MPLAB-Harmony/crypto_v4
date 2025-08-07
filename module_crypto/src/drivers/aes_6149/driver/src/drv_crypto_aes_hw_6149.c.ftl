@@ -235,8 +235,9 @@ CRYPTO_AES_KEY_SIZE DRV_CRYPTO_AES_GetKeySize(uint32_t keyLen)
 
 void DRV_CRYPTO_AES_WriteKey(const uint32_t *key)
 {
-    uint8_t i, keyLen;
     uint32_t keySize;
+    uint8_t keyLen;
+    uint8_t i;
             
     keySize = (AES_REGS->AES_MR & AES_MR_KEYSIZE_Msk) >> AES_MR_KEYSIZE_Pos;
     
@@ -323,23 +324,15 @@ void DRV_CRYPTO_AES_WritePCTextLen(uint32_t length)
 bool DRV_CRYPTO_AES_CipherIsReady(void)
 {
     uint32_t datRdy = AES_REGS->AES_ISR & AES_ISR_DATRDY_Msk;
-    if (datRdy != 0U)
-    { 
-        return true;
-    }
     
-    return false;
+    return ((datRdy != 0U) ? true : false);
 }
 
 bool DRV_CRYPTO_AES_TagIsReady(void)
 {
     uint32_t tagRdy = AES_REGS->AES_ISR & AES_ISR_TAGRDY_Msk;
-    if (tagRdy != 0U)
-    { 
-        return true;
-    }
     
-    return false;
+    return ((tagRdy != 0U) ? true : false);
 }
 
 void DRV_CRYPTO_AES_ReadGcmHash(uint32_t *ghashBuffer)

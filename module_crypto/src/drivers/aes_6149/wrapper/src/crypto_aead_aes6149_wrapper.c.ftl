@@ -109,7 +109,7 @@ static void lCrypto_Aead_Hw_Gcm_GenerateJ0(CRYPTO_GCM_HW_CONTEXT *gcmCtx,
 
     /* Configure AADLEN with: len(IV || 0s+64 || [len(IV)]64) */
     uint32_t numFullBlocks = ivLen / 16UL;
-    if (ivLen % 16UL > 0UL)
+    if ((ivLen % 16UL) > 0UL)
     {
         // This is questionable. The formula says to use the bit size.
         // But the register description is byte size.
@@ -296,7 +296,7 @@ static void lCrypto_Aead_Hw_Gcm_RunBlocks(uint32_t *in, uint32_t byteLen,
             /* Copy only the valid output bytes */
             uint8_t *outBytes = (uint8_t *)out;
             uint8_t *srcBytes = (uint8_t *)completeOut;
-            memcpy(outBytes, srcBytes, remainingBytes);
+            (void) memcpy(outBytes, srcBytes, remainingBytes);
         }
     }
 }
@@ -622,7 +622,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *gcmCipherCtx,
 {
     CRYPTO_GCM_HW_CONTEXT *gcmCtx = (CRYPTO_GCM_HW_CONTEXT*)gcmCipherCtx;
     
-    if (dataLen != 0U || aadLen != 0U)
+    if ((dataLen != 0U) || (aadLen != 0U))
     {
         if (gcmCtx->invokeCtr[0] == 0UL)
         {

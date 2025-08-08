@@ -262,8 +262,7 @@ void DRV_CRYPTO_AES_WriteKey(const uint32_t *key)
 
     for (i = 0; i < keyLen; i++) 
     {
-        AES_REGS->AES_KEYWR[i] = *key;
-        key++;
+        AES_REGS->AES_KEYWR[i] = key[i];
     }
 }
 
@@ -273,8 +272,7 @@ void DRV_CRYPTO_AES_WriteInitVector(const uint32_t *iv)
     
     for (i = 0; i < 4U; i++)
     {
-        AES_REGS->AES_IVR[i] = *iv;
-        iv++;        
+        AES_REGS->AES_IVR[i] = iv[i];       
     }
 }
 
@@ -284,8 +282,7 @@ void DRV_CRYPTO_AES_WriteInputData(const uint32_t *inputDataBuffer)
 
     for (i = 0; i < 4U; i++) 
     {
-        AES_REGS->AES_IDATAR[i] = *inputDataBuffer;
-        inputDataBuffer++;
+        AES_REGS->AES_IDATAR[i] = inputDataBuffer[i];
     }
 }
 
@@ -295,8 +292,7 @@ void DRV_CRYPTO_AES_ReadOutputData(uint32_t *outputDataBuffer)
 	
     for (i = 0; i < 4U; i++) 
     {
-        *outputDataBuffer = AES_REGS->AES_ODATAR[i];
-        outputDataBuffer++;
+        outputDataBuffer[i] = AES_REGS->AES_ODATAR[i];
     }
 }
 
@@ -306,8 +302,7 @@ void DRV_CRYPTO_AES_ReadTag(uint32_t *tagBuffer)
 	
     for (i = 0; i < 4U; i++) 
     {
-        *tagBuffer = AES_REGS->AES_TAGR[i];
-        tagBuffer++;
+        tagBuffer[i] = AES_REGS->AES_TAGR[i];
     }
 }
 
@@ -341,8 +336,7 @@ void DRV_CRYPTO_AES_ReadGcmHash(uint32_t *ghashBuffer)
 
     for (i = 0; i < 4U; i++) 
     {
-        *ghashBuffer = AES_REGS->AES_GHASHR[i];
-        ghashBuffer++;
+        ghashBuffer[i] = AES_REGS->AES_GHASHR[i];
     }
 }
 
@@ -362,8 +356,7 @@ void DRV_CRYPTO_AES_ReadGcmH(uint32_t *hBuffer)
 
     for (i = 0; i < 4U; i++) 
     {
-        *hBuffer = AES_REGS->AES_GCMHR[i];
-        hBuffer++;
+        hBuffer[i] = AES_REGS->AES_GCMHR[i];
     }
 }
 
@@ -374,8 +367,7 @@ void DRV_CRYPTO_AES_WriteTweak(const uint32_t *tweakBuffer)
 
     for (i = 0; i < 4U; i++) 
     {
-        AES_REGS->AES_TWR[i] = *tweakBuffer;
-        tweakBuffer++;
+        AES_REGS->AES_TWR[i] = tweakBuffer[i];
     }
 }
 
@@ -385,8 +377,7 @@ void DRV_CRYPTO_AES_WriteAlpha(const uint32_t *alphaBuffer)
 
     for (i = 0; i < 4U; i++) 
     {
-        AES_REGS->AES_ALPHAR[i] = *alphaBuffer;
-        alphaBuffer++;
+        AES_REGS->AES_ALPHAR[i] = alphaBuffer[i];
     }
 }
 </#if>

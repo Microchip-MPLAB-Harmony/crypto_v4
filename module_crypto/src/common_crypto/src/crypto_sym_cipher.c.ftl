@@ -79,7 +79,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-<#if !( 
+<#if !(
     (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? && lib_wolfcrypt.CRYPTO_WC_AES_CBC)) ||
     (CRYPTO_HW_AES_CBC?? && CRYPTO_HW_AES_CBC) ||
     (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? && lib_wolfcrypt.CRYPTO_WC_AES_CTR)) ||
@@ -152,9 +152,9 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
                 )
             )//key length check for XTS mode
     {
-        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
+        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;
     }
-</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->       
+</#if><#-- CRYPTO_WC_AES_XTS || CRYPTO_HW_AES_XTS -->
     else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
@@ -358,6 +358,7 @@ crypto_Sym_Status_E Crypto_Sym_AesXts_Cipher(st_Crypto_Sym_BlockCtx *ptr_aesCtx_
 </#if><#-- CRYPTO_WC_AES_XTS -->
 <#if (CRYPTO_HW_AES_XTS?? &&(CRYPTO_HW_AES_XTS == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
+                ret_aesXtsStat_en = Crypto_Sym_Hw_AesXts_Cipher(ptr_aesCtx_st->arr_symDataCtx, ptr_inputData, dataLen, ptr_outData, ptr_tweak);
                 break;
 </#if><#-- CRYPTO_HW_AES_XTS -->
             default:
@@ -404,9 +405,9 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
                             && (keyLen != (uint32_t)(((uint32_t)CRYPTO_AESKEYSIZE_256)*2UL))
             )//key length check for XTS mode
     {
-        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
+        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;
     }
-</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->  
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
     else if( (sessionID == 0u ) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
@@ -414,7 +415,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_EncryptDirect(crypto_HandlerType_E handlerTyp
     else if( (ptr_initVect == NULL)
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->                       
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -485,9 +486,9 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
                 )
             )//key length check for XTS mode
     {
-        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;;
+        ret_aesStatus_en =  CRYPTO_SYM_ERROR_KEY;
     }
-</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS --> 
+</#if><#-- CRYPTO_WC_AES_XTS|| CRYPTO_HW_AES_XTS -->
     else if( (sessionID == 0u) || (sessionID > (uint32_t)CRYPTO_SYM_SESSION_MAX) )
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
@@ -495,7 +496,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_DecryptDirect(crypto_HandlerType_E handlerTyp
     else if( (ptr_initVect == NULL)
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
-</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->               
+</#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->
             )
     {
         ret_aesStatus_en = CRYPTO_SYM_ERROR_IV;
@@ -1296,7 +1297,7 @@ crypto_Sym_Status_E Crypto_Sym_ChaCha20Direct(crypto_HandlerType_E handlerType_e
 }
 </#if><#-- CRYPTO_WC_CHACHA20  -->
 
-<#if !( 
+<#if !(
     (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CBC?? && lib_wolfcrypt.CRYPTO_WC_AES_CBC)) ||
     (CRYPTO_HW_AES_CBC?? && CRYPTO_HW_AES_CBC) ||
     (lib_wolfcrypt?? && (lib_wolfcrypt.CRYPTO_WC_AES_CTR?? && lib_wolfcrypt.CRYPTO_WC_AES_CTR)) ||

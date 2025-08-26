@@ -181,16 +181,45 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_Direct(AESCON_MODE mode, AESCON_OP
     if(aesStatus == AES_NO_ERROR)
     {
         lCrypto_Sym_Hw_Aes_InterruptSetup();
-        /* AES block cipher/decipher only operates upon block-size aligned data.
-         * Since the full input data is being processed as one block, its size
-         * must be aligned to the AES block size. */
-        uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
-        uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
-        aesStatus = DRV_CRYPTO_AES_AddInputData(aesContext, inputData, fullBlockLen);
-        if(aesStatus == AES_NO_ERROR)
+
+        if (mode == MODE_XTS)
         {
-            aesStatus = DRV_CRYPTO_AES_AddOutputData(aesContext, outData, fullBlockLen);
+            aesStatus = DRV_CRYPTO_AES_AddTweakData(aesContext, initVect, AES_SYM_XTS_TWEAK_LENGTH);
+            if(aesStatus == AES_NO_ERROR)
+            {
+                /* XTS block cipher accepts the given input data length and the AES driver
+                * automatically pads to the next block size, marking the extra bytes as
+                * invalid. */
+                aesStatus = DRV_CRYPTO_AES_AddInputData(aesContext, inputData, dataLen);
+            }
+
+            if(aesStatus == AES_NO_ERROR)
+            {
+                aesStatus = DRV_CRYPTO_AES_AddOutputData(aesContext, outData, dataLen);
+            }
+
+            if(aesStatus == AES_NO_ERROR)
+            {
+                /* For XTS ciphers, the extra bytes in the output stream must be discarded. */
+                uint32_t numOfDiscardBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
+                aesStatus = DRV_CRYPTO_AES_DiscardData(aesContext, numOfDiscardBytes);
+            }
         }
+        else
+        {
+            /* AES block cipher/decipher only operates upon block-size aligned data.
+            * Since the full input data is being processed as one block, its size
+            * must be aligned to the AES block size. */
+            uint32_t numOfInvalidBytes = lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(dataLen);
+            uint32_t fullBlockLen = dataLen + numOfInvalidBytes;
+
+            aesStatus = DRV_CRYPTO_AES_AddInputData(aesContext, inputData, fullBlockLen);
+            if(aesStatus == AES_NO_ERROR)
+            {
+                aesStatus = DRV_CRYPTO_AES_AddOutputData(aesContext, outData, fullBlockLen);
+            }
+        }
+
         if(aesStatus == AES_NO_ERROR)
         {
             aesStatus = DRV_CRYPTO_AES_Execute(aesContext);
@@ -342,15 +371,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_
 
     if (status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        if (opMode_en == CRYPTO_SYM_OPMODE_XTS)
-        {
-            // CryptoV4 uses the 'initVect' parameter for the XTS tweak data.
-            status = Crypto_Sym_Hw_AesXts_Cipher(&aesCtx, inputData, dataLen, outData, initVect);
-        }
-        else
-        {
-            status = Crypto_Sym_Hw_Aes_Cipher(&aesCtx, inputData, dataLen, outData);
-        }
+        status = lCrypto_Sym_Hw_Aes_Direct(mode, OP_ENCRYPT, inputData, dataLen, outData, key, keyLen, initVect);
     }
 
     return status;
@@ -366,15 +387,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
 
     if (status == CRYPTO_SYM_CIPHER_SUCCESS)
     {
-        if (opMode_en == CRYPTO_SYM_OPMODE_XTS)
-        {
-            // CryptoV4 uses the 'initVect' parameter for the XTS tweak data.
-            status = Crypto_Sym_Hw_AesXts_Cipher(&aesCtx, inputData, dataLen, outData, initVect);
-        }
-        else
-        {
-            status = Crypto_Sym_Hw_Aes_Cipher(&aesCtx, inputData, dataLen, outData);
-        }
+        status = lCrypto_Sym_Hw_Aes_Direct(mode, OP_DECRYPT, inputData, dataLen, outData, key, keyLen, initVect);
     }
 
     return status;

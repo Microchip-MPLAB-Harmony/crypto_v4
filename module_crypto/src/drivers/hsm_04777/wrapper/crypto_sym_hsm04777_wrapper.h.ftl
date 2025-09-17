@@ -136,6 +136,25 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *aesCipherCtx, uint8_t *inputD
 
 /**
  * @ingroup crypto_sym_hsm04777_wrapper
+ * @brief Performs AES XTS encryption or decryption on the input data.
+ * @param [in] aesCipherCtx Pointer to the AES context for the operation.
+ * @param [in] inputData Pointer to the input data to be processed.
+ * @param [in] dataLen Length of the input data.
+ * @param [out] outData Pointer to the buffer where the output data will be stored.
+ * @param [in] tweak Pointer to the tweak value used in XTS mode.
+ * @return @ref crypto_Sym_Status_E indicating the status of the operation.
+ * @retval CRYPTO_SYM_SUCCESS Operation completed successfully.
+ * @retval CRYPTO_SYM_ERROR An error occurred during the operation.
+ * @details This function processes the input data using the AES algorithm in XTS mode
+ * and stores the result in the output buffer. It handles both encryption and decryption
+ * based on the initialized context.
+ */
+ 
+crypto_Sym_Status_E Crypto_Sym_Hw_AesXts_Cipher(void *aesCipherCtx,
+    uint8_t *inputData, uint32_t dataLen, uint8_t *outData, uint8_t* tweak);
+
+/**
+ * @ingroup crypto_sym_hsm04777_wrapper
  * @brief Encrypts the input data directly using AES.
  * @param [in] opMode_en The operation mode (e.g., ECB, CTR).
  * @param [in] inputData Pointer to the input data to be encrypted.

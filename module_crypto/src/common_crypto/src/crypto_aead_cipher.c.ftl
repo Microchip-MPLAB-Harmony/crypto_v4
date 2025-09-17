@@ -55,6 +55,10 @@
 <#if (crypto_aead_cam05346_wrapper_h_ftl_flag?? &&(crypto_aead_cam05346_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_aead_cam05346_wrapper.h"
 </#if>
+<#if (crypto_aead_hsm04777_wrapper_h_ftl_flag?? && (crypto_aead_hsm04777_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_aead_hsm04777_wrapper.h"
+</#if>
+
 <#if crypto_aead_aes6149_wrapper_h_ftl_flag?? &&(crypto_aead_aes6149_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_aead_aes6149_wrapper.h"
 </#if>

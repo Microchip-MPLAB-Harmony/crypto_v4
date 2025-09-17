@@ -58,8 +58,11 @@
 <#if (crypto_sym_hsm03785_wrapper_h_ftl_flag?? &&(crypto_sym_hsm03785_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_sym_hsm03785_wrapper.h"
 </#if>
-<#if (crypto_sym_cam05346_wrapper_h_ftl_flag?? &&(crypto_sym_cam05346_wrapper_h_ftl_flag == true))>
+<#if (crypto_sym_cam05346_wrapper_h_ftl_flag?? && (crypto_sym_cam05346_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_sym_cam05346_wrapper.h"
+</#if>
+<#if (crypto_sym_hsm04777_wrapper_h_ftl_flag?? && (crypto_sym_hsm04777_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_sym_hsm04777_wrapper.h"
 </#if>
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_sym_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_sym_wc_wrapper.h"

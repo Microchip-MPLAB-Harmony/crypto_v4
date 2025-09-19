@@ -122,9 +122,9 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en,
 <#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_03597_DRIVER")>
                 ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
 </#if><#-- HAVE_CRYPTO_HW_TRNG_03597_DRIVER -->
-<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_05346_DRIVER")>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")>
                 ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
-</#if><#-- HAVE_CRYPTO_HW_TRNG_05346_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_TRNG_05346_DRIVER or HAVE_CRYPTO_HW_HSM_04777_DRIVER -->
 				break;
 </#if><#-- CRYPTO_HW_RNG_TRNG -->
             default:

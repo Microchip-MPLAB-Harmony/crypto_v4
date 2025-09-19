@@ -499,7 +499,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesG
     {
        ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-    else if(ptr_initVect == NULL || initVectLen == 0u)
+    else if((ptr_initVect == NULL) || (initVectLen == 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
@@ -708,7 +708,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-    else if(ptr_initVect == NULL || initVectLen == 0u)
+    else if((ptr_initVect == NULL) || (initVectLen == 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }
@@ -775,7 +775,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E h
     {
         ret_aesGcmStat_en =  CRYPTO_AEAD_ERROR_KEY;
     }
-    else if(ptr_initVect == NULL || initVectLen == 0u)
+    else if((ptr_initVect == NULL) || (initVectLen == 0u))
     {
         ret_aesGcmStat_en = CRYPTO_AEAD_ERROR_NONCE;
     }

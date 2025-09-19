@@ -159,7 +159,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
     {
        ret_aesStatus_en =  CRYPTO_SYM_ERROR_SID;
     }
-    else if( ptr_initVect == NULL
+    else if( (ptr_initVect == NULL)
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_AES_ECB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_ECB == true)))) || (CRYPTO_HW_AES_ECB?? &&(CRYPTO_HW_AES_ECB == true))>
             && (opMode_en != CRYPTO_SYM_OPMODE_ECB)
 </#if><#-- CRYPTO_WC_AES_ECB || CRYPTO_HW_AES_ECB -->

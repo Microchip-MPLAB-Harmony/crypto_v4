@@ -58,7 +58,6 @@
 <#if (crypto_digisign_cam05346_wrapper_h_ftl_flag?? && (crypto_digisign_cam05346_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_mac_cam05346_wrapper.h"
 </#if>
-
 <#if (crypto_digisign_hsm04777_wrapper_h_ftl_flag?? && (crypto_digisign_hsm04777_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_mac_hsm04777_wrapper.h"
 </#if>

@@ -76,8 +76,10 @@ static void lDRV_CRYPTO_AES_InterruptSetup(void)
 crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *cmacInitCtx, uint8_t *key, uint32_t keyLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the CMAC context defined to by the CAM library is required since the library is precompiled
-    *         and has no access to the upper context structures defined by the crypto apis.
+    * Reason: Conversion from void* to the CMAC context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacInitCtx;
@@ -108,8 +110,10 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Init(void *cmacInitCtx, uint8_t *key, uin
 crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(void *cmacCipherCtx, uint8_t *inputData, uint32_t dataLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the CMAC context defined to by the CAM library is required since the library is precompiled
-    *         and has no access to the upper context structures defined by the crypto apis.
+    * Reason: Conversion from void* to the CMAC context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacCipherCtx;
@@ -133,8 +137,10 @@ crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Cipher(void *cmacCipherCtx, uint8_t *inpu
 crypto_Mac_Status_E Crypto_Sym_Hw_Cmac_Final(void *cmacFinalCtx, uint8_t *outputMac, uint32_t macLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the CMAC context defined to by the CAM library is required since the library is precompiled
-    *         and has no access to the upper context structures defined by the crypto apis.
+    * Reason: Conversion from void* to the CMAC context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_CMAC_HW_CONTEXT *cmacCtx = (CRYPTO_CMAC_HW_CONTEXT*) cmacFinalCtx;

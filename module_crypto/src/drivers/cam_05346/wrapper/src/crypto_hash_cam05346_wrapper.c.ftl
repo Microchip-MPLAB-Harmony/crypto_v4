@@ -154,8 +154,10 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
         crypto_Hash_Algo_E shaAlgorithm)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the HASH context defined to by the CAM library is required since the library is precompiled
-    *         and has no access to the upper context structures defined by the crypto apis.
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
@@ -187,9 +189,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
-    /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the HASH context defined to by the CAM library is required since the library is precompiled
-    *         and has no access to the upper context structures defined by the crypto apis.
+   /* MISRA C:2012 Rule 11.5 deviation:
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
@@ -215,8 +219,10 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the HASH context defined to by the CAM library is required since the library is precompiled
-    *         and has no access to the upper context structures defined by the crypto apis.
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;

@@ -153,6 +153,11 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
         crypto_Hash_Algo_E shaAlgorithm)
 {
+    /* MISRA C:2012 Rule 11.5 deviation:
+    * Reason: Conversion from void* to the HASH context defined to by the CAM library is required since the library is precompiled
+    *         and has no access to the upper context structures defined by the crypto apis.
+    */
+    /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
     HASHCON_MODE mode;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
@@ -182,6 +187,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
+    /* MISRA C:2012 Rule 11.5 deviation:
+    * Reason: Conversion from void* to the HASH context defined to by the CAM library is required since the library is precompiled
+    *         and has no access to the upper context structures defined by the crypto apis.
+    */
+    /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus;
@@ -204,6 +214,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest)
 {
+    /* MISRA C:2012 Rule 11.5 deviation:
+    * Reason: Conversion from void* to the HASH context defined to by the CAM library is required since the library is precompiled
+    *         and has no access to the upper context structures defined by the crypto apis.
+    */
+    /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus;

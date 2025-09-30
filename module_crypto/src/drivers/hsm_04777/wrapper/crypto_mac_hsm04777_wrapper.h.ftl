@@ -62,7 +62,7 @@ extern "C" {
  * used in the AES-CMAC implementation within the CAM library.
  */
  
-#define MINIMUM_CMAC_CONTEXT_DATA_SIZE  (236UL)
+#define MINIMUM_CMAC_CONTEXT_DATA_SIZE  (240UL)
 
 /** 
  * @brief Context data structure for AES-CMAC operations.

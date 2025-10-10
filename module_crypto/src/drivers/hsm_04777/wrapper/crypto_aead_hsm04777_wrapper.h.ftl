@@ -72,7 +72,7 @@
  * @details This size is required for AEAD operations.
  */
 
-#define MINIMUM_AEAD_CONTEXT_DATA_SIZE  (252U)
+#define MINIMUM_AEAD_CONTEXT_DATA_SIZE  (256U)
 
 /**
  * @ingroup crypto_aead_hsm04777_wrapper

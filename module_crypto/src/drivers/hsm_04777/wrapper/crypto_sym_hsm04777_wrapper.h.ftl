@@ -69,7 +69,7 @@ Microchip or any third party.
  * @brief The minimum size to store a CAM library AES context data block.
  */
  
-#define MINIMUM_AES_CONTEXT_DATA_SIZE  (252UL)
+#define MINIMUM_AES_CONTEXT_DATA_SIZE  (256UL)
 
 /**
  * @brief Structure to hold the AES hardware context data.

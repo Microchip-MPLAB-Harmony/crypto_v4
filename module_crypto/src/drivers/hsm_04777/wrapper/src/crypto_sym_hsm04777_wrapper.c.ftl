@@ -128,7 +128,6 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E
  * @retval CRYPTO_SYM_CIPHER_SUCCESS Operation completed successfully.
  * @retval CRYPTO_SYM_ERROR_CIPOPER Invalid cipher operation type provided.
  */
-
 static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperation
     (crypto_CipherOper_E cipherOpType, AESCON_OPERATION* operation)
 {
@@ -163,7 +162,6 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperation
  *
  * @return The number of invalid bytes needed for block alignment.
  */
-
 static uint32_t lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
 {
     uint32_t numOfInvalidBytes = 0;

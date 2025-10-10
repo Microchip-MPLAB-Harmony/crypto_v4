@@ -74,7 +74,7 @@ Microchip or any third party.
  * @details This size is required for multi-step hash operations (init, update, final).
  */
 
-#define MINIMUM_HASH_CONTEXT_DATA_SIZE        (580UL)
+#define MINIMUM_HASH_CONTEXT_DATA_SIZE        (584UL)
 
 /**
  * @ingroup crypto_hash_hsm04777_wrapper
@@ -83,7 +83,7 @@ Microchip or any third party.
  * @details This smaller context is for single-call digest operations.
  */
 
-#define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (216UL)
+#define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (220UL)
 
 /**
  * @ingroup crypto_hash_hsm04777_wrapper

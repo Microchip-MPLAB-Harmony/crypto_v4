@@ -75,24 +75,24 @@ static CRYPTO_PKE_RESULT lCrypto_Kas_Ecdh_Hw_GetCurve(
         case CRYPTO_ECC_CURVE_P192:
             *hwEccCurve = P192;
             break;
-        
+
         case CRYPTO_ECC_CURVE_P256:
             *hwEccCurve = P256;
             break;
-        
+
         case CRYPTO_ECC_CURVE_P384:
             *hwEccCurve = P384;
             break;
-        
+
         case CRYPTO_ECC_CURVE_P521:
             *hwEccCurve = P521;
             break;
-            
+
         default:
             eccStatus = CRYPTO_PKE_RESULT_ERROR_CURVE;
             break;
     }
-    
+
     return eccStatus;
 }   
 
@@ -114,31 +114,30 @@ static CRYPTO_PKE_RESULT lCrypto_Kas_Ecdh_Hw_GetCurve(
 static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_MapResult(CRYPTO_PKE_RESULT result)
 {
     crypto_Kas_Status_E kasStatus;
-    
-    switch (result) 
+
+    switch (result)
     {
         case CRYPTO_PKE_RESULT_SUCCESS:
             kasStatus = CRYPTO_KAS_SUCCESS;
             break;
-            
+
         case CRYPTO_PKE_ERROR_PUBKEYCOMPRESS:
             kasStatus = CRYPTO_KAS_ERROR_PUBKEY;
             break;
-            
+
         case CRYPTO_PKE_RESULT_ERROR_CURVE:
             kasStatus = CRYPTO_KAS_ERROR_CURVE;
             break;
-        
+
         case CRYPTO_PKE_RESULT_INIT_FAIL:
         case CRYPTO_PKE_RESULT_ERROR_FAIL:
             kasStatus = CRYPTO_KAS_ERROR_FAIL;
             break;
-            
         default:
             kasStatus = CRYPTO_KAS_ERROR_FAIL;
             break;
     }
-    
+
     return kasStatus;
 }
 

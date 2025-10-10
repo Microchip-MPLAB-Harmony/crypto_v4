@@ -298,10 +298,10 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_AddAadData(void *aeadCipherCtx,
     uint8_t *aad, uint32_t aadLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to CRYPTO_AEAD_HW_CONTEXT* is necessary to access
-    * context-specific members. The input pointer is guaranteed by design to point
-    * to a valid CRYPTO_AEAD_HW_CONTEXT instance. This is safe and controlled.
-    * Deviation approved: Yes ☐  No ☐
+    * Reason: Conversion from void* to the AEAD context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_AEAD_HW_CONTEXT *aeadCtx = (CRYPTO_AEAD_HW_CONTEXT*) aeadCipherCtx;
@@ -388,12 +388,11 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *aeadCipherCtx,
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Final(void *aeadFinalCtx,
     uint8_t *authTag, uint32_t authTagLen)
 {
-
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to CRYPTO_AEAD_HW_CONTEXT* is necessary to access
-    * context-specific members. The input pointer is guaranteed by design to point
-    * to a valid CRYPTO_AEAD_HW_CONTEXT instance. This is safe and controlled.
-    * Deviation approved: Yes ☐  No ☐
+    * Reason: Conversion from void* to the AEAD context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_AEAD_HW_CONTEXT *aeadCtx = (CRYPTO_AEAD_HW_CONTEXT*) aeadFinalCtx;

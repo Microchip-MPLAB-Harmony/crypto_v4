@@ -71,6 +71,12 @@ Microchip or any third party.
  * @retval CRYPTO_HASH_ERROR_ALGO The specified algorithm is not supported.
  */
 
+/**
+ * @brief Get the equivalent CAM library hash algorithm (operation mode).
+ * @param shaAlgorithm The crypto SHA algorithm.
+ * @param mode Pointer to a value to hold the equivalent CAM library hash operation mode.
+ * @return CRYPTO_HASH_SUCCESS on success, CRYPTO_HASH_ERROR_FAIL on failure.
+ */
 static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm,
         HASHCON_MODE* mode)
 {
@@ -158,12 +164,11 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
         crypto_Hash_Algo_E shaAlgorithm)
 {
-    
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to CRYPTO_HASH_HW_CONTEXT* is necessary to access
-    * context-specific members. The input pointer is guaranteed by design to point
-    * to a valid CRYPTO_HASH_HW_CONTEXT instance. This is safe and controlled.
-    * Deviation approved: Yes ☐  No ☐
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
@@ -191,11 +196,11 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
-    /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to CRYPTO_HASH_HW_CONTEXT* is necessary to access
-    * context-specific members. The input pointer is guaranteed by design to point
-    * to a valid CRYPTO_HASH_HW_CONTEXT instance. This is safe and controlled.
-    * Deviation approved: Yes ☐  No ☐
+   /* MISRA C:2012 Rule 11.5 deviation:
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
@@ -221,10 +226,10 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to CRYPTO_HASH_HW_CONTEXT* is necessary to access
-    * context-specific members. The input pointer is guaranteed by design to point
-    * to a valid CRYPTO_HASH_HW_CONTEXT instance. This is safe and controlled.
-    * Deviation approved: Yes ☐  No ☐
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
+    *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;

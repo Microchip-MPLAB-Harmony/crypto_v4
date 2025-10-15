@@ -361,9 +361,10 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
 }
 </#if><#-- CRYPTO_WC_AES_GMAC -->
 
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC?? &&(lib_wolfcrypt.CRYPTO_WC_HMAC == true)))
+     || (CRYPTO_HW_HMAC?? &&(CRYPTO_HW_HMAC == true))>
 crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st, crypto_HandlerType_E handlerType_en, uint8_t *ptr_key, uint32_t keyLen,
-																									crypto_Hash_Algo_E hashType_en, uint32_t sessionID)
+                                         crypto_Hash_Algo_E hashType_en, uint32_t sessionID)
 {
 	crypto_Mac_Status_E ret_hmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
 	if(ptr_hmacCtx_st == NULL)
@@ -395,7 +396,9 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Init(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st,
                 break;
 </#if><#-- CRYPTO_WC_HMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+                    ret_hmacStat_en = Crypto_Mac_Hw_Hmac_Init((void*)ptr_hmacCtx_st->arr_macDataCtx, ptr_key, keyLen, hashType_en);
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
                 break;
             default:
                 ret_hmacStat_en = CRYPTO_MAC_ERROR_HDLR;
@@ -413,7 +416,7 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_s
     {
         ret_hmacStat_en = CRYPTO_MAC_ERROR_CTX;
     }
-    else if(ptr_inputData == NULL)
+    else if( (ptr_inputData == NULL) && (dataLen != 0UL) )
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_INPUTDATA;
     }
@@ -427,7 +430,9 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Cipher(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_s
                 break;
 </#if><#-- CRYPTO_WC_HMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+                    ret_hmacStat_en = Crypto_Mac_Hw_Hmac_Cipher((void*)ptr_hmacCtx_st->arr_macDataCtx, ptr_inputData, dataLen);
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
                 break;
             default:
                 ret_hmacStat_en = CRYPTO_MAC_ERROR_HDLR;
@@ -458,7 +463,9 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Final(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st
                 break;
 </#if><#-- CRYPTO_WC_HMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+                    ret_hmacStat_en = Crypto_Mac_Hw_Hmac_Final((void*)ptr_hmacCtx_st->arr_macDataCtx, ptr_outMac);
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
                 break;
             default:
                 ret_hmacStat_en = CRYPTO_MAC_ERROR_HDLR;
@@ -469,11 +476,11 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Final(st_Crypto_Mac_Hmac_ctx *ptr_hmacCtx_st
 }
 
 crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, uint8_t *ptr_outMac, uint8_t *ptr_key,
-                                                                                                  uint32_t keyLen, crypto_Hash_Algo_E hashType_en, uint32_t sessionID)
+                                           uint32_t keyLen, crypto_Hash_Algo_E hashType_en, uint32_t sessionID)
 {
 	crypto_Mac_Status_E ret_hmacStat_en = CRYPTO_MAC_ERROR_CIPNOTSUPPTD;
 
-	if(ptr_inputData == NULL)
+    if( (ptr_inputData == NULL) && (dataLen != 0UL) )
     {
        ret_hmacStat_en =  CRYPTO_MAC_ERROR_INPUTDATA;
     }
@@ -503,7 +510,9 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, 
                 break;
 </#if><#-- CRYPTO_WC_HMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+                    ret_hmacStat_en = Crypto_Mac_Hw_Hmac_Direct(ptr_inputData, dataLen, ptr_outMac, ptr_key, keyLen, hashType_en);
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
                 break;
             default:
                 ret_hmacStat_en = CRYPTO_MAC_ERROR_HDLR;
@@ -513,5 +522,5 @@ crypto_Mac_Status_E Crypto_Mac_Hmac_Direct(crypto_HandlerType_E handlerType_en, 
 
 	return ret_hmacStat_en;
 }
-</#if><#-- CRYPTO_WC_HMAC -->
+</#if><#-- CRYPTO_WC_HMAC || CRYPTO_HW_HMAC -->
 // *****************************************************************************

@@ -574,7 +574,8 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,
-                    NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0);
+                    ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen, NULL, 0, NULL, 
+                    ptr_aad, aadLen, NULL, 0);
 <#elseif (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_AddAadData((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aad, aadLen);
 <#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))>
@@ -670,7 +671,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
             case CRYPTO_HANDLER_HW_INTERNAL:
   <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,
-                    NULL, 0,NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);
+                    NULL, 0, NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);
   <#elseif (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Final((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,
                     ptr_authTag, authTagLen);

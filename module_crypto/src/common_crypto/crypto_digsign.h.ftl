@@ -77,7 +77,11 @@ typedef enum
     CRYPTO_DIGISIGN_ERROR_FAIL = -113,
     CRYPTO_DIGISIGN_ERROR_RSAPADDING = -112,
     CRYPTO_DIGISIGN_ERROR_INPUTDATA = -111,
-    CRYPTO_DIGISIGN_SUCCESS = 0,        
+    CRYPTO_DIGISIGN_SUCCESS = 0,     
+<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))> 
+    CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS = 1,
+    CRYPTO_DIGISIGN_OPERATION_COMPLETED = 2,
+</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
 }crypto_DigiSign_Status_E;
 <#if ( (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) )>
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
@@ -135,4 +139,22 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerTy
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_inSign, 
                                                                 uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId);
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING --> 
+
+<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
+// *****************************************************************************
+// *****************************************************************************
+// Section: Non-Blocking Crypto APIS
+// *****************************************************************************
+// *****************************************************************************
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_privKey, 
+                                                            uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_inputSig, 
+                                                           uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+
+crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Sign_GetStatus(void);
+crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Verify_GetStatus(void);
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outputSig, uint32_t sigLen);
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_GetResult(void);
+</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
 #endif /* CRYPTO_DIGSIGN_H */

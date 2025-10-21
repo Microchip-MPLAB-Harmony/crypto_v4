@@ -77,6 +77,35 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     uint32_t pubKeyLen, int8_t *hashVerifyStatus, 
     crypto_EccCurveType_E eccCurveType_En);
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Non-Blocking Crypto APIS
+// *****************************************************************************
+// *****************************************************************************
+
+typedef enum
+{
+    CRYPTO_PROCESS_STARTED,
+    CRYPTO_PROCESS_COMPLETE
+}crypto_DigiSignState_E;
+
+extern crypto_DigiSignState_E currentState;
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_Start(uint8_t *inputHash, 
+    uint32_t hashLen, uint8_t *privKey, uint32_t privKeyLen, 
+    crypto_EccCurveType_E eccCurveType_En); 
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_Start(uint8_t * inputHash, uint32_t hashLen, 
+    uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, 
+    crypto_EccCurveType_E eccCurveType_En);
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_GetStatus(void);
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetStatus(void);
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_GetResult(uint8_t *outputSig, uint32_t sigLen);
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetResult(void);
+
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_ClearMemory_GetStatus(void);
+void Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

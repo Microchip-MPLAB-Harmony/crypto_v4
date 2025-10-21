@@ -94,14 +94,29 @@ void __attribute__((interrupt)) _CRYPTO2Interrupt(void)
     _CRYPT2IF = 0;
 }
 
+static void (*CRYPTO3_OperationCompleteHandler)(void);
+
 void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
 {
     if (cryptoIntHandlers.handlers[CRYPTO3_INT] != NULL)
     {
         cryptoIntHandlers.handlers[CRYPTO3_INT]();
     }
-
+    
+    if(CRYPTO3_OperationCompleteHandler != NULL)
+    {
+        (*CRYPTO3_OperationCompleteHandler)();
+    }
+    
     _CRYPT3IF = 0;
+}
+
+void CRYPTO3_OperationCompleteCallbackRegister(void (*handler)(void))
+{
+    if(NULL != handler)
+    {
+       CRYPTO3_OperationCompleteHandler = handler;
+    }
 }
 
 // *****************************************************************************

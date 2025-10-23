@@ -967,16 +967,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outpu
         if(ret_ecdsaStat_en == CRYPTO_DIGISIGN_OPERATION_COMPLETED)
         {
             ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign_GetResult(ptr_outputSig, sigLen);
+            currentState = CRYPTO_PROCESS_COMPLETE;
         }
         else
         {
             ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE;
         }
-    }
-    
-    if(ret_ecdsaStat_en == CRYPTO_DIGISIGN_SUCCESS)
-    {
-        currentState = CRYPTO_PROCESS_COMPLETE;
     }
     
     return ret_ecdsaStat_en;
@@ -992,15 +988,12 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_GetResult(void)
         if(ret_ecdsaStat_en == CRYPTO_DIGISIGN_OPERATION_COMPLETED)
         {
             ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify_GetResult();
+            currentState = CRYPTO_PROCESS_COMPLETE;
         }
         else
         {
             ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE;
         }
-    }
-    
-    if(ret_ecdsaStat_en == CRYPTO_DIGISIGN_SUCCESS){
-        currentState = CRYPTO_PROCESS_COMPLETE;
     }
     
     return ret_ecdsaStat_en;

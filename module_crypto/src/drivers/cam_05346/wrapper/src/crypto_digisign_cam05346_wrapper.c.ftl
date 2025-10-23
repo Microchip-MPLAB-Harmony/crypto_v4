@@ -140,7 +140,7 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(CRYPTO_PKE_RE
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_Status(void)
 {
-    if(!DRV_CRYPTO_PKE_IsEngineSetup()){
+    if (!DRV_CRYPTO_PKE_IsEngineSetup()){
         DRV_CRYPTO_PKE_SetupEngine();
     }
     
@@ -188,7 +188,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
     
     lDRV_CRYPTO_ECDSA_InterruptSetup();
     
-    if(hwResult == CRYPTO_PKE_RESULT_SUCCESS)
+    if (hwResult == CRYPTO_PKE_RESULT_SUCCESS)
     {
         /* Generate the signature */
         hwResult = DRV_CRYPTO_ECDSA_Sign(&eccData, outSig, sigLen);
@@ -210,7 +210,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     hwResult = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);
     DRV_CRYPTO_PKE_SetupEngine();
     
-    if(hwResult == CRYPTO_PKE_RESULT_SUCCESS)
+    if (hwResult == CRYPTO_PKE_RESULT_SUCCESS)
     {
         /* Initialize the hardware library for ECDSA signature verification */
         hwResult = DRV_CRYPTO_ECDSA_InitEccParamsVerify(&eccData,
@@ -225,7 +225,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     
     lDRV_CRYPTO_ECDSA_InterruptSetup();
     
-    if(hwResult == CRYPTO_PKE_RESULT_SUCCESS)
+    if (hwResult == CRYPTO_PKE_RESULT_SUCCESS)
     {
         /* Verify the signature */
         hwResult = DRV_CRYPTO_ECDSA_Verify(&eccData);
@@ -257,7 +257,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_Start(uint8_t *inputHash,
     CRYPTO_PKE_RESULT hwResult;
     PKE_ECC_CURVE hwEccCurve;
     
-    if(!DRV_CRYPTO_PKE_IsEngineSetup()){
+    if (!DRV_CRYPTO_PKE_IsEngineSetup()){
         DRV_CRYPTO_PKE_SetupEngine();
     }
     
@@ -281,7 +281,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_Start(uint8_t * inputHa
     CRYPTO_PKE_RESULT hwResult;
     PKE_ECC_CURVE hwEccCurve;
     
-    if(!DRV_CRYPTO_PKE_IsEngineSetup()){
+    if (!DRV_CRYPTO_PKE_IsEngineSetup()){
         DRV_CRYPTO_PKE_SetupEngine();
     }
     

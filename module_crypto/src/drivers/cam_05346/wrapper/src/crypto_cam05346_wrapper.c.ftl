@@ -103,7 +103,7 @@ void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
         cryptoIntHandlers.handlers[CRYPTO3_INT]();
     }
     
-    if(CRYPTO3_OperationCompleteHandler != NULL)
+    if (CRYPTO3_OperationCompleteHandler != NULL)
     {
         (*CRYPTO3_OperationCompleteHandler)();
     }
@@ -113,7 +113,7 @@ void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
 
 void CRYPTO3_OperationCompleteCallbackRegister(void (*handler)(void))
 {
-    if(NULL != handler)
+    if (NULL != handler)
     {
        CRYPTO3_OperationCompleteHandler = handler;
     }

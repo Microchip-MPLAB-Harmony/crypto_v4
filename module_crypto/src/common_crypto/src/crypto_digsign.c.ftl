@@ -973,6 +973,8 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outpu
         {
             ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE;
         }
+    }else {
+        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_FAIL;
     }
     
     return ret_ecdsaStat_en;

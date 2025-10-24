@@ -104,8 +104,17 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetStatus(void);
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_GetResult(uint8_t *outputSig, uint32_t sigLen);
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetResult(void);
 
-crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_ClearMemory_GetStatus(void);
+/**
+ * @brief Clear Memory removes previous inputs. Used if CRYPTO_DIGISIGN_ERROR_MEMORY is returned from Crypto apis.
+ */
 void Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void);
+
+/**
+ * @brief Get the status of the clear memory operation.
+ * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if operation is in progress.
+ *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if operation is complete.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_ClearMemory_GetStatus(void);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

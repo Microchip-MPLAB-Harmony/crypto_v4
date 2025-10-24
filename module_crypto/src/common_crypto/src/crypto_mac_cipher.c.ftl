@@ -236,7 +236,8 @@ crypto_Mac_Status_E Crypto_Mac_AesCmac_Direct(crypto_HandlerType_E macHandlerTyp
     return ret_aesCmacStat_en;
 }
 </#if><#-- CRYPTO_WC_AES_CMAC, HAVE_CRYPTO_HW_CAM_05346_DRIVER-->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))
+    || (CRYPTO_HW_AES_GMAC?? && CRYPTO_HW_AES_GMAC == true)>
 
 crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCtx_st, crypto_HandlerType_E handlerType_en,
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID)
@@ -266,11 +267,13 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Init(st_Crypto_Mac_Aes_ctx *ptr_aesGmacCt
         {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GMAC == true)))>
             case CRYPTO_HANDLER_SW_WOLFCRYPT:
-                    ret_aesGmacStat_en = Crypto_Mac_Wc_AesGmac_Init((void*)ptr_aesGmacCtx_st->arr_macDataCtx, ptr_aesGmacCtx_st->ptr_key, ptr_aesGmacCtx_st->mackeyLen);
+                ret_aesGmacStat_en = Crypto_Mac_Wc_AesGmac_Init((void*)ptr_aesGmacCtx_st->arr_macDataCtx, ptr_aesGmacCtx_st->ptr_key, ptr_aesGmacCtx_st->mackeyLen);
                 break;
 </#if><#-- CRYPTO_WC_AES_GMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if (CRYPTO_HW_AES_GMAC?? && CRYPTO_HW_AES_GMAC == true)>
+                ret_aesGmacStat_en = Crypto_Mac_Hw_AesGmac_Init((void*)ptr_aesGmacCtx_st->arr_macDataCtx, ptr_aesGmacCtx_st->ptr_key, ptr_aesGmacCtx_st->mackeyLen);
+</#if><#-- CRYPTO_HW_AES_GMAC -->
                 break;
             default:
                 ret_aesGmacStat_en = CRYPTO_MAC_ERROR_HDLR;
@@ -305,7 +308,10 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Cipher(st_Crypto_Mac_Aes_ctx *ptr_aesGmac
 				break;
 </#if><#-- CRYPTO_WC_AES_GMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if (CRYPTO_HW_AES_GMAC?? && CRYPTO_HW_AES_GMAC == true)>
+                ret_aesGmacStat_en = Crypto_Mac_Hw_AesGmac_Cipher((void*)ptr_aesGmacCtx_st->arr_macDataCtx, ptr_initVect, initVectLen, ptr_aad, aadLen,
+                                                                                                                                    ptr_outMac, macLen);
+</#if><#-- CRYPTO_HW_AES_GMAC -->
 				break;
             default:
                 ret_aesGmacStat_en = CRYPTO_MAC_ERROR_HDLR;
@@ -349,7 +355,9 @@ crypto_Mac_Status_E Crypto_Mac_AesGmac_Direct(crypto_HandlerType_E macHandlerTyp
 				break;
 </#if><#-- CRYPTO_WC_AES_GMAC -->
             case CRYPTO_HANDLER_HW_INTERNAL:
-
+<#if (CRYPTO_HW_AES_GMAC?? && CRYPTO_HW_AES_GMAC == true)>
+                ret_aesGmacStat_en = Crypto_Mac_Hw_AesGmac_Direct(ptr_initVect, initVectLen, ptr_outMac, macLen, ptr_key, keyLen, ptr_aad, aadLen);
+</#if><#-- CRYPTO_HW_AES_GMAC -->
 				break;
             default:
                 ret_aesGmacStat_en = CRYPTO_MAC_ERROR_HDLR;

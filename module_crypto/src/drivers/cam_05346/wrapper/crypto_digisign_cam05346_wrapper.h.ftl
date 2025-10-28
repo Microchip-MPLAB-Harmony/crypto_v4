@@ -89,8 +89,6 @@ typedef enum
     CRYPTO_PROCESS_COMPLETE
 }crypto_DigiSignState_E;
 
-extern crypto_DigiSignState_E currentState;
-
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_Start(uint8_t *inputHash, 
     uint32_t hashLen, uint8_t *privKey, uint32_t privKeyLen, 
     crypto_EccCurveType_E eccCurveType_En); 
@@ -103,6 +101,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetStatus(void);
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_GetResult(uint8_t *outputSig, uint32_t sigLen);
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetResult(void);
+
+crypto_DigiSignState_E Crypto_DigiSign_Ecdsa_Hw_GetState(void);
+void Crypto_DigiSign_Ecdsa_Hw_SetState(crypto_DigiSignState_E state);
 
 /**
  * @brief Clear Memory removes previous inputs. Used if CRYPTO_DIGISIGN_ERROR_MEMORY is returned from Crypto apis.

@@ -321,6 +321,15 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetResult(void)
     return lCrypto_DigSign_Ecdsa_Hw_MapResult(hwResult);
 }
 
+crypto_DigiSignState_E Crypto_DigiSign_Ecdsa_Hw_GetState(void)
+{
+    return currentState;
+}
+
+void Crypto_DigiSign_Ecdsa_Hw_SetState(crypto_DigiSignState_E state)
+{
+    currentState = state;
+}
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_ClearMemory_GetStatus(void)
 {

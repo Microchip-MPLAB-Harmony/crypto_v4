@@ -148,7 +148,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
 // *****************************************************************************
 
 /**
- * @brief Non-blocking call to start ecdsa signing operation.
+ * @brief Non-blocking call to start ECDSA signing operation.
  * @param ecdsaHandlerType_en Type of implementation being used.
  * @param ptr_inputHash Pointer to the input hash to sign with.
  * @param hashLen Length of the input hash.
@@ -162,7 +162,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E e
                                                             uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
 
 /**
- * @brief Non-blocking call to start ecdsa verification operation.
+ * @brief Non-blocking call to start ECDSA verification operation.
  * @param ecdsaHandlerType_en Type of implementation being used.
  * @param ptr_inputHash Pointer to the input hash to sign with.
  * @param hashLen Length of the input hash.

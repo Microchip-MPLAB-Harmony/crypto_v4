@@ -836,7 +836,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E e
 {
     crypto_DigiSign_Status_E ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
-    if(Crypto_DigiSign_Ecdsa_Hw_GetState() == CRYPTO_PROCESS_STARTED)
+    if(Crypto_DigiSign_Ecdsa_Hw_GetState() != CRYPTO_PROCESS_COMPLETE)
     {
          ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_MEMORY;
     }
@@ -885,7 +885,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E
 {
     crypto_DigiSign_Status_E ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
         
-    if(Crypto_DigiSign_Ecdsa_Hw_GetState() == CRYPTO_PROCESS_STARTED)
+    if(Crypto_DigiSign_Ecdsa_Hw_GetState() != CRYPTO_PROCESS_COMPLETE)
     {
          ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_MEMORY;
     }

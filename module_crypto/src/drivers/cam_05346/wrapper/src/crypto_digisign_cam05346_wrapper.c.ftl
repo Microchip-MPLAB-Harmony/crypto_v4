@@ -100,42 +100,42 @@ static CRYPTO_PKE_RESULT lCrypto_DigSign_Ecdsa_Hw_GetCurve(
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(CRYPTO_PKE_RESULT result)
 {
-    crypto_DigiSign_Status_E digSignStatus;
+    crypto_DigiSign_Status_E digiSignStatus;
 
     switch (result)
     {
         case CRYPTO_PKE_RESULT_SUCCESS:
-            digSignStatus = CRYPTO_DIGISIGN_SUCCESS;
+            digiSignStatus = CRYPTO_DIGISIGN_SUCCESS;
             break;
 
         case CRYPTO_PKE_ERROR_PUBKEYCOMPRESS:
-            digSignStatus = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
             break;
 
         case CRYPTO_PKE_RESULT_ERROR_CURVE:
-            digSignStatus = CRYPTO_DIGISIGN_ERROR_CURVE;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_CURVE;
             break;
 
         case CRYPTO_PKE_RESULT_ERROR_RNG:
-            digSignStatus = CRYPTO_DIGISIGN_ERROR_RNG;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_RNG;
             break;
 
         case CRYPTO_PKE_RESULT_INIT_FAIL:
         case CRYPTO_PKE_RESULT_ERROR_FAIL:
-            digSignStatus = CRYPTO_DIGISIGN_ERROR_FAIL;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_FAIL;
             break;
         case CRYPTO_PKE_STATUS_IDLE:
-            digSignStatus = CRYPTO_DIGISIGN_OPERATION_COMPLETED;
+            digiSignStatus = CRYPTO_DIGISIGN_OPERATION_COMPLETED;
             break;
         case CRYPTO_PKE_STATUS_BUSY:
-            digSignStatus = CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS;
+            digiSignStatus = CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS;
             break;
         default:
-            digSignStatus = CRYPTO_DIGISIGN_ERROR_FAIL;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_FAIL;
             break;
     }
 
-    return digSignStatus;
+    return digiSignStatus;
 }
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_Status(void)

@@ -55,6 +55,9 @@
 <#if crypto_digisign_cam05346_wrapper_h_ftl_flag?? &&(crypto_digisign_cam05346_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_cam05346_wrapper.h"
 </#if>
+<#if crypto_digisign_hsm04777_wrapper_h_ftl_flag?? && (crypto_digisign_hsm04777_wrapper_h_ftl_flag == true)>
+#include "crypto/drivers/wrapper/crypto_digisign_hsm04777_wrapper.h"
+</#if>
 <#if crypto_digisign_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_digisign_cpkcc44163_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_cpkcc44163_wrapper.h"
 </#if>
@@ -79,7 +82,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-<#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))) 
+<#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER"))) 
 					|| (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))))>
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_outSig, 
                                                     uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId)
@@ -117,9 +120,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHa
 </#if><#-- CRYPTO_WC_ECDSA -->
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")> 
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")> 
             	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign(ptr_inputHash, hashLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, eccCurveType_En);            	
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER -->  
+</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER , HAVE_CRYPTO_HW_HSM_04777_DRIVER -->  
                 break;             
 </#if><#-- CRYPTO_HW_ECDSA -->
             default:
@@ -171,10 +174,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
 </#if><#-- CRYPTO_WC_ECDSA -->            
 <#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")>
             	ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify(ptr_inputHash, hashLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
                                         ptr_sigVerifyStat, eccCurveType_En);
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER --> 
+</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER , HAVE_CRYPTO_HW_HSM_04777_DRIVER --> 
             	break;
 </#if><#-- CRYPTO_HW_ECDSA -->            
             default:

@@ -154,6 +154,17 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
 // *****************************************************************************
 
 /**
+ * Example usages:
+ * 1. Call the Start function (ex: Crypto_DigiSign_Ecdsa_Sign_Start(CRYPTO_HANDLER_HW_INTERNAL, &inputHash, sizeof(inputHash), &privKey, sizeof(privKeyLen), CRYPTO_ECC_CURVE_P256, 1))
+ * 2. Wait for the operation to complete. There are two options to do so:
+ * 2.1. Poll the GetStatus function(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS) 
+ * 2.2. use SignOperationCompleteCallbackRegister(handler) within wrapper file.
+ * 3. When the operation is complete call the GetResult function (ex: Crypto_DigiSign_Ecdsa_Sign_GetResult(&outputSig, {expected size of the signature})
+ * 
+ * Disclaimer: If GetResult is not called before the Start function is called again the Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void)function within the digisign wrapper will need to be called.
+ */ 
+
+/**
  * @brief Non-blocking call to start ECDSA signing operation.
  * @param ecdsaHandlerType_en Only CRYPTO_HANDLER_HW_INTERNAL supported currently.
  * @param ptr_inputHash Pointer to the input hash to sign with.

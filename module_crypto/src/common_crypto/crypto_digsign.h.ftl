@@ -155,7 +155,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
 
 /**
  * @brief Non-blocking call to start ECDSA signing operation.
- * @param ecdsaHandlerType_en Type of implementation being used.
+ * @param ecdsaHandlerType_en Only CRYPTO_HANDLER_HW_INTERNAL supported currently.
  * @param ptr_inputHash Pointer to the input hash to sign with.
  * @param hashLen Length of the input hash.
  * @param ptr_privKey Pointer to the private key to sign with.
@@ -169,13 +169,13 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E e
 
 /**
  * @brief Non-blocking call to start ECDSA verification operation.
- * @param ecdsaHandlerType_en Type of implementation being used.
+ * @param ecdsaHandlerType_en Only CRYPTO_HANDLER_HW_INTERNAL supported currently.
  * @param ptr_inputHash Pointer to the input hash to sign with.
  * @param hashLen Length of the input hash.
  * @param ptr_inputSig Pointer to the input signature.
  * @param sigLen Length of the input signature.
- * @param ptr_pubKey Pointer to the private key to sign with.
- * @param pubKeyLen Length of the private key.
+ * @param ptr_pubKey Pointer to the public key to verify with.
+ * @param pubKeyLen Length of the public key.
  * @param eccCurveType_En Type of curve being used.
  * @param ecdsaSessionId ID to track sessions. Currently one session supported.
  * @return CRYPTO_DIGISIGN_SUCCESS on success. Error enum on failure. 
@@ -184,21 +184,21 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E
                                                            uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
 
 /**
- * @brief Check the status of the Signing operation.
+ * @brief Check the status of the ECDSA Signing operation.
  * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if the operation is in progress. 
  *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if complete.
  */
 crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Sign_GetStatus(void);
 
 /**
- * @brief Check the status of the Verification operation.
+ * @brief Check the status of the ECDSA Verification operation.
  * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if the operation is in progress. 
  *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if complete.
  */
 crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Verify_GetStatus(void);
 
 /**
- * @brief Get the output signature.
+ * @brief Get the generated ECDSA signature.
  * @param ptr_outputSig Pointer to write the signature to.
  * @param sigLen Length of the expected signature.
  * @return CRYPTO_DIGISIGN_SUCCESS on success. 
@@ -209,7 +209,7 @@ crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Verify_GetStatus(void);
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outputSig, uint32_t sigLen);
 
 /**
- * @brief Check the result of the verification operation.
+ * @brief Check the result of the ECDSA verification operation.
  * @return CRYPTO_DIGISIGN_SUCCESS on success. 
  *         CRYPTO_DIGISIGN_ERROR_FAIL on failure.
  *         CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE if operation in progress still.

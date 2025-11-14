@@ -161,7 +161,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
  * 2.2. use SignOperationCompleteCallbackRegister(handler) within wrapper file.
  * 3. When the operation is complete call the GetResult function (ex: Crypto_DigiSign_Ecdsa_Sign_GetResult(&outputSig, {expected size of the signature})
  * 
- * Disclaimer: If GetResult is not called before the Start function is called again the Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void)function within the digisign wrapper will need to be called.
+ * Disclaimer: Call GetResult after the Start function otherwise the Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void)function within the digisign wrapper will need to be called.
  */ 
 
 /**

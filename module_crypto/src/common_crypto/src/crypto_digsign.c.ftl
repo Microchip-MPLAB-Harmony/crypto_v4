@@ -842,7 +842,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E e
     }
     else if(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS)
     {
-        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_PKE_UNAVAILABLE;
+        ret_ecdsaStat_en = CRYPTO_DIGISIGN_PKE_BUSY;
     }
     else if( (ptr_inputHash == NULL) || (hashLen == 0u) )
     {
@@ -891,7 +891,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E
     }
     else if(Crypto_DigiSign_Ecdsa_Verify_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS)
     {
-        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_PKE_UNAVAILABLE;
+        ret_ecdsaStat_en = CRYPTO_DIGISIGN_PKE_BUSY;
     }
     else if( (ptr_inputHash == NULL) || (hashLen == 0u) )
     {
@@ -974,7 +974,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outpu
             ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE;
         }
     }else {
-        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_FAIL;
+        ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_NO_OPERATION_REQUESTED;
     }
     
     return ret_ecdsaStat_en;
@@ -996,6 +996,10 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_GetResult(void)
         {
             ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE;
         }
+    }
+    else
+    {
+         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_NO_OPERATION_REQUESTED;
     }
     
     return ret_ecdsaStat_en;

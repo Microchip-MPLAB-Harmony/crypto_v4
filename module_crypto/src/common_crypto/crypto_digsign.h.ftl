@@ -77,13 +77,16 @@ typedef enum
     CRYPTO_DIGISIGN_ERROR_FAIL = -113,
     CRYPTO_DIGISIGN_ERROR_RSAPADDING = -112,
     CRYPTO_DIGISIGN_ERROR_INPUTDATA = -111,
+<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))> 
     CRYPTO_DIGISIGN_ERROR_MEMORY = -110,
-    CRYPTO_DIGISIGN_ERROR_PKE_UNAVAILABLE = -109,
-    CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE = -108,
+    CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE = -109,
+    CRYPTO_DIGISIGN_ERROR_NO_OPERATION_REQUESTED = -108,
+</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
     CRYPTO_DIGISIGN_SUCCESS = 0,     
 <#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))> 
     CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS = 1,
     CRYPTO_DIGISIGN_OPERATION_COMPLETED = 2,
+    CRYPTO_DIGISIGN_PKE_BUSY = 3,
 </#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
 }crypto_DigiSign_Status_E;
 <#if ( (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) )>
@@ -149,6 +152,17 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
 // Section: Non-Blocking Crypto APIS
 // *****************************************************************************
 // *****************************************************************************
+
+/**
+ * Example usages:
+ * 1. Call the Start function (ex: Crypto_DigiSign_Ecdsa_Sign_Start(CRYPTO_HANDLER_HW_INTERNAL, &inputHash, sizeof(inputHash), &privKey, sizeof(privKeyLen), CRYPTO_ECC_CURVE_P256, 1))
+ * 2. Wait for the operation to complete. There are two options to do so:
+ * 2.1. Poll the GetStatus function(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS) 
+ * 2.2. use SignOperationCompleteCallbackRegister(handler) within wrapper file.
+ * 3. When the operation is complete call the GetResult function (ex: Crypto_DigiSign_Ecdsa_Sign_GetResult(&outputSig, {expected size of the signature})
+ * 
+ * Disclaimer: Call GetResult after the Start function otherwise the Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void)function within the digisign wrapper will need to be called.
+ */ 
 
 /**
  * @brief Non-blocking call to start ECDSA signing operation.

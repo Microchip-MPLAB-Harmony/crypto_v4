@@ -836,11 +836,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E e
 {
     crypto_DigiSign_Status_E ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
     
-    if(Crypto_DigiSign_Ecdsa_Hw_GetState() != CRYPTO_PROCESS_COMPLETE)
-    {
-         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_MEMORY;
-    }
-    else if(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS)
+    if(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS)
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_PKE_BUSY;
     }
@@ -872,10 +868,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E e
                 break;
         }
     }
-      
-    if(ret_ecdsaStat_en == CRYPTO_DIGISIGN_SUCCESS){
-        Crypto_DigiSign_Ecdsa_Hw_SetState(CRYPTO_PROCESS_STARTED);
-    }
     
     return ret_ecdsaStat_en;
 }
@@ -885,11 +877,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E
 {
     crypto_DigiSign_Status_E ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_ALGONOTSUPPTD;
         
-    if(Crypto_DigiSign_Ecdsa_Hw_GetState() != CRYPTO_PROCESS_COMPLETE)
-    {
-         ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_MEMORY;
-    }
-    else if(Crypto_DigiSign_Ecdsa_Verify_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS)
+    if(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS)
     {
         ret_ecdsaStat_en = CRYPTO_DIGISIGN_PKE_BUSY;
     }
@@ -931,26 +919,18 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E
                     break;         
         }
     }
-    
-    if(ret_ecdsaStat_en == CRYPTO_DIGISIGN_SUCCESS){
-        Crypto_DigiSign_Ecdsa_Hw_SetState(CRYPTO_PROCESS_STARTED);
-    }
-    
+        
     return ret_ecdsaStat_en;
 }
 
 crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Sign_GetStatus(void)
 {
-    crypto_DigiSign_Status_E ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_FAIL;
-    ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Sign_GetStatus();
-    return ret_ecdsaStat_en;
+    return Crypto_DigiSign_Ecdsa_Hw_Sign_GetStatus();
 }
 
 crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Verify_GetStatus(void)
 {
-    crypto_DigiSign_Status_E ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_FAIL;
-    ret_ecdsaStat_en = Crypto_DigiSign_Ecdsa_Hw_Verify_GetStatus();
-    return ret_ecdsaStat_en;
+    return Crypto_DigiSign_Ecdsa_Hw_Verify_GetStatus();
 }
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outputSig, uint32_t sigLen)

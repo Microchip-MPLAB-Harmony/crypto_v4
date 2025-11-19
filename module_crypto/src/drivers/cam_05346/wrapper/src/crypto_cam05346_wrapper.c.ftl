@@ -104,12 +104,12 @@ void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
         cryptoIntHandlers.handlers[CRYPTO3_INT]();
     }
     
-    if (CRYPTO3_SignOperationCompleteHandler != NULL && DRV_CRYPTO_PKE_OperationCompleteGet() == CRYPTO_PKE_OPERATION_SIGN)
+    if (CRYPTO3_SignOperationCompleteHandler != NULL && DRV_CRYPTO_PKE_GetOperationCompleted() == CRYPTO_PKE_OPERATION_SIGN)
     {
         (*CRYPTO3_SignOperationCompleteHandler)();
     }
     
-    if (CRYPTO3_VerifyOperationCompleteHandler != NULL && DRV_CRYPTO_PKE_OperationCompleteGet() == CRYPTO_PKE_OPERATION_VERIFY)
+    if (CRYPTO3_VerifyOperationCompleteHandler != NULL && DRV_CRYPTO_PKE_GetOperationCompleted() == CRYPTO_PKE_OPERATION_VERIFY)
     {
         (*CRYPTO3_VerifyOperationCompleteHandler)();
     }

@@ -140,9 +140,7 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(CRYPTO_PKE_RE
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_Status(void)
 {    
-    if (!DRV_CRYPTO_PKE_IsEngineSetup()){
-            DRV_CRYPTO_PKE_SetupEngine();
-    }
+    DRV_CRYPTO_PKE_SetupEngine();
     
     CRYPTO_PKE_RESULT hwStatus = DRV_CRYPTO_ECDSA_GetStatus();
     crypto_DigiSign_Status_E status;
@@ -263,9 +261,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_Start(uint8_t *inputHash,
     }
     else
     {
-        if (!DRV_CRYPTO_PKE_IsEngineSetup()){
-            DRV_CRYPTO_PKE_SetupEngine();
-        }
+        DRV_CRYPTO_PKE_SetupEngine();
 
         /* Get curve */
         hwResult = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);
@@ -297,9 +293,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_Start(uint8_t * inputHa
     }
     else
     {
-        if (!DRV_CRYPTO_PKE_IsEngineSetup()){
-            DRV_CRYPTO_PKE_SetupEngine();
-        }
+        DRV_CRYPTO_PKE_SetupEngine();
 
         /* Get curve */
         hwResult = lCrypto_DigSign_Ecdsa_Hw_GetCurve(eccCurveType_En, &hwEccCurve);

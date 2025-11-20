@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_cam05346_wrapper.h
+    crypto_hash_hsm04777_wrapper.h
 
   Summary:
     Crypto Framework Library wrapper file for hardware SHA.
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_HASH_CAM05346_WRAPPER_H
-#define CRYPTO_HASH_CAM05346_WRAPPER_H
+#ifndef CRYPTO_HASH_HSM04777_WRAPPER_H
+#define CRYPTO_HASH_HSM04777_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -52,7 +52,6 @@ Microchip or any third party.
 #include <stdint.h>
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_hash.h"
-#include "crypto/drivers/library/cam_hash.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -68,28 +67,61 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-// The minimum size to store a CAM library HASH context data block.
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @def MINIMUM_HASH_CONTEXT_DATA_SIZE
+ * @brief Minimum size in bytes for the CAM library HASH context data block.
+ * @details This size is required for multi-step hash operations (init, update, final).
+ */
+
 #define MINIMUM_HASH_CONTEXT_DATA_SIZE        (584UL)
 
-/* The minimum size to store a CAM library HASH single-step digest context.
- * A single-step digest operation doesn't need state, cache or padding space. */
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @def MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE
+ * @brief Minimum size in bytes for the CAM library HASH single-step digest context.
+ * @details This smaller context is for single-call digest operations.
+ */
+
 #define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (220UL)
+
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @struct CRYPTO_HASH_HW_CONTEXT
+ * @brief Hardware HASH context structure for multi-step operations.
+ * @var CRYPTO_HASH_HW_CONTEXT::algorithm
+ * The hash algorithm being used (see @ref crypto_Hash_Algo_E).
+ * @var CRYPTO_HASH_HW_CONTEXT::contextData
+ * Buffer to store the CAM library's internal context data.
+ * Must be 4-byte aligned.
+ */
 
 typedef struct
 {
   crypto_Hash_Algo_E algorithm;
 
   // This is used to store the CAM library context data.
-  uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE];
+  uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE] __attribute__((aligned(4)));
 
 } CRYPTO_HASH_HW_CONTEXT;
 
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @struct CRYPTO_HASH_HW_DIGEST_CONTEXT
+ * @brief Hardware HASH context structure for single-step digest operations.
+ * @var CRYPTO_HASH_HW_DIGEST_CONTEXT::algorithm
+ * The hash algorithm being used (see @ref crypto_Hash_Algo_E).
+ * @var CRYPTO_HASH_HW_DIGEST_CONTEXT::contextData
+ * Buffer to store the CAM library's internal context data for digest operations.
+ * Must be 4-byte aligned.
+ */
+
 typedef struct
 {
   crypto_Hash_Algo_E algorithm;
 
   // This is used to store the CAM library context data.
-  uint8_t contextData[MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE];
+  uint8_t contextData[MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE] __attribute__((aligned(4)));
 
 } CRYPTO_HASH_HW_DIGEST_CONTEXT;
 
@@ -99,19 +131,61 @@ typedef struct
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength);
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @brief Computes a SHA digest in a single operation using hardware.
+ * @param [in] data Pointer to the input data to be hashed.
+ * @param [in] dataLen Length of the input data in bytes.
+ * @param [out] digest Pointer to the buffer where the computed digest will be stored.
+ * @param [in] shaAlgorithm_en The SHA algorithm to use (see @ref crypto_Hash_Algo_E).
+ * @return @ref crypto_Hash_Status_E indicating operation result.
+ * @retval CRYPTO_HASH_SUCCESS Success.
+ * @retval CRYPTO_HASH_ERROR_ALGO Invalid algorithm.
+ * @retval CRYPTO_HASH_ERROR_FAIL General failure.
+ */
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
 
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @brief Initializes a multi-step SHA hash operation using hardware.
+ * @param [in,out] shaInitCtx Pointer to the hardware HASH context (@ref CRYPTO_HASH_HW_CONTEXT).
+ * This context will be initialized.
+ * @param [in] shaAlgorithm_en The SHA algorithm to use (see @ref crypto_Hash_Algo_E).
+ * @return @ref crypto_Hash_Status_E indicating operation result.
+ * @retval CRYPTO_HASH_SUCCESS Success.
+ * @retval CRYPTO_HASH_ERROR_ALGO Invalid algorithm.
+ * @retval CRYPTO_HASH_ERROR_FAIL General failure.
+ */
+
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     crypto_Hash_Algo_E shaAlgorithm_en);
+
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @brief Updates a multi-step SHA hash operation with more data using hardware.
+ * @param [in,out] shaUpdateCtx Pointer to the hardware HASH context (@ref CRYPTO_HASH_HW_CONTEXT).
+ * @param [in] data Pointer to the additional input data.
+ * @param [in] dataLen Length of the additional input data in bytes.
+ * @return @ref crypto_Hash_Status_E indicating operation result.
+ * @retval CRYPTO_HASH_SUCCESS Success.
+ * @retval CRYPTO_HASH_ERROR_FAIL General failure (e.g., context not active).
+ */
 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen);
 
+/**
+ * @ingroup crypto_hash_hsm04777_wrapper
+ * @brief Finalizes a multi-step SHA hash operation and retrieves the digest using hardware.
+ * @param [in,out] shaFinalCtx Pointer to the hardware HASH context (@ref CRYPTO_HASH_HW_CONTEXT).
+ * @param [out] digest Pointer to the buffer where the computed digest will be stored.
+ * @return @ref crypto_Hash_Status_E indicating operation result.
+ * @retval CRYPTO_HASH_SUCCESS Success.
+ * @retval CRYPTO_HASH_ERROR_FAIL General failure (e.g., context not active or digest length error).
+ */
+ 
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest);
 
@@ -123,4 +197,4 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_HASH_CAM05346_WRAPPER_H */
+#endif /* CRYPTO_HASH_HSM04777_WRAPPER_H */

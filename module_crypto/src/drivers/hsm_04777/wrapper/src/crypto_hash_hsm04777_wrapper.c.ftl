@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_cam05346_wrapper.c
+    crypto_hash_hsm04777_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware SHA.
@@ -48,8 +48,8 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/drivers/wrapper/crypto_hash_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
+#include "../crypto_hash_hsm04777_wrapper.h"
+#include "../../library/cam_hash.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -58,22 +58,27 @@ Microchip or any third party.
 // *****************************************************************************
 
 /**
- * @brief Initialize the CAM library's AES interrupt handlers.
+ * @brief Get the SHA algorithm mode based on the specified algorithm.
+ *
+ * This function maps the provided SHA algorithm enumeration to the corresponding
+ * hardware mode used by the SHA driver.
+ *
+ * @param shaAlgorithm The SHA algorithm enumeration.
+ * @param mode Pointer to the variable where the corresponding mode will be stored.
+ * @return @ref crypto_Hash_Status_E Status of the operation, indicating success or failure.
+ * @retval CRYPTO_HASH_SUCCESS The operation was successful.
+ * @retval CRYPTO_HASH_ERROR_FAIL The operation failed.
+ * @retval CRYPTO_HASH_ERROR_ALGO The specified algorithm is not supported.
  */
-static void lDRV_CRYPTO_HASH_InterruptSetup(void)
-{
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_HASH_IsrHelper);
-    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
-}
 
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Hash Algorithms Common Interface Implementation
-// *****************************************************************************
-// *****************************************************************************
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode)
+/**
+ * @brief Get the equivalent CAM library hash algorithm (operation mode).
+ * @param shaAlgorithm The crypto SHA algorithm.
+ * @param mode Pointer to a value to hold the equivalent CAM library hash operation mode.
+ * @return CRYPTO_HASH_SUCCESS on success, CRYPTO_HASH_ERROR_FAIL on failure.
+ */
+static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm,
+        HASHCON_MODE* mode)
 {
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
 
@@ -107,7 +112,20 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgor
     return status;
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength)
+/**
+ * @brief Get the digest length for the specified SHA algorithm.
+ *
+ * This function retrieves the expected output length of the hash digest
+ * for the given SHA algorithm.
+ *
+ * @param shaAlgorithm The SHA algorithm enumeration.
+ * @param digestLength Pointer to the variable where the digest length will be stored.
+ * @return @ref crypto_Hash_Status_E Status of the operation, indicating success or failure.
+ * @retval CRYPTO_HASH_SUCCESS The operation was successful.
+ * @retval CRYPTO_HASH_ERROR_FAIL The operation failed.
+ */
+
+static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength)
 {
     crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
 
@@ -130,20 +148,26 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAl
             break;
         default:
             *digestLength = 0;
-            status = CRYPTO_HASH_ERROR_ALGO;
+            status = CRYPTO_HASH_ERROR_FAIL;
             break;
     }
 
     return status;
 }
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Hash Algorithms Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
 crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
         crypto_Hash_Algo_E shaAlgorithm)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the HASH context defined by the
-    *         CAM Hardware Driver pre-compiled library is required since
-    *         the library does not have access to the upper context structures
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -152,7 +176,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
 
-    status = Crypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &mode);
+    status = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &mode);
 
     if (status == CRYPTO_HASH_SUCCESS)
     {
@@ -161,11 +185,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
         hashStatus = DRV_CRYPTO_HASH_Initialize(shaCtx->contextData, mode);
     }
 
-    if (hashStatus == HASH_NO_ERROR)
-    {
-        lDRV_CRYPTO_HASH_InterruptSetup();
-    }
-    else
+    if (hashStatus != HASH_NO_ERROR)
     {
         status = CRYPTO_HASH_ERROR_FAIL;
     }
@@ -177,9 +197,9 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
    /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the HASH context defined by the
-    *         CAM Hardware Driver pre-compiled library is required since
-    *         the library does not have access to the upper context structures
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -206,9 +226,9 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     uint8_t *digest)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the HASH context defined by the
-    *         CAM Hardware Driver pre-compiled library is required since
-    *         the library does not have access to the upper context structures
+    * Reason: Conversion from void* to the HASH context defined by the 
+    *         CAM Hardware Driver pre-compiled library is required since 
+    *         the library does not have access to the upper context structures 
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -216,20 +236,42 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus;
     HASH_ERROR hashActive;
-    uint32_t digestLength = 0;
 
     hashStatus = DRV_CRYPTO_HASH_IsActive(shaCtx->contextData, &hashActive);
     if ((hashStatus == HASH_NO_ERROR) && (hashActive == HASH_OPERATION_IS_ACTIVE))
     {
-        status = Crypto_Hash_Hw_Sha_GetDigestLength(shaCtx->algorithm, &digestLength);
-    }
+        uint32_t digestLen;
 
-    if (status == CRYPTO_HASH_SUCCESS)
-    {
-        hashStatus = DRV_CRYPTO_HASH_Final(shaCtx->contextData, digest, digestLength);
-        if (hashStatus != HASH_NO_ERROR)
+        switch(shaCtx->algorithm)
         {
-            status = CRYPTO_HASH_ERROR_FAIL;
+            case CRYPTO_HASH_SHA1:
+                digestLen = 20;
+                break;
+            case CRYPTO_HASH_SHA2_224:
+                digestLen = 28;
+                break;
+            case CRYPTO_HASH_SHA2_256:
+                digestLen = 32;
+                break;
+            case CRYPTO_HASH_SHA2_384:
+                digestLen = 48;
+                break;
+            case CRYPTO_HASH_SHA2_512:
+                digestLen = 64;
+                break;
+            default:
+                digestLen = 0;
+                hashStatus = HASH_READ_ERROR;
+                break;
+        }
+
+        if (hashStatus == HASH_NO_ERROR)
+        {
+            hashStatus = DRV_CRYPTO_HASH_Final(shaCtx->contextData, digest, digestLen);
+            if (hashStatus == HASH_NO_ERROR)
+            {
+                status = CRYPTO_HASH_SUCCESS;
+            }
         }
     }
 
@@ -243,19 +285,17 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     CRYPTO_HASH_HW_DIGEST_CONTEXT shaDigestCtx;
 
-    status = Crypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &mode);
+    status = lCrypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &mode);
 
     if (status == CRYPTO_HASH_SUCCESS)
     {
         HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
         uint32_t digestLength = 0;
 
-        lDRV_CRYPTO_HASH_InterruptSetup();
-
         shaDigestCtx.algorithm = shaAlgorithm_en;
         (void)memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
 
-        if (CRYPTO_HASH_SUCCESS == Crypto_Hash_Hw_Sha_GetDigestLength(shaDigestCtx.algorithm, &digestLength))
+        if (CRYPTO_HASH_SUCCESS == lCrypto_Hash_Hw_Sha_GetDigestLength(shaDigestCtx.algorithm, &digestLength))
         {
             hashStatus = DRV_CRYPTO_HASH_Digest(shaDigestCtx.contextData, mode, data, dataLen, digest, digestLength);
         }

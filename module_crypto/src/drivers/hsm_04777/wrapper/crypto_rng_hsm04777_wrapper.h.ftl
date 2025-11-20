@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_cam05346_wrapper.h
+    crypto_rng_hsm04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware SHA.
+    Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to access the SHA
+    This header file contains the wrapper interface to access the TRNG
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_HASH_CAM05346_WRAPPER_H
-#define CRYPTO_HASH_CAM05346_WRAPPER_H
+#ifndef CRYPTO_RNG_HSM04777_WRAPPER_H
+#define CRYPTO_RNG_HSM04777_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -51,8 +51,7 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/crypto_hash.h"
-#include "crypto/drivers/library/cam_hash.h"
+#include "crypto/common_crypto/crypto_rng.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -64,56 +63,22 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: TRNG Common Interface
 // *****************************************************************************
 // *****************************************************************************
 
-// The minimum size to store a CAM library HASH context data block.
-#define MINIMUM_HASH_CONTEXT_DATA_SIZE        (584UL)
-
-/* The minimum size to store a CAM library HASH single-step digest context.
- * A single-step digest operation doesn't need state, cache or padding space. */
-#define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (220UL)
-
-typedef struct
-{
-  crypto_Hash_Algo_E algorithm;
-
-  // This is used to store the CAM library context data.
-  uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE];
-
-} CRYPTO_HASH_HW_CONTEXT;
-
-typedef struct
-{
-  crypto_Hash_Algo_E algorithm;
-
-  // This is used to store the CAM library context data.
-  uint8_t contextData[MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE];
-
-} CRYPTO_HASH_HW_DIGEST_CONTEXT;
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Hash Algorithms Common Interface
-// *****************************************************************************
-// *****************************************************************************
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
-    uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
-    crypto_Hash_Algo_E shaAlgorithm_en);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
-    uint8_t *data, uint32_t dataLen);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
-    uint8_t *digest);
+/**
+ * @ingroup crypto_rng_hsm04777_wrapper
+ * @brief Generates random data using the hardware TRNG.
+ * @param [out] rngData Pointer to the buffer where the generated random data will be stored.
+ * @param [in] rngLen Number of random bytes to generate.
+ * @return @ref crypto_Rng_Status_E indicating operation result.
+ * @retval CRYPTO_RNG_SUCCESS Random data generated successfully.
+ * @retval CRYPTO_RNG_ERROR_NOTSUPPTED Hardware TRNG support is not available or not enabled.
+ * @retval CRYPTO_RNG_ERROR_FAIL General failure during random number generation.
+ */
+ 
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -123,4 +88,4 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_HASH_CAM05346_WRAPPER_H */
+#endif /* CRYPTO_RNG_HSM04777_WRAPPER_H */

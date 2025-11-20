@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_sym_cam05346_wrapper.c
+    crypto_sym_hsm04777_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for CAM hardware AES.
@@ -48,9 +48,8 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/drivers/wrapper/crypto_sym_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
-#include "crypto/drivers/library/cam_aes.h"
+#include "../crypto_sym_hsm04777_wrapper.h"
+#include "../../library/cam_aes.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -68,13 +67,19 @@ Microchip or any third party.
 // *****************************************************************************
 
 /**
- * @brief Initialize the CAM library's AES interrupt handlers.
+ * @ingroup crypto_sym_hsm04777_wrapper
+ * @brief Maps the operation mode to the corresponding AES mode.
+ *
+ * This function checks the provided operation mode and assigns the corresponding
+ * AES mode to the provided pointer. It returns an error status if the mode is invalid.
+ *
+ * @param [in] opMode The operation mode to be mapped.
+ * @param [out] mode Pointer to the variable where the mapped mode will be stored.
+ *
+ * @return @ref crypto_Sym_Status_E indicating the status of the operation.
+ * @retval CRYPTO_SYM_CIPHER_SUCCESS Operation completed successfully.
+ * @retval CRYPTO_SYM_ERROR_OPMODE Invalid operation mode provided.
  */
-static void lCrypto_Sym_Hw_Aes_InterruptSetup(void)
-{
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_AES_IsrHelper);
-    (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
-}
 
 /**
  * @brief Get the CAM library's equivalent symmetric AES operation cipher mode.
@@ -97,18 +102,6 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E
             *mode = MODE_CTR;
             status = CRYPTO_SYM_CIPHER_SUCCESS;
             break;
-        case CRYPTO_SYM_OPMODE_CBC:
-            *mode = MODE_CBC;
-            status = CRYPTO_SYM_CIPHER_SUCCESS;
-            break;
-        case CRYPTO_SYM_OPMODE_CFB128:
-            *mode = MODE_CFB;
-            status = CRYPTO_SYM_CIPHER_SUCCESS;
-            break;
-        case CRYPTO_SYM_OPMODE_OFB:
-            *mode = MODE_OFB;
-            status = CRYPTO_SYM_CIPHER_SUCCESS;
-            break;
         case CRYPTO_SYM_OPMODE_XTS:
             *mode = MODE_XTS;
             status = CRYPTO_SYM_CIPHER_SUCCESS;
@@ -122,10 +115,18 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E
 }
 
 /**
- * @brief Get the CAM library's equivalent symmetric AES operation mode.
- * @param opMode The crypto oepration mode.
- * @param mode Pointer to a value to hold the equivalent CAM library operation mode.
- * @return CRYPTO_SYM_CIPHER_SUCCESS on success, CRYPTO_SYM_ERROR_CIPOPER on failure.
+ * @ingroup crypto_sym_hsm04777_wrapper
+ * @brief Maps the cipher operation type to the corresponding AES operation.
+ *
+ * This function checks the provided cipher operation type and assigns the corresponding
+ * AES operation to the provided pointer. It returns an error status if the operation type is invalid.
+ *
+ * @param [in] cipherOpType The cipher operation type to be mapped.
+ * @param [out] operation Pointer to the variable where the mapped operation will be stored.
+ *
+ * @return @ref crypto_Sym_Status_E indicating the status of the operation.
+ * @retval CRYPTO_SYM_CIPHER_SUCCESS Operation completed successfully.
+ * @retval CRYPTO_SYM_ERROR_CIPOPER Invalid cipher operation type provided.
  */
 static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperation
     (crypto_CipherOper_E cipherOpType, AESCON_OPERATION* operation)
@@ -151,9 +152,15 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperation
 }
 
 /**
- * @brief Get the number of "invalid" (uncalculated) bytes for a symmetric AES block.
- * @brief dataLen The length of the data.
- * @return The number of uncalculated bytes in the AES block.
+ * @ingroup crypto_sym_hsm04777_wrapper
+ * @brief Calculates the number of invalid bytes for AES block alignment.
+ *
+ * This function calculates how many additional bytes are needed to make the input data
+ * length a multiple of the AES block size. It returns the number of invalid bytes.
+ *
+ * @param [in] dataLen The length of the input data.
+ *
+ * @return The number of invalid bytes needed for block alignment.
  */
 static uint32_t lCrypto_Sym_Hw_Aes_GetNumOfInvalidBytes(uint32_t dataLen)
 {
@@ -192,7 +199,6 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_Direct(AESCON_MODE mode, AESCON_OP
     aesStatus = DRV_CRYPTO_AES_Initialize(aesContext, mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     if(aesStatus == AES_NO_ERROR)
     {
-        lCrypto_Sym_Hw_Aes_InterruptSetup();
 
         if (mode == MODE_XTS)
         {
@@ -284,11 +290,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx,
         aesStatus = DRV_CRYPTO_AES_Initialize(aesCtx->contextData, mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     }
 
-    if(aesStatus == AES_NO_ERROR)
-    {
-        lCrypto_Sym_Hw_Aes_InterruptSetup();
-    }
-    else
+    if(aesStatus != AES_NO_ERROR)
     {
         status = CRYPTO_SYM_ERROR_CIPFAIL;
     }

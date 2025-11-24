@@ -106,12 +106,12 @@ void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
     }
     if(CRYPTO3_OperationTypeHandler != NULL)
     {
-        if (CRYPTO3_SignOperationCompleteHandler != NULL && CRYPTO3_OperationTypeHandler() == ECDSA_SIGN)
+        if ((CRYPTO3_SignOperationCompleteHandler != NULL) && (CRYPTO3_OperationTypeHandler() == ECDSA_SIGN))
         {
             (*CRYPTO3_SignOperationCompleteHandler)();
         }
 
-        if (CRYPTO3_VerifyOperationCompleteHandler != NULL && CRYPTO3_OperationTypeHandler() == ECDSA_VERIFY)
+        if ((CRYPTO3_VerifyOperationCompleteHandler != NULL) && (CRYPTO3_OperationTypeHandler() == ECDSA_VERIFY))
         {
             (*CRYPTO3_VerifyOperationCompleteHandler)();
         }

@@ -987,4 +987,14 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_GetResult(void)
     
     return ret_ecdsaStat_en;
 }
+
+void Crypto_DigiSign_Ecdsa_SignComplete_CallbackRegister(void (*handler)(void))
+{
+    CRYPTO_Int_Hw_SignComplete_CallbackRegister(handler);
+}
+
+void Crypto_DigiSign_Ecdsa_VerifyComplete_CallbackRegister(void (*handler)(void))
+{
+    CRYPTO_Int_Hw_VerifyComplete_CallbackRegister(handler);
+}
 </#if><#-- CRYPTO_HW_ECDSA &&  HAVE_CRYPTO_HW_CAM_05346_DRIVER--> 

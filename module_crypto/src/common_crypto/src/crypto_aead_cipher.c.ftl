@@ -120,7 +120,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesC
 
 <#if (CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
+<#if ((driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")))>
                     ret_aesCcmStat_en = Crypto_Aead_Hw_AesCcm_Init((void*)ptr_aesCcmCtx_st->arr_aeadDataCtx, ptr_aesCcmCtx_st->ptr_key, ptr_aesCcmCtx_st->aeadKeySize);
 </#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
                 break;
@@ -185,7 +185,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
 
 <#if (CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
+<#if ((driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")))>
                 ret_aesCcmStat_en =  Crypto_Aead_Hw_AesCcm_Cipher(ptr_aesCcmCtx_st->arr_aeadDataCtx, cipherOper_en, ptr_inputData, dataLen,
                                                         ptr_outData, ptr_nonce, nonceLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
 </#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER -->

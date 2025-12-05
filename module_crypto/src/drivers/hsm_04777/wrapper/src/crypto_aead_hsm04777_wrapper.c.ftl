@@ -70,7 +70,7 @@
  *
  * @param cipherOpType The type of cipher operation (encrypt or decrypt).
  * @param operation Pointer to the variable where the operation type will be stored.
- * 
+ *
  * @return @ref crypto_Aead_Status_E Status of the operation.
  *         @retval CRYPTO_AEAD_CIPHER_SUCCESS on success.
  *         @retval CRYPTO_AEAD_ERROR_CIPOPER if the operation type is invalid.
@@ -103,7 +103,7 @@ static crypto_Aead_Status_E lCrypto_Aead_Hw_Aes_GetOperation
  * @brief Calculates the number of padding bytes required for AES.
  *
  * @param dataLen The length of the data to be padded.
- * 
+ *
  * @return @ref uint32_t The number of padding bytes needed to align the data to the AES block size.
  */
 
@@ -121,7 +121,7 @@ static uint32_t lCrypto_Aead_Hw_Aes_GetPadBytes(uint32_t dataLen)
  * @param cmp1 Pointer to the first byte array.
  * @param cmp2 Pointer to the second byte array.
  * @param cmpLen The length of the byte arrays to compare.
- * 
+ *
  * @return @ref uint32_t 0 if the arrays are equal, 1 if they are different.
  */
 
@@ -156,7 +156,7 @@ static uint32_t lCrypto_Aead_Hw_CompareAsBytes(uint8_t *cmp1, uint8_t *cmp2, uin
  * @brief Builds the header for the AES CCM (Counter with CBC-MAC) encryption scheme.
  *
  * This function constructs the header for the AES CCM mode of operation as defined in
- * RFC 1310, paragraph 2.2. The header includes flags, nonce, data length, and 
+ * RFC 1310, paragraph 2.2. The header includes flags, nonce, data length, and
  * additional authentication data (AAD) length if present.
  *
  * @param[out] header Pointer to the buffer where the constructed header will be stored.
@@ -263,9 +263,9 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *aeadInitCtx,
     uint8_t *initVect, uint32_t initVectLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the AEAD context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
-    *         the library does not have access to the upper context structures 
+    * Reason: Conversion from void* to the AEAD context defined by the
+    *         CAM Hardware Driver pre-compiled library is required since
+    *         the library does not have access to the upper context structures
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -298,9 +298,9 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_AddAadData(void *aeadCipherCtx,
     uint8_t *aad, uint32_t aadLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the AEAD context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
-    *         the library does not have access to the upper context structures 
+    * Reason: Conversion from void* to the AEAD context defined by the
+    *         CAM Hardware Driver pre-compiled library is required since
+    *         the library does not have access to the upper context structures
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -343,9 +343,9 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *aeadCipherCtx,
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the AEAD context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
-    *         the library does not have access to the upper context structures 
+    * Reason: Conversion from void* to the AEAD context defined by the
+    *         CAM Hardware Driver pre-compiled library is required since
+    *         the library does not have access to the upper context structures
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -388,9 +388,9 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Final(void *aeadFinalCtx,
     uint8_t *authTag, uint32_t authTagLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
-    * Reason: Conversion from void* to the AEAD context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
-    *         the library does not have access to the upper context structures 
+    * Reason: Conversion from void* to the AEAD context defined by the
+    *         CAM Hardware Driver pre-compiled library is required since
+    *         the library does not have access to the upper context structures
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
@@ -492,7 +492,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
 crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Init(void *aeadInitCtx,
     uint8_t *key, uint32_t keyLen)
 {
-    
+
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to CRYPTO_AEAD_HW_CONTEXT* is necessary to access
     * context-specific members. The input pointer is guaranteed by design to point
@@ -510,7 +510,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Init(void *aeadInitCtx,
     (void)memset(aeadCtx->contextData, 0, sizeof(aeadCtx->contextData));
 
     // CCM does not use an initialization vector, instead using a nonce provided during the call to cipher.
-    aesStatus = DRV_CRYPTO_AES_Initialize(aeadCtx, mode, key, keyLen, NULL, 0UL);
+    aesStatus = DRV_CRYPTO_AES_Initialize(aeadCtx, mode, OP_ENCRYPT, key, keyLen, NULL, 0UL);
     if(aesStatus == AES_NO_ERROR)
     {
         status = CRYPTO_AEAD_CIPHER_SUCCESS;

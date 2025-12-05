@@ -126,7 +126,7 @@ typedef struct
 // *****************************************************************************
 <#if ( (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true))) || (CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true)))>
 
-  <#if (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))
+  <#if ((driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")))
       || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesCcmCtx_st, crypto_HandlerType_E handlerType_en,
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);

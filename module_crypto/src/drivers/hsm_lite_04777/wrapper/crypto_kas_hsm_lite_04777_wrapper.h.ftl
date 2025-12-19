@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_KAS_HSM_04777_WRAPPER_H
-#define	CRYPTO_KAS_HSM_04777_WRAPPER_H
+#ifndef CRYPTO_KAS_HSM_LITE_04777_WRAPPER_H
+#define	CRYPTO_KAS_HSM_LITE_04777_WRAPPER_H
 
 #ifdef	__cplusplus
 extern "C" {
@@ -91,5 +91,5 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
 }
 #endif
 
-#endif	/* CRYPTO_KAS_HSM_04777_WRAPPER_H */
+#endif	/* CRYPTO_KAS_HSM_LITE_04777_WRAPPER_H */
 

@@ -47,7 +47,7 @@ Crypto_HW_AllDriversList = [
         ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"],     #TDES_6150
         ["TRNG", "03597", "", "TRNG_03597", "HAVE_CRYPTO_HW_TRNG_03597_DRIVER", "Crypto_Hw_TRNG_03597_DriverSymbol", "TRNG_03597 Driver Supported"],    #TRNG_03597
         ["CAM", "05346", "", "CAM_05346", "HAVE_CRYPTO_HW_CAM_05346_DRIVER", "Crypto_Hw_CAM_05346_DriverSymbol", "CAM_05346 Driver Supported"],    #CAM_05346
-        ["HSM", "04777", "", "HSM_04777", "HAVE_CRYPTO_HW_HSM_04777_DRIVER", "Crypto_Hw_HSM_04777_DriverSymbol", "HSM_04777 Driver Supported"],    #HSM_04777
+        ["HSM_LITE", "04777", "", "HSM_LITE_04777", "HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER", "Crypto_Hw_HSM_LITE_04777_DriverSymbol", "HSM_LITE_04777 Driver Supported"],    #HSM_LITE_04777
 ]
 
 #---------------------------------------------------------------------------------------

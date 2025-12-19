@@ -56,8 +56,8 @@
 #include "crypto/drivers/wrapper/crypto_digisign_cam05346_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
 </#if>
-<#if crypto_digisign_hsm04777_wrapper_h_ftl_flag?? && (crypto_digisign_hsm04777_wrapper_h_ftl_flag == true)>
-#include "crypto/drivers/wrapper/crypto_digisign_hsm04777_wrapper.h"
+<#if crypto_digisign_hsm_lite_04777_wrapper_h_ftl_flag?? && (crypto_digisign_hsm_lite_04777_wrapper_h_ftl_flag == true)>
+#include "crypto/drivers/wrapper/crypto_digisign_hsm_lite_04777_wrapper.h"
 </#if>
 <#if crypto_digisign_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_digisign_cpkcc44163_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_cpkcc44163_wrapper.h"
@@ -828,7 +828,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
 }
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING --> 
 
-<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Non-Blocking Crypto APIS

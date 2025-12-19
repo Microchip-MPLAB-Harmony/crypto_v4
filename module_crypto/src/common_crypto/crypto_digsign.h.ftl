@@ -77,13 +77,13 @@ typedef enum
     CRYPTO_DIGISIGN_ERROR_FAIL = -113,
     CRYPTO_DIGISIGN_ERROR_RSAPADDING = -112,
     CRYPTO_DIGISIGN_ERROR_INPUTDATA = -111,
-<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))> 
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
     CRYPTO_DIGISIGN_ERROR_MEMORY = -110,
     CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE = -109,
     CRYPTO_DIGISIGN_ERROR_NO_OPERATION_REQUESTED = -108,
 </#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
     CRYPTO_DIGISIGN_SUCCESS = 0,     
-<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))> 
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
     CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS = 1,
     CRYPTO_DIGISIGN_OPERATION_COMPLETED = 2,
     CRYPTO_DIGISIGN_PKE_BUSY = 3,
@@ -146,7 +146,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_Handler
                                                                 uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId);
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING --> 
 
-<#if ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER"))>
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Non-Blocking Crypto APIS

@@ -323,8 +323,8 @@ crypto_Mac_Status_E Crypto_Mac_Hw_Hmac_Init(void *contextData, uint8_t *key, uin
             if (hashStatus == CRYPTO_HASH_SUCCESS)
             {
                 // Set up the hash interrupt handler before calling the digest function.
-                (void)Crypto_Int_Hw_Register_Handler(CRYPTO1_INT, DRV_CRYPTO_HASH_IsrHelper);
-                (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
+                (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_HASH_IsrHelper);
+                (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
 
                 hashStatus = DRV_CRYPTO_HASH_Digest(shaContext->contextData, mode, key, keyLength, keyData, digestLength);
             }

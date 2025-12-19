@@ -72,7 +72,7 @@ static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
 
 crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
 {
-<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")>
 
     (void) DRV_CRYPTO_TRNG_Setup();
     lDRV_CRYPTO_TRNG_InterruptSetup();

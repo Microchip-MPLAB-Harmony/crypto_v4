@@ -126,7 +126,7 @@ typedef struct
 // *****************************************************************************
 <#if ( (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true))) || (CRYPTO_HW_AES_CCM?? &&(CRYPTO_HW_AES_CCM == true)))>
 
-  <#if ((driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")))
+  <#if ((driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))
       || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_AesCcm_Init(st_Crypto_Aead_AesCcm_ctx *ptr_aesCcmCtx_st, crypto_HandlerType_E handlerType_en,
                                               uint8_t *ptr_key, uint32_t keyLen, uint32_t sessionID);
@@ -159,7 +159,7 @@ crypto_Aead_Status_E Crypto_Aead_AesEax_DecryptAuthDirect(crypto_HandlerType_E h
 </#if><#-- CRYPTO_WC_AES_EAX -->
 <#if ( (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true))) || (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true)))>
 
-  <#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER"))
+  <#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER"))
       || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM?? &&(lib_wolfcrypt.CRYPTO_WC_AES_GCM == true)))>
 crypto_Aead_Status_E Crypto_Aead_AesGcm_Init(st_Crypto_Aead_AesGcm_ctx *ptr_aesGcmCtx_st, crypto_HandlerType_E handlerType_en, crypto_CipherOper_E cipherOper_en,
                                                             uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect, uint32_t initVectLen, uint32_t sessionID);
@@ -177,7 +177,7 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_EncryptAuthDirect(crypto_HandlerType_E h
 crypto_Aead_Status_E Crypto_Aead_AesGcm_DecryptAuthDirect(crypto_HandlerType_E handlerType_en, uint8_t *ptr_inputData, uint32_t dataLen,
                                                             uint8_t *ptr_outData, uint8_t *ptr_key, uint32_t keyLen, uint8_t *ptr_initVect,
                                                             uint32_t initVectLen, uint8_t *ptr_aad, uint32_t aadLen, uint8_t *ptr_authTag, uint8_t authTagLen, uint32_t sessionID);
-  </#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER || HAVE_CRYPTO_HW_CAM_05346_DRIVER  || HAVE_CRYPTO_HW_HSM_04777_DRIVER || HAVE_CRYPTO_HW_HSM_03785_DRIVER ||CRYPTO_WC_AES_GCM  -->
+  </#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER || HAVE_CRYPTO_HW_CAM_05346_DRIVER  || HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER || HAVE_CRYPTO_HW_HSM_03785_DRIVER ||CRYPTO_WC_AES_GCM  -->
 </#if><#-- CRYPTO_WC_AES_GCM || CRYPTO_HW_AES_GCM -->
 
 <#if lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305?? &&(lib_wolfcrypt.CRYPTO_WC_CHACHA20_POLY1305 == true))>

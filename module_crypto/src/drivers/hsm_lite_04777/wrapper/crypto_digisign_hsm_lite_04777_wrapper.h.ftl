@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_digisign_hsm04777_wrapper.h
+    crypto_digisign_hsm_lite_04777_wrapper.h
 
   Summary:
     Crypto Framework Library wrapper file for the digital signature in the 
@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_DIGISIGN_HSM04777_WRAPPER_H
-#define CRYPTO_DIGISIGN_HSM04777_WRAPPER_H
+#ifndef CRYPTO_DIGISIGN_HSM_LITE_04777_WRAPPER_H
+#define CRYPTO_DIGISIGN_HSM_LITE_04777_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -53,6 +53,7 @@ Microchip or any third party.
 #include <stdint.h>
 #include "crypto/common_crypto/crypto_common.h"
 #include "crypto/common_crypto/crypto_digsign.h"
+#include "crypto/drivers/wrapper/crypto_hsm_lite_04777_wrapper.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -69,9 +70,9 @@ Microchip or any third party.
 // *****************************************************************************
 
 /**
- * @ingroup crypto_digisign_hsm04777_wrapper
+ * @ingroup crypto_digisign_hsm_lite_04777_wrapper
  * @brief Performs an ECDSA sign operation using hardware.
- * @details Generates an ECDSA signature from a hash using the CAM hardware library.
+ * @details Generates an ECDSA signature from a hash using the HSM_LITE/CAM hardware library.
  * @param [in] inputHash Pointer to the hash to be signed.
  * @param [in] hashLen Length of the input hash in bytes.
  * @param [out] outSig Pointer to the buffer for the generated signature.
@@ -91,9 +92,9 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
     uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En);
 
 /**
- * @ingroup crypto_digisign_hsm04777_wrapper
+ * @ingroup crypto_digisign_hsm_lite_04777_wrapper
  * @brief Performs an ECDSA signature verification using hardware.
- * @details Verifies an ECDSA signature against a hash and public key using the CAM hardware.
+ * @details Verifies an ECDSA signature against a hash and public key using the HSM_LITE/CAM hardware.
  * @param [in] inputHash Pointer to the hash that was signed.
  * @param [in] hashLen Length of the input hash in bytes.
  * @param [in] inputSig Pointer to the signature to be verified.
@@ -115,7 +116,110 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
     uint32_t pubKeyLen, int8_t *hashVerifyStatus, 
     crypto_EccCurveType_E eccCurveType_En);
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Non-Blocking Crypto APIS
+// *****************************************************************************
+// *****************************************************************************
 
+/**
+ * @ingroup crypto_digisign_hsm_lite_04777_wrapper
+ * @brief Indicates the state of the digital signature operation.
+ * @details
+ * This enumeration defines possible states for non-blocking digital signature
+ * processes in the DigiSign HSM Lite wrapper. Primarily used for tracking whether
+ * a cryptographic operation has been started or is complete.
+ */
+typedef enum
+{
+    CRYPTO_PROCESS_STARTED,
+    CRYPTO_PROCESS_COMPLETE
+} crypto_DigiSignState_E;
+
+/**
+ * @brief Start the ECDSA signing process using non-blocking functions.
+ * @param inputHash       Pointer to the input hash.
+ * @param hashLen         Length of the input hash.
+ * @param privKey         Pointer to the private key.
+ * @param privKeyLen      Length of the private key.
+ * @param eccCurveType_En Curve type.
+ * @return CRYPTO_DIGISIGN_SUCCESS on successful start. Any other Error on failure.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_Start(uint8_t *inputHash, 
+    uint32_t hashLen, uint8_t *privKey, uint32_t privKeyLen, 
+    crypto_EccCurveType_E eccCurveType_En); 
+/**
+ * @brief Start the ECDSA verify process using non-blocking functions.
+ * @param inputHash       Pointer to the input hash.
+ * @param hashLen         Length of the input hash.
+ * @param inputSig        Pointer to the input signature.
+ * @param sigLen          Length of the input signature.
+ * @param pubKey          Pointer to the public key.
+ * @param pubKeyLen       Length of the public key.
+ * @param eccCurveType_En Curve type.
+ * @return CRYPTO_DIGISIGN_SUCCESS on successful start. Any other Error on failure.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_Start(uint8_t * inputHash, uint32_t hashLen, 
+    uint8_t *inputSig, uint32_t sigLen, uint8_t *pubKey, uint32_t pubKeyLen, 
+    crypto_EccCurveType_E eccCurveType_En);
+
+/**
+ * @brief Check the status of the signing operation.
+ * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if operation is in progress.
+ *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if operation is complete.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_GetStatus(void);
+/**
+ * @brief Check the status of the verification operation.
+ * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if operation is in progress.
+ *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if operation is complete.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetStatus(void);
+
+/**
+ * @brief Gets the results of the signature operation.
+ * @param outputSig Pointer to an output signature.
+ * @param sigLen    Length of the expected signature.
+ * @return 
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign_GetResult(uint8_t *outputSig, uint32_t sigLen);
+/**
+ * @brief Gets the results of the verification operation.
+ * @return CRYPTO_DIGISIGN_SUCCESS on successful verification. 
+ *         Any other Error code on failure.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify_GetResult(void);
+
+/**
+ * @brief Gets the current state of the wrapper layer. 
+ * @return CRYPTO_PROCESS_STARTED if start was called. 
+ *         CRYPTO_PROCESS_COMPLETE if get result api was called.
+ */
+crypto_DigiSignState_E Crypto_DigiSign_Ecdsa_Hw_GetState(void);
+/**
+ * @brief Sets the state of the wrapper layer.
+ * @param State CRYPTO_PROCESS_STARTED if start was called. 
+ *              CRYPTO_PROCESS_COMPLETE if get result api was called.
+ */
+void Crypto_DigiSign_Ecdsa_Hw_SetState(crypto_DigiSignState_E state);
+
+/**
+ * @brief Clear Memory removes previous inputs. Used if CRYPTO_DIGISIGN_ERROR_MEMORY is returned from Crypto apis.
+ */
+void Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void);
+
+/**
+ * @brief Get the status of the clear memory operation.
+ * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if operation is in progress.
+ *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if operation is complete.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_ClearMemory_GetStatus(void);
+
+/**
+ * @brief Returns the operation type that was completed.
+ * @return ECDSA_SIGN or ECDSA_VERIFY or UNKNOWN_OPERATION.
+ */
+crypto_operation_Id Crypto_DigSign_Ecdsa_Operation(void);
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -124,4 +228,4 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_DIGISIGN_HSM04777_WRAPPER_H */
+#endif /* CRYPTO_DIGISIGN_HSM_LITE_04777_WRAPPER_H */

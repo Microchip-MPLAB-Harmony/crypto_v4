@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_aead_hsm04777_wrapper.h
+    crypto_aead_hsm_lite_04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for CAM hardware AES.
+    Crypto Framework Library wrapper file for HSM_LITE/CAM hardware AES.
 
   Description:
     This header file contains the wrapper interface to access the AEAD
-    algorithms in the CAM AES hardware driver for Microchip microcontrollers.
+    algorithms in the HSM_LITE/CAM AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 /*******************************************************************************
@@ -38,8 +38,8 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-#ifndef CRYPTO_AEAD_HSM04777_WRAPPER_H
-#define CRYPTO_AEAD_HSM04777_WRAPPER_H
+#ifndef CRYPTO_AEAD_HSM_LITE_04777_WRAPPER_H
+#define CRYPTO_AEAD_HSM_LITE_04777_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -66,16 +66,16 @@
 // *****************************************************************************
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @def MINIMUM_AEAD_CONTEXT_DATA_SIZE
- * @brief Minimum size in bytes for the CAM library AEAD context data block.
+ * @brief Minimum size in bytes for the HSM_LITE/CAM library AEAD context data block.
  * @details This size is required for AEAD operations.
  */
 
 #define MINIMUM_AEAD_CONTEXT_DATA_SIZE  (256U)
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @def AES_GCM_AUTHTAG_SIZE
  * @brief Size of the AES-GCM authentication tag.
  * @details This defines the length of the authentication tag used in AES-GCM operations.
@@ -85,16 +85,16 @@
 #define AES_CCM_AUTHTAG_SIZE            (16U)
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @struct CRYPTO_AEAD_HW_CONTEXT
  * @brief Hardware AEAD context structure for AES operations.
  * @var CRYPTO_AEAD_HW_CONTEXT::contextData
- * Buffer to store the CAM library's internal context data.
+ * Buffer to store the HSM_LITE/CAM library's internal context data.
  * Must be 4-byte aligned.
  */
 typedef struct
 {
-  // This is used to store the CAM library context data.
+  // This is used to store the HSM_LITE/CAM library context data.
   uint8_t contextData[MINIMUM_AEAD_CONTEXT_DATA_SIZE] __attribute__((aligned(4)));
 
 } CRYPTO_AEAD_HW_CONTEXT;
@@ -108,7 +108,7 @@ typedef struct
 <#if (CRYPTO_HW_AES_GCM?? && (CRYPTO_HW_AES_GCM == true))>
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @brief Initializes the AES-GCM AEAD operation.
  * @param [in,out] aeadInitCtx Pointer to the AEAD context (@ref CRYPTO_AEAD_HW_CONTEXT).
  * This context will be initialized.
@@ -127,7 +127,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *aeadInitCtx,
     uint8_t *initVect, uint32_t initVectLen);
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @brief Adds additional authenticated data (AAD) to the AES-GCM operation.
  * @param [in,out] aeadCipherCtx Pointer to the AEAD context.
  * @param [in] aad Pointer to the additional authenticated data.
@@ -141,7 +141,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_AddAadData(void *aeadCipherCtx,
       uint8_t *aad, uint32_t aadLen);
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @brief Processes the input data for AES-GCM encryption or decryption.
  * @param [in,out] aeadCipherCtx Pointer to the AEAD context.
  * @param [in] inputData Pointer to the input data to be processed.
@@ -156,7 +156,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Cipher(void *aeadCipherCtx,
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData);
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @brief Finalizes the AES-GCM operation and retrieves the authentication tag.
  * @param [in,out] aeadCipherCtx Pointer to the AEAD context.
  * @param [out] authTag Pointer to the buffer where the authentication tag will be stored.
@@ -170,7 +170,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Final(void *aeadCipherCtx,
       uint8_t *authTag, uint32_t authTagLen);
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @brief Encrypts and authenticates data in a single operation using AES-GCM.
  * @param [in] inputData Pointer to the input data to be encrypted.
  * @param [in] dataLen Length of the input data in bytes.
@@ -194,7 +194,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_EncryptAuthDirect(uint8_t *inputData,
     uint8_t *authTag, uint32_t authTagLen);
 
 /**
- * @ingroup crypto_aead_hsm04777_wrapper
+ * @ingroup crypto_aead_hsm_lite_04777_wrapper
  * @brief Decrypts and authenticates data in a single operation using AES-GCM.
  * @param [in] inputData Pointer to the input data to be decrypted.
  * @param [in] dataLen Length of the input data in bytes.
@@ -228,7 +228,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
     uint8_t *nonce, uint32_t nonceLen, uint8_t *aad, uint32_t aadLen,
     uint8_t *authTag, uint32_t authTagLen);
 
-</#if><#-- CRYPTO_HW_AES_GCM -->
+</#if><#-- CRYPTO_HW_AES_CCM -->
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -237,4 +237,4 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_AEAD_HSM04777_WRAPPER_H */
+#endif /* CRYPTO_AEAD_HSM_LITE_04777_WRAPPER_H */

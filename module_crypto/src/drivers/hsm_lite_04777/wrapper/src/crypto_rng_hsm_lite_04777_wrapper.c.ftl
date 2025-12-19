@@ -5,15 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_hsm04777_wrapper.h
+    crypto_rng_hsm_lite_04777_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for the Shared Secret generation in the
-    hardware cryptographic library.
+    Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This source file contains the wrapper interface to access the hardware
-    cryptographic library in Microchip microcontrollers for Shared Secret generation.
+    This source file contains the wrapper interface to access the TRNG
+    hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -41,55 +40,46 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_KAS_HSM_04777_WRAPPER_H
-#define	CRYPTO_KAS_HSM_04777_WRAPPER_H
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/crypto_kas.h"
+
+#include <stdint.h>
+#include <xc.h>
+#include "crypto/drivers/wrapper/crypto_rng_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/library/cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: MAC Algorithms Common Interface
+// Section: File Scope Functions
 // *****************************************************************************
 // *****************************************************************************
 
-/**
- * @ingroup crypto_kas_hsm04777_wrapper
- * @brief Generates a shared secret using the Elliptic Curve Diffie-Hellman (ECDH) algorithm.
- *
- * This function computes the shared secret based on the provided private and public keys
- * using the specified elliptic curve type. The generated shared secret is stored in the
- * provided buffer.
- *
- * @param [in] privKey Pointer to the private key buffer.
- * @param [in] privKeyLen Length of the private key in bytes.
- * @param [in] pubKey Pointer to the public key buffer.
- * @param [in] pubKeyLen Length of the public key in bytes.
- * @param [out] secret Pointer to the buffer where the shared secret will be stored.
- * @param [in] secretLen Length of the shared secret buffer in bytes.
- * @param [in] eccCurveType_en The type of elliptic curve to be used for the operation.
- *
- * @return @ref crypto_Kas_Status_E indicating the status of the shared secret generation operation.
- * @retval CRYPTO_KAS_SUCCESS Operation completed successfully.
- * @retval CRYPTO_KAS_ERROR Invalid parameters or operation failed.
- */
-
-crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 
-    uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen, 
-    uint8_t *secret, uint32_t secretLen, crypto_EccCurveType_E eccCurveType_en);
-
-#ifdef	__cplusplus
+static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
+{
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_TRNG_IsrHelper);
+    (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
 }
-#endif
 
-#endif	/* CRYPTO_KAS_HSM_04777_WRAPPER_H */
+// *****************************************************************************
+// *****************************************************************************
+// Section: TRNG Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
 
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
+{
+<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
+
+    (void) DRV_CRYPTO_TRNG_Setup();
+    lDRV_CRYPTO_TRNG_InterruptSetup();
+    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+
+    return CRYPTO_RNG_SUCCESS;
+<#else>
+    return CRYPTO_RNG_ERROR_NOTSUPPTED;
+</#if>
+}

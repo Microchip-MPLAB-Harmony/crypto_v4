@@ -5,10 +5,10 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_sym_hsm04777_wrapper.c
+    crypto_sym_hsm_lite_04777_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for CAM hardware AES.
+    Crypto Framework Library wrapper file for HSM_LITE/CAM hardware AES.
 
   Description:
     This source file contains the wrapper interface to access the symmetric
@@ -48,8 +48,9 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "../crypto_sym_hsm04777_wrapper.h"
-#include "../../library/cam_aes.h"
+#include "crypto/drivers/wrapper/crypto_sym_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/library/cam_aes.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -67,7 +68,16 @@ Microchip or any third party.
 // *****************************************************************************
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @brief Initialize the CAM library's AES interrupt handlers.
+ */
+static void lCrypto_Sym_Hw_Aes_InterruptSetup(void)
+{
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_AES_IsrHelper);
+    (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
+}
+
+/**
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Maps the operation mode to the corresponding AES mode.
  *
  * This function checks the provided operation mode and assigns the corresponding
@@ -82,9 +92,9 @@ Microchip or any third party.
  */
 
 /**
- * @brief Get the CAM library's equivalent symmetric AES operation cipher mode.
+ * @brief Get the HSM_LITE/CAM library's equivalent symmetric AES operation cipher mode.
  * @param opMode The crypto cipher mode.
- * @param mode Pointer to a value to hold the equivalent CAM library cipher mode.
+ * @param mode Pointer to a value to hold the equivalent HSM_LITE/CAM library cipher mode.
  * @return CRYPTO_SYM_CIPHER_SUCCESS on success, CRYPTO_SYM_CIPHER_OPMODE on failure.
  */
 static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E opMode,
@@ -102,6 +112,18 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E
             *mode = MODE_CTR;
             status = CRYPTO_SYM_CIPHER_SUCCESS;
             break;
+        case CRYPTO_SYM_OPMODE_CBC:
+            *mode = MODE_CBC;
+            status = CRYPTO_SYM_CIPHER_SUCCESS;
+            break;
+        case CRYPTO_SYM_OPMODE_CFB128:
+            *mode = MODE_CFB;
+            status = CRYPTO_SYM_CIPHER_SUCCESS;
+            break;
+        case CRYPTO_SYM_OPMODE_OFB:
+            *mode = MODE_OFB;
+            status = CRYPTO_SYM_CIPHER_SUCCESS;
+            break;
         case CRYPTO_SYM_OPMODE_XTS:
             *mode = MODE_XTS;
             status = CRYPTO_SYM_CIPHER_SUCCESS;
@@ -115,7 +137,7 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetCipherMode(crypto_Sym_OpModes_E
 }
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Maps the cipher operation type to the corresponding AES operation.
  *
  * This function checks the provided cipher operation type and assigns the corresponding
@@ -152,7 +174,7 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_GetOperation
 }
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Calculates the number of invalid bytes for AES block alignment.
  *
  * This function calculates how many additional bytes are needed to make the input data
@@ -199,6 +221,7 @@ static crypto_Sym_Status_E lCrypto_Sym_Hw_Aes_Direct(AESCON_MODE mode, AESCON_OP
     aesStatus = DRV_CRYPTO_AES_Initialize(aesContext, mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     if(aesStatus == AES_NO_ERROR)
     {
+        lCrypto_Sym_Hw_Aes_InterruptSetup();
 
         if (mode == MODE_XTS)
         {
@@ -263,7 +286,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx,
 {
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to the AES context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
+    *         HSM_LITE/CAM Hardware Driver pre-compiled library is required since 
     *         the library does not have access to the upper context structures 
     *         defined by the Crypto APIs.
     */
@@ -290,7 +313,11 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx,
         aesStatus = DRV_CRYPTO_AES_Initialize(aesCtx->contextData, mode, operation, key, keyLen, initVect, AES_SYM_INIT_VECTOR_LENGTH);
     }
 
-    if(aesStatus != AES_NO_ERROR)
+    if(aesStatus == AES_NO_ERROR)
+    {
+        lCrypto_Sym_Hw_Aes_InterruptSetup();
+    }
+    else
     {
         status = CRYPTO_SYM_ERROR_CIPFAIL;
     }
@@ -303,7 +330,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *aesCipherCtx,
 {
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to the AES context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
+    *         HSM_LITE/CAM Hardware Driver pre-compiled library is required since 
     *         the library does not have access to the upper context structures 
     *         defined by the Crypto APIs.
     */
@@ -347,7 +374,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_AesXts_Cipher(void *aesCipherCtx,
 {
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to the AES context defined by the 
-    *         CAM Hardware Driver pre-compiled library is required since 
+    *         HSM_LITE/CAM Hardware Driver pre-compiled library is required since 
     *         the library does not have access to the upper context structures 
     *         defined by the Crypto APIs.
     */

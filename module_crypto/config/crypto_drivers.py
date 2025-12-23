@@ -47,6 +47,7 @@ Crypto_HW_AllDriversList = [
         ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"],     #TDES_6150
         ["TRNG", "03597", "", "TRNG_03597", "HAVE_CRYPTO_HW_TRNG_03597_DRIVER", "Crypto_Hw_TRNG_03597_DriverSymbol", "TRNG_03597 Driver Supported"],    #TRNG_03597
         ["CAM", "05346", "", "CAM_05346", "HAVE_CRYPTO_HW_CAM_05346_DRIVER", "Crypto_Hw_CAM_05346_DriverSymbol", "CAM_05346 Driver Supported"],    #CAM_05346
+        ["CAM", "06048", "", "CAM_06048", "HAVE_CRYPTO_HW_CAM_06048_DRIVER", "Crypto_Hw_CAM_06048_DriverSymbol", "CAM_06048 Driver Supported"],    #CAM_06048
         ["HSM", "04777", "", "HSM_04777", "HAVE_CRYPTO_HW_HSM_04777_DRIVER", "Crypto_Hw_HSM_04777_DriverSymbol", "HSM_04777 Driver Supported"],    #HSM_04777
 ]
 
@@ -130,6 +131,19 @@ Crypto_HW_DriverAndWrapperFilesDict = {
             "WrapperFiles": [
                 "crypto_rng_trng03597_wrapper.h.ftl",
                 "crypto_rng_trng03597_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_trng_hw_06048.h",
+                "drv_crypto_trng_hw_06048.c"
+            ],
+        },
+    },
+
+    "CAM_06048": {
+        "RngAlgo": {
+            "WrapperFiles": [
+                "crypto_rng_cam06048_wrapper.h.ftl",
+                "crypto_rng_cam06048_wrapper.c.ftl"
             ],
             "DriverFiles": [
                 "drv_crypto_trng_hw_03597.h",
@@ -394,6 +408,7 @@ def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
     #--created from each of the additional define strings
     # Accumulate all hwDriver[4] items into a string to set as default
     driver_define_strings = [hwDriver[4] for hwDriver in Crypto_HW_AllSupportedDriver]
+    print(driver_define_strings)
     driver_defines.setDefaultValue(", ".join(driver_define_strings))
 
 #---------------------------------------------------------------------------------------

@@ -47,16 +47,16 @@
 #include <stdint.h>
 #include <string.h>
 #include "../crypto_aead_hsm04777_wrapper.h"
-
 #include "../../library/cam_aes.h"
+
 <#if (CRYPTO_HW_AES_CCM?? && (CRYPTO_HW_AES_CCM == true))>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-#define AAD_PRESENT_FLAG    (1U << 6)
-#define AES_CCM_HEADER_SIZE (22UL)
+#define AAD_PRESENT_FLAG    (1U << 6)   // Indicates that AAD is present in the data set.
+#define AES_CCM_HEADER_SIZE (22UL)      // The size of the AES CCM data header.
 </#if>
 
 // *****************************************************************************
@@ -75,7 +75,6 @@
  *         @retval CRYPTO_AEAD_CIPHER_SUCCESS on success.
  *         @retval CRYPTO_AEAD_ERROR_CIPOPER if the operation type is invalid.
  */
-
 static crypto_Aead_Status_E lCrypto_Aead_Hw_Aes_GetOperation
     (crypto_CipherOper_E cipherOpType, AESCON_OPERATION* operation)
 {
@@ -106,7 +105,6 @@ static crypto_Aead_Status_E lCrypto_Aead_Hw_Aes_GetOperation
  *
  * @return @ref uint32_t The number of padding bytes needed to align the data to the AES block size.
  */
-
 static uint32_t lCrypto_Aead_Hw_Aes_GetPadBytes(uint32_t dataLen)
 {
     uint32_t mask = (AES_BLOCK_SIZE - 1UL);
@@ -124,7 +122,6 @@ static uint32_t lCrypto_Aead_Hw_Aes_GetPadBytes(uint32_t dataLen)
  *
  * @return @ref uint32_t 0 if the arrays are equal, 1 if they are different.
  */
-
 static uint32_t lCrypto_Aead_Hw_CompareAsBytes(uint8_t *cmp1, uint8_t *cmp2, uint32_t cmpLen)
 {
     register uint8_t* c1 = cmp1;
@@ -171,7 +168,6 @@ static uint32_t lCrypto_Aead_Hw_CompareAsBytes(uint8_t *cmp1, uint8_t *cmp2, uin
  *       The header format includes flags, nonce, data length, and AAD length as specified in the RFC.
  *       The function sets the appropriate flags based on the provided parameters.
  */
-
 static void lCrypto_Aead_Hw_BuildCcmHeader(uint8_t *header, uint32_t *headerLen,
     uint8_t *nonce, uint32_t nonceLen,
     uint32_t aadLen, uint64_t dataLen, uint32_t authTagLen)
@@ -233,8 +229,6 @@ static void lCrypto_Aead_Hw_BuildCcmHeader(uint8_t *header, uint32_t *headerLen,
         }
     }
 
-
-
 /* MISRA C:2012 Rule 18.4 deviation:
  * Reason: The expression (localHeader - header) involves pointer subtraction.
  * This violates Rule 18.4, which restricts pointer arithmetic to pointers that
@@ -257,7 +251,6 @@ static void lCrypto_Aead_Hw_BuildCcmHeader(uint8_t *header, uint32_t *headerLen,
 // *****************************************************************************
 
 <#if (CRYPTO_HW_AES_GCM?? && (CRYPTO_HW_AES_GCM == true))>
-
 crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *aeadInitCtx,
     crypto_CipherOper_E cipherOper_en, uint8_t *key, uint32_t keyLen,
     uint8_t *initVect, uint32_t initVectLen)
@@ -286,7 +279,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_Init(void *aeadInitCtx,
         aesStatus = DRV_CRYPTO_AES_Initialize(aeadCtx, mode, operation, key, keyLen, initVect, initVectLen);
     }
 
-    if(aesStatus != AES_NO_ERROR)
+    if (aesStatus != AES_NO_ERROR)
     {
         status = CRYPTO_AEAD_ERROR_CIPFAIL;
     }
@@ -492,7 +485,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesGcm_DecryptAuthDirect(uint8_t *inputData,
 crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Init(void *aeadInitCtx,
     uint8_t *key, uint32_t keyLen)
 {
-
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to CRYPTO_AEAD_HW_CONTEXT* is necessary to access
     * context-specific members. The input pointer is guaranteed by design to point
@@ -509,9 +501,11 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Init(void *aeadInitCtx,
     // Context data must be cleared as the context may be on a stack versus static memory.
     (void)memset(aeadCtx->contextData, 0, sizeof(aeadCtx->contextData));
 
-    // CCM does not use an initialization vector, instead using a nonce provided during the call to cipher.
+    /* CCM does not use an initialization vector, instead using a nonce provided during the call to cipher.
+     * The 'operation' is dummied as OP_ENCRYPT as it will be overwritten by the 'DRV_Crypto_AES_SetOperation'
+     * call in the cipher step. */
     aesStatus = DRV_CRYPTO_AES_Initialize(aeadCtx, mode, OP_ENCRYPT, key, keyLen, NULL, 0UL);
-    if(aesStatus == AES_NO_ERROR)
+    if (aesStatus == AES_NO_ERROR)
     {
         status = CRYPTO_AEAD_CIPHER_SUCCESS;
     }
@@ -525,7 +519,6 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
     uint8_t *nonce, uint32_t nonceLen, uint8_t *aad, uint32_t aadLen,
     uint8_t *authTag, uint32_t authTagLen)
 {
-
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to CRYPTO_AEAD_HW_CONTEXT* is necessary to access
     * context-specific members. The input pointer is guaranteed by design to point
@@ -546,8 +539,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
         aesStatus = DRV_CRYPTO_AES_IsActive(aeadCtx->contextData, &aesActive);
         if ((aesStatus == AES_NO_ERROR) && (aesActive == AES_OPERATION_IS_ACTIVE))
         {
-            uint8_t generatedAuthTag[AES_GCM_AUTHTAG_SIZE];
-
+            uint8_t generatedAuthTag[AES_CCM_AUTHTAG_SIZE];
 
             aesStatus = DRV_CRYPTO_AES_SetOperation(aeadCtx->contextData, operation);
             if(aesStatus == AES_NO_ERROR)
@@ -559,12 +551,16 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
                 lCrypto_Aead_Hw_BuildCcmHeader(headerData, &headerLen, nonce, nonceLen, aadLen, dataLen, authTagLen);
 
                 // The CCM header data is inserted without alignment or padding.
-                aesStatus = DRV_CRYPTO_AES_AddRawHeader(aeadCtx->contextData, headerData, headerLen, 0UL);
-                if((aesStatus == AES_NO_ERROR) && (aadLen > 0UL))
+                aesStatus = DRV_CRYPTO_AES_AddRawHeader(aeadCtx->contextData, headerData, headerLen, AES_HEADER_DO_NOT_ALIGN);
+                if (aesStatus == AES_NO_ERROR)
                 {
-                    // AAD is inserted without padding, but with alignment.
-                    aesStatus = DRV_CRYPTO_AES_AddRawHeader(aeadCtx->contextData, aad, aadLen, 1UL);
-                    if(aesStatus == AES_NO_ERROR)
+                    if (aadLen > 0UL)
+                    {
+                        // AAD is inserted without padding, but with alignment.
+                        aesStatus = DRV_CRYPTO_AES_AddRawHeader(aeadCtx->contextData, aad, aadLen, AES_HEADER_ALIGN);
+                    }
+
+                    if (aesStatus == AES_NO_ERROR)
                     {
                         /* The header + AAD is "the header" (even though it is in two pieces), and has a size.
                          * This may not align to a block size, so the hardware will pad automatically.
@@ -573,7 +569,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
                         aesStatus = DRV_CRYPTO_AES_IgnoreData(aeadCtx->contextData, pad);
                     }
 
-                    if(aesStatus == AES_NO_ERROR)
+                    if (aesStatus == AES_NO_ERROR)
                     {
                         /* AES hardware includes (header + authentication) data in its output.  This data needs to be
                          * discarded from the output stream.  The data to discard is padded to a block size. */
@@ -585,7 +581,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
             }
 
             // Add the input plaintext.
-            if(aesStatus == AES_NO_ERROR)
+            if (aesStatus == AES_NO_ERROR)
             {
                 /* AES hardware operates on block size boundaries.  When input data size is not aligned to
                  * a block size, the input must be padded to a block size and the pad 'ignored'.  The
@@ -594,12 +590,12 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
             }
 
             // Add the output ciphertext buffer.
-            if(aesStatus == AES_NO_ERROR)
+            if (aesStatus == AES_NO_ERROR)
             {
                 aesStatus = DRV_CRYPTO_AES_AddOutputData(aeadCtx->contextData, outData, dataLen);
             }
 
-            if((aesStatus == AES_NO_ERROR) && (dataLen > 0UL))
+            if ((aesStatus == AES_NO_ERROR) && (dataLen > 0UL))
             {
                 /* AES hardware operates on block size boundaries.  When output data size is not aligned to
                  * a block size boundary, the excess must be discarded from the output stream.
@@ -608,7 +604,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
                 aesStatus = DRV_CRYPTO_AES_DiscardData(aeadCtx->contextData, pad);
             }
 
-            if(aesStatus == AES_NO_ERROR)
+            if (aesStatus == AES_NO_ERROR)
             {
                 // Add the authtag output buffer.
                 uint8_t *tagPtr = (operation == OP_ENCRYPT) ? authTag : generatedAuthTag;
@@ -625,7 +621,7 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
 
             /* On decryption, add the authtag as an input.  The tag is needed as part of the decryption data.
              * It will also be generated as an output for comparison. */
-            if((aesStatus == AES_NO_ERROR) && (operation == OP_DECRYPT))
+            if ((aesStatus == AES_NO_ERROR) && (operation == OP_DECRYPT))
             {
                 /* AES hardware operates on block size boundaries.  When input data size is not aligned to
                  * a block size, the input must be padded to a block size and the pad 'ignored'.  The
@@ -633,12 +629,12 @@ crypto_Aead_Status_E Crypto_Aead_Hw_AesCcm_Cipher(void *aeadCipherCtx,
                 aesStatus = DRV_CRYPTO_AES_AddInputData(aeadCtx->contextData, authTag, authTagLen);
             }
 
-            if(aesStatus == AES_NO_ERROR)
+            if (aesStatus == AES_NO_ERROR)
             {
                 aesStatus = DRV_CRYPTO_AES_Execute(aeadCtx->contextData);
             }
 
-            if(aesStatus == AES_NO_ERROR)
+            if (aesStatus == AES_NO_ERROR)
             {
                 // On decryption, the tag must be verified against what was calculated.
                 if (operation == OP_DECRYPT)

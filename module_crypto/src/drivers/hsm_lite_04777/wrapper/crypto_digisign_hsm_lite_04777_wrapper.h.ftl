@@ -8,12 +8,11 @@
     crypto_digisign_hsm_lite_04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for the digital signature in the 
-    hardware cryptographic library.
+    Crypto Framework Library wrapper file for HSM_LITE/CAM hardware digital signature algorithms.
 
   Description:
-    This header file contains the wrapper interface to access the hardware 
-    cryptographic library in Microchip microcontrollers for digital signature.
+    This header file contains the wrapper interface to access the DSA
+    algorithms in the HSM_LITE/CAM PKE hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

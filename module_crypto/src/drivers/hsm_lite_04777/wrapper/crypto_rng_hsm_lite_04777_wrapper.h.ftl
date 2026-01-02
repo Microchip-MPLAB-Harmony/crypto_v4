@@ -12,7 +12,7 @@
 
   Description:
     This header file contains the wrapper interface to access the TRNG
-    hardware driver for Microchip microcontrollers.
+    in the HSM_LITE/CAM hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

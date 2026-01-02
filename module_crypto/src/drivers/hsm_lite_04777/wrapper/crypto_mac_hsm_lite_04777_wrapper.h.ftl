@@ -11,8 +11,8 @@
     Crypto Framework Library wrapper file for HSM_LITE/CAM hardware AES MAC.
 
   Description:
-    This header file contains the wrapper interface to access the
-    AES MAC algorithms in the AES hardware driver for Microchip microcontrollers.
+    This header file contains the wrapper interface to access the AES-MAC
+    algorithms in the HSM_LITE/CAM AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

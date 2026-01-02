@@ -8,11 +8,11 @@
     crypto_hash_hsm_lite_04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware SHA.
+    Crypto Framework Library wrapper file for HSM_LITE/CAM hardware hash algorithms.
 
   Description:
-    This header file contains the wrapper interface to access the SHA
-    hardware driver for Microchip microcontrollers.
+    This header file contains the wrapper interface to access the Hash
+    algorithms in the HSM_LITE/CAM AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

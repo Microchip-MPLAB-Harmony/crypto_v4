@@ -12,8 +12,8 @@
     hardware cryptographic library.
 
   Description:
-    This source file contains the wrapper interface to access the hardware
-    cryptographic library in Microchip microcontrollers for Shared Secret generation.
+    This header file contains the wrapper interface to access the KAS
+    algorithms in the HSM_LITE/CAM AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN

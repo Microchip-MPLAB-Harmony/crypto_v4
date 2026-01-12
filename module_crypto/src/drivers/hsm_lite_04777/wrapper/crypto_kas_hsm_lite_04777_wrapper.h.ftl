@@ -5,15 +5,15 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_hsm04777_wrapper.h
+    crypto_kas_hsm_lite_04777_wrapper.h
 
   Summary:
     Crypto Framework Library wrapper file for the Shared Secret generation in the
     hardware cryptographic library.
 
   Description:
-    This source file contains the wrapper interface to access the hardware
-    cryptographic library in Microchip microcontrollers for Shared Secret generation.
+    This header file contains the wrapper interface to access the KAS
+    algorithms in the HSM_LITE/CAM AES hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_KAS_HSM_04777_WRAPPER_H
-#define	CRYPTO_KAS_HSM_04777_WRAPPER_H
+#ifndef CRYPTO_KAS_HSM_LITE_04777_WRAPPER_H
+#define	CRYPTO_KAS_HSM_LITE_04777_WRAPPER_H
 
 #ifdef	__cplusplus
 extern "C" {
@@ -63,7 +63,7 @@ extern "C" {
 // *****************************************************************************
 
 /**
- * @ingroup crypto_kas_hsm04777_wrapper
+ * @ingroup crypto_kas_hsm_lite_04777_wrapper
  * @brief Generates a shared secret using the Elliptic Curve Diffie-Hellman (ECDH) algorithm.
  *
  * This function computes the shared secret based on the provided private and public keys
@@ -91,5 +91,5 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
 }
 #endif
 
-#endif	/* CRYPTO_KAS_HSM_04777_WRAPPER_H */
+#endif	/* CRYPTO_KAS_HSM_LITE_04777_WRAPPER_H */
 

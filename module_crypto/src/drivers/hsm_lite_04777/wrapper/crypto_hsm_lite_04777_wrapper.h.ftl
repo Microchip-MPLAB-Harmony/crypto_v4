@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_rng_hsm04777_wrapper.c
+    crypto_hsm_lite_04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware TRNG.
+    Crypto Framework Library wrapper file for common HSM-Lite hardware management.
 
   Description:
-    This source file contains the wrapper interface to access the TRNG
-    hardware driver for Microchip microcontrollers.
+    This header file contains the wrapper interface to manage common HSM-lite hardware
+    interactions for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,32 +40,68 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
+#ifndef MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H
+#define MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include <xc.h>
-#include "../crypto_rng_hsm04777_wrapper.h"
-#include "../../library/cam_trng.h"
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+    extern "C" {
+
+#endif
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: TRNG Common Interface Implementation
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
-{
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")>
+typedef enum crypto_Int_Status_E {
+    CRYPTO_INT_SUCCESS = 0,
+    CRYPTO_INT_INVALID_ID = -1,
+    CRYPTO_INT_ALREADY_REGISTERED = -2,
+    CRYPTO_INT_GENERAL_FAIL = -127
 
-    (void) DRV_CRYPTO_TRNG_Setup();
-    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+} crypto_Int_Status_E;
 
-    return CRYPTO_RNG_SUCCESS;
-<#else>
-    return CRYPTO_RNG_ERROR_NOTSUPPTED;
-</#if>
-}
+typedef enum crypto_Int_Handler_Id {
+    CRYPTO_HSM_INT = 0,
+} crypto_Int_Handler_Id;
+
+typedef enum crypto_operation_Id {
+    ECDSA_SIGN = 0,
+    ECDSA_VERIFY = 1,
+    UNKNOWN_OPERATION = 2,
+} crypto_operation_Id;
+
+typedef void (*crypto_Int_Handler)(void);
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interrupts Common Interface
+// *****************************************************************************
+// *****************************************************************************
+
+crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handlerID, crypto_Int_Handler handler);
+crypto_Int_Status_E Crypto_Int_Hw_Enable(crypto_Int_Handler_Id handlerID);
+crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID);
+void CRYPTO_Int_Hw_SignComplete_CallbackRegister(void (*handler)(void));
+void CRYPTO_Int_Hw_VerifyComplete_CallbackRegister(void (*handler)(void));
+void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(void));
+
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+    }
+
+#endif
+// DOM-IGNORE-END
+
+#endif /* MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H */

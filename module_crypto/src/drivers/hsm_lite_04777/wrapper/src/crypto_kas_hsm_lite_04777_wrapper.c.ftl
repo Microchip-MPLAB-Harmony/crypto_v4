@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_hsm04777_wrapper.c
+    crypto_kas_hsm_lite_04777_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for the Shared Secret generation in the
@@ -47,8 +47,18 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 #include <stdint.h>
-#include "../crypto_kas_hsm04777_wrapper.h"
-#include "../../library/cam_ecdh.h"
+#include "crypto/drivers/wrapper/crypto_kas_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/library/cam_ecdh.h"
+
+#define UNCOMPRESSED_KEY_TYPE       0x04U
+
+static void lDRV_CRYPTO_ECC_InterruptSetup(void)
+{
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_PKE_IsrHelper);
+    (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
+}
+
 
 /**
  * @brief Maps the ECC curve type to the corresponding hardware ECC curve.
@@ -94,7 +104,7 @@ static CRYPTO_PKE_RESULT lCrypto_Kas_Ecdh_Hw_GetCurve(
     }
 
     return eccStatus;
-}   
+} 
 
 /**
  * @brief Maps the hardware PKE result to the KAS status.
@@ -148,19 +158,18 @@ static crypto_Kas_Status_E lCrypto_Kas_Ecdh_Hw_MapResult(CRYPTO_PKE_RESULT resul
 // *****************************************************************************
 
 
-crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey, 
-    uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen, 
+crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
+    uint32_t privKeyLen, uint8_t *pubKey, uint32_t pubKeyLen,
     uint8_t *secret, uint32_t secretLen, crypto_EccCurveType_E eccCurveType_en)
 {
     CRYPTO_PKE_RESULT hwResult;
     PKE_CONFIG eccData;
     PKE_ECC_CURVE hwEccCurve;
 
-    if (pubKey[0] == 0x04U)
+    if (pubKey[0] == UNCOMPRESSED_KEY_TYPE)
     {
         /* Get curve */
         hwResult = lCrypto_Kas_Ecdh_Hw_GetCurve(eccCurveType_en, &hwEccCurve);
-
         if (hwResult == CRYPTO_PKE_RESULT_SUCCESS)
         {
             uint8_t *adjustedPubKey = &pubKey[1];
@@ -174,6 +183,8 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
                                                     hwEccCurve);
         }
 
+        lDRV_CRYPTO_ECC_InterruptSetup();
+
         if (hwResult == CRYPTO_PKE_RESULT_SUCCESS)
         {
             /* Get shared key */
@@ -184,5 +195,5 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_Hw_SharedSecret(uint8_t *privKey,
         hwResult = CRYPTO_KAS_ERROR_PUBKEY;
     }
 
-    return lCrypto_Kas_Ecdh_Hw_MapResult(hwResult);     
+    return lCrypto_Kas_Ecdh_Hw_MapResult(hwResult);
 }

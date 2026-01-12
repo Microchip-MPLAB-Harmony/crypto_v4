@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_rng_hsm04777_wrapper.h
+    crypto_rng_hsm_lite_04777_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to access the TRNG
+    This source file contains the wrapper interface to access the TRNG
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -40,9 +40,6 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_RNG_HSM04777_WRAPPER_H
-#define CRYPTO_RNG_HSM04777_WRAPPER_H
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -50,42 +47,39 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
-#include "crypto/common_crypto/crypto_common.h"
-#include "crypto/common_crypto/crypto_rng.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
-#endif
-// DOM-IGNORE-END
+#include <xc.h>
+#include "crypto/drivers/wrapper/crypto_rng_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hsm_lite_04777_wrapper.h"
+#include "crypto/drivers/library/cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: TRNG Common Interface
+// Section: File Scope Functions
 // *****************************************************************************
 // *****************************************************************************
 
-/**
- * @ingroup crypto_rng_hsm04777_wrapper
- * @brief Generates random data using the hardware TRNG.
- * @param [out] rngData Pointer to the buffer where the generated random data will be stored.
- * @param [in] rngLen Number of random bytes to generate.
- * @return @ref crypto_Rng_Status_E indicating operation result.
- * @retval CRYPTO_RNG_SUCCESS Random data generated successfully.
- * @retval CRYPTO_RNG_ERROR_NOTSUPPTED Hardware TRNG support is not available or not enabled.
- * @retval CRYPTO_RNG_ERROR_FAIL General failure during random number generation.
- */
- 
-crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
+static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
+{
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_TRNG_IsrHelper);
+    (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
+}
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
+// *****************************************************************************
+// *****************************************************************************
+// Section: TRNG Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
 
-    }
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
+{
+<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
 
-#endif
-// DOM-IGNORE-END
+    (void) DRV_CRYPTO_TRNG_Setup();
+    lDRV_CRYPTO_TRNG_InterruptSetup();
+    (void) DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
 
-#endif /* CRYPTO_RNG_HSM04777_WRAPPER_H */
+    return CRYPTO_RNG_SUCCESS;
+<#else>
+    return CRYPTO_RNG_ERROR_NOTSUPPTED;
+</#if>
+}

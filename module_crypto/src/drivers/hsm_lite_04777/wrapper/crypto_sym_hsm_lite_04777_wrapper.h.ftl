@@ -5,10 +5,10 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_sym_hsm04777_wrapper.h
+    crypto_sym_hsm_lite_04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for CAM hardware AES.
+    Crypto Framework Library wrapper file for HSM_LITE/CAM hardware AES.
 
   Description:
     This header file contains the wrapper interface to access the symmetric
@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_SYM_HSM04777_WRAPPER_H
-#define CRYPTO_SYM_HSM04777_WRAPPER_H
+#ifndef CRYPTO_SYM_HSM_LITE_04777_WRAPPER_H
+#define CRYPTO_SYM_HSM_LITE_04777_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -66,7 +66,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 /**
- * @brief The minimum size to store a CAM library AES context data block.
+ * @brief The minimum size to store a HSM_LITE/CAM library AES context data block.
  */
  
 #define MINIMUM_AES_CONTEXT_DATA_SIZE  (256UL)
@@ -82,7 +82,7 @@ Microchip or any third party.
 typedef struct
 {
   /** 
-   * @brief Context data for the CAM library.
+   * @brief Context data for the HSM_LITE/CAM library.
    * 
    * This array holds the context data for the AES operations. It is aligned
    * to a 4-byte boundary to meet the hardware requirements.
@@ -98,7 +98,7 @@ typedef struct
 // *****************************************************************************
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Initializes the AES context for encryption or decryption.
  * @param [in] aesInitCtx Pointer to the AES context to be initialized.
  * @param [in] cipherOpType_en The cipher operation type (encrypt or decrypt).
@@ -118,7 +118,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Init(void *aesInitCtx, crypto_CipherOper_E
     uint8_t *initVect);
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Performs AES encryption or decryption on the input data.
  * @param [in] aesCipherCtx Pointer to the AES context for the operation.
  * @param [in] inputData Pointer to the input data to be processed.
@@ -135,7 +135,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(void *aesCipherCtx, uint8_t *inputD
     uint32_t dataLen, uint8_t *outData);
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Performs AES XTS encryption or decryption on the input data.
  * @param [in] aesCipherCtx Pointer to the AES context for the operation.
  * @param [in] inputData Pointer to the input data to be processed.
@@ -154,7 +154,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_AesXts_Cipher(void *aesCipherCtx,
     uint8_t *inputData, uint32_t dataLen, uint8_t *outData, uint8_t* tweak);
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Encrypts the input data directly using AES.
  * @param [in] opMode_en The operation mode (e.g., ECB, CTR).
  * @param [in] inputData Pointer to the input data to be encrypted.
@@ -175,7 +175,7 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_EncryptDirect(crypto_Sym_OpModes_E opMode_
     uint8_t *key, uint32_t keyLen, uint8_t *initVect);
 
 /**
- * @ingroup crypto_sym_hsm04777_wrapper
+ * @ingroup crypto_sym_hsm_lite_04777_wrapper
  * @brief Decrypts the input data directly using AES.
  * @param [in] opMode_en The operation mode (e.g., ECB, CTR).
  * @param [in] inputData Pointer to the input data to be decrypted.
@@ -203,4 +203,4 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_DecryptDirect(crypto_Sym_OpModes_E opMode_
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_SYM_HSM04777_WRAPPER_H */
+#endif /* CRYPTO_SYM_HSM_LITE_04777_WRAPPER_H */

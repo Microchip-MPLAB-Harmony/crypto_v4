@@ -77,10 +77,20 @@ typedef enum
     CRYPTO_DIGISIGN_ERROR_FAIL = -113,
     CRYPTO_DIGISIGN_ERROR_RSAPADDING = -112,
     CRYPTO_DIGISIGN_ERROR_INPUTDATA = -111,
-    CRYPTO_DIGISIGN_SUCCESS = 0,        
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
+    CRYPTO_DIGISIGN_ERROR_MEMORY = -110,
+    CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE = -109,
+    CRYPTO_DIGISIGN_ERROR_NO_OPERATION_REQUESTED = -108,
+</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
+    CRYPTO_DIGISIGN_SUCCESS = 0,     
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
+    CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS = 1,
+    CRYPTO_DIGISIGN_OPERATION_COMPLETED = 2,
+    CRYPTO_DIGISIGN_PKE_BUSY = 3,
+</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
 }crypto_DigiSign_Status_E;
 <#if ( (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) )>
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_04777_DRIVER")) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
+<#if (driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_outSig, 
                                                     uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, 
@@ -89,7 +99,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign(crypto_HandlerType_E ecdsaHa
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, 
                                                         uint8_t *ptr_inputSig, uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
                                                         int8_t *ptr_sigVerifyStat, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER || HAVE_CRYPTO_HW_CAM_05346_DRIVER  || HAVE_CRYPTO_HW_HSM_04777_DRIVER || CRYPTO_HW_ECDSA -->
+</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER || HAVE_CRYPTO_HW_CAM_05346_DRIVER  || HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER || CRYPTO_HW_ECDSA -->
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
@@ -135,4 +145,100 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_SignData(crypto_HandlerTy
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_NoPadding_VerifyData(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inData, uint32_t dataLen, uint8_t *ptr_inSign, 
                                                                 uint8_t *ptr_pubKeyDer, uint32_t pubKeyBufLen, crypto_Hash_Algo_E maskHashType_en, uint32_t rsaSessionId);
 </#if><#-- CRYPTO_WC_DIGISIGN_RSA_NO_PADDING --> 
+
+<#if (CRYPTO_HW_ECDSA?? && (CRYPTO_HW_ECDSA == true) && (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
+// *****************************************************************************
+// *****************************************************************************
+// Section: Non-Blocking Crypto APIS
+// *****************************************************************************
+// *****************************************************************************
+
+/**
+ * Example usages:
+ * 1. Call the Start function (ex: Crypto_DigiSign_Ecdsa_Sign_Start(CRYPTO_HANDLER_HW_INTERNAL, &inputHash, sizeof(inputHash), &privKey, sizeof(privKeyLen), CRYPTO_ECC_CURVE_P256, 1))
+ * 2. Wait for the operation to complete. There are two options to do so:
+ * 2.1. Poll the GetStatus function(Crypto_DigiSign_Ecdsa_Sign_GetStatus() == CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS) 
+ * 2.2. use SignOperationCompleteCallbackRegister(handler) within wrapper file.
+ * 3. When the operation is complete call the GetResult function (ex: Crypto_DigiSign_Ecdsa_Sign_GetResult(&outputSig, {expected size of the signature})
+ * 
+ * Disclaimer: Call GetResult after the Start function otherwise the Crypto_DigiSign_Ecdsa_Hw_ClearMemory(void)function within the digisign wrapper will need to be called.
+ */ 
+
+/**
+ * @brief Non-blocking call to start ECDSA signing operation.
+ * @param ecdsaHandlerType_en Only CRYPTO_HANDLER_HW_INTERNAL supported currently.
+ * @param ptr_inputHash Pointer to the input hash to sign with.
+ * @param hashLen Length of the input hash.
+ * @param ptr_privKey Pointer to the private key to sign with.
+ * @param privKeyLen Length of the private key.
+ * @param eccCurveType_En Type of curve being used.
+ * @param ecdsaSessionId ID to track sessions. Currently one session supported.
+ * @return CRYPTO_DIGISIGN_SUCCESS on success. Error enum on failure. 
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_Start(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_privKey, 
+                                                            uint32_t privKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+
+/**
+ * @brief Non-blocking call to start ECDSA verification operation.
+ * @param ecdsaHandlerType_en Only CRYPTO_HANDLER_HW_INTERNAL supported currently.
+ * @param ptr_inputHash Pointer to the input hash to sign with.
+ * @param hashLen Length of the input hash.
+ * @param ptr_inputSig Pointer to the input signature.
+ * @param sigLen Length of the input signature.
+ * @param ptr_pubKey Pointer to the public key to verify with.
+ * @param pubKeyLen Length of the public key.
+ * @param eccCurveType_En Type of curve being used.
+ * @param ecdsaSessionId ID to track sessions. Currently one session supported.
+ * @return CRYPTO_DIGISIGN_SUCCESS on success. Error enum on failure. 
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_Start(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputHash, uint32_t hashLen, uint8_t *ptr_inputSig, 
+                                                           uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
+
+/**
+ * @brief Check the status of the ECDSA Signing operation.
+ * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if the operation is in progress. 
+ *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if complete.
+ */
+crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Sign_GetStatus(void);
+
+/**
+ * @brief Check the status of the ECDSA Verification operation.
+ * @return CRYPTO_DIGISIGN_OPERATION_IN_PROGRESS if the operation is in progress. 
+ *         CRYPTO_DIGISIGN_OPERATION_COMPLETED if complete.
+ */
+crypto_DigiSign_Status_E  Crypto_DigiSign_Ecdsa_Verify_GetStatus(void);
+
+/**
+ * @brief Get the generated ECDSA signature.
+ * @param ptr_outputSig Pointer to write the signature to.
+ * @param sigLen Length of the expected signature.
+ * @return CRYPTO_DIGISIGN_SUCCESS on success. 
+ *         CRYPTO_DIGISIGN_ERROR_FAIL on operation failure.
+ *         CRYPTO_DIGISIGN_ERROR_SIGNATURE on error. 
+ *         CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE if operation in progress still.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Sign_GetResult(uint8_t *ptr_outputSig, uint32_t sigLen);
+
+/**
+ * @brief Check the result of the ECDSA verification operation.
+ * @return CRYPTO_DIGISIGN_SUCCESS on success. 
+ *         CRYPTO_DIGISIGN_ERROR_FAIL on failure.
+ *         CRYPTO_DIGISIGN_ERROR_OPERATION_INCOMPLETE if operation in progress still.
+ */
+crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify_GetResult(void);
+
+/**
+ * @brief Sets the callback function to be called when signature generation is complete.
+ * @param handler Pointer to a function with no arguments that will be called when a signature
+ *                generation complete interrupt occurs.
+ */
+void Crypto_DigiSign_Ecdsa_SignComplete_CallbackRegister(void (*handler)(void));
+
+/**
+ * @brief Sets the callback function to be called when the verification is complete.
+ * @param handler Pointer to a function with no arguments that will be called when a verification
+ *                operation complete interrupt occurs.
+ */
+void Crypto_DigiSign_Ecdsa_VerifyComplete_CallbackRegister(void (*handler)(void));
+</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER -->
 #endif /* CRYPTO_DIGSIGN_H */

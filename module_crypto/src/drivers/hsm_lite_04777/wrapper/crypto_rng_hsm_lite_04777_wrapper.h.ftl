@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_cam05346_wrapper.h
+    crypto_rng_hsm_lite_04777_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for common CAM hardware management.
+    Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to manage common CAM hardware
-    interactions for Microchip microcontrollers.
+    This header file contains the wrapper interface to access the TRNG
+    in the HSM_LITE/CAM hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,14 +40,18 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_CAM05346_WRAPPER_H
-#define MCHP_CRYPTO_CAM05346_WRAPPER_H
+#ifndef CRYPTO_RNG_HSM_LITE_04777_WRAPPER_H
+#define CRYPTO_RNG_HSM_LITE_04777_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
+#include <stdint.h>
+#include "crypto/common_crypto/crypto_common.h"
+#include "crypto/common_crypto/crypto_rng.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -59,44 +63,22 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: TRNG Common Interface
 // *****************************************************************************
 // *****************************************************************************
 
-typedef enum crypto_Int_Status_E {
-    CRYPTO_INT_SUCCESS = 0,
-    CRYPTO_INT_INVALID_ID = -1,
-    CRYPTO_INT_ALREADY_REGISTERED = -2,
-    CRYPTO_INT_GENERAL_FAIL = -127
-
-} crypto_Int_Status_E;
-
-typedef enum crypto_Int_Handler_Id {
-    CRYPTO1_INT = 0,
-    CRYPTO2_INT = 1,
-    CRYPTO3_INT = 2,
-} crypto_Int_Handler_Id;
-
-typedef enum crypto_operation_Id {
-    ECDSA_SIGN = 0,
-    ECDSA_VERIFY = 1,
-    UNKNOWN_OPERATION = 2,
-} crypto_operation_Id;
-
-typedef void (*crypto_Int_Handler)(void);
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Interrupts Common Interface
-// *****************************************************************************
-// *****************************************************************************
-
-crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handlerID, crypto_Int_Handler handler);
-crypto_Int_Status_E Crypto_Int_Hw_Enable(crypto_Int_Handler_Id handlerID);
-crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID);
-void CRYPTO_Int_Hw_SignComplete_CallbackRegister(void (*handler)(void));
-void CRYPTO_Int_Hw_VerifyComplete_CallbackRegister(void (*handler)(void));
-void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(void));
+/**
+ * @ingroup crypto_rng_hsm_lite_04777_wrapper
+ * @brief Generates random data using the hardware TRNG.
+ * @param [out] rngData Pointer to the buffer where the generated random data will be stored.
+ * @param [in] rngLen Number of random bytes to generate.
+ * @return @ref crypto_Rng_Status_E indicating operation result.
+ * @retval CRYPTO_RNG_SUCCESS Random data generated successfully.
+ * @retval CRYPTO_RNG_ERROR_NOTSUPPTED Hardware TRNG support is not available or not enabled.
+ * @retval CRYPTO_RNG_ERROR_FAIL General failure during random number generation.
+ */
+ 
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -106,4 +88,4 @@ void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(v
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_CAM05346_WRAPPER_H */
+#endif /* CRYPTO_RNG_HSM_LITE_04777_WRAPPER_H */

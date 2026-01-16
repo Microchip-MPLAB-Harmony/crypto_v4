@@ -55,6 +55,9 @@
 <#if (crypto_hash_cam05346_wrapper_h_ftl_flag?? &&(crypto_hash_cam05346_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_cam05346_wrapper.h"
 </#if>
+<#if (crypto_hash_cam06048_wrapper_h_ftl_flag?? &&(crypto_hash_cam06048_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_hash_cam06048_wrapper.h"
+</#if>
 <#if (crypto_hash_hsm_lite_04777_wrapper_h_ftl_flag?? && (crypto_hash_hsm_lite_04777_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_hsm_lite_04777_wrapper.h"
 </#if>

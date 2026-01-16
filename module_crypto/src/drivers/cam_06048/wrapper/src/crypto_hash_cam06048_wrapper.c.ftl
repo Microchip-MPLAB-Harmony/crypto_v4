@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_cam05346_wrapper.c
+    crypto_hash_cam06048_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for hardware SHA.
@@ -48,8 +48,8 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/drivers/wrapper/crypto_hash_cam05346_wrapper.h"
-#include "crypto/drivers/wrapper/crypto_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hash_cam06048_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_cam06048_wrapper.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -99,6 +99,22 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgor
             *mode = MODE_SHA512;
             status = CRYPTO_HASH_SUCCESS;
             break;
+        case CRYPTO_HASH_SHA3_224:
+            *mode = MODE_SHA3_224;
+            status = CRYPTO_HASH_SUCCESS;
+            break;
+        case CRYPTO_HASH_SHA3_256:
+            *mode = MODE_SHA3_256;
+            status = CRYPTO_HASH_SUCCESS;
+            break;
+        case CRYPTO_HASH_SHA3_384:
+            *mode = MODE_SHA3_384;
+            status = CRYPTO_HASH_SUCCESS;
+            break;
+        case CRYPTO_HASH_SHA3_512:
+            *mode = MODE_SHA3_512;
+            status = CRYPTO_HASH_SUCCESS;
+            break;
         default:
             status = CRYPTO_HASH_ERROR_ALGO;
             break;
@@ -117,15 +133,19 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAl
             *digestLength = 20;
             break;
         case CRYPTO_HASH_SHA2_224:
+        case CRYPTO_HASH_SHA3_224:
             *digestLength = 28;
             break;
         case CRYPTO_HASH_SHA2_256:
+        case CRYPTO_HASH_SHA3_256:
             *digestLength = 32;
             break;
         case CRYPTO_HASH_SHA2_384:
+        case CRYPTO_HASH_SHA3_384:
             *digestLength = 48;
             break;
         case CRYPTO_HASH_SHA2_512:
+        case CRYPTO_HASH_SHA3_512:
             *digestLength = 64;
             break;
         default:

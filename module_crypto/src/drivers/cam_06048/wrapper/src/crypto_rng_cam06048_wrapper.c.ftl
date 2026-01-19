@@ -81,17 +81,13 @@ crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLe
     {
         errorCode = DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
     }
-    else 
-    {
-        return CRYPTO_RNG_ERROR_FAIL;
-    }
     
     if (errorCode != TRNG_NO_ERROR)
     {
         return CRYPTO_RNG_ERROR_FAIL;
     }
 
-    return CRYPTO_RNG_SUCCESS;
+    return errorCode;
 <#else>
     return CRYPTO_RNG_ERROR_NOTSUPPTED;
 </#if>

@@ -408,7 +408,6 @@ def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
     #--created from each of the additional define strings
     # Accumulate all hwDriver[4] items into a string to set as default
     driver_define_strings = [hwDriver[4] for hwDriver in Crypto_HW_AllSupportedDriver]
-    print(driver_define_strings)
     driver_defines.setDefaultValue(", ".join(driver_define_strings))
 
 #---------------------------------------------------------------------------------------

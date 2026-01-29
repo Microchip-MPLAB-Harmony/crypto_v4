@@ -40,8 +40,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_CAM05346_WRAPPER_H
-#define MCHP_CRYPTO_CAM05346_WRAPPER_H
+#ifndef MCHP_CRYPTO_CAM06048_WRAPPER_H
+#define MCHP_CRYPTO_CAM06048_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -106,4 +106,4 @@ void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(v
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_CAM05346_WRAPPER_H */
+#endif /* MCHP_CRYPTO_CAM06048_WRAPPER_H */

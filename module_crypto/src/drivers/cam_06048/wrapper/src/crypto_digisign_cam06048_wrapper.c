@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_digisign_cam05346_wrapper.c
+    crypto_digisign_cam06048_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for the digital signature in the

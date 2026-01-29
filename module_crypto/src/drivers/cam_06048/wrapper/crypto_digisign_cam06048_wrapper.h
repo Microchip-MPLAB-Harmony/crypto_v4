@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_digisign_cam05346_wrapper.h
+    crypto_digisign_cam06048_wrapper.h
 
   Summary:
     Crypto Framework Library wrapper file for the digital signature in the 
@@ -41,8 +41,8 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef CRYPTO_DIGISIGN_CAM05346_WRAPPER_H
-#define CRYPTO_DIGISIGN_CAM05346_WRAPPER_H
+#ifndef CRYPTO_DIGISIGN_CAM06048_WRAPPER_H
+#define CRYPTO_DIGISIGN_CAM06048_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -182,4 +182,4 @@ crypto_operation_Id Crypto_DigSign_Ecdsa_Operation(void);
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_DIGISIGN_CAM05346_WRAPPER_H */
+#endif /* CRYPTO_DIGISIGN_CAM06048_WRAPPER_H */

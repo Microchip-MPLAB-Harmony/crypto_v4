@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_kas_cam05346_wrapper.c
+    crypto_kas_cam06048_wrapper.c
 
   Summary:
     Crypto Framework Library wrapper file for the Shared Secret generation in the
@@ -47,7 +47,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 #include <stdint.h>
-#include "crypto/drivers/wrapper/crypto_kas_cam05346_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_kas_cam06048_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_cam06048_wrapper.h"
 #include "crypto/drivers/library/cam_ecdh.h"
 

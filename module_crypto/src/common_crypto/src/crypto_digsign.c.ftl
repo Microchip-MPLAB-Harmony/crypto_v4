@@ -1002,4 +1002,4 @@ void Crypto_DigiSign_Ecdsa_VerifyComplete_CallbackRegister(void (*handler)(void)
 {
     CRYPTO_Int_Hw_VerifyComplete_CallbackRegister(handler);
 }
-</#if><#-- CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_CAM_05346_DRIVER && HAVE_CRYPTO_HW_CAM_06048_DRIVER--> 
+</#if><#-- CRYPTO_HW_ECDSA && (HAVE_CRYPTO_HW_CAM_05346_DRIVER || HAVE_CRYPTO_HW_CAM_06048_DRIVER)--> 

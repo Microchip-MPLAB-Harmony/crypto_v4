@@ -106,7 +106,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Init(void *shakeInitCtx,
     /* cppcheck-suppress misra-c2012-11.5 */
     CRYPTO_HASH_SHAKE_HW_CONTEXT *shakeCtx = (CRYPTO_HASH_SHAKE_HW_CONTEXT*) shakeInitCtx;
     HASHCON_MODE mode;
-    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
     HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
 
     // CAM 06048 supports a 16-bit value at the hardware level for the digest length.
@@ -202,7 +202,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Digest(uint8_t *data, uint32_t dataLen
     uint8_t *digest, uint32_t digestLen, crypto_Hash_Algo_E shaAlgorithm_en)
 {
     HASHCON_MODE mode;
-    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
     CRYPTO_HASH_SHAKE_HW_DIGEST_CONTEXT shakeDigestCtx;
 
     // CAM 06048 supports a 16-bit value at the hardware level for the digest length.

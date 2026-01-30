@@ -213,7 +213,8 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Digest(uint8_t *data, uint32_t dataLen
 
     if (status == CRYPTO_HASH_SUCCESS)
     {
-        status = Crypto_Hash_Hw_Shake_GetAlgorithm(shaAlgorithm_en, &mode);
+        shakeDigestCtx.algorithm = shaAlgorithm_en;
+        status = Crypto_Hash_Hw_Shake_GetAlgorithm(shakeDigestCtx.algorithm, &mode);
     }
 
     if (status == CRYPTO_HASH_SUCCESS)
@@ -222,7 +223,6 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Digest(uint8_t *data, uint32_t dataLen
 
         lDRV_CRYPTO_HASH_InterruptSetup();
 
-        shakeDigestCtx.algorithm = shaAlgorithm_en;
         (void)memset(shakeDigestCtx.contextData, 0, sizeof(shakeDigestCtx.contextData));
 
         hashStatus = DRV_CRYPTO_HASH_SHAKE_Digest(shakeDigestCtx.contextData, mode, data, dataLen, digest, digestLen);

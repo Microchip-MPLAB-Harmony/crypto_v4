@@ -616,7 +616,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
         || CRYPTO_HW_SHA2_512 || lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 || CRYPTO_HW_SHA2_512_224 || lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256
         || lib_wolfcrypt.CRYPTO_WC_SHA3_224 || lib_wolfcrypt.CRYPTO_WC_SHA3_256 || lib_wolfcrypt.CRYPTO_WC_SHA3_384 || lib_wolfcrypt.CRYPTO_WC_SHA3_512 -->
 <#if (lib_wolfcrypt?? && ((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))
-    || (CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256)>
+    || (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
 
 //SHAKE
 crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerType_en, crypto_Hash_Algo_E shakeAlgorithm_en,

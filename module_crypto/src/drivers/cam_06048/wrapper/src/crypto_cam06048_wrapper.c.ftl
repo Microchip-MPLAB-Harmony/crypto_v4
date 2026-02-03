@@ -116,7 +116,6 @@ void __attribute__((interrupt)) _CRYPTO3Interrupt(void)
             (*CRYPTO3_VerifyOperationCompleteHandler)();
         }
     }
-    
     _CRYPT3IF = 0;
 }
 

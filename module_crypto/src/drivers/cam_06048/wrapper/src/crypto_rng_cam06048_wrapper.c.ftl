@@ -5,14 +5,14 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hsm_lite_04777_wrapper.h
+    crypto_rng_cam06048_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for common HSM-Lite hardware management.
+    Crypto Framework Library wrapper file for hardware TRNG.
 
   Description:
-    This header file contains the wrapper interface to manage common HSM-lite hardware
-    interactions for Microchip microcontrollers.
+    This source file contains the wrapper interface to access the TRNG
+    hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,68 +40,55 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H
-#define MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
-#endif
-// DOM-IGNORE-END
+#include <stdint.h>
+#include <xc.h>
+#include "crypto/drivers/wrapper/crypto_rng_cam06048_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_cam06048_wrapper.h"
+#include "crypto/drivers/library/cam_trng.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: File Scope Functions
 // *****************************************************************************
 // *****************************************************************************
 
-typedef enum crypto_Int_Status_E {
-    CRYPTO_INT_SUCCESS = 0,
-    CRYPTO_INT_INVALID_ID = -1,
-    CRYPTO_INT_ALREADY_REGISTERED = -2,
-    CRYPTO_INT_GENERAL_FAIL = -127
-
-} crypto_Int_Status_E;
-
-typedef enum crypto_Int_Handler_Id {
-    CRYPTO_HSM_INT = 0,
-} crypto_Int_Handler_Id;
-
-typedef enum crypto_operation_Id {
-    ECDSA_SIGN = 0,
-    ECDSA_VERIFY = 1,
-    UNKNOWN_OPERATION = 2,
-} crypto_operation_Id;
-
-typedef void (*crypto_Int_Handler)(void);
+static void lDRV_CRYPTO_TRNG_InterruptSetup(void)
+{
+    (void)Crypto_Int_Hw_Register_Handler(CRYPTO2_INT, DRV_CRYPTO_TRNG_IsrHelper);
+    (void)Crypto_Int_Hw_Enable(CRYPTO2_INT);
+}
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Interrupts Common Interface
+// Section: TRNG Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handlerID, crypto_Int_Handler handler);
-crypto_Int_Status_E Crypto_Int_Hw_Enable(crypto_Int_Handler_Id handlerID);
-crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID);
-void CRYPTO_Int_Hw_SignComplete_CallbackRegister(void (*handler)(void));
-void CRYPTO_Int_Hw_VerifyComplete_CallbackRegister(void (*handler)(void));
-void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(void));
+crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLen)
+{
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")>
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
+    TRNG_ERROR errorCode = DRV_CRYPTO_TRNG_Setup();
+    lDRV_CRYPTO_TRNG_InterruptSetup();
+    
+    if (errorCode == TRNG_NO_ERROR)
+    {
+        errorCode = DRV_CRYPTO_TRNG_ReadData(rngData, rngLen);
+    }
+    
+    if (errorCode != TRNG_NO_ERROR)
+    {
+        return CRYPTO_RNG_ERROR_FAIL;
     }
 
-#endif
-// DOM-IGNORE-END
-
-#endif /* MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H */
+    return errorCode;
+<#else>
+    return CRYPTO_RNG_ERROR_NOTSUPPTED;
+</#if>
+}

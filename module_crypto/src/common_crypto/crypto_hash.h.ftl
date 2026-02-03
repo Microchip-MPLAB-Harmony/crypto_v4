@@ -19,7 +19,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) ${.now?string("yyyy")} Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -55,7 +55,7 @@
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define CRYPTO_HASH_SHA512CTX_SIZE (608)
+#define CRYPTO_HASH_SHA512CTX_SIZE (788UL)
 
 #define CRYPTO_HASH_MAX_DIGEST_SIZE (64U) // Max size of a hash digest (SHA-512 or SHA3-512)
 
@@ -92,16 +92,20 @@ typedef enum {
     || (CRYPTO_HW_SHA2_512_256?? &&(CRYPTO_HW_SHA2_512_256 == true))>
     CRYPTO_HASH_SHA2_512_256 = 7,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256 -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)))
+    || (CRYPTO_HW_SHA3_224?? &&(CRYPTO_HW_SHA3_224 == true))>
     CRYPTO_HASH_SHA3_224 = 8,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_224 -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true)))
+    || (CRYPTO_HW_SHA3_256?? &&(CRYPTO_HW_SHA3_256 == true))>
     CRYPTO_HASH_SHA3_256 = 9,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_256 -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)))
+    || (CRYPTO_HW_SHA3_384?? &&(CRYPTO_HW_SHA3_384 == true))>
     CRYPTO_HASH_SHA3_384 = 10,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_384 -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true)))
+    || (CRYPTO_HW_SHA3_512?? &&(CRYPTO_HW_SHA3_512 == true))>
     CRYPTO_HASH_SHA3_512 = 11,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_512 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)))>

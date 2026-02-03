@@ -5,19 +5,19 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hsm_lite_04777_wrapper.h
+    crypto_hash_cam06048_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for common HSM-Lite hardware management.
+    Crypto Framework Library wrapper file for hardware SHA.
 
   Description:
-    This header file contains the wrapper interface to manage common HSM-lite hardware
-    interactions for Microchip microcontrollers.
+    This header file contains the wrapper interface to access the SHA
+    hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*
-Copyright (C) ${.now?string("yyyy")}, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+Copyright (C) 2026, Microchip Technology Inc., and its subsidiaries. All rights reserved.
 
 The software and documentation is provided by microchip and its contributors
 "as is" and any express, implied or statutory warranties, including, but not
@@ -40,14 +40,19 @@ Microchip or any third party.
 */
 //DOM-IGNORE-END
 
-#ifndef MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H
-#define MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H
+#ifndef CRYPTO_HASH_CAM06048_WRAPPER_H
+#define CRYPTO_HASH_CAM06048_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
+#include <stdint.h>
+#include "crypto/common_crypto/crypto_common.h"
+#include "crypto/common_crypto/crypto_hash.h"
+#include "crypto/drivers/library/cam_hash.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -63,38 +68,52 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-typedef enum crypto_Int_Status_E {
-    CRYPTO_INT_SUCCESS = 0,
-    CRYPTO_INT_INVALID_ID = -1,
-    CRYPTO_INT_ALREADY_REGISTERED = -2,
-    CRYPTO_INT_GENERAL_FAIL = -127
+// The minimum size to store a CAM library HASH context data block.
+#define MINIMUM_HASH_CONTEXT_DATA_SIZE        (788UL)
 
-} crypto_Int_Status_E;
+/* The minimum size to store a CAM library HASH single-step digest context.
+ * A single-step digest operation doesn't need state, cache or padding space. */
+#define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (420UL)
 
-typedef enum crypto_Int_Handler_Id {
-    CRYPTO_HSM_INT = 0,
-} crypto_Int_Handler_Id;
+typedef struct
+{
+  crypto_Hash_Algo_E algorithm;
 
-typedef enum crypto_operation_Id {
-    ECDSA_SIGN = 0,
-    ECDSA_VERIFY = 1,
-    UNKNOWN_OPERATION = 2,
-} crypto_operation_Id;
+  // This is used to store the CAM library context data.
+  uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE];
 
-typedef void (*crypto_Int_Handler)(void);
+} CRYPTO_HASH_HW_CONTEXT;
+
+typedef struct
+{
+  crypto_Hash_Algo_E algorithm;
+
+  // This is used to store the CAM library context data.
+  uint8_t contextData[MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE];
+
+} CRYPTO_HASH_HW_DIGEST_CONTEXT;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Interrupts Common Interface
+// Section: Hash Algorithms Common Interface
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Int_Status_E Crypto_Int_Hw_Register_Handler(crypto_Int_Handler_Id handlerID, crypto_Int_Handler handler);
-crypto_Int_Status_E Crypto_Int_Hw_Enable(crypto_Int_Handler_Id handlerID);
-crypto_Int_Status_E Crypto_Int_Hw_Disable(crypto_Int_Handler_Id handlerID);
-void CRYPTO_Int_Hw_SignComplete_CallbackRegister(void (*handler)(void));
-void CRYPTO_Int_Hw_VerifyComplete_CallbackRegister(void (*handler)(void));
-void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(void));
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
+    uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
+    crypto_Hash_Algo_E shaAlgorithm_en);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
+    uint8_t *data, uint32_t dataLen);
+
+crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
+    uint8_t *digest);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -104,4 +123,4 @@ void CRYPTO_Int_Hw_OperationTypeHandlerRegister(crypto_operation_Id (*handler)(v
 #endif
 // DOM-IGNORE-END
 
-#endif /* MCHP_CRYPTO_HSM_LITE_04777_WRAPPER_H */
+#endif /* CRYPTO_HASH_CAM06048_WRAPPER_H */

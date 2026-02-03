@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) ${.now?string("yyyy")} Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -60,6 +60,9 @@
 </#if>
 <#if (crypto_rng_cam05346_wrapper_h_ftl_flag?? && (crypto_rng_cam05346_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_rng_cam05346_wrapper.h"
+</#if>
+<#if (crypto_rng_cam06048_wrapper_h_ftl_flag?? && (crypto_rng_cam06048_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_rng_cam06048_wrapper.h"
 </#if>
 <#if (crypto_rng_hsm_lite_04777_wrapper_h_ftl_flag?? && (crypto_rng_hsm_lite_04777_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_rng_hsm_lite_04777_wrapper.h"
@@ -122,9 +125,9 @@ crypto_Rng_Status_E Crypto_Rng_Generate(crypto_HandlerType_E rngHandlerType_en,
 <#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_03597_DRIVER")>
                 ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
 </#if><#-- HAVE_CRYPTO_HW_TRNG_03597_DRIVER -->
-<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_TRNG_04777_DRIVER")>
+<#if driver_defines?contains("HAVE_CRYPTO_HW_TRNG_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_TRNG_06048_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_TRNG_04777_DRIVER")>
                 ret_rngStat_en = Crypto_Rng_Hw_Trng_Generate(ptr_rngData, rngLen);
-</#if><#-- HAVE_CRYPTO_HW_TRNG_05346_DRIVER or HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_TRNG_05346_DRIVER or HAVE_CRYPTO_HW_TRNG_06048_DRIVER or HAVE_CRYPTO_HW_TRNG_04777_DRIVER -->
 				break;
 </#if><#-- CRYPTO_HW_RNG_TRNG -->
             default:

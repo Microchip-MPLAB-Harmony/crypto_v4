@@ -120,4 +120,4 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Final(void *shaFinalCtx,
 #endif
 // DOM-IGNORE-END
 
-#endif	/* CRYPTO_HASH_SHAKE_CAM06048_WRAPPER_H */
+#endif /* CRYPTO_HASH_SHAKE_CAM06048_WRAPPER_H */

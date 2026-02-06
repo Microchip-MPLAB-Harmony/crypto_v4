@@ -71,7 +71,8 @@
  */
 static void lCrypto_Aead_Hw_Aes_InterruptSetup(void)
 {
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_AES_IsrHelper);
+    (void)Crypto_Int_Hw_Register_Engine_Handler(CRYPTO_HSM_ENGINE_AES, DRV_CRYPTO_AES_IsrHelper);
+    Crypto_Int_Hw_SelectEngine(CRYPTO_HSM_ENGINE_AES);
     (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
 }
 

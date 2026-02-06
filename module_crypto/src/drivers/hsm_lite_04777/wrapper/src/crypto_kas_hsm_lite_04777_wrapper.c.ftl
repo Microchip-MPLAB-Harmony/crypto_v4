@@ -55,7 +55,8 @@ Microchip or any third party.
 
 static void lDRV_CRYPTO_ECC_InterruptSetup(void)
 {
-    (void)Crypto_Int_Hw_Register_Handler(CRYPTO_HSM_INT, DRV_CRYPTO_PKE_IsrHelper);
+    (void)Crypto_Int_Hw_Register_Engine_Handler(CRYPTO_HSM_ENGINE_PKE, DRV_CRYPTO_PKE_IsrHelper);
+    Crypto_Int_Hw_SelectEngine(CRYPTO_HSM_ENGINE_PKE);
     (void)Crypto_Int_Hw_Enable(CRYPTO_HSM_INT);
 }
 

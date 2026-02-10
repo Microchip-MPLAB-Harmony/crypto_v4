@@ -213,7 +213,19 @@ crypto_Int_Status_E Crypto_Int_Hw_Register_Engine_Handler(crypto_hsm_engine_t en
 
 void Crypto_Int_Hw_SelectEngine(crypto_hsm_engine_t engine)
 {
-    gCryptoHsmActiveEngine = engine;
+    switch (engine)
+    {
+        case CRYPTO_HSM_ENGINE_AES:
+        case CRYPTO_HSM_ENGINE_HASH:
+        case CRYPTO_HSM_ENGINE_PKE:
+        case CRYPTO_HSM_ENGINE_TRNG:
+        case CRYPTO_HSM_ENGINE_NONE:
+            gCryptoHsmActiveEngine = engine;
+            break;
+        default:
+            gCryptoHsmActiveEngine = CRYPTO_HSM_ENGINE_NONE;
+            break;
+    }
 }
 
 // *****************************************************************************

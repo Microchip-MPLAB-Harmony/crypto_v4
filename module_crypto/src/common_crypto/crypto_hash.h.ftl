@@ -95,25 +95,27 @@ typedef enum {
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_224 == true)))
     || (CRYPTO_HW_SHA3_224?? &&(CRYPTO_HW_SHA3_224 == true))>
     CRYPTO_HASH_SHA3_224 = 8,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_224 -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_224 || CRYPTO_HW_SHA3_224 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_256 == true)))
     || (CRYPTO_HW_SHA3_256?? &&(CRYPTO_HW_SHA3_256 == true))>
     CRYPTO_HASH_SHA3_256 = 9,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_256 -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_256 || CRYPTO_HW_SHA3_256 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_384 == true)))
     || (CRYPTO_HW_SHA3_384?? &&(CRYPTO_HW_SHA3_384 == true))>
     CRYPTO_HASH_SHA3_384 = 10,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_384 -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_384 || CRYPTO_HW_SHA3_384 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512?? &&(lib_wolfcrypt.CRYPTO_WC_SHA3_512 == true)))
     || (CRYPTO_HW_SHA3_512?? &&(CRYPTO_HW_SHA3_512 == true))>
     CRYPTO_HASH_SHA3_512 = 11,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_512 -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)))>
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHA3_512 || CRYPTO_HW_SHA3_512 -->
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)))
+    || (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true))>
     CRYPTO_HASH_SHA3_SHAKE128 = 12,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 -->
-<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true)))>
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || CRYPTO_HW_SHA3_SHAKE128 -->
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true)))
+    || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
     CRYPTO_HASH_SHA3_SHAKE256 = 13,
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_256 || CRYPTO_HW_SHA3_SHAKE256 -->
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true)))>
     CRYPTO_HASH_BLAKE2B = 14,
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_BLAKE2B -->
@@ -192,7 +194,8 @@ typedef struct{
     uint8_t arr_shaDataCtx[CRYPTO_HASH_SHA512CTX_SIZE] __attribute__((aligned (4)));
 }st_Crypto_Hash_Sha_Ctx;
 </#if>
-<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))>
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))
+    || (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
 
 //SHA-3 only SHAKE
 typedef struct{
@@ -202,7 +205,7 @@ typedef struct{
     crypto_HandlerType_E shakeHandler_en;
     uint8_t arr_shakeDataCtx[CRYPTO_HASH_SHA512CTX_SIZE] __attribute__((aligned (4)));
 }st_Crypto_Hash_Shake_Ctx;
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 || CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))))>
 
 //BLAKE Algorithm
@@ -260,14 +263,15 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
 crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, uint8_t *ptr_data, uint32_t dataLen);
 crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st, uint8_t *ptr_digest);
 </#if>
-<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))>
+<#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))
+    || (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
 
 //SHA-3 only SHAKE
 crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerType_en, crypto_Hash_Algo_E shakeAlgorithm_en, uint8_t *ptr_data, uint32_t dataLen, uint8_t *ptr_digest, uint32_t digestLen, uint32_t shakeSessionId);
 crypto_Hash_Status_E Crypto_Hash_Shake_Init(st_Crypto_Hash_Shake_Ctx* ptr_shakeCtx_st, crypto_Hash_Algo_E shakeAlgorithm_en, crypto_HandlerType_E shakeHandlerType_en, uint32_t digestLen, uint32_t shakeSessionId);
 crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shakeCtx_st, uint8_t *ptr_data, uint32_t dataLen);
 crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shakeCtx_st, uint8_t *ptr_digest);
-</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
+</#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 || CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
 <#if (lib_wolfcrypt?? &&((lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))))>
 
 //BLAKE Algorithm
@@ -283,5 +287,4 @@ crypto_Hash_Status_E Crypto_Hash_Blake_Final(st_Crypto_Hash_Blake_Ctx * ptr_blak
         || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
 uint32_t Crypto_Hash_GetHashAndHashSize(crypto_HandlerType_E shaHandler_en, crypto_Hash_Algo_E hashType_en, uint8_t *ptr_wcInputData, uint32_t wcDataLen, uint8_t *ptr_outHash);
 </#if><#-- CRYPTO_HW_ECDSA || lib_wolfcrypt.CRYPTO_WC_ECDSA || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->
-
 #endif //CRYPTO_HASH_H

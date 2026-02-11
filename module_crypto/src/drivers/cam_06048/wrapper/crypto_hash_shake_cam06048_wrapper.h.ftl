@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_cam06048_wrapper.h
+    crypto_hash_shake_cam06048_wrapper.h
 
   Summary:
-    Crypto Framework Library wrapper file for hardware SHA.
+    Crypto Framework Library wrapper file for hardware SHAKE.
 
   Description:
-    This header file contains the wrapper interface to access the SHA
+    This header file contains the wrapper interface to access the SHAKE
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -39,9 +39,8 @@ implied, are granted under any patent or other intellectual property rights of
 Microchip or any third party.
 */
 //DOM-IGNORE-END
-
-#ifndef CRYPTO_HASH_CAM06048_WRAPPER_H
-#define CRYPTO_HASH_CAM06048_WRAPPER_H
+#ifndef CRYPTO_HASH_SHAKE_CAM06048_WRAPPER_H
+#define	CRYPTO_HASH_SHAKE_CAM06048_WRAPPER_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -69,50 +68,48 @@ Microchip or any third party.
 // *****************************************************************************
 
 // The minimum size to store a CAM library HASH context data block.
-#define MINIMUM_HASH_CONTEXT_DATA_SIZE        (788UL)
+#define MINIMUM_HASH_SHAKE_CONTEXT_DATA_SIZE        (788UL)
 
 /* The minimum size to store a CAM library HASH single-step digest context.
  * A single-step digest operation doesn't need state, cache or padding space. */
-#define MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE (420UL)
+#define MINIMUM_HASH_SHAKE_DIGEST_CONTEXT_DATA_SIZE (420UL)
 
 typedef struct
 {
   crypto_Hash_Algo_E algorithm;
 
   // This is used to store the CAM library context data.
-  uint8_t contextData[MINIMUM_HASH_CONTEXT_DATA_SIZE];
+  uint8_t contextData[MINIMUM_HASH_SHAKE_CONTEXT_DATA_SIZE];
 
-} CRYPTO_HASH_HW_CONTEXT;
+} CRYPTO_HASH_SHAKE_HW_CONTEXT;
 
 typedef struct
 {
   crypto_Hash_Algo_E algorithm;
 
   // This is used to store the CAM library context data.
-  uint8_t contextData[MINIMUM_HASH_DIGEST_CONTEXT_DATA_SIZE];
+  uint8_t contextData[MINIMUM_HASH_SHAKE_DIGEST_CONTEXT_DATA_SIZE];
 
-} CRYPTO_HASH_HW_DIGEST_CONTEXT;
+} CRYPTO_HASH_SHAKE_HW_DIGEST_CONTEXT;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Hash Algorithms Common Interface
+// Section: SHAKE Hash Algorithms Common Interface
 // *****************************************************************************
 // *****************************************************************************
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode);
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength);
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Digest(uint8_t *data, uint32_t dataLen,
+    uint8_t *digest, uint32_t digestLen, crypto_Hash_Algo_E shaAlgorithm_en);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
-    uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en);
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Init(void *shaInitCtx,
+    crypto_Hash_Algo_E shaAlgorithm_en, uint32_t digestLen);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
-    crypto_Hash_Algo_E shaAlgorithm_en);
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Update(void *shaUpdateCtx,
     uint8_t *data, uint32_t dataLen);
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Final(void *shaFinalCtx,
     uint8_t *digest);
 
 // DOM-IGNORE-BEGIN
@@ -123,4 +120,4 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
 #endif
 // DOM-IGNORE-END
 
-#endif /* CRYPTO_HASH_CAM06048_WRAPPER_H */
+#endif /* CRYPTO_HASH_SHAKE_CAM06048_WRAPPER_H */

@@ -5,13 +5,13 @@
     Microchip Technology Inc.
 
   File Name:
-    crypto_hash_cam06048_wrapper.c
+    crypto_hash_shake_cam06048_wrapper.c
 
   Summary:
-    Crypto Framework Library wrapper file for hardware SHA.
+    Crypto Framework Library wrapper file for hardware SHAKE.
 
   Description:
-    This source file contains the wrapper interface to access the SHA
+    This source file contains the wrapper interface to access the SHAKE
     hardware driver for Microchip microcontrollers.
 **************************************************************************/
 
@@ -48,7 +48,7 @@ Microchip or any third party.
 
 #include <stdint.h>
 #include <string.h>
-#include "crypto/drivers/wrapper/crypto_hash_cam06048_wrapper.h"
+#include "crypto/drivers/wrapper/crypto_hash_shake_cam06048_wrapper.h"
 #include "crypto/drivers/wrapper/crypto_cam06048_wrapper.h"
 
 // *****************************************************************************
@@ -66,53 +66,24 @@ static void lDRV_CRYPTO_HASH_InterruptSetup(void)
     (void)Crypto_Int_Hw_Enable(CRYPTO1_INT);
 }
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: SHAKE Hash Algorithms Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Hash Algorithms Common Interface Implementation
-// *****************************************************************************
-// *****************************************************************************
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode)
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_GetAlgorithm(crypto_Hash_Algo_E shaAlgorithm, HASHCON_MODE *mode)
 {
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
 
     switch(shaAlgorithm)
     {
-        case CRYPTO_HASH_SHA1:
-            *mode = MODE_SHA1;
+        case CRYPTO_HASH_SHA3_SHAKE128:
+            *mode = MODE_SHAKE128;
             status = CRYPTO_HASH_SUCCESS;
             break;
-        case CRYPTO_HASH_SHA2_224:
-            *mode = MODE_SHA224;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA2_256:
-            *mode = MODE_SHA256;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA2_384:
-            *mode = MODE_SHA384;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA2_512:
-            *mode = MODE_SHA512;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA3_224:
-            *mode = MODE_SHA3_224;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA3_256:
-            *mode = MODE_SHA3_256;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA3_384:
-            *mode = MODE_SHA3_384;
-            status = CRYPTO_HASH_SUCCESS;
-            break;
-        case CRYPTO_HASH_SHA3_512:
-            *mode = MODE_SHA3_512;
+        case CRYPTO_HASH_SHA3_SHAKE256:
+            *mode = MODE_SHAKE256;
             status = CRYPTO_HASH_SUCCESS;
             break;
         default:
@@ -123,42 +94,8 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetAlgorithm(crypto_Hash_Algo_E shaAlgor
     return status;
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_GetDigestLength(crypto_Hash_Algo_E shaAlgorithm, uint32_t *digestLength)
-{
-    crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
-
-    switch(shaAlgorithm)
-    {
-        case CRYPTO_HASH_SHA1:
-            *digestLength = 20;
-            break;
-        case CRYPTO_HASH_SHA2_224:
-        case CRYPTO_HASH_SHA3_224:
-            *digestLength = 28;
-            break;
-        case CRYPTO_HASH_SHA2_256:
-        case CRYPTO_HASH_SHA3_256:
-            *digestLength = 32;
-            break;
-        case CRYPTO_HASH_SHA2_384:
-        case CRYPTO_HASH_SHA3_384:
-            *digestLength = 48;
-            break;
-        case CRYPTO_HASH_SHA2_512:
-        case CRYPTO_HASH_SHA3_512:
-            *digestLength = 64;
-            break;
-        default:
-            *digestLength = 0;
-            status = CRYPTO_HASH_ERROR_ALGO;
-            break;
-    }
-
-    return status;
-}
-
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
-        crypto_Hash_Algo_E shaAlgorithm)
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Init(void *shakeInitCtx,
+        crypto_Hash_Algo_E shakeAlgorithm, uint32_t digestLen)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
     * Reason: Conversion from void* to the HASH context defined by the
@@ -167,18 +104,27 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
-    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaInitCtx;
+    CRYPTO_HASH_SHAKE_HW_CONTEXT *shakeCtx = (CRYPTO_HASH_SHAKE_HW_CONTEXT*) shakeInitCtx;
     HASHCON_MODE mode;
-    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
+    crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
     HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
 
-    status = Crypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm, &mode);
+    // CAM 06048 supports a 16-bit value at the hardware level for the digest length.
+    if (digestLen > UINT16_MAX)
+    {
+        status = CRYPTO_HASH_ERROR_INPUTDATA;
+    }
 
     if (status == CRYPTO_HASH_SUCCESS)
     {
-        shaCtx->algorithm = shaAlgorithm;
-        (void)memset(shaCtx->contextData, 0, sizeof(shaCtx->contextData));
-        hashStatus = DRV_CRYPTO_HASH_Initialize(shaCtx->contextData, mode);
+        status = Crypto_Hash_Hw_Shake_GetAlgorithm(shakeAlgorithm, &mode);
+    }
+    
+    if (status == CRYPTO_HASH_SUCCESS)
+    {
+        shakeCtx->algorithm = shakeAlgorithm;
+        (void)memset(shakeCtx->contextData, 0, sizeof(shakeCtx->contextData));
+        hashStatus = DRV_CRYPTO_HASH_SHAKE_Initialize(shakeCtx->contextData, mode, digestLen);
     }
 
     if (hashStatus == HASH_NO_ERROR)
@@ -193,7 +139,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Init(void *shaInitCtx,
     return status;
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Update(void *shakeUpdateCtx,
     uint8_t *data, uint32_t dataLen)
 {
    /* MISRA C:2012 Rule 11.5 deviation:
@@ -203,15 +149,15 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
-    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaUpdateCtx;
+    CRYPTO_HASH_SHAKE_HW_CONTEXT *shakeCtx = (CRYPTO_HASH_SHAKE_HW_CONTEXT*) shakeUpdateCtx;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus;
     HASH_ERROR hashActive;
 
-    hashStatus = DRV_CRYPTO_HASH_IsActive(shaCtx->contextData, &hashActive);
+    hashStatus = DRV_CRYPTO_HASH_IsActive(shakeCtx->contextData, &hashActive);
     if ((hashStatus == HASH_NO_ERROR) && (hashActive == HASH_OPERATION_IS_ACTIVE))
     {
-        hashStatus = DRV_CRYPTO_HASH_Update(shaCtx->contextData, data, dataLen);
+        hashStatus = DRV_CRYPTO_HASH_SHAKE_Update(shakeCtx->contextData, data, dataLen);
 
         if (hashStatus == HASH_NO_ERROR)
         {
@@ -222,7 +168,7 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Update(void *shaUpdateCtx,
     return status;
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Final(void *shakeFinalCtx,
     uint8_t *digest)
 {
     /* MISRA C:2012 Rule 11.5 deviation:
@@ -232,53 +178,54 @@ crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Final(void *shaFinalCtx,
     *         defined by the Crypto APIs.
     */
     /* cppcheck-suppress misra-c2012-11.5 */
-    CRYPTO_HASH_HW_CONTEXT *shaCtx = (CRYPTO_HASH_HW_CONTEXT*) shaFinalCtx;
+    CRYPTO_HASH_SHAKE_HW_CONTEXT *shakeCtx = (CRYPTO_HASH_SHAKE_HW_CONTEXT*) shakeFinalCtx;
     crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
     HASH_ERROR hashStatus;
     HASH_ERROR hashActive;
-    uint32_t digestLength = 0;
 
-    hashStatus = DRV_CRYPTO_HASH_IsActive(shaCtx->contextData, &hashActive);
+    hashStatus = DRV_CRYPTO_HASH_IsActive(shakeCtx->contextData, &hashActive);
+
     if ((hashStatus == HASH_NO_ERROR) && (hashActive == HASH_OPERATION_IS_ACTIVE))
     {
-        status = Crypto_Hash_Hw_Sha_GetDigestLength(shaCtx->algorithm, &digestLength);
-    }
+        hashStatus = DRV_CRYPTO_HASH_SHAKE_Final(shakeCtx->contextData, digest);
 
-    if (status == CRYPTO_HASH_SUCCESS)
-    {
-        hashStatus = DRV_CRYPTO_HASH_Final(shaCtx->contextData, digest, digestLength);
-        if (hashStatus != HASH_NO_ERROR)
+        if (hashStatus == HASH_NO_ERROR)
         {
-            status = CRYPTO_HASH_ERROR_FAIL;
+            status = CRYPTO_HASH_SUCCESS;
         }
     }
 
     return status;
 }
 
-crypto_Hash_Status_E Crypto_Hash_Hw_Sha_Digest(uint8_t *data, uint32_t dataLen,
-    uint8_t *digest, crypto_Hash_Algo_E shaAlgorithm_en)
+crypto_Hash_Status_E Crypto_Hash_Hw_Shake_Digest(uint8_t *data, uint32_t dataLen,
+    uint8_t *digest, uint32_t digestLen, crypto_Hash_Algo_E shaAlgorithm_en)
 {
     HASHCON_MODE mode;
-    crypto_Hash_Status_E status = CRYPTO_HASH_ERROR_FAIL;
-    CRYPTO_HASH_HW_DIGEST_CONTEXT shaDigestCtx;
+    crypto_Hash_Status_E status = CRYPTO_HASH_SUCCESS;
+    CRYPTO_HASH_SHAKE_HW_DIGEST_CONTEXT shakeDigestCtx;
 
-    status = Crypto_Hash_Hw_Sha_GetAlgorithm(shaAlgorithm_en, &mode);
+    // CAM 06048 supports a 16-bit value at the hardware level for the digest length.
+    if (digestLen > UINT16_MAX)
+    {
+        status = CRYPTO_HASH_ERROR_INPUTDATA;
+    }
+
+    if (status == CRYPTO_HASH_SUCCESS)
+    {
+        shakeDigestCtx.algorithm = shaAlgorithm_en;
+        status = Crypto_Hash_Hw_Shake_GetAlgorithm(shakeDigestCtx.algorithm, &mode);
+    }
 
     if (status == CRYPTO_HASH_SUCCESS)
     {
         HASH_ERROR hashStatus = HASH_INITIALIZE_ERROR;
-        uint32_t digestLength = 0;
 
         lDRV_CRYPTO_HASH_InterruptSetup();
 
-        shaDigestCtx.algorithm = shaAlgorithm_en;
-        (void)memset(shaDigestCtx.contextData, 0, sizeof(shaDigestCtx.contextData));
+        (void)memset(shakeDigestCtx.contextData, 0, sizeof(shakeDigestCtx.contextData));
 
-        if (CRYPTO_HASH_SUCCESS == Crypto_Hash_Hw_Sha_GetDigestLength(shaDigestCtx.algorithm, &digestLength))
-        {
-            hashStatus = DRV_CRYPTO_HASH_Digest(shaDigestCtx.contextData, mode, data, dataLen, digest, digestLength);
-        }
+        hashStatus = DRV_CRYPTO_HASH_SHAKE_Digest(shakeDigestCtx.contextData, mode, data, dataLen, digest, digestLen);
 
         if (hashStatus != HASH_NO_ERROR)
         {

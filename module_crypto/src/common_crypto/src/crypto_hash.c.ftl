@@ -58,6 +58,9 @@
 <#if (crypto_hash_cam06048_wrapper_h_ftl_flag?? &&(crypto_hash_cam06048_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_cam06048_wrapper.h"
 </#if>
+<#if (crypto_hash_shake_cam06048_wrapper_h_ftl_flag?? &&(crypto_hash_shake_cam06048_wrapper_h_ftl_flag == true))>
+#include "crypto/drivers/wrapper/crypto_hash_shake_cam06048_wrapper.h"
+</#if>
 <#if (crypto_hash_hsm_lite_04777_wrapper_h_ftl_flag?? && (crypto_hash_hsm_lite_04777_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_hsm_lite_04777_wrapper.h"
 </#if>
@@ -612,7 +615,8 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
         || lib_wolfcrypt.CRYPTO_WC_SHA2_256 || CRYPTO_HW_SHA2_256 || CRYPTO_ICM11105_SHA2_256 || lib_wolfcrypt.CRYPTO_WC_SHA2_384 || CRYPTO_HW_SHA2_384 || lib_wolfcrypt.CRYPTO_WC_SHA2_512
         || CRYPTO_HW_SHA2_512 || lib_wolfcrypt.CRYPTO_WC_SHA2_512_224 || CRYPTO_HW_SHA2_512_224 || lib_wolfcrypt.CRYPTO_WC_SHA2_512_256 || CRYPTO_HW_SHA2_512_256
         || lib_wolfcrypt.CRYPTO_WC_SHA3_224 || lib_wolfcrypt.CRYPTO_WC_SHA3_256 || lib_wolfcrypt.CRYPTO_WC_SHA3_384 || lib_wolfcrypt.CRYPTO_WC_SHA3_512 -->
-<#if (lib_wolfcrypt?? && ((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))>
+<#if (lib_wolfcrypt?? && ((lib_wolfcrypt.CRYPTO_WC_SHAKE_128?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_128 == true)) || (lib_wolfcrypt.CRYPTO_WC_SHAKE_256?? &&(lib_wolfcrypt.CRYPTO_WC_SHAKE_256 == true))))
+    || (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
 
 //SHAKE
 crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerType_en, crypto_Hash_Algo_E shakeAlgorithm_en,
@@ -624,7 +628,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerT
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_ALGO;
     }
-    else if( (ptr_data == NULL) || (dataLen == 0u) )
+    else if( (ptr_data == NULL) && (dataLen != 0u) )
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }
@@ -645,8 +649,13 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Digest(crypto_HandlerType_E shakeHandlerT
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeDigest(ptr_data, dataLen, ptr_digest, digestLen, shakeAlgorithm_en);
                 break;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
+<#if (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")>
+                ret_shakeStat_en = Crypto_Hash_Hw_Shake_Digest(ptr_data, dataLen, ptr_digest, digestLen, shakeAlgorithm_en);
                 break;
+</#if><#-- HAVE_CRYPTO_HW_CAM_06048_DRIVER -->
+</#if><#-- CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
@@ -690,8 +699,13 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Init(st_Crypto_Hash_Shake_Ctx* ptr_shakeC
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeInit((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_shakeCtx_st->shakeAlgo_en);
                 break;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_SHAKE_128 || lib_wolfcrypt.CRYPTO_WC_SHAKE_256 -->
+<#if (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")>
+                ret_shakeStat_en = Crypto_Hash_Hw_Shake_Init((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_shakeCtx_st->shakeAlgo_en, ptr_shakeCtx_st->digestLen);
                 break;
+</#if><#-- HAVE_CRYPTO_HW_CAM_06048_DRIVER -->
+</#if><#-- CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
@@ -708,7 +722,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shak
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_CTX;
     }
-    else if( (ptr_data == NULL) || (dataLen == 0u) )
+    else if( (ptr_data == NULL) && (dataLen != 0u) )
     {
         ret_shakeStat_en = CRYPTO_HASH_ERROR_INPUTDATA;
     }
@@ -721,8 +735,13 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Update(st_Crypto_Hash_Shake_Ctx* ptr_shak
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeUpdate((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_data, dataLen, ptr_shakeCtx_st->shakeAlgo_en);
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
+<#if (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")>
+                ret_shakeStat_en = Crypto_Hash_Hw_Shake_Update((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_data, dataLen);
                 break;
+</#if><#-- HAVE_CRYPTO_HW_CAM_06048_DRIVER -->
+</#if><#-- CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
@@ -752,9 +771,13 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shake
                 ret_shakeStat_en = Crypto_Hash_Wc_ShakeFinal((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_digest, ptr_shakeCtx_st->digestLen, ptr_shakeCtx_st->shakeAlgo_en);
                 break;
 </#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
-
+<#if (CRYPTO_HW_SHA3_SHAKE128?? &&(CRYPTO_HW_SHA3_SHAKE128 == true)) || (CRYPTO_HW_SHA3_SHAKE256?? &&(CRYPTO_HW_SHA3_SHAKE256 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
+<#if driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")>
+                ret_shakeStat_en = Crypto_Hash_Hw_Shake_Final((void*)ptr_shakeCtx_st->arr_shakeDataCtx, ptr_digest);
                 break;
+</#if><#-- HAVE_CRYPTO_HW_CAM_06048_DRIVER -->
+</#if><#-- CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
             default:
                 ret_shakeStat_en = CRYPTO_HASH_ERROR_HDLR;
                 break;
@@ -762,7 +785,7 @@ crypto_Hash_Status_E Crypto_Hash_Shake_Final(st_Crypto_Hash_Shake_Ctx* ptr_shake
     }
 	return ret_shakeStat_en;
 }
-</#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 -->
+</#if><#-- CRYPTO_WC_SHAKE_128 || CRYPTO_WC_SHAKE_256 || CRYPTO_HW_SHA3_SHAKE128 || CRYPTO_HW_SHA3_SHAKE256 -->
 <#if (lib_wolfcrypt?? && ((lib_wolfcrypt.CRYPTO_WC_BLAKE2S?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2S == true)) || (lib_wolfcrypt.CRYPTO_WC_BLAKE2B?? &&(lib_wolfcrypt.CRYPTO_WC_BLAKE2B == true))))>
 
 //BLAKE

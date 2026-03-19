@@ -192,7 +192,7 @@ crypto_Aead_Status_E Crypto_Aead_AesCcm_Cipher(st_Crypto_Aead_AesCcm_ctx *ptr_ae
 <#if ((driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")))>
                 ret_aesCcmStat_en =  Crypto_Aead_Hw_AesCcm_Cipher(ptr_aesCcmCtx_st->arr_aeadDataCtx, cipherOper_en, ptr_inputData, dataLen,
                                                         ptr_outData, ptr_nonce, nonceLen, ptr_aad, aadLen, ptr_authTag, authTagLen);
-</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER || HAVE_CRYPTO_HW_CAM_06048_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_CAM_05346_DRIVER || HAVE_CRYPTO_HW_CAM_06048_DRIVER || HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
                 break;
 
 </#if><#-- CRYPTO_HW_AES_CCM -->

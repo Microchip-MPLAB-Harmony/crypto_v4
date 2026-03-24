@@ -56,6 +56,7 @@ Microchip or any third party.
 #include "crypto/common_crypto/crypto_aead_cipher.h"
 <#if (crypto_aead_cam05346_wrapper_h_ftl_flag?? &&(crypto_aead_cam05346_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_aead_cam05346_wrapper.h"
+</#if>
 <#if (crypto_aead_cam06048_wrapper_h_ftl_flag?? &&(crypto_aead_cam06048_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_aead_cam06048_wrapper.h"
 </#if>

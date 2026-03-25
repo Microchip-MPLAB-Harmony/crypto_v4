@@ -99,7 +99,7 @@ typedef struct
 {
     uint32_t cryptoSessionID;
     crypto_HandlerType_E macHandlerType_en;
-    uint8_t arr_macDataCtx[768]__attribute__((aligned (4)));
+    uint8_t arr_macDataCtx[928]__attribute__((aligned (4)));
 }st_Crypto_Mac_Hmac_ctx;
 </#if><#-- lib_wolfcrypt.CRYPTO_WC_HMAC -->
 

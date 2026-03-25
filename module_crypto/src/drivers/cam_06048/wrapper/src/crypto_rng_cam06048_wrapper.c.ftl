@@ -87,6 +87,8 @@ crypto_Rng_Status_E Crypto_Rng_Hw_Trng_Generate(uint8_t *rngData, uint32_t rngLe
         return CRYPTO_RNG_ERROR_FAIL;
     }
 
+    (void)Crypto_Int_Hw_Disable(CRYPTO2_INT);
+
     return errorCode;
 <#else>
     return CRYPTO_RNG_ERROR_NOTSUPPTED;

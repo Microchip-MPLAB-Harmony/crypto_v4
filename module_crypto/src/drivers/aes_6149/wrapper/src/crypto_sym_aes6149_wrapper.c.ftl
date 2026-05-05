@@ -45,6 +45,7 @@
 // *****************************************************************************
 
 #include <stdint.h>
+#include <string.h>
 #include "crypto/drivers/wrapper/crypto_sym_aes6149_wrapper.h"
 #include "crypto/drivers/driver/drv_crypto_aes_hw_6149.h"
 
@@ -239,9 +240,12 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData,
 </#if>
 </#if>
     /* MISRA C-2012 deviation block end */
-    uint32_t blockLen = dataLen / 4UL;
-    uint32_t block;   /* 4 32bit block size */
-    for (block = 0; block < blockLen; block += 4UL)
+    uint32_t fullBlocks = dataLen / 16UL;
+    uint32_t remainder  = dataLen % 16UL;
+    uint32_t block;
+    
+    /* Process all complete 16-byte blocks */
+    for (block = 0; block < fullBlocks; block++)
     {
         /* Write the data to be ciphered to the input data registers */
         DRV_CRYPTO_AES_WriteInputData(iData);
@@ -256,6 +260,44 @@ crypto_Sym_Status_E Crypto_Sym_Hw_Aes_Cipher(uint8_t *inputData,
         /* Cipher complete - read out the data */
         DRV_CRYPTO_AES_ReadOutputData(oData);
         oData += 4;
+    }
+    
+    /* Process trailing partial block for stream modes (CTR, OFB, CFB-128).
+     * Copy remaining bytes into a zero-padded temp buffer, process one full
+     * block through hardware, then copy only the valid output bytes back. */
+    if (remainder != 0UL)
+    {
+        uint8_t tempIn[16]  = {0};
+        uint8_t tempOut[16] = {0};
+        
+        (void) memcpy(tempIn, (const uint8_t *)iData, remainder);
+        
+        /* MISRA C-2012 deviation block start */
+        /* MISRA C-2012 Rule 11.3 deviated: 1. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+</#if>
+        DRV_CRYPTO_AES_WriteInputData((uint32_t *)tempIn);
+        
+        while (!DRV_CRYPTO_AES_CipherIsReady())
+        {
+            ;
+        }
+        
+        DRV_CRYPTO_AES_ReadOutputData((uint32_t *)tempOut);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+        /* MISRA C-2012 deviation block end */
+        
+        (void) memcpy((uint8_t *)oData, tempOut, remainder);
     }
     
     return CRYPTO_SYM_CIPHER_SUCCESS;

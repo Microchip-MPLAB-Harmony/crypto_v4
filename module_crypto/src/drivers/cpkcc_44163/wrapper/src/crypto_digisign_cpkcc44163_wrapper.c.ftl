@@ -193,7 +193,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Verify(uint8_t *inputHash,
                                                     hwEccCurve);
     
     /* Verify the signature */
-    if (hwResult != CRYPTO_ECDSA_RESULT_SUCCESS)
+    if (hwResult == CRYPTO_ECDSA_RESULT_SUCCESS)
     {
         hwResult = DRV_CRYPTO_ECDSA_Verify(&eccData, (pfu1)inputSig);
     }

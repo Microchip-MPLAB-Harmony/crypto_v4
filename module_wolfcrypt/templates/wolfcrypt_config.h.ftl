@@ -67,7 +67,6 @@ extern "C" {
 //Crypto V4 Common Crypto API - WolfCrypt Library Support
 <#lt>#define CRYPTO_WOLFCRYPT_SUPPORT_ENABLE
 
-//JK
 #define CRYPTO_DIGISIGN_ALGO_EN
 #define CRYPTO_KAS_ALGO_EN    
 
@@ -110,18 +109,18 @@ extern "C" {
 
 <#lt>//#define WOLFSSL_SP_ARM32_ASM   //Dependent on MCU Arch.
 
-<#lt>#define WOLFSSL_SP_MATH_ALL   //JK
-<#lt>#define WOLFSSL_HAVE_SP_ECC  //JK
+<#lt>#define WOLFSSL_SP_MATH_ALL   
+<#lt>#define WOLFSSL_HAVE_SP_ECC  
 
-<#lt>#define WOLFSSL_SP_NO_MALLOC //JK
-<#lt>#define WOLFSSL_SP_SMALL     //JK
-<#lt>#define WOLFSSL_SP_NONBLOCK  //JK
-<#lt>#define WC_ECC_NONBLOCK      //JK
+<#lt>#define WOLFSSL_SP_NO_MALLOC 
+<#lt>#define WOLFSSL_SP_SMALL     
+<#lt>#define WOLFSSL_SP_NONBLOCK  
+<#lt>#define WC_ECC_NONBLOCK      
 
 <#lt>#define NO_PWDBASED
 <#lt>//#define WOLF_CRYPTO_CB     //Provide call-back support 
 <#lt>#define WOLFCRYPT_ONLY
-<#lt>#define HAVE_COMP_KEY        //JK 
+<#lt>#define HAVE_COMP_KEY        
 
 <#lt>#define WOLFSSL_AES_SMALL_TABLES
 <#lt>#define NO_MD4
@@ -132,7 +131,7 @@ extern "C" {
 <#lt>#define WOLFSSL_SHA3
 <#lt>#define HAVE_BLAKE2
 <#lt>#define WOLFSSL_RIPEMD
-<#lt>//#define NO_HMAC            //JK
+<#lt>//#define NO_HMAC            
 <#lt>#define WOLFSSL_AES_128
 <#lt>#define WOLFSSL_AES_192
 <#lt>#define WOLFSSL_AES_256
@@ -154,12 +153,12 @@ extern "C" {
 <#lt>#define HAVE_RABBIT
 
 <#lt>#define HAVE_ECC
-<#lt>//#define HAVE_ECC_KEY_EXPORT //JK //Required for WOLFCRYPT_HAVE_ECCSI
+<#lt>//#define HAVE_ECC_KEY_EXPORT  //Required for WOLFCRYPT_HAVE_ECCSI
 <#lt>#define HAVE_X963_KDF
 <#lt>#define ECC_SHAMIR
 <#lt>#define WOLFSSL_CUSTOM_CURVES
-<#lt>//#define HAVE_CURVE25519     //JK 
-<#lt>//#define HAVE_ED25519        //JK
+<#lt>//#define HAVE_CURVE25519     
+<#lt>//#define HAVE_ED25519        
 <#lt>#define FP_ECC
 <#lt>#define HAVE_ECC521           //ECC_MAX_BITS
 
@@ -174,9 +173,9 @@ extern "C" {
 <#lt>#define USE_CERT_BUFFERS_2048
 <#lt>#define USE_CERT_BUFFERS_3072
 <#lt>#define USE_CERT_BUFFERS_4096
-<#lt>//#define WOLFSSL_RSA_PUBLIC_ONLY  //JK //Conflict with WOLFSSL_HAVE_SP_DH
-<#lt>//#define WC_RSA_PSS               //JK
-<#lt>//#define WOLFSSL_STATIC_RSA       //JK
+<#lt>//#define WOLFSSL_RSA_PUBLIC_ONLY  //Conflict with WOLFSSL_HAVE_SP_DH
+<#lt>//#define WC_RSA_PSS               
+<#lt>//#define WOLFSSL_STATIC_RSA       
 <#lt>#define NO_DEV_RANDOM
 <#lt>#define HAVE_HASHDRBG
 <#lt>#define WC_NO_HARDEN
@@ -192,7 +191,7 @@ extern "C" {
 <#lt>#define HAVE_CHACHA      
 <#lt>#define HAVE_AES_KEYWRAP
 <#lt>#define HAVE_ECC_DHE   
-<#lt>//#define WOLFCRYPT_HAVE_ECCSI  //JK
+<#lt>//#define WOLFCRYPT_HAVE_ECCSI 
 <#lt>#define WOLFSSL_AES_EAX 
 <#lt>#define WOLFSSL_AESGCM_STREAM
 <#lt>//*********************************************************
@@ -204,8 +203,8 @@ extern "C" {
 <#lt>//#define WC_NO_RNG //when using RNG
 <#lt>//#define WC_NO_HASHDRBG
 <#lt>//#define HAVE_ECC_ENCRYPT
-<#lt>//#define NO_RSA                 //JK
-<#lt>#define NO_DH                  //JK
+<#lt>//#define NO_RSA                
+<#lt>#define NO_DH                  
 <#lt>//#define NO_SIG_WRAPPER
 <#lt>//**********************************************************
 <#lt>#define HAVE_POLY1305

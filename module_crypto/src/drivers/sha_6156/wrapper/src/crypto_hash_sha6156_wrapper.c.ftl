@@ -50,7 +50,6 @@
 #include "crypto/drivers/wrapper/crypto_hash_sha6156_wrapper.h"
 #include "crypto/drivers/driver/drv_crypto_sha_hw_6156.h"
 
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro definitions
@@ -75,7 +74,6 @@ static uint8_t hashPaddingMsg[CRYPTO_SHA_BLOCK_SIZE_WORDS_32 << 2] = {
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -138,7 +136,6 @@ static crypto_Hash_Status_E lCrypto_Hash_Hw_Sha_GetAlgorithm
    return ret_status;
 }
 
-<#if HAVE_MCHP_CRYPTO_SHA_HW_6156 == true>
 static uint32_t lCrypto_Hash_Hw_Sha_GetBlockSizeBytes(crypto_Hash_Algo_E shaAlgorithm)
 {
     CRYPTO_SHA_BLOCK_SIZE blockSize = CRYPTO_SHA_BLOCK_SIZE_WORDS_32;
@@ -233,7 +230,6 @@ static CRYPTO_SHA_DIGEST_SIZE lCrypto_Hash_Hw_Sha_GetDigestLen
     
    return digestSize;
 }
-</if>
  
 // *****************************************************************************
 // *****************************************************************************

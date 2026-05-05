@@ -57,9 +57,9 @@
 // *****************************************************************************
 // *****************************************************************************
 
-// All buffers maximum size
-static u1 sharedKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE];    
-static u1 sharedKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE];     
+// All buffers maximum size + 4
+static u1 sharedKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];    
+static u1 sharedKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];
 
 // All buffers maximum size + 4
 static u1 pubKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];  

@@ -45,7 +45,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdio.h>
 #include <string.h>
 #include "crypto/drivers/driver/drv_crypto_ecc_hw_cpkcl.h"
 #include "crypto/drivers/cpkcl_lib/cryptolib_typedef_pb.h"
@@ -702,6 +701,7 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
     uint8_t i;
     uint8_t keySize;
     uint8_t coordSize;
+    u2 padLen;
     
     /* Compressed keys not supported */
     if (pubKey[0] != 0x04U) 
@@ -831,16 +831,17 @@ CRYPTO_CPKCL_RESULT DRV_CRYPTO_ECC_SetPubKeyCoordinates(CPKCL_ECC_DATA *pEcc,
         return result;
     }
     
-    /* Split coordinates */
+    /* Right-justify coordinates in field (padLen=0 for P-256/P-384, =2 for P-521) */
+    padLen = pEcc->u2ModuloPSize - (u2)coordSize;
     for (i = 0; i < keySize; i++)
     {
         if (i < coordSize)
         {
-            pubKeyX[i] = pubKey[i + 1U];
+            pubKeyX[padLen + (u2)i] = pubKey[i + 1U];
         }
         else
         {
-            pubKeyY[i - coordSize] = pubKey[i + 1U];
+            pubKeyY[padLen + ((u2)i - (u2)coordSize)] = pubKey[i + 1U];
         }
     }
     

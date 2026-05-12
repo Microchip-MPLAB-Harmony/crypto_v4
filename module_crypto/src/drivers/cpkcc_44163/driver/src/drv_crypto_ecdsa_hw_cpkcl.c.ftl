@@ -58,13 +58,14 @@
 // *****************************************************************************
 // *****************************************************************************
 
-// All buffers maximum size + 4
-static u1 pubKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];    
-static u1 pubKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];  
-static u1 localHash[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];    
-static u1 privateKey[P521_PUBLIC_KEY_COORDINATE_SIZE + 4]; 
-static u1 signX[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];
-static u1 signY[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];
+/* Buffers must be large enough for the CPKCC word-aligned field size + 4.
+ * For P-521: ceil(521/8) = 66 rounded to even = 68, plus 4 = 72 bytes. */
+static u1 pubKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];    
+static u1 pubKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];  
+static u1 localHash[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];    
+static u1 privateKey[P521_PUBLIC_KEY_COORDINATE_SIZE + 6]; 
+static u1 signX[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];
+static u1 signY[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];
     
 // *****************************************************************************
 // *****************************************************************************
@@ -96,9 +97,28 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_InitEccParamsSign(CPKCL_ECC_DATA *pEccData,
     (void) memset(localHash, 0, sizeof(localHash));
     (void) memset(privateKey, 0, sizeof(privateKey));
     
-    /* Copy leaving first 4 bytes empty */
-    (void) memcpy(&localHash[4], hash, hashLen);
-    (void) memcpy(&privateKey[4], privKey, privKeyLen);
+    /* Data must be right-justified (big-endian) in the field so that after
+     * byte-reversal by SecureCopy the value occupies the low-address (LE LSB)
+     * portion of CryptoRAM.  Layout: [4-byte pad | zero-fill | actual data].
+     * If hash is longer than the field, truncate to fieldSize (leftmost bytes). */
+    u2 u2ModSize = pEccData->u2ModuloPSize;
+    u2 u2OrdSize = pEccData->u2OrderSize;
+    if (hashLen <= (u4)u2ModSize)
+    {
+        (void) memcpy(&localHash[4U + (u4)u2ModSize - hashLen], hash, hashLen);
+    }
+    else
+    {
+        (void) memcpy(&localHash[4U], hash, (u4)u2ModSize);
+    }
+    if (privKeyLen <= (u4)u2OrdSize)
+    {
+        (void) memcpy(&privateKey[4U + (u4)u2OrdSize - privKeyLen], privKey, privKeyLen);
+    }
+    else
+    {
+        (void) memcpy(&privateKey[4U], privKey, (u4)u2OrdSize);
+    }
     
     /* Store in context */
     pEccData->pfu1HashValue = (pfu1) localHash;
@@ -191,6 +211,38 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CPKCL_ECC_DATA *pEccData,
 </#if>
     DRV_CRYPTO_ECC_SecureCopy(au1ScalarNumber,
 	(pu1) ((BASE_CONV_RANDOM(u2ModuloPSize))), u2OrderSize + 4U);
+
+    /* Clamp the random scalar to the bit-length of the order n.
+     * The scalar occupies bytes [4 .. u2OrderSize+3] in big-endian.
+     * For curves where u2OrderSize > actual byte-length of n (e.g. P-521:
+     * n is 521 bits = 66 bytes but u2OrderSize = 68), zero out the leading
+     * padding bytes and mask the MSB byte to the correct bit width.
+     * For P-256/P-384 where orderBytes == u2OrderSize, this is a no-op. */
+    {
+        pfu1 pOrder = pEccData->pfu1APointOrder;
+        u2 idx = 4U;
+        while ((idx < (u2OrderSize + 4U)) && (pOrder[idx] == 0U))
+        {
+            idx++;
+        }
+        u2 hdrEnd = idx;
+        for (u2 j = 4U; j < hdrEnd; j++)
+        {
+            au1ScalarNumber[j] = 0U;
+        }
+        /* Mask the MSB byte: keep only the bits at and below the highest
+         * set bit of the order's MSB byte.  E.g. orderMsb=0x01 -> mask=0x01,
+         * orderMsb=0xFF -> mask=0xFF, orderMsb=0x43 -> mask=0x7F */
+        if (hdrEnd < (u2OrderSize + 4U))
+        {
+            u1 orderMsb = pOrder[hdrEnd];
+            u1 mask = orderMsb;
+            mask |= (mask >> 1U);
+            mask |= (mask >> 2U);
+            mask |= (mask >> 4U);
+            au1ScalarNumber[hdrEnd] &= mask;
+        }
+    }
 
     /* Copy parameters for ECDSA signature generation in memory areas */
     DRV_CRYPTO_ECC_SecureCopy(
@@ -360,9 +412,16 @@ CRYPTO_ECDSA_RESULT DRV_CRYPTO_ECDSA_Sign(CPKCL_ECC_DATA *pEccData,
     pEccData->pfu1PublicKeyX = (pfu1) pubKeyX;
     pEccData->pfu1PublicKeyY = (pfu1) pubKeyY;
     
-    /* Store hash locally */
+    /* Store hash locally: right-justified if shorter than field, truncated if longer */
     (void) memset(localHash, 0, sizeof(localHash));
-    (void) memcpy(&localHash[4], hash, hashLen);
+    if (hashLen <= (u4)pEccData->u2ModuloPSize)
+    {
+        (void) memcpy(&localHash[4U + (u4)pEccData->u2ModuloPSize - hashLen], hash, hashLen);
+    }
+    else
+    {
+        (void) memcpy(&localHash[4U], hash, (u4)pEccData->u2ModuloPSize);
+    }
     pEccData->pfu1HashValue = (pfu1) localHash;
     
     return CRYPTO_ECDSA_RESULT_SUCCESS;

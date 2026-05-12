@@ -57,14 +57,17 @@
 // *****************************************************************************
 // *****************************************************************************
 
-// All buffers maximum size + 4
-static u1 sharedKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];    
-static u1 sharedKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];
+// All buffers maximum size + 4 header + 2 padding (P-521: u2ModuloPSize=68 > coordSize=66)
+static u1 sharedKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];    
+static u1 sharedKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];
 
-// All buffers maximum size + 4
-static u1 pubKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];  
-static u1 pubKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 4]; 
-static u1 privateKey[P521_PUBLIC_KEY_COORDINATE_SIZE + 4];
+// All buffers maximum size + 4 header + 2 padding
+static u1 pubKeyX[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];  
+static u1 pubKeyY[P521_PUBLIC_KEY_COORDINATE_SIZE + 6]; 
+static u1 privateKey[P521_PUBLIC_KEY_COORDINATE_SIZE + 6];
+
+/* Actual coordinate byte-length (set in InitEccParams, used in GetSharedKey) */
+static u2 s_coordSize;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -112,9 +115,15 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_InitEccParams(CPKCL_ECC_DATA *pEccData,
     pEccData->pfu1PublicKeyX = (pfu1) pubKeyX;
     pEccData->pfu1PublicKeyY = (pfu1) pubKeyY;
     
-    /* Store private key locally, leaving first 4 bytes empty  */
+    /* Remember the actual coordinate size for shared secret extraction */
+    s_coordSize = (u2)privKeyLen;
+    
+    /* Store private key locally, right-justified within the u2OrderSize field.
+     * For P-521: privKeyLen=66, u2OrderSize=68, so pad 2 zero bytes after header. */
+	u2 padLen;
     (void) memset(privateKey, 0, sizeof(privateKey));
-    (void) memcpy(&privateKey[4], privKey, privKeyLen);
+    padLen = pEccData->u2OrderSize - (u2)privKeyLen;
+    (void) memcpy(&privateKey[4U + padLen], privKey, privKeyLen);
     pEccData->pfu1PrivateKey = (pfu1) privateKey;
     
     return CRYPTO_ECDH_RESULT_SUCCESS;
@@ -318,8 +327,14 @@ CRYPTO_ECDH_RESULT DRV_CRYPTO_ECDH_GetSharedKey(CPKCL_ECC_DATA *pEccData,
 </#if>
     /* MISRA C-2012 deviation block end */
 
-    /* Remove empty first four bytes */  
-    (void) memcpy(sharedKey, &sharedKeyX[4], u2OrderSize);
-    
+    /* Copy the shared secret (X coordinate of the result point).
+     * SecureCopy reverses from CryptoRAM little-endian into sharedKeyX as
+     * big-endian within u2ModuloPSize bytes starting at offset 4.
+     * For P-521 the actual coordinate is 66 bytes right-justified within the
+     * 68-byte field, so skip the leading padding bytes (padLen = 68 - 66 = 2). */
+	u2 padLen;
+    padLen = u2ModuloPSize - s_coordSize;
+    (void) memcpy(sharedKey, &sharedKeyX[4U + padLen], s_coordSize);
+
     return CRYPTO_ECDH_RESULT_SUCCESS;
 }

@@ -224,7 +224,7 @@ crypto_Sym_Status_E Crypto_Sym_Aes_Init(st_Crypto_Sym_BlockCtx *ptr_aesCtx_st, c
 </#if>
                 {
                     ret_aesStatus_en = Crypto_Sym_Wc_Aes_Init((void*)ptr_aesCtx_st->arr_symDataCtx,ptr_aesCtx_st->symCipherOper_en,
-                                                  ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
+                                                  ptr_aesCtx_st->symAlgoMode_en, ptr_aesCtx_st->ptr_key, ptr_aesCtx_st->symKeySize, ptr_aesCtx_st->ptr_initVect);
 
 				}
 </#if>

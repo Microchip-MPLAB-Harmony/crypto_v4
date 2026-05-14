@@ -80,9 +80,9 @@
     ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true)) 
     ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true)) 
     ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
-crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)    
+crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, crypto_Sym_OpModes_E symAlgoMode_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 <#elseif (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true)) ||  (CRYPTO_WC_AES_KW?? &&(CRYPTO_WC_AES_KW == true))>
-static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
+static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, crypto_Sym_OpModes_E symAlgoMode_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 </#if>
 <#if    (CRYPTO_WC_AES_ECB?? &&(CRYPTO_WC_AES_ECB == true)) 
     ||  (CRYPTO_WC_AES_CBC?? &&(CRYPTO_WC_AES_CBC == true))
@@ -98,9 +98,30 @@ static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_Ciphe
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
     int wcAesStatus = BAD_FUNC_ARG;
     int dir = -1;
+    bool isKeystreamMode = false;
     if(ptr_aesCtx != NULL)
     {
-        if(symCipherOper_en == CRYPTO_CIOP_ENCRYPT)
+        /* Keystream-style modes (CTR, OFB, CFB1/8/128) apply the AES forward
+         * primitive to the IV/feedback/counter block in BOTH directions, so
+         * wc_AesSetKey must always be called with AES_ENCRYPTION regardless
+         * of the caller-supplied direction. Otherwise wolfCrypt expands the
+         * inverse key schedule and decryption produces garbage from block 2
+         * onwards (single-block CFB happens to work because only the IV
+         * encryption applies). */
+        if(    (symAlgoMode_en == CRYPTO_SYM_OPMODE_CTR)
+            || (symAlgoMode_en == CRYPTO_SYM_OPMODE_OFB)
+            || (symAlgoMode_en == CRYPTO_SYM_OPMODE_CFB1)
+            || (symAlgoMode_en == CRYPTO_SYM_OPMODE_CFB8)
+            || (symAlgoMode_en == CRYPTO_SYM_OPMODE_CFB128) )
+        {
+            isKeystreamMode = true;
+        }
+
+        if(isKeystreamMode)
+        {
+            dir = AES_ENCRYPTION;
+        }
+        else if(symCipherOper_en == CRYPTO_CIOP_ENCRYPT)
         {
             dir = AES_ENCRYPTION;
         }
@@ -147,7 +168,7 @@ crypto_Sym_Status_E Crypto_Sym_Wc_AesCTR_Init(void *ptr_aesCtx, uint8_t *ptr_key
 {
     crypto_Sym_Status_E ret_aesStatus_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
     
-    ret_aesStatus_en = Crypto_Sym_Wc_Aes_Init(ptr_aesCtx, CRYPTO_CIOP_ENCRYPT, ptr_key, keySize, ptr_initVect);
+    ret_aesStatus_en = Crypto_Sym_Wc_Aes_Init(ptr_aesCtx, CRYPTO_CIOP_ENCRYPT, CRYPTO_SYM_OPMODE_CTR, ptr_key, keySize, ptr_initVect);
     
     return ret_aesStatus_en;
 }
@@ -543,16 +564,45 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Aes_DecryptDirect(crypto_Sym_OpModes_E symAlgo
 </#if><#-- CRYPTO_WC_AES_XTS -->            
         {
             Aes aesCtx[1];
+            /* Keystream modes (CTR, OFB, CFB*) use the AES forward primitive
+             * in both directions, so wc_AesSetKey must be called with
+             * AES_ENCRYPTION even when the application is decrypting.
+             * Calling it with AES_DECRYPTION would expand the inverse
+             * round-key schedule and produce wrong output. ECB and CBC
+             * stay with AES_DECRYPTION (they genuinely use AES_Decrypt). */
+            int dir = AES_DECRYPTION;
+            switch (symAlgoMode_en)
+            {
 <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>
-            if(symAlgoMode_en == CRYPTO_SYM_OPMODE_CTR)
-            {
-                wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_ENCRYPTION);
+                case CRYPTO_SYM_OPMODE_CTR:
+                    dir = AES_ENCRYPTION;
+                    break;
+</#if><#-- CRYPTO_WC_AES_CTR -->
+<#if (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))>
+                case CRYPTO_SYM_OPMODE_OFB:
+                    dir = AES_ENCRYPTION;
+                    break;
+</#if><#-- CRYPTO_WC_AES_OFB -->
+<#if (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))>
+                case CRYPTO_SYM_OPMODE_CFB1:
+                    dir = AES_ENCRYPTION;
+                    break;
+</#if><#-- CRYPTO_WC_AES_CFB1 -->
+<#if (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))>
+                case CRYPTO_SYM_OPMODE_CFB8:
+                    dir = AES_ENCRYPTION;
+                    break;
+</#if><#-- CRYPTO_WC_AES_CFB8 -->
+<#if (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
+                case CRYPTO_SYM_OPMODE_CFB128:
+                    dir = AES_ENCRYPTION;
+                    break;
+</#if><#-- CRYPTO_WC_AES_CFB128 -->
+                default:
+                    dir = AES_DECRYPTION;
+                    break;
             }
-            else
-</#if><#-- CRYPTO_WC_AES_CTR -->            
-            {
-                wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, AES_DECRYPTION);
-            }
+            wcAesStatus = wc_AesSetKey(aesCtx, (const byte*)ptr_key, (word32)keySize, (const byte*)ptr_initVect, dir);
             
             if(wcAesStatus == 0)
             {
@@ -1192,7 +1242,10 @@ crypto_Sym_Status_E Crypto_Sym_Wc_Tdes_DecryptDirect(crypto_Sym_OpModes_E symAlg
 crypto_Sym_Status_E Crypto_Sym_Wc_AesKeyWrap_Init(void *ptr_aesCtx, crypto_CipherOper_E symCipherOper_en, uint8_t *ptr_key, uint32_t keySize, uint8_t *ptr_initVect)
 {
     crypto_Sym_Status_E ret_aesKwStat_en = CRYPTO_SYM_ERROR_CIPNOTSUPPTD;
-    ret_aesKwStat_en = Crypto_Sym_Wc_Aes_Init( (Aes*)ptr_aesCtx, symCipherOper_en, ptr_key, keySize, ptr_initVect);
+    /* KW is not part of the symAlgoMode_en enum; pass INVALID so the
+     * wrapper falls through to the direction-based path (KW uses the
+     * normal forward/inverse schedule depending on caller direction). */
+    ret_aesKwStat_en = Crypto_Sym_Wc_Aes_Init( (Aes*)ptr_aesCtx, symCipherOper_en, CRYPTO_SYM_OPMODE_INVALID, ptr_key, keySize, ptr_initVect);
     return ret_aesKwStat_en;
 }
 

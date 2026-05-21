@@ -59,7 +59,7 @@
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
     crypto_EccCurveType_E eccCurveType, CRYPTO_CPKCL_CURVE *hwEccCurve)
 {
-    crypto_DigiSign_Status_E digiSigntatus = CRYPTO_DIGISIGN_SUCCESS;
+    crypto_DigiSign_Status_E digiSignStatus = CRYPTO_DIGISIGN_SUCCESS;
     
     switch (eccCurveType)
     {
@@ -84,47 +84,47 @@ static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_GetCurve(
             break;
             
         default:
-            digiSigntatus = CRYPTO_DIGISIGN_ERROR_CURVE;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_CURVE;
             break;
     }
     
-    return digiSigntatus;
+    return digiSignStatus;
 }    
 
 static crypto_DigiSign_Status_E lCrypto_DigSign_Ecdsa_Hw_MapResult(
     CRYPTO_ECDSA_RESULT result)
 {
-    crypto_DigiSign_Status_E digiSigntatus;
+    crypto_DigiSign_Status_E digiSignStatus;
     
     switch (result) 
     {
         case CRYPTO_ECDSA_RESULT_SUCCESS:
-            digiSigntatus = CRYPTO_DIGISIGN_SUCCESS;
+            digiSignStatus = CRYPTO_DIGISIGN_SUCCESS;
             break;
             
         case CRYPTO_ECDSA_ERROR_PUBKEYCOMPRESS:
-            digiSigntatus = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_PUBKEYCOMPRESS;
             break;
             
         case CRYPTO_ECDSA_RESULT_ERROR_CURVE:
-            digiSigntatus = CRYPTO_DIGISIGN_ERROR_CURVE;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_CURVE;
             break;
             
         case CRYPTO_ECDSA_RESULT_ERROR_RNG:   
-            digiSigntatus = CRYPTO_DIGISIGN_ERROR_RNG;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_RNG;
             break;
         
         case CRYPTO_ECDSA_RESULT_INIT_FAIL:
         case CRYPTO_ECDSA_RESULT_ERROR_FAIL:
-            digiSigntatus = CRYPTO_DIGISIGN_ERROR_FAIL;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_FAIL;
             break;
             
         default:
-            digiSigntatus = CRYPTO_DIGISIGN_ERROR_FAIL;
+            digiSignStatus = CRYPTO_DIGISIGN_ERROR_FAIL;
             break;
     }
     
-    return digiSigntatus;
+    return digiSignStatus;
 }
 
 // *****************************************************************************
@@ -156,7 +156,8 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Hw_Sign(uint8_t *inputHash,
                                                   (pfu1)privKey, 
                                                   (u4) privKeyLen, 
                                                   hwEccCurve);
-    if (hwResult != CRYPTO_ECDSA_RESULT_SUCCESS) 
+    
+	if (hwResult != CRYPTO_ECDSA_RESULT_SUCCESS) 
     {
         return lCrypto_DigSign_Ecdsa_Hw_MapResult(hwResult);
         

@@ -57,6 +57,8 @@ Crypto_Hw_DigiSign_Menu = None
 Crypto_Hw_Ecdsa = None
 Crypto_Hw_Kas_Menu = None
 Crypto_Hw_Ecdh = None
+Crypto_Hw_Ecc_Menu = None
+Crypto_Hw_Ecc_KeyGen = None
 Crypto_Hw_Rng_Menu = None
 Crypto_Hw_Rng_Trng = None
 
@@ -96,6 +98,9 @@ Crypto_HW_AllMenusList = [
     
     ["Key Agreement Algorithms(KAS)", "CRYPTO_HW_KAS_MENU",        "Crypto_Hw_Kas_Menu",       None,                      None,                            True,    None,     None],
     ["ECDH",                          "CRYPTO_HW_ECDH",            "Crypto_Hw_Ecdh",           "Crypto_Hw_Kas_Menu",      "Key Agreement Algorithms(KAS)", True,    False,    "KasAlgo",        ["CPKCC_44163", "HSM_03785"],   "ECDH_Algorithm"],
+    
+    ["ECC Algorithms",                "CRYPTO_HW_ECC_MENU",        "Crypto_Hw_Ecc_Menu",       None,                      None,                            True,    None,     None],
+    ["ECC Key Generation",            "CRYPTO_HW_ECC_KEYGEN",      "Crypto_Hw_Ecc_KeyGen",     "Crypto_Hw_Ecc_Menu",      "ECC Algorithms",                True,    False,    "EccAlgo",        ["CPKCC_44163"],                "ECC_KeyGen_Algorithm"],
     
     ["Random Number Algortihms(RNG)", "CRYPTO_HW_RNG_MENU",        "Crypto_Hw_Rng_Menu",       None,                      None,                            True,    None,     None],
     ["TRNG",                          "CRYPTO_HW_RNG_TRNG",        "Crypto_Hw_Rng_Trng",       "Crypto_Hw_Rng_Menu",      "Random Number Algortihms(RNG)", True,    False,    "RngAlgo",        ["TRNG_6334", "TRNG_03597"],    "PRNG_Algorithm"],

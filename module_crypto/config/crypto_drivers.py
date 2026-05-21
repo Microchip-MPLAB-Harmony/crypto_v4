@@ -100,6 +100,10 @@ Crypto_HW_CommonCryptoFilesDict = {
         "crypto_rng.c.ftl",
         "crypto_common.h.ftl",
         "crypto_config.h.ftl"
+    ],
+    "EccAlgo": [
+        "crypto_common.h.ftl",
+        "crypto_config.h.ftl"
     ]
 }
 
@@ -253,6 +257,16 @@ Crypto_HW_DriverAndWrapperFilesDict = {
             ],
             "DriverFiles": [
                 "drv_crypto_ecdh_hw_cpkcl.h", "drv_crypto_ecdh_hw_cpkcl.c.ftl",
+                "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
+            ],
+            "LibraryFiles": ["cpkcl_lib"]
+        },
+        "EccAlgo": {
+            "WrapperFiles": [
+                "crypto_ecckeygen_cpkcc44163_wrapper.h.ftl", "crypto_ecckeygen_cpkcc44163_wrapper.c.ftl"
+            ],
+            "DriverFiles": [
+                "drv_crypto_ecckeygen_hw_cpkcl.h", "drv_crypto_ecckeygen_hw_cpkcl.c.ftl",
                 "drv_crypto_ecc_hw_cpkcl.h", "drv_crypto_ecc_hw_cpkcl.c.ftl"
             ],
             "LibraryFiles": ["cpkcl_lib"]

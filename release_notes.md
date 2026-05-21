@@ -3,6 +3,19 @@
 
 # Microchip MPLAB® Harmony 3 Crypto v4 Release Notes
 
+## Crypto Release v4.0.0-E5
+
+### New Features
+* Added hardware-accelerated key generation for PIC32CXMTG
+* wolfSSL updated to 5.9.1
+
+### Bug fixes
+* PIC32CXMTG: support of P-521 curves, support of non-aligned symmetric algorithms
+
+### Notes
+* This is an engineering release exclusively for PIC32CXMTG which has not been fully validated
+
+
 ## Crypto Release v4.0.0-TC2
 
 ### New Features

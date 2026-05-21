@@ -88,14 +88,14 @@ extern "C" {
 <#lt>#define WOLFSSL_USER_IO
 <#lt>#define NO_WRITEV
 <#lt>#define NO_FILESYSTEM
-<#lt>#define USE_FAST_MATH  //Conflicts with WOLFSSL_SP_MATH
+<#lt>//#define USE_FAST_MATH  //Disabled: conflicts with WOLFSSL_SP_MATH_ALL (wolfSSL 5.9.1 enforces this)
 <#lt>#define NO_INLINE 
 
 <#lt>//Math Model Defines
 <#lt>//Using this to declare wolfmath functions:
 <#lt>//mp_reverse used by fp_to_unsigned_bin (tfm.c)unctions: 
 <#lt>//get_digit_count,get_digit in ecc.c 
-<#lt>#define WOLFSSL_SP_MATH   
+<#lt>//#define WOLFSSL_SP_MATH   //Disabled: incompatible with WOLFSSL_SP_MATH_ALL (wolfSSL 5.9.1 enforces this)
 
 //Needed when WOFSSL_SP_MATH defined
 <#lt>//#define WOLFSSL_HAVE_SP_RSA  
@@ -185,8 +185,12 @@ extern "C" {
 <#lt>#define NO_WOLFSSL_MEMORY
 
 <#lt>//********************************************************
-<#lt>//#define WOLFSSL_SHAKE128  //Manually Commented, Not supported by Wolfcrypt
-<#lt>#define WOLFSSL_SHAKE256 
+<#if (CRYPTO_WC_SHAKE_128?? && (CRYPTO_WC_SHAKE_128 == true))>
+<#lt>#define WOLFSSL_SHAKE128
+</#if>
+<#if (CRYPTO_WC_SHAKE_256?? && (CRYPTO_WC_SHAKE_256 == true))>
+<#lt>#define WOLFSSL_SHAKE256
+</#if>
 <#lt>#define HAVE_BLAKE2S    
 <#lt>#define HAVE_BLAKE2B   
 <#lt>#define HAVE_CHACHA      

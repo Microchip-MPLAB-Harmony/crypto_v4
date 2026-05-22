@@ -66,9 +66,6 @@ Microchip or any third party.
 <#if (crypto_kas_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_kas_cpkcc44163_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_kas_cpkcc44163_wrapper.h"
 </#if>
-<#if (crypto_kas_hsm03785_wrapper_h_ftl_flag?? &&(crypto_kas_hsm03785_wrapper_h_ftl_flag == true))>
-#include "crypto/drivers/wrapper/crypto_kas_hsm03785_wrapper.h"
-</#if>
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_kas_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_kas_wc_wrapper.h"
 </#if>
@@ -124,10 +121,7 @@ crypto_Kas_Status_E Crypto_Kas_Ecdh_SharedSecret(crypto_HandlerType_E ecdhHandle
 <#if driver_defines?contains("HAVE_CRYPTO_HW_CPKCC_44163_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
 	              ret_ecdhStat_en = Crypto_Kas_Ecdh_Hw_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
 	                                                                    sharedSecretLen, eccCurveType_en);
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_ecdhStat_en =  Crypto_Kas_Hw_Ecdh_SharedSecret(ptr_privKey, privKeyLen, ptr_pubKey, pubKeyLen, ptr_sharedSecret,
-                                                                    sharedSecretLen, eccCurveType_en);
-</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER , HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER-->
+</#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER-->
 	            break;
 </#if><#-- CRYPTO_HW_ECDH -->
             default:

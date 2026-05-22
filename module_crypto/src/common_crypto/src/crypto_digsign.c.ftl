@@ -68,9 +68,6 @@ Microchip or any third party.
 <#if crypto_digisign_cpkcc44163_wrapper_h_ftl_flag?? &&(crypto_digisign_cpkcc44163_wrapper_h_ftl_flag == true)>
 #include "crypto/drivers/wrapper/crypto_digisign_cpkcc44163_wrapper.h"
 </#if>
-<#if crypto_digisign_hsm03785_wrapper_h_ftl_flag?? &&(crypto_digisign_hsm03785_wrapper_h_ftl_flag == true)>
-#include "crypto/drivers/wrapper/crypto_digisign_hsm03785_wrapper.h"
-</#if>
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_digisign_wc_wrapper_h_ftl_flag == true)))> 
 #include "crypto/wolfcrypt/crypto_digisign_wc_wrapper.h"
 </#if> 
@@ -194,9 +191,8 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
     }
     return ret_ecdsaStat_en;
 }
-</#if><#-- (CRYPTO_HW_ECDSA && !HAVE_CRYPTO_HW_HSM_03785_DRIVER) || CRYPTO_WC_ECDSA -->
-<#if ( ((CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true)) && (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER"))) 
-                    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true))) )>
+</#if><#-- CRYPTO_HW_ECDSA || CRYPTO_WC_ECDSA -->
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                         uint8_t *ptr_outSig, uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, 
@@ -238,13 +234,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecd
                                                                                                                     hashType_en, eccCurveType_En);
             break; 
 </#if><#-- CRYPTO_WC_ECDSA -->
-<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
-            case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>    
-                ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_SignData(ptr_inputData, dataLen, ptr_outSig, sigLen, ptr_privKey, privKeyLen, hashType_en, eccCurveType_En);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->                  
-            break;
-</#if><#-- CRYPTO_HW_ECDSA -->           
             default:
                 ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
             break;
@@ -299,14 +288,6 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
                                                                             ptr_sigVerifyStat, eccCurveType_En);
             break; 
 </#if><#-- CRYPTO_WC_ECDSA -->    
-<#if (CRYPTO_HW_ECDSA?? &&(CRYPTO_HW_ECDSA == true))>            
-            case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_ecdsaStat_en = Crypto_DigiSign_Hw_Ecdsa_VerifyData(ptr_inputData, dataLen, ptr_inputSig, sigLen, ptr_pubKey, pubKeyLen, 
-                                                                            hashType_en, ptr_sigVerifyStat, eccCurveType_En);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->               
-            break;
-</#if><#-- CRYPTO_HW_ECDSA -->            
             default:
                 ret_ecdsaStat_en = CRYPTO_DIGISIGN_ERROR_HDLR;
             break;
@@ -314,7 +295,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
     }
     return ret_ecdsaStat_en;
 }
-</#if><#-- (CRYPTO_HW_ECDSA && HAVE_CRYPTO_HW_HSM_03785_DRIVER) || CRYPTO_WC_ECDSA -->
+</#if><#-- CRYPTO_WC_ECDSA -->
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>
 crypto_DigiSign_Status_E Crypto_DigiSign_Rsa_Pkcs1v15_Sign(crypto_HandlerType_E rsaHandlerType_en, uint8_t *ptr_inHash, uint32_t hashLen, uint8_t *ptr_outSig, 

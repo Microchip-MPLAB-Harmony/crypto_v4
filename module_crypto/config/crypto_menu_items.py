@@ -65,20 +65,20 @@ Crypto_Hw_Rng_Trng = None
 Crypto_HW_AllMenusList = [    
     #Menu Label[0]                    #Menu Symbol ID [1]          #Menu Symbols [2]           #Parent Symbol [3]         #Parent Label [4]              #Visible  #Default  #Category [7]     #Drivers [8]                     #onlinedocs [9]
     ["Hash Algorithms",               "CRYPTO_HW_HASH_MENU",       "Crypto_Hw_Hash_Menu",      None,                      None,                            True,    None,     None],
-    ["SHA1",                          "CRYPTO_HW_SHA1",            "Crypto_Hw_Sha1",           "Crypto_Hw_Hash_Menu",     "Hash Algorithms",               True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "MD5_Algorithm"],
+    ["SHA1",                          "CRYPTO_HW_SHA1",            "Crypto_Hw_Sha1",           "Crypto_Hw_Hash_Menu",     "Hash Algorithms",               True,    False,    "HashAlgo",       ["SHA_6156"],      "MD5_Algorithm"],
     ["SHA2 Algorithm",                "CRYPTO_HW_SHA2_MENU",       "Crypto_Hw_Sha2_Menu",      "Crypto_Hw_Hash_Menu",     "Hash Algorithms",               True,    None,     None],
-    ["SHA2-224",                      "CRYPTO_HW_SHA2_224",        "Crypto_Hw_Sha2_224",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
-    ["SHA2-256",                      "CRYPTO_HW_SHA2_256",        "Crypto_Hw_Sha2_256",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
-    ["SHA2-384",                      "CRYPTO_HW_SHA2_384",        "Crypto_Hw_Sha2_384",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
-    ["SHA2-512",                      "CRYPTO_HW_SHA2_512",        "Crypto_Hw_Sha2_512",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156", "HSM_03785"],      "SHA_Algorithm"],
+    ["SHA2-224",                      "CRYPTO_HW_SHA2_224",        "Crypto_Hw_Sha2_224",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],      "SHA_Algorithm"],
+    ["SHA2-256",                      "CRYPTO_HW_SHA2_256",        "Crypto_Hw_Sha2_256",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],      "SHA_Algorithm"],
+    ["SHA2-384",                      "CRYPTO_HW_SHA2_384",        "Crypto_Hw_Sha2_384",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],      "SHA_Algorithm"],
+    ["SHA2-512",                      "CRYPTO_HW_SHA2_512",        "Crypto_Hw_Sha2_512",       "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],      "SHA_Algorithm"],
     ["SHA2-512/224",                  "CRYPTO_HW_SHA2_512_224",    "Crypto_Hw_Sha2_512_224",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],                   "SHA_Algorithm"],
     ["SHA2-512/256",                  "CRYPTO_HW_SHA2_512_256",    "Crypto_Hw_Sha2_512_256",   "Crypto_Hw_Sha2_Menu",     "SHA2 Algorithm",                True,    False,    "HashAlgo",       ["SHA_6156"],                   "SHA_Algorithm"],
     
     ["Symmetric Algorithms",          "CRYPTO_HW_SYM_MENU",        "Crypto_Hw_Sym_Menu",       None,                      None,                            True,    None,     None],
     ["AES Algorithm",                 "CRYPTO_HW_AES_MENU",        "Crypto_Hw_Aes_Menu",       "Crypto_Hw_Sym_Menu",      "Symmetric Algorithms",          True,    None,     None],
-    ["AES-ECB",                       "CRYPTO_HW_AES_ECB",         "Crypto_Hw_Aes_Ecb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"],      "AES_Algorithm"],
-    ["AES-CBC",                       "CRYPTO_HW_AES_CBC",         "Crypto_Hw_Aes_Cbc",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"],      "AES_Algorithm"],
-    ["AES-CTR",                       "CRYPTO_HW_AES_CTR",         "Crypto_Hw_Aes_Ctr",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149", "HSM_03785"],      "AES_Algorithm"],
+    ["AES-ECB",                       "CRYPTO_HW_AES_ECB",         "Crypto_Hw_Aes_Ecb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"],      "AES_Algorithm"],
+    ["AES-CBC",                       "CRYPTO_HW_AES_CBC",         "Crypto_Hw_Aes_Cbc",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"],      "AES_Algorithm"],
+    ["AES-CTR",                       "CRYPTO_HW_AES_CTR",         "Crypto_Hw_Aes_Ctr",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"],      "AES_Algorithm"],
     ["AES-OFB",                       "CRYPTO_HW_AES_OFB",         "Crypto_Hw_Aes_Ofb",        "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
     ["AES-CFB",                       "CRYPTO_HW_AES_CFB_MENU",    "Crypto_Hw_Aes_Cfb_Menu",   "Crypto_Hw_Aes_Menu",      "AES Algorithm",                 True,    None,     None],
     ["AES-CFB8",                      "CRYPTO_HW_AES_CFB8",        "Crypto_Hw_Aes_Cfb8",       "Crypto_Hw_Aes_Cfb_Menu",  "AES-CFB",                       True,    False,    "SymAlgo",        ["AES_6149"],                   "AES_Algorithm"],
@@ -91,13 +91,13 @@ Crypto_HW_AllMenusList = [
     ["TDES-CBC",                      "CRYPTO_HW_TDES_CBC",        "Crypto_Hw_Tdes_Cbc",       "Crypto_Hw_Tdes_Menu",     "TDES/3DES Algorithm",           True,    False,    "SymAlgo",        ["TDES_6150"],                  "TDES_Algorithm"],
     
     ["AEAD Algorithms",               "CRYPTO_HW_AEAD_MENU",       "Crypto_Hw_Aead_Menu",      None,                      None,                            True,    None,     None],
-    ["AES-GCM",                       "CRYPTO_HW_AES_GCM",         "Crypto_Hw_Aes_Gcm",        "Crypto_Hw_Aead_Menu",     "AEAD Algorithms",               True,    False,    "AeadAlgo",       ["AES_6149", "HSM_03785"],      "AES-GCM_Algorithm"],
+    ["AES-GCM",                       "CRYPTO_HW_AES_GCM",         "Crypto_Hw_Aes_Gcm",        "Crypto_Hw_Aead_Menu",     "AEAD Algorithms",               True,    False,    "AeadAlgo",       ["AES_6149"],      "AES-GCM_Algorithm"],
     
     ["Digital Signature Algorithms",  "CRYPTO_HW_DIGISIGN_MENU",   "Crypto_Hw_DigiSign_Menu",  None,                      None,                            True,    None,     None],
-    ["ECDSA",                         "CRYPTO_HW_ECDSA",           "Crypto_Hw_Ecdsa",          "Crypto_Hw_DigiSign_Menu", "Digital Signature Algorithms",  True,    False,    "DigisignAlgo",   ["CPKCC_44163", "HSM_03785"],   "ECDSA_Algorithm"],
+    ["ECDSA",                         "CRYPTO_HW_ECDSA",           "Crypto_Hw_Ecdsa",          "Crypto_Hw_DigiSign_Menu", "Digital Signature Algorithms",  True,    False,    "DigisignAlgo",   ["CPKCC_44163"],   "ECDSA_Algorithm"],
     
     ["Key Agreement Algorithms(KAS)", "CRYPTO_HW_KAS_MENU",        "Crypto_Hw_Kas_Menu",       None,                      None,                            True,    None,     None],
-    ["ECDH",                          "CRYPTO_HW_ECDH",            "Crypto_Hw_Ecdh",           "Crypto_Hw_Kas_Menu",      "Key Agreement Algorithms(KAS)", True,    False,    "KasAlgo",        ["CPKCC_44163", "HSM_03785"],   "ECDH_Algorithm"],
+    ["ECDH",                          "CRYPTO_HW_ECDH",            "Crypto_Hw_Ecdh",           "Crypto_Hw_Kas_Menu",      "Key Agreement Algorithms(KAS)", True,    False,    "KasAlgo",        ["CPKCC_44163"],   "ECDH_Algorithm"],
     
     ["ECC Algorithms",                "CRYPTO_HW_ECC_MENU",        "Crypto_Hw_Ecc_Menu",       None,                      None,                            True,    None,     None],
     ["ECC Key Generation",            "CRYPTO_HW_ECC_KEYGEN",      "Crypto_Hw_Ecc_KeyGen",     "Crypto_Hw_Ecc_Menu",      "ECC Algorithms",                True,    False,    "EccAlgo",        ["CPKCC_44163"],                "ECC_KeyGen_Algorithm"],
@@ -110,10 +110,29 @@ def Crypto_CallBack(symbol, event):
     Refresh_Files()
 
 def Refresh_Files():
-    # Check algoCategories needed by lib_crypto
+    # Collect the algoCategories the user selected through the HW algorithm
+    # menu (Crypto_Hw_Sha1, Crypto_Hw_Aes_Ecb, ...).
+    #
+    # The boolean symbol for each menu entry is created by
+    # Crypto_HW_CreateMenuInGUI (see crypto_make_gui.py), which only runs on
+    # devices that have one or more supported HW crypto drivers detected from
+    # the ATDF. On targets without supported HW drivers (for example any
+    # non-PIC32CXMTx device using only the wolfCrypt SW path), the menu is
+    # never built and the module-level 'Crypto_Hw_*' globals declared at the
+    # top of this file stay at their None initial value.
+    #
+    # The 'globals().get(menu[2]) is not None' guard makes this loop safe in
+    # that case: it returns an empty set and Refresh_Files falls through to
+    # the attachment-driven path (categories requested by lib_wolfcrypt via
+    # handleMessage) so common_crypto files still get enabled correctly.
+    # Without the guard, calling .getValue() on the None placeholder raises
+    # AttributeError and prevents common_crypto files from being emitted to
+    # the project, which breaks the wolfCrypt-only build.
     crypto_selected_categories = {
-        menu[7] for menu in Crypto_Hw_orderAlgoMenuList 
-        if menu[7] is not None and globals()[menu[2]].getValue()
+        menu[7] for menu in Crypto_Hw_orderAlgoMenuList
+        if menu[7] is not None
+        and globals().get(menu[2]) is not None
+        and globals()[menu[2]].getValue()
     }
 
     # Check algoCategories needed by attached modules

@@ -26,13 +26,18 @@ import os
 
 Crypto_HW_AllSupportedDriver = []
 
+# String symbol referenced by every common_crypto FreeMarker template via
+# 'driver_defines?contains(...)'. Created (with empty default) by
+# setup_common_files() on every target so the FTLs always evaluate cleanly,
+# and populated with the detected HW driver list later in the MT-only path.
+Crypto_HW_DriverDefinesSymbol = None
+
 #---------------------------------------------------------------------------------------
 
 Crypto_Hw_Aes_6149_DriverSymbol = None
 Crypto_Hw_SHA_6156_DriverSymbol = None
 Crypto_Hw_TRNG_6334_DriverSymbol = None
 Crypto_Hw_CPKCC_44163_DriverSymbol = None
-Crypto_Hw_HSM_03785_DriverSymbol = None
 Crypto_Hw_ICM_11105_DriverSymbol = None
 Crypto_Hw_TDES_6150_DriverSymbol = None
 
@@ -42,7 +47,6 @@ Crypto_HW_AllDriversList = [
         ["SHA", "6156", "", "SHA_6156",  "HAVE_CRYPTO_HW_SHA_6156_DRIVER", "Crypto_Hw_SHA_6156_DriverSymbol", "SHA_6156 Driver Supported"],    #SHA_6156
         ["TRNG", "6334", "", "TRNG_6334", "HAVE_CRYPTO_HW_TRNG_6334_DRIVER", "Crypto_Hw_TRNG_6334_DriverSymbol", "TRNG_6334 Driver Supported"],   #TRNG_6334
         ["CPKCC", "44163", "", "CPKCC_44163", "HAVE_CRYPTO_HW_CPKCC_44163_DRIVER", "Crypto_Hw_CPKCC_44163_DriverSymbol", "CPKCC_44163 Driver Supported"], #CPKCC_44163
-        ["HSM", "03785", "", "HSM_03785", "HAVE_CRYPTO_HW_HSM_03785_DRIVER", "Crypto_Hw_HSM_03785_DriverSymbol", "HSM_03785 Driver Supported"],    #HSM_03785
         ["ICM", "11105", "", "ICM_11105", "HAVE_CRYPTO_HW_ICM_11105_DRIVER", "Crypto_Hw_ICM_11105_DriverSymbol", "ICM_11105 Driver Supported"],    #ICM_11105
         ["TDES", "6150", "", "TDES_6150", "HAVE_CRYPTO_HW_TDES_6150_DRIVER", "Crypto_Hw_TDES_6150_DriverSymbol", "TDES_6150 Driver Supported"],     #TDES_6150
         ["TRNG", "03597", "", "TRNG_03597", "HAVE_CRYPTO_HW_TRNG_03597_DRIVER", "Crypto_Hw_TRNG_03597_DriverSymbol", "TRNG_03597 Driver Supported"],    #TRNG_03597
@@ -152,71 +156,6 @@ Crypto_HW_DriverAndWrapperFilesDict = {
             "DriverFiles": [
                 "drv_crypto_trng_hw_03597.h",
                 "drv_crypto_trng_hw_03597.c"
-            ],
-        },
-    },
-
-    "HSM_03785": {
-        "HashAlgo": {
-            "WrapperFiles": [
-                "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"
-            ],
-            "DriverFiles": [
-                "hsm_hash.h", "hsm_hash.c",
-                "hsm_common.h",
-                "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h.ftl", "hsm_boot.c"
-            ],
-        },
-        "SymAlgo": {
-            "WrapperFiles": [
-                "crypto_sym_hsm03785_wrapper.h.ftl", "crypto_sym_hsm03785_wrapper.c.ftl",
-                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
-            ],
-            "DriverFiles": [
-                "hsm_sym.h", "hsm_sym.c",
-                "hsm_common.h",
-                "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h.ftl", "hsm_boot.c"
-            ],
-        },
-        "AeadAlgo": {
-            "WrapperFiles": [
-                "crypto_aead_hsm03785_wrapper.h.ftl", "crypto_aead_hsm03785_wrapper.c.ftl",
-                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
-            ],
-            "DriverFiles": [
-                "hsm_aead.h", "hsm_aead.c",
-                "hsm_common.h",
-                "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h.ftl", "hsm_boot.c"
-            ],
-        },
-        "DigisignAlgo": {
-            "WrapperFiles": [
-                "crypto_digisign_hsm03785_wrapper.h.ftl", "crypto_digisign_hsm03785_wrapper.c.ftl",
-                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl",
-                "crypto_hash_hsm03785_wrapper.h.ftl", "crypto_hash_hsm03785_wrapper.c.ftl"
-            ],
-            "DriverFiles": [
-                "hsm_sign.h", "hsm_sign.c",
-                "hsm_common.h", "hsm_common.c",
-                "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h.ftl", "hsm_boot.c",
-                "hsm_hash.h", "hsm_hash.c"
-            ],
-        },
-        "KasAlgo": {
-            "WrapperFiles": [
-                "crypto_kas_hsm03785_wrapper.h.ftl", "crypto_kas_hsm03785_wrapper.c.ftl",
-                "crypto_hsm03785_common_wrapper.h.ftl", "crypto_hsm03785_common_wrapper.c.ftl"
-            ],
-            "DriverFiles": [
-                "hsm_kas.h", "hsm_kas.c",
-                "hsm_common.h", "hsm_common.c",
-                "hsm_cmd.h", "hsm_cmd.c",
-                "hsm_boot.h.ftl", "hsm_boot.c",
-                "hsm_hash.h", "hsm_hash.c"
             ],
         },
     },
@@ -339,77 +278,65 @@ def Crypto_HW_GetSupportedDriverList(CommonCryptoComponent):
 
     Crypto_HW_CreateDriverSymbols(CommonCryptoComponent)
 
+    # Populate the 'driver_defines' string created earlier by setup_common_files.
+    # On non-PIC32CXMTx targets this function is never called and the symbol stays empty.
+    Crypto_HW_PopulateDriverDefinesSymbol()
+
     return supported_drivers
 
 #---------------------------------------------------------------------------------------
-def Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers):
-    ''' Pulls size of flash from ATDF to determine HSM firmware location
+def Crypto_HW_CreateDriverDefinesSymbol(CommonCryptoComponent):
+    """
+    Create the 'driver_defines' string symbol used by every common_crypto
+    FreeMarker template via 'driver_defines?contains("HAVE_CRYPTO_HW_*_DRIVER")'.
 
-    Args:
-        CommonCryptoComponent:  Harmony component
-        supported_drivers:      set() of drivers supported by this board
+    Must be called unconditionally on every target -- including non-PIC32CXMTx
+    devices that only use the wolfCrypt SW path -- otherwise the FTL evaluator
+    raises 'expression evaluated to null or missing' on every common_crypto
+    code-generation. On targets with no HW drivers the symbol's default value
+    is the empty string, so all '?contains()' checks evaluate false and the
+    HW dispatch branches are skipped cleanly.
 
-    Returns:
-        No direct return. String symbols created and used if hsm_boot.h.ftl
-        is relevant to the project.
-    '''
+    The symbol is created with an empty default here. On HW-supported targets
+    (PIC32CXMTx family), Crypto_HW_PopulateDriverDefinesSymbol() is called
+    later -- after the ATDF walk has populated Crypto_HW_AllSupportedDriver --
+    to fill in the actual driver list.
 
-    # Return early if HSM is not used
-    if "HSM_03785" not in supported_drivers:
+    The per-driver menu symbols (hwDriver[5] globals) remain in
+    Crypto_HW_CreateDriverSymbols below; they are HW-specific and only
+    needed on targets where Crypto_HW_GetSupportedDriverList runs.
+    """
+
+    global Crypto_HW_DriverDefinesSymbol
+
+    Crypto_HW_DriverDefinesSymbol = CommonCryptoComponent.createStringSymbol("driver_defines", None)
+    Crypto_HW_DriverDefinesSymbol.setVisible(False)
+    Crypto_HW_DriverDefinesSymbol.setDefaultValue("")
+
+    return Crypto_HW_DriverDefinesSymbol
+
+
+#---------------------------------------------------------------------------------------
+def Crypto_HW_PopulateDriverDefinesSymbol():
+    """
+    Set the value of the 'driver_defines' string symbol from the HW drivers
+    detected in Crypto_HW_AllSupportedDriver. Must be called after
+    Crypto_HW_GetSupportedDriverList has populated the list, and after
+    Crypto_HW_CreateDriverDefinesSymbol has created the symbol.
+
+    Safe to call on any target; if no HW drivers are detected the value
+    stays as the empty string set at creation time.
+    """
+
+    if Crypto_HW_DriverDefinesSymbol is None:
+        # Defensive: should not happen if setup_common_files ran first.
         return
 
-    # Check if TrustZone is enabled
-    sec_enabled_node = ATDF.getNode('/avr-tools-device-file/devices/device/parameters/param@[name="__SEC_ENABLED"]')
-    trustzone_enabled = False
+    driver_define_strings = [hwDriver[4] for hwDriver in Crypto_HW_AllSupportedDriver]
+    Crypto_HW_DriverDefinesSymbol.setDefaultValue(", ".join(driver_define_strings))
 
-    if sec_enabled_node is not None:
-        trustzone_enabled = sec_enabled_node.getAttribute("value") == "1"
-
-    # Maintain set of ways to refer to flash size in .atdf 
-    found_node = False
-    pfm_names = set(['FCR_PFM', 'FLASH_PFM'])
-
-    DEFAULT_HSM_METADATA_ADDR = CommonCryptoComponent.createStringSymbol("DEFAULT_HSM_METADATA_ADDR", None)
-    DEFAULT_HSM_METADATA_ADDR.setVisible(False)
-
-    FLASH_START_ADDR = CommonCryptoComponent.createStringSymbol("FLASH_START_ADDR", None)
-    FLASH_START_ADDR.setVisible(False)
-        
-    for pfm in pfm_names:
-        flash_pfm_node = ATDF.getNode(
-            '/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name="{}"]'.format(pfm)
-        )
-
-        if flash_pfm_node is not None:
-            found_node = True
-
-            print("Flash information found (%s)" % (pfm))
-            flash_start = int(flash_pfm_node.getAttribute("start"), 16)
-            flash_end = int(flash_pfm_node.getAttribute("size"), 16)
-            
-            # if TZ, HSM placed in AS+ANSC (HSM FW won't actually use ANSC)
-            if trustzone_enabled:
-                flash_end = flash_end // 2
-
-            hsm_end_addr = flash_start + flash_end
-            hsm_start_addr = hsm_end_addr - 0x20800     # 130kB
-
-            # Save to string obj
-            DEFAULT_HSM_METADATA_ADDR.setDefaultValue(hex(hsm_start_addr)) 
-            FLASH_START_ADDR.setDefaultValue(str(flash_start))
-
-            print("Reserved space for HSM: 0x{:X} - 0x{:X}".format(hsm_start_addr, hsm_end_addr))
-    
-    if not found_node:
-        DEFAULT_HSM_METADATA_ADDR.setDefaultValue("")
-        FLASH_START_ADDR.setDefaultValue("")
-        
-#--------------------------------------------------------------------------------------- 
+#---------------------------------------------------------------------------------------
 def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
-
-    #String Implementation of defines for crypto_config.h.ftl
-    driver_defines = CommonCryptoComponent.createStringSymbol("driver_defines", None)
-    driver_defines.setVisible(False)
 
     for hwDriver in Crypto_HW_AllSupportedDriver:
         globals()[hwDriver[5]] = CommonCryptoComponent.createMenuSymbol(hwDriver[4], None)
@@ -417,12 +344,6 @@ def Crypto_HW_CreateDriverSymbols(CommonCryptoComponent):
         globals()[hwDriver[5]].setDescription(hwDriver[6])
         globals()[hwDriver[5]].setVisible(False)
         #globals()[driver[5]].setHelp('MC_CRYPTO_API_H')
-
-    #String Implementation of defines for crypto_config.h.ftl
-    #--created from each of the additional define strings
-    # Accumulate all hwDriver[4] items into a string to set as default
-    driver_define_strings = [hwDriver[4] for hwDriver in Crypto_HW_AllSupportedDriver]
-    driver_defines.setDefaultValue(", ".join(driver_define_strings))
 
 #---------------------------------------------------------------------------------------
 

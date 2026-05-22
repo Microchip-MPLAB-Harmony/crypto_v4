@@ -40,25 +40,41 @@
 ####    1) crypto component module defined by module.py in crypto/config
 #################################################################################
 import os
+import re
 execfile( Module.getPath() + os.path.join("config", "crypto_drivers.py"))
 execfile( Module.getPath() + os.path.join("config", "crypto_make_gui.py"))
 execfile( Module.getPath() + os.path.join("config", "crypto_handle_files.py"))
 execfile( Module.getPath() + os.path.join("config", "crypto_globals.py"))
 
+# Hardware acceleration is currently supported only on the PIC32CX-MT family
+# (MTC, MTG, MTSH). On any other target, the HW algorithm menu and HW driver
+# file symbols are not created. The common_crypto layer + wolfCrypt SW path
+# remain fully functional on every device.
+HW_SUPPORTED_PROCESSOR_REGEX = r"PIC32CX.*MT.*"
+
 def instantiateComponent(CommonCryptoComponent):
+
+    processor = Variables.get("__PROCESSOR") or ""
+    hw_supported = bool(re.match(HW_SUPPORTED_PROCESSOR_REGEX, processor))
+
+    # common_crypto headers + Harmony init hooks are required by the
+    # wolfCrypt SW wrappers on every target, so create them unconditionally.
+    setup_common_files(CommonCryptoComponent)
+
+    if not hw_supported:
+        # Non-PIC32CXMTx target: skip HW driver detection, HW file symbols,
+        # and the HW algorithm menu. The wolfCrypt SW path is unaffected.
+        return
 
     # Check against ATDF for supported hardware and create necessary symbols
     supported_drivers = Crypto_HW_GetSupportedDriverList(CommonCryptoComponent)
 
-    # Extract ATDF device memory segment for HSM address
-    Crypto_HW_GetMemorySegments(CommonCryptoComponent, supported_drivers)
-
-    # Use supported drivers list to assemble list of sets containing relevant file symbols 
-    setup_hw_files(CommonCryptoComponent, supported_drivers)
+    # Use supported drivers list to assemble list of sets containing relevant file symbols
+    setup_hw_drivers(CommonCryptoComponent, supported_drivers)
 
     # Turn directories that are being requested in Crypto_HW_DriverAndWrapperFilesDict{} into its files
     expand_dir_entries_in_driver_requests()
-  
+
     # Build GUI
     Crypto_Hw_DetectDriverAlgosAndShowMenu(CommonCryptoComponent)
 

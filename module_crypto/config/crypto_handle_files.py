@@ -285,14 +285,32 @@ def setup_templates(component):
         Log.writeWarningMessage("/templates directory damaged. Check that it exists.")
 
 
-def setup_hw_files(component, supported_drivers):
+def setup_common_files(component):
     """
-    Make symbols for crypto_v4
+    Make symbols for the device-independent portion of crypto_v4:
+    include paths, common_crypto headers/sources, and the Harmony
+    system_initialize / system_definitions hooks. These are required
+    by the wolfCrypt SW path on every target.
+
+    Also creates the 'driver_defines' string symbol unconditionally,
+    because every common_crypto FreeMarker template references it via
+    'driver_defines?contains(...)' without a '??' guard. On non-PIC32CXMTx
+    targets the value is empty and all HW dispatch branches fall
+    through to the wolfCrypt SW path.
     """
     setup_crypto_settings(component)
     setup_common_crypto(component)
-    setup_drivers(component, supported_drivers)
     setup_templates(component)
+    Crypto_HW_CreateDriverDefinesSymbol(component)
+
+
+def setup_hw_drivers(component, supported_drivers):
+    """
+    Make symbols for the HW-acceleration drivers detected via ATDF.
+    Only relevant on devices that have one or more of the supported
+    crypto peripherals.
+    """
+    setup_drivers(component, supported_drivers)
 
     print("Created file symbols: ")
     for file_name, (file_path, file_symbol, file_symbol_flag) in Crypto_HW_Files.items():
@@ -300,4 +318,11 @@ def setup_hw_files(component, supported_drivers):
         # print("  Parent Dir: %s" % file_path)
         print("  File Symbol: %s (on? %s)" %(file_symbol.getID(), file_symbol_flag.getValue()))
 
-    return
+
+def setup_hw_files(component, supported_drivers):
+    """
+    Back-compat wrapper: set up both the common files and the HW drivers
+    in one call. Equivalent to setup_common_files() + setup_hw_drivers().
+    """
+    setup_common_files(component)
+    setup_hw_drivers(component, supported_drivers)

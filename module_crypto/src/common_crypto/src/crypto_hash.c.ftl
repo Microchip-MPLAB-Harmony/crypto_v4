@@ -69,9 +69,6 @@ Microchip or any third party.
 <#if (crypto_hash_sha6156_wrapper_h_ftl_flag?? &&(crypto_hash_sha6156_wrapper_h_ftl_flag == true))>
 #include "crypto/drivers/wrapper/crypto_hash_sha6156_wrapper.h"
 </#if>
-<#if (crypto_hash_hsm03785_wrapper_h_ftl_flag?? &&(crypto_hash_hsm03785_wrapper_h_ftl_flag == true))>
-#include "crypto/drivers/wrapper/crypto_hash_hsm03785_wrapper.h"
-</#if>
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag?? &&(lib_wolfcrypt.crypto_hash_wc_wrapper_h_ftl_flag == true)))>
 #include "crypto/wolfcrypt/crypto_hash_wc_wrapper.h"
 </#if>
@@ -119,9 +116,6 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Digest(crypto_HandlerType_E md5Handler_en, 
 </#if><#-- CRYPTO_WC_MD5 -->
 <#if (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_md5Stat_en = Crypto_Hash_Hw_Md5_Digest(ptr_data, dataLen, ptr_digest);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_MD5 -->
             default:
@@ -158,9 +152,6 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Init(st_Crypto_Hash_Md5_Ctx *ptr_md5Ctx_st,
 </#if><#-- CRYPTO_WC_MD5 -->
 <#if (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_md5Stat_en = Crypto_Hash_Hw_Md5_Init((void*)ptr_md5Ctx_st->arr_md5DataCtx);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_MD5 -->
             default:
@@ -194,9 +185,6 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Update(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_
 </#if><#-- CRYPTO_WC_MD5 -->
 <#if (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_md5Stat_en = Crypto_Hash_Hw_Md5_Update((void*)ptr_md5Ctx_st->arr_md5DataCtx, ptr_data, dataLen);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_MD5 -->
             default:
@@ -230,9 +218,6 @@ crypto_Hash_Status_E Crypto_Hash_Md5_Final(st_Crypto_Hash_Md5_Ctx * ptr_md5Ctx_s
 </#if><#-- CRYPTO_WC_MD5 -->
 <#if (CRYPTO_HW_MD5?? &&(CRYPTO_HW_MD5 == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
-<#if driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_md5Stat_en = Crypto_Hash_Hw_Md5_Final((void*)ptr_md5Ctx_st->arr_md5DataCtx, ptr_digest);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_MD5 -->
             default:
@@ -433,9 +418,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Digest(crypto_HandlerType_E shaHandler_en, 
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest((void*)ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_shaStat_en = Crypto_Hash_Hw_Sha_Digest(ptr_data, dataLen, ptr_digest, shaAlgorithm_en);
-</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_SHA1 || CRYPTO_HW_SHA2_224 || CRYPTO_HW_SHA2_256 || CRYPTO_HW_SHA2_384 || CRYPTO_HW_SHA2_512 || CRYPTO_HW_SHA2_512_224 || CRYPTO_HW_SHA2_512_256-->
 <#if (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>
@@ -495,9 +478,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Init(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st,
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-				ret_shaStat_en = Crypto_Hash_Hw_Sha_Init((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_shaCtx_st->shaAlgo_en);
-</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_SHA1 || CRYPTO_HW_SHA2_224 || CRYPTO_HW_SHA2_256 || CRYPTO_HW_SHA2_384 || CRYPTO_HW_SHA2_512 || CRYPTO_HW_SHA2_512_224 || CRYPTO_HW_SHA2_512_256-->
  <#if (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>
@@ -545,9 +526,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Update(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_s
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Update((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen);
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_shaStat_en = Crypto_Hash_Hw_Sha_Update((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_data, dataLen, ptr_shaCtx_st->shaAlgo_en);
-</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_SHA1 || CRYPTO_HW_SHA2_224 || CRYPTO_HW_SHA2_256 || CRYPTO_HW_SHA2_384 || CRYPTO_HW_SHA2_512 || CRYPTO_HW_SHA2_512_224 || CRYPTO_HW_SHA2_512_256-->
 <#if (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>
@@ -595,9 +574,7 @@ crypto_Hash_Status_E Crypto_Hash_Sha_Final(st_Crypto_Hash_Sha_Ctx *ptr_shaCtx_st
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if driver_defines?contains("HAVE_CRYPTO_HW_SHA_6156_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER") || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER")>
                 ret_shaStat_en = Crypto_Hash_Hw_Sha_Final((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest);
-<#elseif driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")>
-                ret_shaStat_en = Crypto_Hash_Hw_Sha_Final((void*)ptr_shaCtx_st->arr_shaDataCtx, ptr_digest, ptr_shaCtx_st->shaAlgo_en);
-</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_HSM_03785_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
+</#if><#-- HAVE_CRYPTO_HW_SHA_6156_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->
                 break;
 </#if><#-- CRYPTO_HW_SHA1 || CRYPTO_HW_SHA2_224 || CRYPTO_HW_SHA2_256 || CRYPTO_HW_SHA2_384 || CRYPTO_HW_SHA2_512 || CRYPTO_HW_SHA2_512_224 || CRYPTO_HW_SHA2_512_256-->
 <#if (CRYPTO_ICM11105_SHA1?? &&(CRYPTO_ICM11105_SHA1 == true)) || (CRYPTO_ICM11105_SHA2_224?? &&(CRYPTO_ICM11105_SHA2_224 == true)) || (CRYPTO_ICM11105_SHA2_256?? &&(CRYPTO_ICM11105_SHA2_256 == true))>

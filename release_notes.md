@@ -5,16 +5,33 @@
 
 ## Crypto Release v4.0.0-E5
 
+### Supported Devices
+This release targets the PIC32CX-MT device family:
+* PIC32CXMTC
+* PIC32CXMTG
+* PIC32CXMTSH
+
 ### New Features
-* Added hardware-accelerated key generation for PIC32CXMTG
+* Added hardware-accelerated key generation
 * wolfSSL updated to 5.9.1
 
 ### Bug fixes
-* PIC32CXMTG: support of P-521 curves, support of non-aligned symmetric algorithms
+* Support of P-521 curves, support of non-aligned symmetric algorithms
 
 ### Notes
-* This is an engineering release exclusively for PIC32CXMTG which has not been fully validated
+* 
 
+### Known Issues
+- None.
+
+### Development Tools
+- [MPLAB® X IDE v6.30](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v5.10](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+    - MPLAB® Code Configurator 5.6.4.2
+
+### Notes
+- This is an engineering release exclusively for the PIC32CX-MT device family which has not been fully validated
 
 ## Crypto Release v4.0.0-TC2
 

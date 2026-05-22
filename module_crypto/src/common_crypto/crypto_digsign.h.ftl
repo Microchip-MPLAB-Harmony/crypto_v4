@@ -52,13 +52,12 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 #include "crypto_common.h"
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) 
-    || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))
     || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))
     || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PSS == true)))
     || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_NO_PADDING == true)))>
 #include "crypto/common_crypto/crypto_hash.h"
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER || CRYPTO_WC_ECDSA || CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || CRYPTO_WC_DIGISIGN_RSA_PSS || CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->  
+</#if><#-- CRYPTO_WC_ECDSA || CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 || CRYPTO_WC_DIGISIGN_RSA_PSS || CRYPTO_WC_DIGISIGN_RSA_NO_PADDING -->  
 
 typedef enum
 {
@@ -102,7 +101,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_Verify(crypto_HandlerType_E ecdsa
                                                         uint8_t *ptr_inputSig, uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen,
                                                         int8_t *ptr_sigVerifyStat, crypto_EccCurveType_E eccCurveType_En, uint32_t ecdsaSessionId);
 </#if><#-- HAVE_CRYPTO_HW_CPKCC_44163_DRIVER || HAVE_CRYPTO_HW_CAM_05346_DRIVER  ||  HAVE_CRYPTO_HW_CAM_06048_DRIVER || HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER || CRYPTO_HW_ECDSA -->
-<#if (driver_defines?contains("HAVE_CRYPTO_HW_HSM_03785_DRIVER")) || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
+<#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA?? &&(lib_wolfcrypt.CRYPTO_WC_ECDSA == true)))>
 
 crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_SignData(crypto_HandlerType_E ecdsaHandlerType_en, uint8_t *ptr_inputData, uint32_t dataLen, 
                                                         uint8_t *ptr_outSig, uint32_t sigLen, uint8_t *ptr_privKey, uint32_t privKeyLen, 
@@ -112,7 +111,7 @@ crypto_DigiSign_Status_E Crypto_DigiSign_Ecdsa_VerifyData(crypto_HandlerType_E e
                                                             uint8_t *ptr_inputSig, uint32_t sigLen, uint8_t *ptr_pubKey, uint32_t pubKeyLen, 
                                                             crypto_Hash_Algo_E hashType_en, int8_t *ptr_sigVerifyStat, crypto_EccCurveType_E eccCurveType_En, 
                                                             uint32_t ecdsaSessionId);
-</#if><#-- HAVE_CRYPTO_HW_HSM_03785_DRIVER || CRYPTO_WC_ECDSA -->                                                             
+</#if><#-- CRYPTO_WC_ECDSA -->                                                             
 </#if><#-- CRYPTO_HW_ECDSA || CRYPTO_WC_ECDSA -->
 
 <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15?? &&(lib_wolfcrypt.CRYPTO_WC_DIGISIGN_RSA_PKCS1_V15 == true)))>

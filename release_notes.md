@@ -18,8 +18,6 @@ This release targets the PIC32CX-MT device family:
 ### Bug fixes
 * Support of P-521 curves, support of non-aligned symmetric algorithms
 
-### Notes
-* 
 
 ### Known Issues
 - None.
@@ -32,6 +30,7 @@ This release targets the PIC32CX-MT device family:
 
 ### Notes
 - This is an engineering release exclusively for the PIC32CX-MT device family which has not been fully validated
+- Only software implementation of cryptographic algorithms is available for other devices
 
 ## Crypto Release v4.0.0-TC2
 

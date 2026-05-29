@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Package name="crypto_v4">
-    <Dependencies>
-        <Dependency name="crypto_hsm" version="v1.1.1"/>
-        <Dependency name="csp" version="v3.25.1"/>
-        <Dependency name="wolfssl" version="v5.9.1"/>
-    </Dependencies>
-</Package>

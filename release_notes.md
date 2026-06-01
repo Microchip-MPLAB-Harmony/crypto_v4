@@ -13,20 +13,19 @@ This release targets the PIC32CX-MT device family:
 
 ### New Features
 * Added hardware-accelerated key generation
-* wolfSSL updated to 5.9.1
+* wolfSSL updated to v5.9.1
 
 ### Bug fixes
 * Support of P-521 curves, support of non-aligned symmetric algorithms
 
-
 ### Known Issues
-- None.
+- None
 
 ### Development Tools
 - [MPLAB® X IDE v6.30](https://www.microchip.com/mplab/mplab-x-ide)
 - [MPLAB® XC32 C/C++ Compiler v5.10](https://www.microchip.com/mplab/compilers)
 - MPLAB® X IDE plug-ins:
-    - MPLAB® Code Configurator 5.6.4.2
+    - MPLAB® Code Configurator v5.6.4.2
 
 ### Notes
 - This is an engineering release exclusively for the PIC32CX-MT device family which has not been fully validated

@@ -108,26 +108,26 @@ static crypto_Sym_Status_E Crypto_Sym_Wc_Aes_Init(void *ptr_aesCtx, crypto_Ciphe
          * inverse key schedule and decryption produces garbage from block 2
          * onwards (single-block CFB happens to work because only the IV
          * encryption applies). */
-        <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)))
-          || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB == true)))
-          || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB1?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB1 == true)))
-          || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB8?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB8 == true)))
-          || (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)))>
+        <#if    (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))
+            ||  (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))
+            ||  (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))
+            ||  (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))
+            ||  (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
         switch(symAlgoMode_en)
         {
-        <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CTR == true)))>
+        <#if (CRYPTO_WC_AES_CTR?? &&(CRYPTO_WC_AES_CTR == true))>
             case CRYPTO_SYM_OPMODE_CTR:
         </#if>
-        <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB?? &&(lib_wolfcrypt.CRYPTO_WC_AES_OFB == true)))>
+        <#if (CRYPTO_WC_AES_OFB?? &&(CRYPTO_WC_AES_OFB == true))>
             case CRYPTO_SYM_OPMODE_OFB:
         </#if>
-        <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB1?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB1 == true)))>
+        <#if (CRYPTO_WC_AES_CFB1?? &&(CRYPTO_WC_AES_CFB1 == true))>
             case CRYPTO_SYM_OPMODE_CFB1:
         </#if>
-        <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB8?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB8 == true)))>
+        <#if (CRYPTO_WC_AES_CFB8?? &&(CRYPTO_WC_AES_CFB8 == true))>
             case CRYPTO_SYM_OPMODE_CFB8:
         </#if>
-        <#if (lib_wolfcrypt?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128?? &&(lib_wolfcrypt.CRYPTO_WC_AES_CFB128 == true)))>
+        <#if (CRYPTO_WC_AES_CFB128?? &&(CRYPTO_WC_AES_CFB128 == true))>
             case CRYPTO_SYM_OPMODE_CFB128:
         </#if>
                 isKeystreamMode = true;

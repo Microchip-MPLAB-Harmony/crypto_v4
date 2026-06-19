@@ -290,8 +290,12 @@ static void lCrypto_Aead_Hw_Gcm_RunBlocks(uint32_t *in, uint32_t byteLen,
                 /* Cipher complete - read out the data */
                 DRV_CRYPTO_AES_ReadOutputData(completeOut);
 
-                /* Copy only the valid output bytes */
-                uint8_t *outBytes = (uint8_t *)outPtr;
+                /* Copy only the valid output bytes to the partial-block
+                 * position in the caller's buffer (after the last full
+                 * block). Previously this wrote to &outPtr[0], which
+                 * smashed the start of the output buffer with the partial
+                 * tail when byteLen was not a multiple of 16. */
+                uint8_t *outBytes = (uint8_t *)&outPtr[numFullBlocks * 4U];
                 uint8_t *srcBytes = (uint8_t *)completeOut;
                 (void) memcpy(outBytes, srcBytes, remainingBytes);
             }

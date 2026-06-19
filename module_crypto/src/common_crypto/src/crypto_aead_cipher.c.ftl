@@ -672,8 +672,14 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_Final(st_Crypto_Aead_AesGcm_ctx *ptr_aes
 <#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
   <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
+                /* Pass through the saved IV from Init. Without it, the HW
+                 * Cipher's GenerateJ0 path is invoked with NULL/0 when
+                 * the empty-data MultiStep flow reaches Final without ever
+                 * having populated invokeCtr in CmpMsgWithTag/_1stMsgFrag
+                 * (e.g. PT=0 + AAD=0 vectors like NIST CAVP V04). */
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,
-                    NULL, 0,NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);
+                    ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen,
+                    NULL, 0, NULL, NULL, 0, ptr_authTag, authTagLen);
   <#elseif (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")) || (driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER"))>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Final((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,
                     ptr_authTag, authTagLen);

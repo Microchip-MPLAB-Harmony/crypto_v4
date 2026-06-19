@@ -144,6 +144,11 @@ extern "C" {
 <#lt>#define WOLFSSL_AES_CFB
 <#lt>#define WOLFSSL_AES_OFB
 <#lt>#define HAVE_AESGCM
+<#lt>/* Allow NIST-permitted GCM tag lengths down to 32 bits (4 bytes).
+<#lt> * wolfSSL defaults WOLFSSL_MIN_AUTH_TAG_SZ to 12; lowering it to 4
+<#lt> * lets wolfCrypt accept the full set of CAVP tag sizes
+<#lt> * (32/64/96/104/112/120/128 bits) per SP 800-38D. */
+<#lt>#define WOLFSSL_MIN_AUTH_TAG_SZ 4
 <#lt>#define WOLFSSL_AES_XTS
 <#lt>#define HAVE_AESCCM
 <#lt>#define WOLFSSL_CMAC

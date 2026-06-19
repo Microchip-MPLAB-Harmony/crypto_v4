@@ -585,8 +585,14 @@ crypto_Aead_Status_E Crypto_Aead_AesGcm_AddAadData(st_Crypto_Aead_AesGcm_ctx *pt
 <#if (CRYPTO_HW_AES_GCM?? &&(CRYPTO_HW_AES_GCM == true))>
             case CRYPTO_HANDLER_HW_INTERNAL:
 <#if (driver_defines?contains("HAVE_CRYPTO_HW_AES_6149_DRIVER"))>
+                /* Pass through the saved IV from Init. The AES_6149 HW Cipher
+                 * call invokes GenerateJ0 internally on the first non-empty
+                 * AAD or PT block; passing NULL/0 as IV here corrupts J0 and
+                 * cascades into wrong CT and tag. The IV was saved into the
+                 * ctx struct at Init time -- forward it. */
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_Cipher((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx,
-                    NULL, 0, NULL, 0, NULL, ptr_aad, aadLen, NULL, 0);
+                    ptr_aesGcmCtx_st->ptr_initVect, ptr_aesGcmCtx_st->initVectLen,
+                    NULL, 0, NULL, ptr_aad, aadLen, NULL, 0);
 <#elseif (driver_defines?contains("HAVE_CRYPTO_HW_CAM_05346_DRIVER") || (driver_defines?contains("HAVE_CRYPTO_HW_CAM_06048_DRIVER")) || driver_defines?contains("HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER"))>
                 ret_aesGcmStat_en = Crypto_Aead_Hw_AesGcm_AddAadData((void*)ptr_aesGcmCtx_st->arr_aeadDataCtx, ptr_aad, aadLen);
 </#if><#-- HAVE_CRYPTO_HW_AES_6149_DRIVER, HAVE_CRYPTO_HW_CAM_05346_DRIVER, HAVE_CRYPTO_HW_CAM_06048_DRIVER, HAVE_CRYPTO_HW_HSM_LITE_04777_DRIVER -->

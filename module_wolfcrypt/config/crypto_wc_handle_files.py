@@ -27,7 +27,14 @@ import os
 # Initialize an empty dictionary to store file data
 wolfCrypt_Files = {}
 
-# Create a MCC file symbol with a unique identifier and an identical 
+# Files generated once and then owned by the user: created on the first
+# generation but NOT overwritten on subsequent regenerations, so user edits
+# (e.g. wolfCrypt build overrides) survive. Everything else stays overwrite=True.
+# Both wolfSSL config entry points are protected: user_settings.h
+# (WOLFSSL_USER_SETTINGS) and config.h (HAVE_CONFIG_H).
+PRESERVE_ON_REGEN = {"user_settings.h", "config.h"}
+
+# Create a MCC file symbol with a unique identifier and an identical
 def make_file_symbol(component, file_name, relative_src_path, prefix, dest_path, project_path, markup, enabled):
     # Source path:  relative to where the xml is for this module.
     # Dest_path:    relative to config/default
@@ -38,7 +45,9 @@ def make_file_symbol(component, file_name, relative_src_path, prefix, dest_path,
     
     file_symbol = component.createFileSymbol(file_id, None)
     file_symbol.setMarkup(markup)
-    file_symbol.setOverwrite(True)
+    # file_name here is already the output name (".ftl" stripped above when
+    # markup). Preserve user-owned files across regen; overwrite everything else.
+    file_symbol.setOverwrite(file_name not in PRESERVE_ON_REGEN)
     file_symbol.setProjectPath(project_path)
     file_symbol.setSourcePath(relative_src_path)
     file_symbol.setOutputName(file_name)

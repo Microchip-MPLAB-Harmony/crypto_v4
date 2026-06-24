@@ -16,7 +16,7 @@ This release targets the PIC32CX-MT device family:
 * wolfSSL updated to v5.9.1
 
 ### Bug fixes
-* Support of P-521 curves, support of non-aligned symmetric algorithms
+* Support of P-521 curves, support of non-aligned AES algorithms
 
 ### Known Issues
 - None

@@ -292,9 +292,7 @@ static void lCrypto_Aead_Hw_Gcm_RunBlocks(uint32_t *in, uint32_t byteLen,
 
                 /* Copy only the valid output bytes to the partial-block
                  * position in the caller's buffer (after the last full
-                 * block). Previously this wrote to &outPtr[0], which
-                 * smashed the start of the output buffer with the partial
-                 * tail when byteLen was not a multiple of 16. */
+                 * block) */
                 uint8_t *outBytes = (uint8_t *)&outPtr[numFullBlocks * 4U];
                 uint8_t *srcBytes = (uint8_t *)completeOut;
                 (void) memcpy(outBytes, srcBytes, remainingBytes);

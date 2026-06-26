@@ -13,6 +13,7 @@ This release targets the PIC32CX-MT device family:
 
 ### New Features
 * Added hardware-accelerated key generation
+* Added automatic enable of peripheral clocks
 * wolfSSL updated to v5.9.1
 
 ### Bug fixes

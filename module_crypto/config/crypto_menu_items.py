@@ -106,6 +106,25 @@ Crypto_HW_AllMenusList = [
     ["TRNG",                          "CRYPTO_HW_RNG_TRNG",        "Crypto_Hw_Rng_Trng",       "Crypto_Hw_Rng_Menu",      "Random Number Algortihms(RNG)", True,    False,    "RngAlgo",        ["TRNG_6334", "TRNG_03597"],    "PRNG_Algorithm"],
 ]
 
+# Cross-peripheral hard dependencies: when a HW algorithm is selected, it
+# requires the listed additional peripheral clocks to be enabled, beyond
+# the ones implied by its own menu[8] driver list. Currently only the CPKCC
+# operations that use the on-chip TRNG internally:
+#   ECDSA sign uses CPKCL_Rng for the per-signature nonce k.
+#     -> drv_crypto_ecdsa_hw_cpkcl.c.ftl  vCPKCL_Process(Rng, ...)
+#   ECC KeyGen uses CPKCL_Rng for the private key scalar k.
+#     -> drv_crypto_ecckeygen_hw_cpkcl.c.ftl  vCPKCL_Process(Rng, ...)
+# ECDH does NOT need TRNG (deterministic scalar multiply on a caller-supplied
+# private key). ECDSA verify also does not need TRNG, but the menu has a
+# single ECDSA checkbox covering both directions, so we conservatively
+# enable TRNG whenever ECDSA is ticked.
+# Keys are menu symbol IDs from Crypto_HW_AllMenusList (menu[1]); values
+# are peripheral instance names ("TRNG" -> TRNG_CLOCK_ENABLE on core).
+Crypto_HW_MenuClockDependencies = {
+    "CRYPTO_HW_ECDSA":      ["TRNG"],
+    "CRYPTO_HW_ECC_KEYGEN": ["TRNG"],
+}
+
 def Crypto_CallBack(symbol, event):
     Refresh_Files()
 
@@ -177,3 +196,107 @@ def Refresh_Files():
     for file_name in Crypto_HW_Files:
         Crypto_HW_Files[file_name][1].setEnabled(file_name in all_enabled_files)
         Crypto_HW_Files[file_name][2].setValue(file_name in all_enabled_files)
+
+    # ----------------------------------------------------------------------
+    # Auto-toggle peripheral clocks (PIC32CX-MT only).
+    #
+    # The PIC32CX-MT clock manager (clk_pic32cx_mt) creates one Boolean
+    # symbol per peripheral that has a CLOCK_ID parameter in the ATDF,
+    # named "<INSTANCE>_CLOCK_ENABLE" on the "core" component. Without
+    # explicit action by this component, those symbols default to False
+    # and the user has to remember to tick each crypto block manually in
+    # MCC's Clock Easy View, otherwise the HW responds nothing at runtime.
+    #
+    # On every Refresh_Files() invocation we compute the set of peripheral
+    # instances that should be clocked, then drive every crypto-related
+    # <INSTANCE>_CLOCK_ENABLE to True or False so the clock state tracks
+    # menu state both ways (ticking and unticking).
+    #
+    # Two sources of "must be on":
+    #   (a) The driver list (menu[8]) of every leaf menu row that is ticked.
+    #   (b) Cross-peripheral hard dependencies (Crypto_HW_MenuClockDependencies):
+    #       CPKCC ECDSA/keygen use the on-chip TRNG via CPKCL_Rng even when
+    #       the user has not separately ticked the TRNG menu row.
+    #
+    # Skipped on non-PIC32CXMTx: Crypto_HW_AllSupportedDriver is empty there,
+    # so this block exits early without touching any "core" symbols.
+    if Crypto_HW_AllSupportedDriver:
+        # driver label (e.g. "AES_6149") -> peripheral instance name ("AES").
+        # Built from ATDF-matched drivers only, so we never try to clock a
+        # peripheral the device does not have.
+        driver_label_to_instance = {
+            d[3]: d[0] for d in Crypto_HW_AllSupportedDriver
+        }
+        supported_instances = set(driver_label_to_instance.values())
+
+        # Universe: every crypto peripheral instance we could potentially
+        # toggle on this device. Used as the off-state sweep so we clear
+        # clocks that previously were on but no longer are.
+        all_crypto_instances = set()
+        for m in Crypto_HW_AllMenusList:
+            if m[7] is None or len(m) < 9:
+                continue
+            for label in m[8]:
+                if label in driver_label_to_instance:
+                    all_crypto_instances.add(driver_label_to_instance[label])
+        # Force dependency-target instances into the universe too, so that
+        # a dep-target instance still gets swept off when its dependant is
+        # un-ticked.
+        for extras in Crypto_HW_MenuClockDependencies.values():
+            for inst in extras:
+                if inst in supported_instances:
+                    all_crypto_instances.add(inst)
+
+        # Subset that should be clocked NOW.
+        clocks_to_enable = set()
+        for m in Crypto_HW_AllMenusList:
+            if m[7] is None or len(m) < 9:
+                continue
+            sym = globals().get(m[2])
+            if sym is None or not sym.getValue():
+                continue
+            # (a) Direct driver list.
+            for label in m[8]:
+                if label in driver_label_to_instance:
+                    clocks_to_enable.add(driver_label_to_instance[label])
+            # (b) Cross-peripheral hard dependencies (menu symbol ID).
+            for inst in Crypto_HW_MenuClockDependencies.get(m[1], []):
+                if inst in supported_instances:
+                    clocks_to_enable.add(inst)
+
+        # Drive every crypto peripheral's CLOCK_ENABLE to match the
+        # algorithm menu state.
+        #
+        # Harmony stores symbol values at multiple priorities: default,
+        # BSP, Dynamic (code-written), and User (UI click). Resolution
+        # picks the highest priority that has a stored value.
+        # Database.setSymbolValue writes at the Dynamic priority. A
+        # previously-stored User value (from a manual click on the clock
+        # checkbox in the System component UI) outranks Dynamic and wins.
+        #
+        # CONSEQUENCE: if the user has manually toggled a crypto clock
+        # checkbox in the System UI on this project before, that User
+        # value sticks and the algorithm menu cannot drive the clock
+        # state. Recovery is a one-time YAML edit: close MCC and remove
+        # the "type: User" block from the affected <INSTANCE>_CLOCK_ENABLE
+        # symbol in <project>.X/<config>/components/core.yml. For fresh
+        # projects, no User entry exists and the algorithm menu works.
+        #
+        # Coexistence with standalone plib components: if the user has
+        # attached a dedicated plib component for a crypto peripheral
+        # (e.g. the TRNG plib trng for direct CPKCL_Rng usage outside
+        # lib_crypto), that component owns the clock and will have written
+        # CLOCK_ENABLE=True at its own component-instantiation time. We
+        # MUST NOT turn the clock off underneath it just because none of
+        # our menu entries currently want it. Only TRNG has a standalone
+        # plib component on the supported crypto peripherals.
+        attached_plib_instances = set()
+        if Database.getComponentByID("trng") is not None:
+            attached_plib_instances.add("TRNG")
+        for instance in all_crypto_instances:
+            clock_sym_id = instance + "_CLOCK_ENABLE"
+            target = instance in clocks_to_enable
+            # Don't turn off a clock owned by an externally-attached plib.
+            if (not target) and instance in attached_plib_instances:
+                continue
+            Database.setSymbolValue("core", clock_sym_id, target, 2)

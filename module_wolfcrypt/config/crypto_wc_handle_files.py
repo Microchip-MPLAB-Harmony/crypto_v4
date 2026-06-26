@@ -34,7 +34,7 @@ wolfCrypt_Files = {}
 # (WOLFSSL_USER_SETTINGS) and config.h (HAVE_CONFIG_H).
 PRESERVE_ON_REGEN = {"user_settings.h", "config.h"}
 
-# Create a MCC file symbol with a unique identifier and an identical
+# Create a MCC file symbol with a unique identifier and register the file.
 def make_file_symbol(component, file_name, relative_src_path, prefix, dest_path, project_path, markup, enabled):
     # Source path:  relative to where the xml is for this module.
     # Dest_path:    relative to config/default

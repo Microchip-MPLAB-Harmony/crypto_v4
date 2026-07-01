@@ -367,7 +367,7 @@ def expand_dir_entries_in_driver_requests():
     module_path = Module.getPath()
 
     for driver, algorithms in Crypto_HW_DriverAndWrapperFilesDict.items():
-        driver_path = os.path.join(module_path, "src", "drivers", driver)
+        driver_path = os.path.join(module_path, "src", "drivers", driver.lower())
 
         # Loop through algorithms and file types
         for algo, file_types in algorithms.items():
